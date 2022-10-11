@@ -1,5 +1,5 @@
 # Pure state Lorentz transformation
 
-I intend to just upload the unfinished section about the "$\square^2 \lambda = 0$ argument" right away. Only the last part is missing where one uses the shown symmetry to argue that the Lorentz transform will have the same separable form.
+So far, the document here only contains the first part of my "$\square^2 \lambda = 0$ argument," unfortunately.
 
-...
+I will continue working on the middle and the last part after I have completed working on "Task 1-2" and "Task 3." 
