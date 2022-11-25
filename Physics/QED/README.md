@@ -1,5 +1,15 @@
 # QED
 
+## Another update: Version 2 is up
+
+I have just (d. 25.11.22) uploaded the second version of the paper, in which I have removed the claims (which I now know to be wrong) about the resulting theory of QED being different from the conventional one.
+
+I do not plan on continuing this work from here at the moment, but will instead move on to other subjects completely. 
+
+At some point in the future, I will probably return to the subject of QFT and try to read up on how far conventional QFT is from being formulated in a mathematically well-defined way (and look more into whether my work can maybe help or not). But it will probably be a long while until then. 
+
+
+
 ## Important update!
 
 **Tricked by the Feynman propagator**, it might seem! 
