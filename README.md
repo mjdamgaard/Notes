@@ -1,6 +1,6 @@
 # Notes
 
-This is a folder where I, and anyone who fork it, can upload work related to my QED paper and other work.
+This is a folder where I upload notes about various subjects, such as physics, quantum programming languages, and more. I thus use it similarly to a homepage, in other words. 
 
 I: Mads J. Damgaard, B.Sc. in physics (at the Niels Bohr Insitute) and B.Sc. in computer science (at the UCPH Department of Computer Science).
 
