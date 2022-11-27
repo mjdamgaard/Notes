@@ -4,6 +4,8 @@ This is a folder where I upload notes about various subjects, such as physics, q
 
 I: Mads J. Damgaard, B.Sc. in physics (at the Niels Bohr Insitute) and B.Sc. in computer science (at the UCPH Department of Computer Science).
 
+E-mail: fxn318@alumni.ku.dk
+
 ## Links
 
 ### Links to my QED paper
