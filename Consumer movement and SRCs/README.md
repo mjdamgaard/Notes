@@ -1,0 +1,28 @@
+# A consumer movement supporting share-redistributing companies (SRCs)
+
+## Additional notes to version 1.0 of the share-redistributing companies.pdf paper*
+*(Current title: Movement for a sustainable economy)
+
+### Terminology
+
+I have been reading *How to Be an Anticapitalist in the Twenty-First Century* by Erik Olin Wright since I uploaded the first version of the paper. He first of all uses a different definition of the term 'capitalism' than I have used.
+
+Wheras I have simply used 'capitalism' so far to refer to societies that conforms to the free market system, he uses a definition that seems more along the lines of referring societies that are *ruled* in large part by capital (if I am not mistaken). With that terminology, my idea would also also count as an 'anticapitalistic' idea. (More precisely, it would be an idea of *resisting capitalism* in his terminology.)
+
+And just to note, I have also used 'socialism' in the paper with the old definition of "the workers/people owning the means of production;" not the more modern definition used by Erik Olin Wright in the same book. 
+
+
+### Comparing the idea with the existing concept of consumer stock ownership plans (CSOPs)
+
+First of all, there is the existing concept of employee stock ownership plans (ESOPs), which in its most "anticapitalistic" version, using the same termionology as Erik Olin Wright, can turn a company slowly into a worker's cooperative. (There are also other versions of the concept that seem less "anticapitalistic" in my opinion, though.)
+
+So when you change the 'E' to a 'C' and talk about CSOPs instead, it certainly sounds something that might be very close to the idea that I propose in my paper here. 
+
+However, it seems that the existing proposals regarding "CSOPs" are quite different from my proposal. The texts that I have come across until the moment of writing have all been about a way for businesses (with very constant costumer bases) to be able to attract investments, specifically in order to make a certain expansion of the company in question, by essentially asking the customers for that investment. The plan then stops after a certain point, namely when the customers have finally paid the loans made by the company to afford the expansion. 
+
+That version of the idea thus only really works for comapanies with rather constant customer bases, and they do not at all lead to the same future outcome; the customer base only takes a bite of the company's shares, so to speak, with every CSOP-fueled expansion that the company decides to make. The customers would thus only take over more and more of the company if the company continues to make CSOP-fueled expansions.
+
+My idea, on the other hand, does not require the companies (what I have been calling "SRCs" so far) to grow in order for the customer base to take over. Of course, the initial shareholders of an SRC might *predict* a growth of the company as a result of an increased customer interest (and one that might potentially continue to increase over time due to the positive feedback loop mentioned in my paper), but whether or not that growth actually takes place, an SRC will always tend towards a state where the customer base ends up owning the entire company.
+
+
+
