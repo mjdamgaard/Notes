@@ -1,5 +1,18 @@
 # A consumer movement supporting share-redistributing companies (SRCs)
 
+
+## New version of the SRC paper (18.01.23)
+
+I have just uploaded a second version of my SRC paper, which is actually quite different from the first version. The second version is thus does talk about the 'consumer movement' at all, but is instead just focused on explaining the SRCs. The abstract of the second version is thus the following.
+
+We introduce the concept of a new type of company where the shares are slowly and continuously redistributed to the customers. 
+We argue that such companies will be able to reimburse the shareholders fairly for the shares that they part with in this redistribution process by raising the prices for their goods and services accordingly, meaning that the customers will thus essentially buy out the initial shareholders over time. 
+The goal of this new type of company is to provide an alternative in between a regular company and a consumer cooperative, namely one that will turn into something similar to a consumer cooperative over time, but will nevertheless be as effective at attracting initial investments as a more conventional company such as a limited liability company.
+
+
+
+
+
 ## Additional notes to version 1.0 of the share-redistributing companies.pdf paper*
 *(Current title: Movement for a sustainable economy)
 
