@@ -3,7 +3,7 @@
 
 ## New version of the SRC paper (18.01.23)
 
-I have just uploaded a second version of my SRC paper, which is actually quite different from the first version. The second version is thus does talk about the 'consumer movement' at all, but is instead just focused on explaining the SRCs. The abstract of the second version is thus the following.
+I have just uploaded a second version of my SRC paper, which is actually quite different from the first version. The second version is thus does talk about the 'consumer movement' at all, but is instead just focused on explaining the SRCs themselves in detail. The abstract of the second version is thus the following.
 
 We introduce the concept of a new type of company where the shares are slowly and continuously redistributed to the customers. 
 We argue that such companies will be able to reimburse the shareholders fairly for the shares that they part with in this redistribution process by raising the prices for their goods and services accordingly, meaning that the customers will thus essentially buy out the initial shareholders over time. 
