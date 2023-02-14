@@ -551,6 +551,23 @@ Og en anden lille hurtig ting er, at databasen selvfølgelig gerne må slette en
 
 Okay, jeg skal altså lige have tænkt lidt mere over de ikke-grundlæggende filtre (dem som brugerne frit kan vælge til og fra og udskifte i deres normale brug af applikationen), men ellers kan jeg altså så småt begynde at gå i gang med at programmere den grundlæggende del (startende med den semantiske database og det grundlæggende QL).\,:) Virkeligt nogle fede tilføjelser i denne omgang! (.\,.\,Altså her over de seneste dage, tænker jeg på.) Fedt at være nået hertil! :) (16:15)
 
+(18:07) Jeg har fundet på nogle flere tilføjelser. Angående string-encodingen, så skal man jo selvfølgelig bare bruge den der htmlspecialcharacters()-funktion. Og det er så både det format, man sender til serveren og det format, man får af af serveren. Når man så skal loade scripts/HTML, så skal man så bare specielt i det tilfælde konvertere tilbage. (Og serveren tjekker selvfølgelig altid, at inputtede strings er af det format.)
+
+Angående QL'et, så tror jeg faktisk, at det bare netop skal være en undermængde af SQL, simpelthen. Og så kan man altså implementere eventuelle mere specialbyggede QL-sprog i applikationslaget (UDA-laget). Så man sender altså sine select statements til serveren, som så parser dem med en automaton (en kompileret RegEx) og sender det videre til serveren, hvis det godkendes.
+
+Når det så kommer til insert statements, så er der lige en anelse mere at sige. For det første vil jeg nok gerne trække det tilbage med, at det kun er ratings/semantic inputs, der får timestamp og bruger-ID. For jeg er kommet i tanke om, at nu hvor man (også) kan tilgå databasen rent SQL-style, så behøver man jo ikke at vurdere alle entiteters ``usefulness''.\,. Så ja, nu tænker jeg faktisk lidt bare, at bruger-ID og timestamp kommer med over alt. 
+
+Det gør så faktisk, at insert-statementsne også bare kan være en undermængde af SQL, hvor serveren så skal tjekke at bruger-ID og timestamp kan godkendes. Og her har jeg så nemlig tænkt noget andet, og det er, at man jo så med fordel kunne gøre det sådan, at hvis timestampet er sat til en fremtidig tid (mere end bare nogle sekunder), så kan serveren vælge at tjekke, om der er plads i en buffer og så putte den midlertidigt over i denne, indtil timestampet bliver aktuelt, hvorefter serveren så kan uploade entiteten til den offentlige database. Og denne buffer skal altså være i en privat database. Dette giver en simpel måde, hvor brugere kan obfuskere upload-tidspunktet, hvilket nemlig kan være godt for at forøge anonymitet. Og så tænkte jeg så også, at en måde at implementere, at entiteter kun bliver uploadet til en privat database så bare kunne være ved at sætte en nul-timestamp (eller bare en der ligger før nutiden). For ellers skal man jo vedlægge et flag, men når man alligevel har pladsen til det.\,. tje, medmindre at der kan være en fordel for brugeren i at holde styr på sine egne private timestamps (for sine privat-database-uploads).\,.(?) (18:24) .\,.\,Oh well, ellers må man jo bare sende et public/private-flag (måske i form af `u' og `r' henholdsvis.\,.) med til serveren sammen med insert-statementet, som så altså bare i sig selv kan være fra en undermængde af SQL.\,. Hm, og hvad med selects, skal kan man også have behov for.\,. ja.\,. Her kan man også have behov for at sige ``søg kun i den offentlige database'' --- og måske endda også selects, skal kan man også have behov for.\,. ja.\,. Her kan man også have behov for at sige ``søg kun i den private database'' (foruden ``søg kun i begge databaser''). Så lad der også bare skulle sendes et char-flag med i købet for select-statementsne også. .\,.\,Hov, jeg skal lige komme ind på, at serveren jo.\,. Nå nej, det kommer sig jo gratis af, at man ikke behøver at inkludere værdier i insert statements i SQL, når disse værdier bliver sat automatisk i databasen. Så serveren behøver slet ikke at vide, hvad bruger-ID'et skal være, og brugerne skal så heller ikke have det med, når kommandoerne sendes til serveren. Ja, jamen så er det da bare det! Og ja, det er så applikationens altså applikationens ansvar at sætte timestampet, bare lige for at understrege dette. Ok! Jamen så bliver QL-delen ligepludselig ikke nogen særlig stor opgave.\,:) (18:35)
+
+
+
+
+
+
+
+
+
+
 
 
 
