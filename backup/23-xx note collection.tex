@@ -665,6 +665,8 @@ Okay, virker umiddelbart som nogle gode standarder, men jeg tror lige, jeg må t
 
 \ldots Ah, på når lige, at det måske ville give mere mening bare at implementere dette tredje input (inkl.\ funktionaliteten omkring det) udelukkende i applikationslaget.\,. (16:15) .\,.\,Hm, man kunne også gøre det, at man rigtig nok implementerer det i applikationslaget, men at man så bare også giver mulighed for, at brugeren kan vælge at inkludere de resulterende prædikater dannet ud fra dette ``tredje input'' i specifikationsprædikat-listen. Ja, ok, så fordi der jo er den mulighed, så er der ingen grund til ikke at gøre det sådan. Så lad os sige, at ``tredje input'' bliver implementeret i applikationslaget, og at ikke-simple entiteter så i databaselaget derfor bare kommer til at have to input-felter, nemlig en kategori-liste og en specifikationsprædikat-liste.\,:) (16:21, 20.02.23)
 
+\ldots (17:01) Ah, nu ved jeg det. Endnu bedre: Der skal bare være ét felt for de undertyper, jeg førhen har kaldt DescribedEntities (og som jeg til tider i dag har kaldt de ikke-simple undertyper), nemlig et felt bestående rent af prædikater. Og så implementeres resten simpelthen i applikationslages. De første prædikater i denne liste vil så typisk bare være (et fåtal af (ofte bare én!)) ``belongs to $<$category$>$''-/``.Category:$<$category$>$''-prædikater. Og nu hvor jeg nemlig tænker, at underkategorier skal kende deres egne overkategorier, så er det nemlig ofte tilstrækkeligt kun at give én kategori. Og dermed behøver jeg altså ikke længere at tænke i at separere den ``kategoriserende del'' fra den ``specificerende del'' af inputtet, for den ``kategoriserende del'' vil nu typisk kunne klares med meget få (ofte bare ét) prædikater. Nice, nice.\,:) (17:09, 20.02.23)
+
 
 
 
