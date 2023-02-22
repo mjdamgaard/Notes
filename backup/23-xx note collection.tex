@@ -733,7 +733,7 @@ Nå, jeg har nogle flere ting fra i går aftes, jeg gerne vil sige, men da de re
 
 (15:46) Hm, jeg kan ikke have object=NULL i StatementInputs, hvis object skal være en del af nøglen. Nu har jeg så lavet det om så 0 er reserveret som ID til at signalerer, hvad der svarer lidt til NULL. Men problemet er så lige, at jeg ikke sparer den plads. Og nu kom jeg så til at tænke på, at det næsten er en smule synd at bruge SQL, når nu jeg bruger så mange konstante felter/kolonner så langt hen ad vejen.\,. Hm.\,. .\,.\,Hm, ja, jeg må jo lige læse om andre databaser også. .\,.\,Men lad mig nu bare lige færdiggøre SQL-implementationen først, og så også bare bruge den i starten, indtil jeg får taget mig sammen til at prøve at implementere den semantiske database i en anden type (underliggende) database.
 
-(16:32) Ah, jeg er lige kommet i tanke om, at mit system med at bruge den mest betydende byte ikke duer, når vi skal til at inkludere data-termer såsom datetimes og longs. Så nu vil jeg i stedet lave et konstant type-flag i hver tabel, som teknisk set bliver en del af term-ID'et, hvis jeg kan.\,. 
+(16:32) Ah, jeg er lige kommet i tanke om, at mit system med at bruge den mest betydende byte ikke duer, når vi skal til at inkludere data-termer såsom datetimes og longs. Så nu vil jeg i stedet lave et konstant type-flag i hver tabel, som teknisk set bliver en del af term-ID'et, hvis jeg kan.\,. \ldots\ Ja, for jeg venter bare med at indføre typeflagene til Term-viewet, hvor de så bliver virtuelle kolonner. (18:02) .\,.\,Og det bliver i øvrigt et ikke-indexed view, så formålet er med andre ord altså bare at bruge dette view i compiletime.\,. .\,.\,Hm, hvorfor jeg jo egentligt ikke behøver at lave unions på kolonnerne.\,.\,:) (18:06)
 
 
 
