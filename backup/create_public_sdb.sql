@@ -1,9 +1,10 @@
 USE mydatabase;
 
+-- DROP TABLE StatementInputs;
 -- DROP TABLE Users;
--- DROP TABLE SemanticInputs;
--- DROP TABLE Statements;
-DROP TABLE DescribedEntities;
+-- DROP TABLE Bots;
+
+-- DROP TABLE Terms;
 -- DROP TABLE Predicates;
 -- DROP TABLE Relations;
 -- DROP TABLE Categories;
@@ -23,214 +24,194 @@ DROP TABLE DescribedEntities;
 
 
 
--- type code for User: 0.
+/* Statements which the users (or bots) give as input to the semantic network.
+ * A central feature of this semantic system is that all such statements come
+ * with a numerical value which represents the degree to which the user deems
+ * that the statement is correct (like when answering a survey).
+ **/
+CREATE TABLE StatementInputs (
+    -- subject of predicate or relation.
+    subject BIGINT UNSIGNED,
+    -- FOREIGN KEY (subject) REFERENCES Term(id),
+
+    -- user or bot who states the statement.
+    user BIGINT UNSIGNED,
+    -- FOREIGN KEY (user) REFERENCES Users(id),
+
+    -- predicate or relation.
+    pred_or_rel BIGINT UNSIGNED,
+    -- FOREIGN KEY (pred_or_rel) REFERENCES Term(id),
+
+    -- relation object (second input, so to speak) if pred_or_rel is a relation.
+    object BIGINT UNSIGNED,
+    -- FOREIGN KEY (pred_or_rel) REFERENCES Term(id),
+
+
+    -- numerical value (signed) which defines the degree to which the users
+    -- (or bot) deems the statement to be true/fitting. When dividing with
+    -- 2^63, this value runs from -1 to (almost) 1. And then -1 is taken to mean
+    -- "very far from true/fitting," 0 is taken to mean "not sure / not
+    -- particularly fitting or unfitting," and 1 is taken to mean "very much
+    -- true/fitting."
+    rating_value BIGINT UNSIGNED,
+
+    -- In this version, a user or bot can only have one rating value per
+    -- statement, which means that the combination of user and statement
+    -- (subject, pred_or_rel and object) is unique for each row.
+    PRIMARY KEY(subject, user, pred_or_rel, object),
+    -- Additionally, I intend to create a clustered index on
+    -- (subject, user, pred_or_rel) (in that order). (Part of the reason why
+    -- is that I intend to implement all aggregates, such as average, via bots,
+    -- which are also implemented as "Users.")
+
+
+    -- preventing that relation--object combinations are saved as predicates,
+    -- and thus that relation--object predicates are always saved in their
+    -- exploded version in the StatementInputs rows.
+    CHECK (
+        -- either pred_or_rel is NOT a compound term...
+        (pred_or_rel NOT BETWEEN 0x0300000000000000 AND 0x0400000000000000 - 1)
+        -- ...or if it is, then it cannot be a predicate, and object thus has to
+        -- not be null.
+        OR object != NULL
+    )
+
+
+
+    /* timestamp */
+    -- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 CREATE TABLE Users (
-    /* user ID */
-    id BIGINT AUTO_INCREMENT,
+    -- user ID.
+    id BIGINT UNSIGNED CHECK (
+        -- type code for User: 0x01.
+        id >= 0x0100000000000000 AND
+        id <  0x0200000000000000
+        -- (This is in case Users are included as Terms in a future version.)
+    ),
     PRIMARY KEY(id),
 
     /* primary fields */
-    public_encryption_key BIGINT,
-
-    /* database types (tables) of primary fields */
-        /* public_encryption_key types */
-        -- allowed public_encryption_key types: TBLOB (so no flag needed).
-    /**/
+    -- TBD.
 
     /* timestamp */
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- type code for SemanticInput: 1.
-CREATE TABLE SemanticInputs (
-    /* semantic input ID */
-    id BIGINT AUTO_INCREMENT,
+CREATE TABLE Bots (
+    /* bot ID */
+    id BIGINT UNSIGNED CHECK (
+        -- type code for Bot: 0x00.
+        id BETWEEN 0x0000000000000000 AND 0x0100000000000000 - 1
+        -- (This is in case Bots are included as Terms in a future version.)
+    ),
     PRIMARY KEY(id),
 
     /* primary fields */
-    user BIGINT,
-    statement BIGINT,
-    value BIGINT,
-
-    /* database types (tables) of primary fields */
-        /* user types */
-        -- allowed user types: only User (so no flag needed).
-
-        /* statement types */
-        -- allowed statement types: only Statement (so no flag needed).
-
-        /* value types */
-        -- allowed value types: any (so no constraints).
-        value_type TINYINT,
-    /**/
-
-    /* timestamp */
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    description Text
 );
 
 
--- type code for Statement: 2.
-CREATE TABLE Statements (
-    /* statement ID */
-    id BIGINT AUTO_INCREMENT,
-    PRIMARY KEY(id),
-
-    /* primary fields */
-    subject BIGINT,
-    predicate BIGINT,
-
-    /* database types (tables) of primary fields */
-        /* subject types */
-        -- allowed subject types: any (so no constraints).
-        subject_type TINYINT
-
-        /* predicate types */
-        -- allowed predicate types: Predicate (so no flag needed).
-    /**/
-);
 
 
-/* Objects, Relations and Categories each fall into two subtypes: "Categorized"
- * and "Simple" ones. Both subtypes take two inputs each in all three cases,
- * which we will call descriptors (1 and 2).
+-- * and "Simple" ones. Both subtypes take two inputs each in all three cases,
+-- * which we will call descriptors (1 and 2).
+-- *
+-- * The "Simple" subtype takes as its first descriptor a string denoting af
+-- * lexical item (a semantically meaningful part of a sentence). Examples of lex-
+-- * ical items could be: "the number pi", "is subset of" (or "belongs to"), "has
+-- * related link:", and "is funny".
+-- * The second descriptor of the Simple subtype is an (optional) text descrip-
+-- * tion, which can be used to explain the lexical item more thoroughly, and to
+-- * clear up any potential ambiguities.
+-- *
+-- * The "Categorized" subtype, on the other hand, takes as its first descriptor
+-- * a list of two element which are themselves lists. The first of these two sub-
+-- * lists is a list of "categorizing predicates," which we will abbreviate as
+-- * 'cpreds,' and the second sublist is a list of "specification relations,"
+-- * which we will abbreviate as 'srels.'
+-- * The list of cpreds... Hm, jeg tænkte lige for lidt siden, om ikke man bare
+-- * skulle lave cpreds om til en liste af kategorier i stedet, men besluttede
+-- * nej. Nu er jeg så lige blevet i tvivl igen: Skal cpreds ikke bare ændres til
+-- * cats?.. (11:44)
+
+
+/* Terms each fall into three subtypes: Simple, Standard, and Compound Terms.
  *
  * The "Simple" subtype takes as its first descriptor a string denoting af
- * lexical item (a semantically meaningful part of a sentence). Examples of lex-
- * ical items could be: "the number pi", "is subset of" (or "belongs to"), "has
- * related link:", and "is funny".
+ * lexical item (a semantically meaningful part of a sentence). Examples of
+ * lexical items could be: "the number pi", "is subset of" (or "belongs to"),
+ * "has related link:", and "is funny".
  * The second descriptor of the Simple subtype is an (optional) text descrip-
  * tion, which can be used to explain the lexical item more thoroughly, and to
  * clear up any potential ambiguities.
- *
- * The "Categorized" subtype, on the other hand, takes as its first descriptor
- * a list of two element which are themselves lists. The first of these two sub-
- * lists is a list of "categorizing predicates," which we will abbreviate as
- * 'cpreds,' and the second sublist is a list of "specification relations,"
- * which we will abbreviate as 'srels.'
- * The list of cpreds... Hm, jeg tænkte lige for lidt siden, om ikke man bare
- * skulle lave cpreds om til en liste af kategorier i stedet, men besluttede
- * nej. Nu er jeg så lige blevet i tvivl igen: Skal cpreds ikke bare ændres til
- * cats?.. (11:44) 
+ **/
 
 
--- type code for Objects: 3.
-CREATE TABLE Objects (
-    /* described term ID */
-    id BIGINT AUTO_INCREMENT,
+CREATE TABLE SimpleTerms (
+    -- simple term ID.
+    id BIGINT UNSIGNED CHECK (
+        -- type code for SimpleTerm: 0x02.
+        id >= 0x0200000000000000 AND
+        id <  0x0300000000000000
+    ),
     PRIMARY KEY(id),
 
-    -- /* primary fields */
-    -- -- List of two lists: A (possibly empty) list of category predicates
-    -- -- (cpreds), and a list of specification relations (srels), the latter of
-    -- -- which, together with the srel_inputs (also a list), specifies the entity
-    -- -- within the given category defined by the cpreds.
-    -- cpreds_and_srels BIGINT,
-    -- -- List of input to each specification relation (srel) in the second list
-    -- -- within cpreds_and_srels. The order of the srel inputs is taken to match
-    -- -- the order of the srels, and the lengths of these two lists should thus be
-    -- -- the same.
-    -- srel_inputs BIGINT,
+    /* The "Simple" subtype takes as its first descriptor a string denoting af
+     * lexical item (a semantically meaningful part of a sentence). Examples of
+     * lexical items could be: "the number pi", "is subset of" (or "belongs to"),
+     * "has related link:", and "is funny".
+     * The second descriptor of the Simple subtype is an (optional) text descrip-
+     * tion, which can be used to explain the lexical item more thoroughly, and to
+     * clear up any potential ambiguities.
+     **/
 
-    descriptor_1 BIGINT,
-    descriptor_2 BIGINT,
+    -- specifying lexical item.
+    spec_lexical_item BIGINT,
 
-    /* database types (tables) of primary fields */
-        /* "category predicates and specification relations" types */
-        -- allowed cpreds_and_srels types: L2List (so no flag needed).
+    -- specifying description.
+    spec_description BIGINT
+);
 
-        /* srel_inputs types */
-        -- allowed srel_inputs types: any List types.
-        srel_inputs_type TINYINT CHECK (
-            srel_inputs_type >= 40 -- all List types
-        )
-    /**/
+
+CREATE TABLE StandardTerms (
+    /* standard term ID */
+    id BIGINT UNSIGNED CHECK (
+        -- type code for StandardTerm: 0x03.
+        id >= 0x0300000000000000 AND
+        id <  0x0400000000000000
+    ),
+    PRIMARY KEY(id),
+
+
+    -- specifying parent predicates.
+    spec_parent_preds BIGINT,
+
+    -- specifying child predicates.
+    spec_child_preds BIGINT
 );
 
 
 
--- type code for Predicate: 4.
-CREATE TABLE Predicates (
-    /* predicate ID */
-    id BIGINT AUTO_INCREMENT,
-    PRIMARY KEY(id),
-
-    -- /* primary fields */
-    -- -- "relation" can here be either an attribute name or verb (if the mydatabase
-    -- -- type is a TVarChar) or a (described) relation if the database type is a
-    -- -- DescribedEntity.
-    -- relation BIGINT,
-    -- -- Input in the relation, sentence object of the verb, or value of the
-    -- -- attribute, depending on the database type of "relation."
-    -- input BIGINT,
-
-    descriptor_1 BIGINT,
-    descriptor_2 BIGINT,
-
-    /* database types (tables) of primary fields */
-        /* relation/verb/attribute types */
-        -- allowed relation types: DescripedEntity (if rel.) or TVarChar (else).
-        relation_type TINYINT CHECK (
-            relation_type = 3 OR -- DescripedEntity
-            relation_type = 21   -- TVarChar
-        ),
-
-        /* input types */
-        -- allowed input types: any (so no constraints).
-        input_type TINYINT
-    /**/
-);
-
--- type code for Relations: 5.
-CREATE TABLE Relations (
-    /* predicate ID */
-    id BIGINT AUTO_INCREMENT,
+CREATE TABLE CompoundTerms (
+    /* compound term ID */
+    id BIGINT UNSIGNED CHECK (
+        -- type code for CompoundTerm: 0x04.
+        id >= 0x0400000000000000 AND
+        id <  0x0500000000000000
+    ),
     PRIMARY KEY(id),
 
 
-    descriptor_1 BIGINT,
-    descriptor_2 BIGINT,
+    -- relation (or perhaps function).
+    rel_or_fun BIGINT,
 
-    /* database types (tables) of primary fields */
-        /* relation/verb/attribute types */
-        -- allowed relation types: DescripedEntity (if rel.) or TVarChar (else).
-        relation_type TINYINT CHECK (
-            relation_type = 3 OR -- DescripedEntity
-            relation_type = 21   -- TVarChar
-        ),
-
-        /* input types */
-        -- allowed input types: any (so no constraints).
-        input_type TINYINT
-    /**/
+    -- realtion object (or perhaps function input).
+    input BIGINT
 );
-
--- type code for Categories: 6.
-CREATE TABLE Categories (
-    /* predicate ID */
-    id BIGINT AUTO_INCREMENT,
-    PRIMARY KEY(id),
-
-
-    descriptor_1 BIGINT,
-    descriptor_2 BIGINT,
-
-    /* database types (tables) of primary fields */
-        /* relation/verb/attribute types */
-        -- allowed relation types: DescripedEntity (if rel.) or TVarChar (else).
-        relation_type TINYINT CHECK (
-            relation_type = 3 OR -- DescripedEntity
-            relation_type = 21   -- TVarChar
-        ),
-
-        /* input types */
-        -- allowed input types: any (so no constraints).
-        input_type TINYINT
-    /**/
-);
-
-
-
-
 
 
 -- type code for DateTime: 6.

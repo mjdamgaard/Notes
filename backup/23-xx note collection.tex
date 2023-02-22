@@ -721,7 +721,15 @@ Nå, jeg har nogle flere ting fra i går aftes, jeg gerne vil sige, men da de re
 
 .\,.\,Ah, okay, man skal regne med at prefetche feltdata-entitets-ID'er for alle ressourcer i sammen omgang som, at man henter prædikat-ratingværdier om ressourcerne, og dette gælder så uanset om man henter feltdata og diverse prædikater fra samme bruger, eller om man måske både henter forskelligt feltdata fra forskellige brugere(/botter) og også henter forskellige prædikat-ratinger fra forskellige bruger. Man prefetcher altså bare så meget som muligt her (men dog ikke mange-objekt-relations-data), når først man henter prædikat-data fra entiteten alligevel. .\,.\,Tja, eller måske skal brugerne i applikationslaget også kunne vælge at slå denne feltdata-prefetching fra i visse tilfælde, hvis man regner med at skulle vægte virkeligt mange ressourcer og skære dem ned til ganske få (og derfor gerne vil have hver hentning af prædikat-data til den enkelte ressource til at gå så hurtigt som overhovedet muligt). Men ja, ellers er en god sigtesnor altså, at felt-data gerne skal prefethes sammen med prædikat-dataen, når applikationen er i færd med at danne en ny liste ud fra en brugerdefineret ordning--filtrering. Og det er meget rart for mig at kunne have dette i baghovedet.\,. (20:23)
 
+\ldots (20:37) Ah, og forresten, nu hvor jeg regner med at fylde mange-objekt-relationerne over i sin egen tabel, så giver det ikke mening det med VARBINARY'en. Jeg kan i stedet bare have én tabelrække pr.\ objekt, hvilket er meget dejligt at tænke på. 
 
+(22.02.23, 10:18) Som jeg også tænkte på i går aftes: jeg føler ikke, at der er nogen grund nu til at putte mange-objekt-relationerne over i sin egen tabel, så. Måske især ikke.\,. ah, især ikke fordi man jo.\,. nej.\,. .\,.\,Nå, det kan man tænke over på sigt, hvordan man eventuelt kan dele det op igen for at styrke performancen, men i starten kan jeg bare have det hele i samme tabel. .\,.\,Ah, men jeg kunne måske i det mindste sørge for at give de grundlæggende mange-objekt-relationer, som jeg regner med, skal bruges meget, nogle særlige leading bytes, hvorfor ikke?\,.\,:) 
+
+(11:51) Hm, måske giver det faktisk en smule bedre mening at have brugeren først i SemanticInput-nøglen.\,. Jeg er i øvrigt begyndt at kalde SemanticInputs for Statements bare, selvom det første er en smule mere korrekt. Men nu hvor jeg ikke har en Statement-tabel, så synes jeg alligevel det giver mening at omdøbe SemanticInputs til Statements. Og så er det bare underforstået.\,. Tja, måske ændrer jeg det faktisk tilbage, men lad mig nu se.\,.
+
+.\,.\,Ah nej, det giver rigtignok mest mening at have subjektet først i nøglen, og især hvis man måske sørger for løbende at vedligeholde indexet, så ordnen af bruger--bots'ne forøges at holdes således, at bots der oftes bruges sidder tæt sammen i ordnen, og især hvis deres brug også er korreleret.\,:) (11:59)
+
+.\,.\,Hm, jeg tror jeg vil kalde det for StatementInputs for nu.\,:) (12:01)
 
 
 
