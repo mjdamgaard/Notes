@@ -735,9 +735,11 @@ Nå, jeg har nogle flere ting fra i går aftes, jeg gerne vil sige, men da de re
 
 (16:32) Ah, jeg er lige kommet i tanke om, at mit system med at bruge den mest betydende byte ikke duer, når vi skal til at inkludere data-termer såsom datetimes og longs. Så nu vil jeg i stedet lave et konstant type-flag i hver tabel, som teknisk set bliver en del af term-ID'et, hvis jeg kan.\,. \ldots\ Ja, for jeg venter bare med at indføre typeflagene til Term-viewet, hvor de så bliver virtuelle kolonner. (18:02) .\,.\,Og det bliver i øvrigt et ikke-indexed view, så formålet er med andre ord altså bare at bruge dette view i compiletime.\,. .\,.\,Hm, hvorfor jeg jo egentligt ikke behøver at lave unions på kolonnerne.\,.\,:) (18:06)
 
+\ldots Hm, nu overvejer jeg at droppe at have dataentiteter som førsteklassesborger-termer, og så samtidigt bare sige, at det kun er object i StatementInputs, der behøver et type-flag (og dermed altså gøre, at dataentiteter kun kan indgå som relationsobjekter i udsagn).\,. (18:36)  .\,.\,Tja nej, jeg tror bare, jeg beholder det sådan her for nu (hvor alle termer bare har et typeflag, og hvor datatermer er ``førsteklassesborgere'').\,. (18:46)
 
+\ldots\ Hm, det giver egentligt ikke rigtigt mening det jeg har gjort med at kræve at den første byte er 0x00 for ikke-data-typer, så det fjerner sikkert igen (må jeg lige gøre i morgen). Og så kan jeg lige se på, om ikke jeg også skal putte AUTO\_INCREMENT tilbage på ID'erne, det ville jo nok ikke være helt dumt.\,. (23:06)
 
-
+(23.02.23) Hm, jeg kunne nok spare en masse listebygningsværk, hvis jeg i stedet for beskrivende/specificerende felter i Termerne bare har en forfatter-siger-bot.\,. Og jeg regner alligevel med at have den bot, så hvorfor ikke.\,.\,? (10:09)
 
 
 
