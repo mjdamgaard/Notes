@@ -741,6 +741,14 @@ Nå, jeg har nogle flere ting fra i går aftes, jeg gerne vil sige, men da de re
 
 (23.02.23) Hm, jeg kunne nok spare en masse listebygningsværk, hvis jeg i stedet for beskrivende/specificerende felter i Termerne bare har en forfatter-siger-bot.\,. Og jeg regner alligevel med at have den bot, så hvorfor ikke.\,.\,? (10:09)
 
+\ldots Hm, så skal jeg så til at lave nogle relationer for hvert af de grundlæggende felter, men der kan jeg jo også bare bruge mine `has lex item'- og `has desciption'-relationer. Desuden vil jeg nok tilføje en relation a la  `has abbreviated lex item' som en af de grundlæggende, så der bliver tre.\,. (10:24) .\,.\,Og jeg regner forresten stadig med at beholde type-flaget, og så kan jeg dermed også overveje, om jeg gider at slæbe rundt med en masse `.Type='-relationer også, eller om det bare skal være underforstået.\,. Tja, jeg kunne vel godt have dem med, men.\,. Tja, og dog.\,. 
+
+(10:42) Jeg overvejer at lave ratingværdien om til en var-binær i stedet.\,. \ldots (10:53) Ja, lad det være sådan. Men det skal så stadig være sådan, at hvis man højre-shifter den ned til en int (eller en long), så skal man stadig aflæse midtpunkts-/gennemsnitsværdien, i hvert fald hvad brugernes ratings angår. 
+
+Hm, jeg tror faktisk jeg vil beholde en SimpleTerms-tabel, men så omdøbe den til FundamentalTerms.\,. .\,.\,Hm, jeg overvejede lige kort at skifte tilbage til at kalde det Entities, men man skal faktisk i stedet bare se prædikater og relationer mere som henholdsvis mængde og mængdelære-relationer, hvis man ser på det matematisk *(/formel-logisk). Og så er det først i udsagn-inputsne.\,. som jeg næsten kunne omdøbe tilbage til `semantiske inputs'.\,. at prædikat-mængderne og relations-mængderne bliver vakt til live og bliver fortolket som faktisk prædikater og relationer. .\,.\,Nå, men pointen omkring at have en FundamentalTerms-tabel er så, at denne så kan være ret kort, og at brugerne fra applikationslaget så bare kan hente den hele på én gang, nemlig på en måde, der adskiller sig fra, hvordan brugerne henter ting på normal vis (nemlig via opslag i SemanticInputs-tabellen). 
+
+.\,.\,(11:28) Ah, på den anden side, hvad angår Term vs.\ Entities, så får vi jo nu et ret begrænset antal typer, så.\,. Hov nej, never mind! For prædikater og relationer får jo ikke sin egen type alligevel, så nu handler typerne egentligt bare om at skelne.\,. Nå ja, vent, typerne bliver helt de samme, som de lige var; jeg ændrer ikke i dem.\,. Spørgsmålet er, om jeg skulle blande ``simple'' og ``standard'' terms sammen til én type, men det tror jeg faktisk heller ikke alligevel. 
+
 
 
 
