@@ -760,6 +760,17 @@ Hm, jeg tror faktisk jeg vil beholde en SimpleTerms-tabel, men så omdøbe den t
 
 (15:52, 25.02.23) Hm, jeg kan forsten lige nævne, at jeg nu tænker at inkludere en `created\_at'/`updated\_at'-dato i SemanticInputs, som så altså bare \emph{ikke} inkluderer tiden (men kun datoen). Og nu kom jeg så lige til at tænke på, at man eventuelt kunne gøre denne dato til den sidste del af nøglen (den primære), for på den måde kunne man jo netop åbne op for, at brugere og bots kan få deres gamle ratings gemt (hvilket nemlig kan være gavnligt, hvis nu man eksempelvis mister tillid til en brugergruppe, men gerne stadig vil benytte dens gamle vurderinger). 
 
+(18:32) Jeg tror heller, jeg vil lægge op til en ``.$<$abbr lex item$>$:''-syntaks i stedet for ``.$<$abbr lex item$>$='', for jeg regner lidt med, at MySQL FULLTEXT search også ser `:' som et whitespace, ligesom den vist gør for `.'. 
+.\,.\,Tja, på den anden side, så kan man jo også søge på starten af ord, så måske er det faktisk ligefrem at foretrække at bruge `=', hvis den ser `=' som en del af ordet. Ja, så lad mig da bare skifte tilbage til `=', for det kan vel i så fald ikke skade.\,. (18:39)
+
+(19:22) Hvis en bruger føjer noget til en kategori (i.e.\ rater noget med den som subjekt), som brugeren ikke selv har ratet som en underkategori af nogen kategori, så bør applikationen helt klart spørge brugeren, om ikke de vil rate kategorien som en underkategori af noget (sådan at brugeren kan få gavn af kategori-systemet, bl.a.\ til at få vist forslag til prædikater fra forælderkategorierne og mere).\,:) 
+
+(19:48) Tror i øvrigt bare, jeg bruger local storage til ``arbejdsbordet.'' 
+
+(20:03) Man kan selv definere sine egne full-text stopwords, så det er jo dejligt. Jeg tror i øvrigt muligvis jeg vil gå væk fra at udskifte `has' med `.'.\,. Det overvejer jeg i hvert fald.\,. Og så tænker jeg nemlig også at indlede lex items med en parentes med subjekt-typen i (for relationer og for prædikater), og ende dem med en parentes med objekt-typen, hvis vi snakker en relation.
+
+(20:15) Jeg tænker forresten bare, at der skal være en separat søge-søjle (i applikationen). Og når man så vælger en term fra søgningen, så tilføjer man jo bare denne til arbejdsbordet. .\,.,Alle lister, der figurerer rundtomkring i diverse søjler (.\,.\,ja, bortset fra f.eks.\ søge-søjlens søgeresultats-liste.\,.), skal så have en `tilføj term' knap, hvor man kan tilføje en term fra sit arbejdsbord.
+
 
 
 \section{Hvad jeg gerne vil sigte efter med det basale applikationsdesign}
