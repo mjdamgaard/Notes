@@ -3,8 +3,8 @@ USE mydatabase;
 
 
 DELETE FROM SemanticInputs;
-DELETE FROM Users;
 DELETE FROM Bots;
+DELETE FROM Users;
 
 DELETE FROM Lists;
 DELETE FROM Binaries;
@@ -14,13 +14,13 @@ DELETE FROM Texts;
 
 
 -- DROP TABLE SemanticInputs;
--- DROP TABLE Users;
 -- DROP TABLE Bots;
-
--- DROP TABLE SimpleTerms;
--- DROP TABLE StandardTerms;
--- DROP TABLE RelationalPredicates;
-
+-- DROP TABLE Users;
+--
+-- -- DROP TABLE RelationalPredicates;
+-- -- DROP TABLE SimpleTerms;
+-- -- DROP TABLE StandardTerms;
+--
 -- DROP TABLE Lists;
 -- DROP TABLE Binaries;
 -- DROP TABLE Blobs;
@@ -95,16 +95,32 @@ CREATE TABLE SemanticInputs (
         user_id BETWEEN 0 AND 0x200000000000000 - 1
     ),
 
-    -- prevent that relation--object combinations are saved as predicates,
-    -- and thus that relation--object predicates are always saved in their
-    -- exploded version in the StatementInputs rows.
-    -- CHECK (
-    --     -- either pred_or_rel is NOT a relational predicate term...
-    --     rel_t <> 4 -- @relpred_t
-    --     -- ...or if it is, then it cannot be a predicate, and object thus has to
-    --     -- not be an empty object.
-    --     OR obj_t <> -1 -- @empty_t
+    -- relations cannot be users/bots, relational predicates (0x20) or any
+    -- data terms (0x70 and up).
+    CONSTRAINT CHK_rel_id CHECK (
+        rel_id BETWEEN 0x300000000000000 AND 0x700000000000000 - 1
+    ),
+
+    -- -- prevent that relation--object combinations are saved as predicates,
+    -- -- and thus that relation--object predicates are always saved in their
+    -- -- exploded version in the StatementInputs rows.
+    -- -- CHECK (
+    -- --     -- either pred_or_rel is NOT a relational predicate term...
+    -- --     rel_t <> 4 -- @relpred_t
+    -- --     -- ...or if it is, then it cannot be a predicate, and object thus has to
+    -- --     -- not be an empty object.
+    -- --     OR obj_t <> -1 -- @empty_t
+    -- -- ),
+    -- CONSTRAINT CHK_obj_null_for_pred_stmts CHECK (
+    --     -- either rel is NOT a relational predicate...
+    --     (rel_id NOT BETWEEN 0x200000000000000 AND 0x300000000000000 - 1)
+    --     -- ...or if it is, then object thus has to be the null object:
+    --     OR obj_id = 0
     -- ),
+    -- No, I just need to not include relational predicates, so let me simply
+    -- prevent rel_id's with 0x20 as the first byte above (which means changing
+    -- 0x20 to 0x30 in the CHK_rel_id constraint above).
+
 
     CONSTRAINT CHK_rat_val CHECK (rat_val <> 0x80000000)
     -- This makes max and min values equal to 2^31 - 1 and -2^31 + 1, resp.
@@ -126,6 +142,10 @@ CREATE TABLE Bots (
     -- description_t is not needed; it is always String type.
     description_id BIGINT UNSIGNED
 );
+-- INSERT INTO Bots (id) VALUES (0x0000000000000001);
+-- -- 0 is reserved for null-objects for predicate statements in SemanticInputs.
+-- -- ...no..
+INSERT INTO Bots (id) VALUES (0x0000000000000000);
 
 
 CREATE TABLE Users (
