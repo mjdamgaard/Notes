@@ -6,6 +6,8 @@ DELETE FROM SemanticInputs;
 DELETE FROM Bots;
 DELETE FROM Users;
 
+DELETE FROM NextIDPointers;
+
 DELETE FROM Lists;
 DELETE FROM Binaries;
 DELETE FROM Blobs;
@@ -17,9 +19,8 @@ DELETE FROM Texts;
 -- DROP TABLE Bots;
 -- DROP TABLE Users;
 --
--- -- DROP TABLE RelationalPredicates;
--- -- DROP TABLE SimpleTerms;
--- -- DROP TABLE StandardTerms;
+-- DROP TABLE NextIDPointers;
+-- DROP PROCEDURE SelectNextTermID;
 --
 -- DROP TABLE Lists;
 -- DROP TABLE Binaries;
@@ -66,16 +67,14 @@ CREATE TABLE SemanticInputs (
 
 
     -- numerical value (signed) which defines the degree to which the users
-    -- (or bot) deems the statement to be true/fitting. When dividing the int
-    -- sitting at the first four bytes with
-    -- 2^31, this value runs from -1 to (almost) 1. And then -1 is taken to mean
+    -- (or bot) deems the statement to be true/fitting.
+    -- When dividing the TINYINT with 128,
+    -- this value runs from -1 to (almost) 1. And then -1 is taken to mean
     -- "very far from true/fitting," 0 is taken to mean "not sure / not
     -- particularly fitting or unfitting," and 1 is taken to mean "very much
     -- true/fitting."
-    rat_val INT,
+    rat_val TINYINT,
     opt_data VARBINARY(255),
-    -- (Could have size=255, but might as well restrict..) ..Then again, let me
-    -- actually just implement that restriction at the control layer..
 
 
     /* date */
@@ -99,12 +98,12 @@ CREATE TABLE SemanticInputs (
     -- data terms (0x70 and up).
     CONSTRAINT CHK_rel_id CHECK (
         rel_id BETWEEN 0x300000000000000 AND 0x700000000000000 - 1
-    ),
+    )
 
 
-    CONSTRAINT CHK_rat_val CHECK (rat_val <> 0x80000000)
-    -- This makes max and min values equal to 2^31 - 1 and -2^31 + 1, resp.
-    -- Divide by 2^31 to get floating point number strictly between -1 and 1.
+    -- CONSTRAINT CHK_rat_val CHECK (rat_val <> 0x80000000) -- or 0x8000..
+    -- -- This makes max and min values equal to 2^31 - 1 and -2^31 + 1, resp.
+    -- -- Divide by 2^31 to get floating point number strictly between -1 and 1.
 
 
 
@@ -115,27 +114,101 @@ CREATE TABLE SemanticInputs (
 CREATE TABLE Bots (
     -- bot ID.
     -- type TINYINT = 0,
-    id BIGINT UNSIGNED AUTO_INCREMENT,
-    PRIMARY KEY(id),
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     /* primary fields */
     -- description_t is not needed; it is always String type.
     description_id BIGINT UNSIGNED
 );
-INSERT INTO Bots (id) VALUES (0x0000000000000000);
+-- INSERT INTO Bots (id) VALUES (0x0000000000000000);
 
 
 CREATE TABLE Users (
     -- user ID.
     -- type TINYINT = 1,
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     num_inserts_today INT,
 
     /* timestamp */
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO Users (id) VALUES (0x1000000000000000);
+-- INSERT INTO Users (id) VALUES (0x1000000000000000);
+
+
+
+-- I think it will be easiest to use the same procedure for getting next id
+-- pointers for all terms, so let me actually just make NextIDPointers
+-- include all types. ..(Then it will also be easier to implement, if I want
+-- to have several pointers in play for the same type at a time (maybe in
+-- order to allocate ids..))..
+CREATE TABLE NextIDPointers (
+    type_code TINYINT UNSIGNED,
+    next_id_pointer BIGINT UNSIGNED,
+
+    -- this id is not intended for any use!
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+    -- PRIMARY KEY (type_code, id)
+);
+INSERT INTO NextIDPointers (type_code, next_id_pointer)
+VALUES
+    (0x00, 0x0000000000000001),
+    (0x10, 0x1000000000000001),
+    (0x20, 0x2000000000000001),
+    (0x30, 0x3000000000000001),
+    (0x70, 0x7000000000000001),
+    (0x80, 0x8000000000000001),
+    (0x90, 0x9000000000000001),
+    (0xA0, 0xA000000000000001),
+    (0xB0, 0xB000000000000001)
+;
+
+
+-- DELIMITER //
+-- CREATE PROCEDURE SelectNextRelPredID ()
+-- BEGIN
+--     SELECT next_id_pointer
+--     FROM NextRelPredIDs
+--     WHERE type_code = 0x20
+--     FOR UPDATE;
+--
+--     UPDATE NextRelPredIDs
+--     SET next_id_pointer = next_id_pointer + 1
+--     WHERE type_code = 0x20;
+-- END //
+-- DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE SelectNextTermID
+    (
+        IN tc TINYINT UNSIGNED,
+        OUT ...
+    )
+BEGIN
+    SELECT next_id_pointer
+    FROM NextIDPointers
+    WHERE type_code = tc
+    FOR UPDATE;
+
+    UPDATE NextIDPointers
+    SET next_id_pointer = next_id_pointer + 1
+    WHERE type_code = tc;
+END //
+DELIMITER ;
+
+-- CREATE TABLE NextRelPredIDs (
+--     next_id_pointer BIGINT UNSIGNED
+-- );
+-- INSERT INTO NextRelPredIDs (next_id_pointer) VALUES (0x2000000000000001);
+--
+-- CREATE TABLE NextTermIDs (
+--     next_id_pointer BIGINT UNSIGNED
+-- );
+-- INSERT INTO NextTermIDs (next_id_pointer) VALUES (0x3000000000000001);
+
+
+
+
+
 
 
 -- CREATE TABLE SimpleTerms (
@@ -160,37 +233,6 @@ INSERT INTO Users (id) VALUES (0x1000000000000000);
 --     description TEXT
 -- );
 
-
-
-
-
-
---
--- CREATE TABLE SimpleTerms (
---     -- simple term ID.
---     -- type TINYINT = 2,
---     id BIGINT UNSIGNED AUTO_INCREMENT,
---     PRIMARY KEY(id),
---
---     /* The "Simple" subtype takes as its first descriptor a string denoting af
---      * lexical item (a semantically meaningful part of a sentence). Examples of
---      * lexical items could be: "the number pi", "is subset of" (or "belongs to"),
---      * "has related link:", and "is funny".
---      * The second descriptor of the Simple subtype is an (optional) text descrip-
---      * tion, which can be used to explain the lexical item more thoroughly, and to
---      * clear up any potential ambiguities.
---      **/
---
---     -- specifying lexical item.
---     -- spec_lexical_item_t is not needed; it is always String type.
---     spec_lexical_item_id BIGINT UNSIGNED,
---
---     -- description.
---     -- description_t is not needed; it is always String type.
---     description_id BIGINT UNSIGNED
--- );
-
-
 -- CREATE TABLE StandardTerms (
 --     /* standard term ID */
 --     -- type TINYINT = 3,
@@ -206,7 +248,6 @@ INSERT INTO Users (id) VALUES (0x1000000000000000);
 --     -- spec_child_preds_t not needed; it is always List type.
 --     spec_child_preds_id BIGINT UNSIGNED
 -- );
---
 --
 -- CREATE TABLE RelationalPredicates (
 --     /* relational predicate ID */
@@ -229,11 +270,9 @@ INSERT INTO Users (id) VALUES (0x1000000000000000);
 
 
 
-
 CREATE TABLE Lists (
     /* list ID */
-    id BIGINT UNSIGNED AUTO_INCREMENT,
-    PRIMARY KEY(id),
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     /* creator */
     user_id BIGINT UNSIGNED,
@@ -267,7 +306,7 @@ CREATE TABLE Lists (
     -- tail_t not needed; it is always List type.
     tail_id BIGINT UNSIGNED
 );
-INSERT INTO Lists (id) VALUES (0x7000000000000000);
+-- INSERT INTO Lists (id) VALUES (0x7000000000000000);
 
 
 
@@ -275,7 +314,7 @@ INSERT INTO Lists (id) VALUES (0x7000000000000000);
 
 CREATE TABLE Binaries (
     /* variable character string ID */
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     /* creator */
     user_id BIGINT UNSIGNED,
@@ -284,12 +323,11 @@ CREATE TABLE Binaries (
     str VARCHAR(500) UNIQUE
     -- FULLTEXT idx (str)
 );
-INSERT INTO Binaries (id) VALUES (0x8000000000000000);
+-- INSERT INTO Binaries (id) VALUES (0x8000000000000000);
 
 CREATE TABLE Blobs (
     /* variable character string ID */
-    id BIGINT UNSIGNED AUTO_INCREMENT,
-    PRIMARY KEY(id),
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     /* creator */
     user_id BIGINT UNSIGNED,
@@ -297,7 +335,7 @@ CREATE TABLE Blobs (
     /* data */
     bin BLOB
 );
-INSERT INTO Blobs (id) VALUES (0x9000000000000000);
+-- INSERT INTO Blobs (id) VALUES (0x9000000000000000);
 
 
 
@@ -306,8 +344,7 @@ INSERT INTO Blobs (id) VALUES (0x9000000000000000);
 
 CREATE TABLE Strings (
     /* variable character string ID */
-    -- type TINYINT = 5,
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     /* creator */
     user_id BIGINT UNSIGNED,
@@ -316,11 +353,11 @@ CREATE TABLE Strings (
     str VARCHAR(255) UNIQUE,
     FULLTEXT idx (str)
 );
-INSERT INTO Strings (id) VALUES (0xA000000000000000);
+-- INSERT INTO Strings (id) VALUES (0xA000000000000000);
 
 CREATE TABLE Texts (
     /* variable character string ID */
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED PRIMARY KEY,
 
     /* creator */
     user_id BIGINT UNSIGNED,
@@ -328,7 +365,7 @@ CREATE TABLE Texts (
     /* data */
     str TEXT
 );
-INSERT INTO Strings (id) VALUES (0xB000000000000000);
+-- INSERT INTO Strings (id) VALUES (0xB000000000000000);
 
 
 
