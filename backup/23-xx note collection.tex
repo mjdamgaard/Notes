@@ -831,10 +831,12 @@ Super. Så nu har jeg en god plan for brugergrupperne!\,:) (12:27)
 %
 
 
+(21:55) Hm, lad mig give to-vejs-relationerne en bestemt typekode, sådan at systemet bare automatisk gør sådan, at hvis et sem-input med en to-vejs-relation bliver indsat, så skal det omvendte input også indsættes i ReversedSemanticInputs. Og så skal jeg i øvrigt også have en fundamental relation der siger: ``.Lexical item of the inverse''. 
 
 
+(01.03.23, 11:25) Jeg skrev om ude i kommentarerne under den næste sektion, at jeg ville bruge en speciel relation for at springe en kategori over, så at sige, nemlig for kategorier over relaterede prædikater til en kategori. Men hvis vi f.eks.\ tænker på kommentarer til videoer eller (SoME-)posts osv., så vil man jo nok også gerne kunne kategorisere disse i visse tilfælde (f.eks.\ hvis der er meget diskussion under et post). Så nu tror jeg faktisk, jeg vil tilbage til den løsning, jeg tænkte på lige inden den idé, hvilket var simpelthen at begynde at bruge funktioner igen, og så lave særlige funktioner til at bygge afledte kategorier. Disse afledte kategorier kan så fungere lidt ligesom `relevante relationer' for en kategori.\,. og ja, faktisk tror jeg så måske, at man vil erstatte rigtig mange én-til-mange-relationer med afledte kategorier i stedet.\,. .\,.\,Men ja, lad mig lige få sagt færdigt, at man så up-rater de afledte kategorier for kategorien over de termer, som de afledte kategorier afledes af. 
 
-
+.\,.\,Hm, spørgsmålet er jo så nu: Skal alle én-til-mange-relationer så bare erstattes med kategorier.\,. ja, selvfølgelig på nær i hvert fald, ``.Elements'' og ``.Subcategories''.\,. .\,.\,Hm, måske er dette faktisk ikke en helt dum idé. .\,.\,Så når man up-rater relationer for (termerne i) en kategori, så vil det (i den tidlige version) handle om én-til-én-relationer (hvor objektet dog jo kan være en liste), og ellers up-rater man afledte (afledede?) kategorier i stedet, når altså vi snakker om at tilføje de knapper til termerne (som de vises, når man har klikket på dem i en liste), der folder nye lister ud (og som altså ikke bare folder data om termen ud i samme applikationssøjle). .\,.\,Lyder altså ret fornuftigt, hvis jeg selv skal sige det.\,.\,! (11:43)
 
 
 
@@ -853,7 +855,7 @@ Så kategorier skal altså være en helt central ting i applikationen, forestill
 
 Dette beskriver nok den mest almindelige semantiske (\emph{manuelle}) søgning, man kan forestille sig. Men der er også andre usecases, hvor brugerne har brug for nogle andre relations-kanter at følge. Lad mig lige tænke over, hvilken én jeg vil skrive om først, og så vende tilbage.\,. (12:26)
 
-%I øvrigt, hvad angår navn, jeg kan egentligt ret godt lige SemNet, men det er nu også bare næsten lidt for.. 00'er-agtigt..
+%I øvrigt, hvad angår navn, jeg kan egentligt ret godt lige SemNet, men det er nu også bare næsten lidt for.. 00'er-agtigt.. *Det er et okay navn. Jeg har også i tankerne: SNet, S-Net, s.net, sem.net, sema.net..
 
 %..Hm, en af mine idéer (den vigtigste) her fra i formiddags er, at man nok kan implementere bruger-dataen simpelthen via kategorier og almindelige ratings omkring disse. Nu overvejer jeg, så om kan gøre noget tilsvarende for filtre/prædikatvægtninger, eller hvad man nu lige skal gøre der.. (12:55) ..Jeg er i øvrigt kommet frem til, at filtre--vægtninger nok skal åbnes som en barne-søjle, der så kommunikerer direkte til forældersøjlen (og nok kun denne), når brugeren laver opdateringer i filter--vægtnings-præferencerne, men det skal jeg nok komme ind på.. ..Hm, jeg tænker jo forresten, at filter--vægtnings-prædikaterne bare kan være den selvsamme liste, som vises for `relevante prædikater' til termen.. ..Hm ja, og så er det bare spørgsmålet, om, og i så fald hvordan, indstillingerne til disse prædikater skal gemmes.. ..Hm, og hvad med grundfiltrene..?.. 
 
