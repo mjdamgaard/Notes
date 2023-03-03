@@ -883,6 +883,18 @@ Nå, en vigtig pointe er så for det første, at pred\_id ikke bliver et selvst�
 
 En tredje, ny, pointe er også, at ingen af de to tabeller faktisk skal reverses! For nu vægter/filtrerer jeg jo lister via ``intersections,'' hvis vi kan kalde det det. Og når det kommer til keywords (og altså FULLTEXT-searchable Strings), så vil jeg hellere bare indføre en relation a la: `is a relevant keyword (/lexical item) for:'. Som en af hovedkategorierne i applikationen vil jeg så have en pseudo-kategori, som altså er et søgefelt på keywords i databasen. Når man så har fundet og valgt et ønsket keyword, så kan man så se, hvilke termer er relateret til dette via (some user, keyword/lexical item, `.Related (semantic) terms:' .\,. / `.Related Terms:')-mængden. (11:50) .\,. / `.Related s-terms:'.\,. .\,.\,Anyway, så derfor behøver vi altså ikke nogen tilbagegang i det semantiske træ --- i hvert fald ikke som en del af det helt grundlæggende. I applikationslaget kan man så stadigvæk gøre sådanne, at visse ratings automatisk bliver carbon-copied og givet til en tilsvarende reversed relation også, men ja, dette er i så fald altså udelukkende oppe i applikationslaget. (11:53)
 
+(12:24) Nå ja, og jeg overvejer at gøre rat\_val til en TINYINT igen.\,. .\,.\,(12:31) Ah, måske kunne man godt få brug for en ekstra tinyint for de normale brugere også, for dette kunne jo bruges til at.\,. Nå ja, til enten at give usikkerhedsbredden på ratingen, som jeg har tænkt før, eller måske bare at give en selvdefineret vægt imellem 0 og 1, sådan at brugeren selv kan sætte sin effektive brugergruppevægt ned for den specifikke rating.\,. Hm, interessant at overveje, hvad der giver mest mening af de to muligheder, det må jeg lige gøre.\,. (12:34)
+
+.\,.\,Men ja, for brugergrupper kan den første byte så være ratingen (fra -127/127 til 127/127), og så kan den næste byte udgøre en vægtet sum for, hvor mange har afgivet stemme til ratingen.\,. hm, og måske kunne man endda også bruge nogle bits fr nr.\ 2 byte og sætte dem over i forlængelse af den første (for yderligere præcision).\,. Tja, og dog.\,. (12:37) .\,.\,Nej, en skala med en opløsning på 127 til begge sider er rigeligt. Og så kan stemmeantals-vægten jo hermed blive den eneste kolonne, som ikke indgår i nøglen. 
+
+Jeg er forresten ikke sikker på, at jeg får brug for.\,. hm datoer.\,. jo, måske.\,. (12:40)
+
+Hm, stemmeantals-vægten kunne faktisk sagtens være en del af primærnøglen alligevel, og altså nemlig komme lige efter ratingværdien.\,. (12:45) .\,.\,Jeg kunne kalde det for en signifikans-indikator, hvilket jo så både kan bruges, om vi taler brugergruppe- eller bruger-versionen af, hvad værdien betegner. 
+
+.\,.\,Hm, jeg tror, at det vil være meget nemmere generelt for folk at forholde sig til tanken om en stemmevægt frem for en afvigelsesbredde, så lad mig bare sige, at det er det, vi gør! (12:50) Og så spiller det egentligt også meget godt sammen, for så kan man bruge ``rating weight'' for både brugergruppe- og bruger-versionen, og så behøver jeg ikke at dele SemanticInputs op i to tabeller. .\,.\,Tja, selvom det burde man nu næsten alligevel, om ikke andet så bare for på en nem måde at sikre sig, at der bliver to filer.\,. nå nej, dette betyder jo ikke helt så meget alligevel. Nå, det er også lige meget nu; det kan jeg altid lave om på, hvis det er.\,. 
+
+(Hvis jeg inkluderer datoen, så skal den selvfølgelig ikke være en kolonne i SemanticInputs, har jeg indset nu (pga.\ effektiviteten).\,.)
+
 
 
 
