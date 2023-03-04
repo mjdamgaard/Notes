@@ -895,6 +895,21 @@ Hm, stemmeantals-vægten kunne faktisk sagtens være en del af primærnøglen al
 
 (Hvis jeg inkluderer datoen, så skal den selvfølgelig ikke være en kolonne i SemanticInputs, har jeg indset nu (pga.\ effektiviteten).\,.)
 
+(04.03.23, 10:01) Jeg kom i tanke om i går aftes, at fordi alle semantiske inputs jo alligevel tager udgangspunkt i brugere og brugergrupper, så kan hver bruger(gruppe) jo egentligt godt selv have deres egen fortolkning af en relation, uden at det gør noget, så derfor kan man godt udelade beskrivelserne som en del af det grundlæggende lag. Jeg skal selvfølgelig beskrive de grundlæggende Termer i databasen, men brugerne behøver i princippet ikke at holde sig til de beskrivelser.
+
+Så tænkte jeg også noget andet, og det var, at `skabelonerne' jo også kan indeholde et valg om en bruger for hver relation/kategori-funktion (der så sammen med det selekterede term selv giver en `mængde'). Så kan en brugergruppe naturligvis bare pege på sig selv ret ofte, hvilket også måske vil være lidt mere effektivt (for når man skifter bruger, så skifter man helt sikkert også til en anden disk page.\,.), men de kan altså også pege på andre, hvilket kan være rigtig praktisk, tror jeg på. (10:08) 
+
+.\,.\,Nå ja, og nu overvejer jeg altså, at lave en tabel for alle relationer som en del af det grundlæggende, således at relationer defineres unikt ud fra objekt-navneord, subjektkategori, objektkategori og et er-én-til-én-flag. Og det er det; ingen beskrivelse. Og så kan hver gruppe dermed i princippet vælge deres egen fortolkninger, der hvor der kan være tvetydigheder --- eller bare gradbøjninger af (og altså rettere sagt mange versioner af), hvad relationen helt præcist indebærer. (10:13)
+
+(10:22) Hm, og så kunne jeg også lave en tabel over kategorier, som så faktisk ikke skal have meget andet i deres grunddefinition en en titel, og så overvejer jeg endda lidt nu, om ikke man så skulle gøre obj\_noun og kategori-titlen til FULLTEXT-searchable kolonner for sig selv?\,:) Det tror jeg, jeg vil gøre.\,. 
+
+\ldots Hm, men hvis det ofte er enkelte ord, så er full-text nok lidt overkill, når man bare kan bruge et non-clustered index.\,. \ldots (Ja, det er det jo selvfølgelig. Jeg ser lige, hvad jeg gør helt præcist.\,.)
+
+\ldots (11:20) Hm, skulle man mon indføre en grundlæggende prædikat-type, som så kan blive en slags kategori-til-(under)kategori-funktioner.\,.\,? .\,.\,Ah, nå nej/ja, det svarer jo bare til `relevante prædikater,' så det får jeg allerede.\,. .\,.\,Tja, og dog, for det kan måske være meget smart at kunne.\,. Ah, men jeg skal jo finde en måde at brugerne skal kunne instantiere intersections (fællesmængder) på, så det skal jeg få inkluderet.\,. (11:26)
+
+(12:23) Hm, måske er det i virkeligheden nemmere bare at bruge decimaltal, når det kommer til at dele de forskellige typer ind i forskellige auto\_increment-startpunkter.\,. 
+
+(12:39) Jeg skal have fundet ud af, hvad jeg gør med ``standard terms, set ID pointers, creators and dates''\ldots 
 
 
 

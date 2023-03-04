@@ -1,11 +1,17 @@
-USE mydatabase;
+-- USE mydatabase;
 
 
 
-DELETE FROM SemanticInputs;
-DELETE FROM NativeBots;
+DELETE FROM SemanticUserInputs;
+DELETE FROM SemanticUserGroupInputs;
+DELETE FROM Sets;
+
 DELETE FROM UserGroups;
 DELETE FROM Users;
+
+DELETE FROM Categories;
+DELETE FROM Relations;
+DELETE FROM KeywordStrings;
 
 DELETE FROM Creators;
 DELETE FROM NextIDPointers;
@@ -18,20 +24,22 @@ DELETE FROM Strings;
 DELETE FROM Texts;
 
 
-DROP TABLE SemanticInputsWDescendingRatings;
-DROP VIEW SemanticInputs;
-DROP TABLE Sets;
-
-DROP TABLE NativeBots;
+-- DROP TABLE SemanticUserInputs;
+-- DROP TABLE SemanticUserGroupInputs;
+-- DROP VIEW  SemanticInputs;
+-- DROP TABLE Sets;
+--
 -- DROP TABLE UserGroups;
 -- DROP TABLE Users;
-
-DROP TABLE DerivedTerms;
-
+--
+-- DROP TABLE Categories;
+-- DROP TABLE Relations;
+-- DROP TABLE KeywordStrings;
+--
 -- DROP TABLE NextIDPointers;
 -- DROP TABLE Creators;
 -- DROP PROCEDURE createTerm;
-
+--
 -- DROP TABLE Lists;
 -- DROP TABLE Binaries;
 -- DROP TABLE Blobs;
@@ -48,6 +56,43 @@ DROP TABLE DerivedTerms;
 --
 -- SET @bot_start = 0x0000000000000000;
 -- SET @user_start = 0x1000000000000000;
+
+
+
+
+CREATE TABLE Sets (
+    -- user or user group who states the statement.
+    user_id BIGINT UNSIGNED,
+
+    -- subject of relation.
+    subj_id BIGINT UNSIGNED,
+
+    -- relation.
+    rel_id BIGINT UNSIGNED,
+
+    PRIMARY KEY (
+        user_id,
+        subj_id,
+        rel_id
+    ),
+
+    set_id BIGINT UNSIGNED NOT NULL, -- sets are not Terms, so IDs take any val.
+
+    CONSTRAINT CHK_Sets_user CHECK (
+        user_id BETWEEN 0 AND 0x2000000000000000 - 1
+    ),
+
+    -- relations cannot be users/bots or any data terms (0x70 and up). They
+    -- can only be "semantic terms" in other words.
+    CONSTRAINT CHK_Sets_rel_is_semantic CHECK (
+        rel_id BETWEEN 0x2000000000000000 AND 0x7000000000000000 - 1
+    )
+
+
+);
+
+
+
 
 /* Statements which the users (or bots) give as input to the semantic network.
  * A central feature of this semantic system is that all such statements come
@@ -75,20 +120,21 @@ CREATE TABLE SemanticUserInputs (
     -- it is rat_val with its sign flipped.
     inv_rat_val TINYINT,
 
-    -- term (the primary part of the member of which the rating is about).
-    term_id BIGINT UNSIGNED,
+    -- object of the relation defining the set (i.e. the primary part of the
+    -- member of which the rating is about).
+    obj_id BIGINT UNSIGNED,
 
     -- PRIMARY KEY (
     --     set_id, -- suggested abbr.: sid
     --     rat_val,  -- suggested abbr.: rval
     --     rat_w, -- suggested abbr.: rw
-    --     term_id -- suggested abbr.: tid
+    --     obj_id -- suggested abbr.: oid
     -- ),
 
     PRIMARY KEY (
         set_id,
         inv_rat_val,
-        term_id
+        obj_id
     ),
 
     -- w_exp is a nummerical value which gives the weight of the rating
@@ -104,6 +150,23 @@ CREATE TABLE SemanticUserInputs (
     -- Maybe rat_val = 0x80 can be used as a report for removal flag..
 
 );
+
+INSERT INTO SemanticUserInputs (
+    set_id,
+    inv_rat_val,
+    inv_w_exp_t32,
+    obj_id
+)
+VALUES (
+    1,
+    2,
+    3,
+    4
+);
+
+
+
+
 
 CREATE TABLE SemanticUserGroupInputs (
     /* Set */
@@ -140,22 +203,17 @@ CREATE TABLE SemanticUserGroupInputs (
     -- runs from 254 to -1.
     inv_wc_exp_t4 TINYINT UNSIGNED,
 
-    -- term (the primary part of the member of which the rating is about).
-    term_id BIGINT UNSIGNED,
+    -- object of the relation defining the set (i.e. the primary part of the
+    -- member of which the rating is about).
+    obj_id BIGINT UNSIGNED,
 
-    -- PRIMARY KEY (
-    --     set_id, -- suggested abbr.: sid
-    --     rat_val,  -- suggested abbr.: rval
-    --     rat_w, -- suggested abbr.: rw
-    --     term_id -- suggested abbr.: tid
-    -- ),
 
     PRIMARY KEY (
         set_id,
-        inv_rat_w,
+        inv_rat_val,
         inv_wc_exp_t4,
-        term_id
-    ),
+        obj_id
+    )
 
     -- CONSTRAINT CHK_rat_val_not_min CHECK (rat_val <> 0x80)
     -- -- This makes max and min values equal to 127 and -127, respectively.
@@ -164,6 +222,18 @@ CREATE TABLE SemanticUserGroupInputs (
 
 );
 
+-- INSERT INTO SemanticUserGroupInputs (
+--     set_id,
+--     inv_rat_val,
+--     inv_wc_exp_t4,
+--     obj_id
+-- )
+-- VALUES (
+--     1,
+--     2,
+--     3,
+--     4
+-- );
 
 
 
@@ -177,55 +247,23 @@ CREATE VIEW SemanticInputs AS
 SELECT
     set_id,
     - inv_rat_val AS rat_val,
-    254 - inv_wc_exp_t4 AS wc_exp_t4,
-    term_id
-FROM SemanticUserGroupInputs
+    - inv_w_exp_t32 AS w_exp_t32,
+    NULL AS wc_exp_t4,
+    obj_id
+FROM SemanticUserInputs
 UNION
 SELECT
     set_id,
     - inv_rat_val AS rat_val,
-    - inv_w_exp_t32 AS w_exp_t32,
-    term_id
-FROM SemanticUserInputs;
+    NULL AS w_exp_t32,
+    254 - inv_wc_exp_t4 AS wc_exp_t4,
+    obj_id
+FROM SemanticUserGroupInputs;
 
 
 
 
-CREATE TABLE Sets (
-    -- user, native bot or user group who states the statement.
-    user_id BIGINT UNSIGNED,
 
-    -- subject of relation.
-    subj_id BIGINT UNSIGNED,
-
-    -- relation.
-    rel_id BIGINT UNSIGNED,
-
-    PRIMARY KEY (
-        user_id,
-        subj_id,
-        rel_id
-    ),
-
-
-    CONSTRAINT CHK_SemanticInputs_user CHECK (
-        user_id BETWEEN 0 AND 0x2000000000000000 - 1
-    ),
-
-    -- relations cannot be users/bots or any data terms (0x70 and up). They
-    -- can only be "semantic terms" in other words.
-    CONSTRAINT CHK_SemanticInputs_rel_is_semantic CHECK (
-        rel_id BETWEEN 0x2000000000000000 AND 0x7000000000000000 - 1
-    )
-
-
-);
-
--- /* Statements which the users (or bots) give as input to the semantic network.
---  * A central feature of this semantic system is that all such statements come
---  * with a numerical value which represents the degree to which the user deems
---  * that the statement is correct (like when answering a survey).
---  **/
 -- CREATE TABLE SemanticInputs (
 --     -- subject of relation or predicate.
 --     subj_id BIGINT UNSIGNED,
@@ -309,7 +347,7 @@ CREATE TABLE Sets (
 
 CREATE TABLE UserGroups (
     -- user group ID.
-    id BIGINT UNSIGNED PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- type code = 0x00,
 
     -- id of the creating user group (or user or bot).
@@ -325,35 +363,45 @@ CREATE TABLE UserGroups (
     -- If effective_creation_date is a date in the future, or if it is NULL,
     -- it might mean (if this functionality is implemented) that the creating
     -- group is also allowed change in time. But this functionality will
-    -- probably not be useful enough compared to the cost to be impleented,
+    -- probably not be useful enough compared to the cost to be implemented,
     -- however. (But I just wanted to note the possibility, should we realize
     -- that it will be useful at some point.)
 
+    -- date after which, if it is not NULL, all ratings are frozen and no new
+    -- ratings are recorded for the user group. The end date can start out as
+    -- NULL and then be set to a value at a later date, if the group decides
+    -- to stop being active. It might also happen that the server decides to
+    -- discontinue a group due to cost of maintaining, in which case an end
+    -- date will also be set.
+    end_date DATE,
 
     -- Flag (interpreted as a BOOL) that tells if the user group is dynamic,
     -- meaning that the creating user group (which will probably either be a
     -- "constant" user group, or will be effectively constant due to the
     -- effective_creation_date) is allowed to continously change the weights
     -- of this user group. A "constant" user group (with is_dynamic = FALSE),
-    -- on the other hand, has constant weight which are set at the "effective
+    -- on the other hand, has constant weights which are set at the "effective
     -- creation date" and not changed after that.
-    is_dynamic TINYINT, -- BOOL,
+    is_dynamic TINYINT -- BOOL,
 
-    -- Flag (interpreted as a BOOL) telling is the user group is live, meaning
-    -- that the servers will make sure to continously update its semantic
-    -- inputs (which generally always include a weighted average of the
-    -- ratings from the user group).
-    -- If the flag is 0, then the user group is live. If it is not 0, the user
-    -- group is either in the proces of being created (i.e. before the
-    -- "effective creation date" has been set), or it has been discontinued
-    -- by the servers. The value of the flag might signal the reason.
-    is_inactive TINYINT -- BOOL
+    -- -- Flag (interpreted as a BOOL) telling is the user group is live, meaning
+    -- -- that the servers will make sure to continously update its semantic
+    -- -- inputs (which generally always include a weighted average of the
+    -- -- ratings from the user group).
+    -- -- If the flag is 0, then the user group is live. If it is not 0, the user
+    -- -- group is either in the proces of being created (i.e. before the
+    -- -- "effective creation date" has been set), or it has been discontinued
+    -- -- by the servers. The value of the flag might signal the reason.
+    -- is_inactive TINYINT -- BOOL
 );
+-- ALTER TABLE UserGroups AUTO_INCREMENT = CONV(0x0000000000000001, 16, 10);
+-- 0x0000000000000001 = 1.
+ALTER TABLE UserGroups AUTO_INCREMENT = 1;
 
 
 CREATE TABLE Users (
     -- user ID.
-    id BIGINT UNSIGNED PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- type code = 0x10,
 
     -- num_inserts_today INT,
@@ -363,7 +411,10 @@ CREATE TABLE Users (
     /* timestamp */
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- INSERT INTO Users (id) VALUES (0x1000000000000000);
+-- ALTER TABLE Users AUTO_INCREMENT = CONV(0x1000000000000001, 16, 10);
+-- -- 0x1000000000000001 = 1152921504606846977.
+-- A..TABLE UserGroups AUTO_INCREMENT = 1152921504606846977;
+ALTER TABLE Users AUTO_INCREMENT = 1000000000000000001;
 
 
 
@@ -373,13 +424,85 @@ CREATE TABLE Users (
 
 
 
+CREATE TABLE Categories (
+    -- category ID.
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    -- title of the category, preferably a plural noun describing/referencing
+    -- the elements in the category.
+    title VARCHAR(255) NOT NULL,
+
+    -- -- possible empty list of BIGINTs pointing to super categories.
+    -- super_cats VARBINARY(248)
+    -- -- this is useful when the title is best understood in the context of
+    -- -- one or more super categories.
+
+    -- id of a super category.
+    super_cat BIGINT UNSIGNED NOT NULL,
+    -- This is useful when the title is best understood in the context of
+    -- a super category.
+    -- Note that 0x2000000000000001 is category of all Terms.
+
+    -- -- description.
+    -- descr TEXT
+
+    INDEX (title, super_cat),
+
+    CONSTRAINT CHK_Categories_super_cat CHECK (
+        super_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    )
+);
+ALTER TABLE Categories AUTO_INCREMENT = 2000000000000000001;
 
 
+CREATE TABLE Relations (
+    -- relation ID.
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
--- CREATE TABLE SimpleTerms (
+    -- noun describing the object in terms of what the object is to the
+    -- subject of the relation.
+    -- TODO: mention forward and backwards syntax for parsing this noun from
+    -- the realtion expressed as a verb.
+    obj_noun VARCHAR(255) NOT NULL,
+
+    subj_cat BIGINT UNSIGNED NOT NULL,
+
+    obj_cat BIGINT UNSIGNED NOT NULL,
+
+    -- flag representing if relation expects only one object (in general) per
+    -- subject.
+    is_one_to_one TINYINT NOT NULL,
+
+    -- -- description.
+    -- descr TEXT
+
+    INDEX (obj_noun, obj_cat, subj_cat),
+
+    CONSTRAINT CHK_Relations_subj_cat CHECK (
+        subj_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    ),
+
+    CONSTRAINT CHK_Relations_obj_cat CHECK (
+        obj_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    )
+);
+ALTER TABLE Relations AUTO_INCREMENT = 3000000000000000001;
+
+
+CREATE TABLE KeywordStrings (
+    /* keyword string ID */
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    -- keyword string.
+    str VARCHAR(255) UNIQUE,
+    FULLTEXT idx (str)
+);
+ALTER TABLE KeywordStrings AUTO_INCREMENT = 4000000000000000001;
+
+
+-- CREATE TABLE FundamentalTerms (
 --     -- simple term ID.
---     id BIGINT UNSIGNED AUTO_INCREMENT,
---     PRIMARY KEY(id),
+--     id BIGINT UNSIGNED PRIMARY KEY,
 --
 --     /* A SimpleTerm takes as its first descriptor a string denoting af
 --      * lexical item (a semantically meaningful part of a sentence). Examples of
@@ -391,11 +514,18 @@ CREATE TABLE Users (
 --      **/
 --
 --     -- defining lexical item.
---     full_lexical_item TEXT,
---     -- abbreviated lexical item (such as ".Lexical item=", ".is:" or ".is a:").
---     abbr_lexical_item VARCHAR(255),
+--     lex_item BIGINT UNSIGNED,
+--
 --     -- description.
---     description TEXT
+--     descr BIGINT UNSIGNED,
+--
+--     -- CONSTRAINT CHK_FundamentalTerms_lex_item CHECK (
+--     --     lex_item BETWEEN 0xA000000000000000 AND 0xB000000000000000 - 1
+--     -- ),
+--     --
+--     -- CONSTRAINT CHK_FundamentalTerms_descr CHECK (
+--     --     descr BETWEEN 0xB000000000000000 AND 0xC000000000000000 - 1
+--     -- )
 -- );
 
 -- CREATE TABLE StandardTerms (
