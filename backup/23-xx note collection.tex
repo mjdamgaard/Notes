@@ -964,6 +964,22 @@ Når jeg skriver $ident$ og ikke $id$, så er det for at præcisere, at det ikke
 
 .\,.\,(12:17) Hov nej, det kan godt være, at vi lige skal gøre sådan, at $Category$ ikke kan komme efter.\,. .\,.\,efter.\,. Hm nej, måske fungerer det; jeg tror ikke $Category$ kan være andet end i starten med denne syntaks, vel.\,.\,? (12:20) .\,.\,Nej, så måske fungerer det altså, som den er.\,. (12:22)
 
+.\,.\,Lad os sige, at det virker for nu. Og lad mig så sige, at jeg så tænker, at `Elements'- og `Subcategories'-relationerne henholdsvis må (og bør) forkortes med bare `e' og `s' i stierne. Dermed kunne vi f.eks.\ navigere til underkategorien rockmusik med stien: `userid//Media/-Music.s/Rock music'. Men hvis `Rock music' så er defineret med `Music' som sin overkategori (husk at hver kategori er unikt defineret ud fra overkategori plus titel), så kan applikationen altså også omdanne denne sti til den ækvivalente sti: `userid//Media/Music/Rock music'. Så en skråstreg i kategori-præfikset betyder altså det samme som `.s/', men hvor underkategorien så bare allerede har den givne kategori før `.s''et som sin definerende overkategori. Hvis derimod `Rock music' er defineret ud fra en anden kategori, jamen så må man bare beholde `.s/' i stien. Hvis man så vil se en liste (eller nærmere bestemt en `mængde') over elementerne i `Rock music,' så kunne stien så se sådan her ud: `userid//Media/Music/Rock music.e/'. (12:36)
+
+Jeg forestiller mig også at brugere selv skal kunne definere forkortelser for relationer og andre ting, men det vil jeg nu nok undlade at implementere i betaversionen. 
+
+Nå ja, og hvis i øvrigt at et element af en kategori har denne kategori som dens definerende kategori, så kan $ident$ (altså i `$Set''\ \texttt{/}\ ident$'-produktionen) bare være termens titel. Og tilsvarende gælder for kategorier, hvorfor at et kategori-præfiks fra `$Category$'-produktionen altid vil bestå af navne/titler frem for BIGINT-ID'er. (12:41)
+
+Hvis ikke et element eller en underkategori har kategorien som sin definerende kategori.\,. ja, så skulle man måske faktisk indføre, at brugere kan lade kategorier ``med-adoptere'' andre kategoriers børn.\,. For eksempel kunne vi, hvis `Rock music' er defineret ud fra en anden kategori end `Music,' gøre sådan at `Music' bare vælger at (eller rettere at brugeren vælger at lade `Music') adoptere `Rock music' som sit barn også. .\,.\,Ja, og så vil man endda igen kunne erstatte `.s/' med `/', for det kræves så selvfølgelig bare, at en kategori ikke må adoptere flere børn med samme titel --- i hvert fald ikke uden at lave aliaser for dem. Og der kan man bare se, så får vi jo hermed også allerede en mulighed for, at brugere kan lave forkortelser (nemlig via aliaser, hvis man altså bare gør, at en kategori også kan ``adoptere'' og omdøbe sine egne børn). Nice nok. (12:46) 
+
+
+
+
+
+
+
+
+
 \section{Hvad jeg gerne vil sigte efter med det basale applikationsdesign}
 
 *[(25.02.23)] (11:50) Jeg har tænkt lidt over, hvordan udgangspunktet skal være for applikationsbrugerfladen, eller rettere hvad man gerne bør sigte imod (for betaversionen behøver ikke at inkludere det hele). Her i formiddages fik jeg også lige nogle gode nye idéer, som jeg vil fortælle om lige efter denne sektionsintro. Jeg regner så med at prøve at gå igennem mine seneste tanker omkring emnet, og så vil jeg nok lade sektionen (denne) stå åben efterfølgende, så jeg kan vende tilbage med flere idéer, til den grundlæggende opbygning af applikationen (eller i hvert fald udgangspunktet for den). Jeg vil så også.\,. Hm, enten vil jeg starte en ny betaversion-sektion, eller også vil jeg bare føje til den forrige, men uanset hvad, så vil jeg i hvert fald gå videre til, når jeg har skrevet om ting til denne sektion, gå over til så at skrive om, hvilke nogle hjørner jeg så kan skære i starten. For den første version af hjemmesiden behøver altså ikke at inkludere alle de detaljer, jeg beskriver her, og derfor vil jeg altså have en separat sektion, hvor jeg så skriver om, hvilke nogle ting i applikationsbrugerfladen, jeg \emph{ikke} vil implementere til at starte med. (11:58)
