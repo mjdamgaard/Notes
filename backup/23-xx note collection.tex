@@ -940,7 +940,7 @@ Vi har:
 %
 %%(11:34) Hm, jeg skal lige overveje nogle ting... ...(11:44) Okay, lad mig prøve igen..
 
-$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{//}\ Term$
 
 $UserIdent := ident$
 
@@ -976,7 +976,7 @@ Hvis ikke et element eller en underkategori har kategorien som sin definerende k
 
 .\,.\,
 
-$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{//}\ Term$
 
 $UserIdent := ident$
 
@@ -1015,7 +1015,7 @@ $Category := Category\ \texttt{/}\ ident\ |\ ident$
 
 \ 
 
-$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{//}\ Term$
 
 $UserIdent := ident$
 
@@ -1050,7 +1050,7 @@ Her betegner $float$sne i $Range$en jo så selvfølgelig min og maks på, hvilke
 
 \ 
 
-$Path := UserIdent\ \texttt{//}\ Set''\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+$Path := UserIdent\ \texttt{//}\ Set''\ \texttt{/}\ |\ UserIdent\ \texttt{//}\ Term$
 
 $UserIdent := ident$
 
@@ -1079,9 +1079,43 @@ $Category := Category\ \texttt{/}\ ident\ |\ ident$
 
 Nå, det kan være, at jeg lige vil gå mig en lille tur, men jeg har altså til gode at snakke om, hvordan brugere skal kunne up-rate relationer og skabeloner --- og endda andre brugere/brugergrupper, som man vil kopiere næsten fuldstændig, på nær lige, at ens egne ratings kommer og overskriver deres --- og om hvordan prædikater nu bare skal implementeres via relationer, men det må jeg alt sammen skrive om, når jeg kommer tilbage (.\,.\,dog ikke sikkert, at jeg når at skrive det hele i dag, men det må jeg se.\,.)\ldots (13:47)
 
+\ldots\ (15:30) Okay, lad mig lave det om, så at brugeren også bliver en del af $Set$-produktion-en.\,.
+
+\ldots Hm, lad mig faktisk lige prøve først at lave syntaksen, uden `.s/' $\to$ `/' -forkortelserne, det er sikkert nemmest!\,.\,. (15:59)
+
+\ 
+
+$Path :=  Set\ \texttt{/}\ |\ Set\ \texttt{/}\ ident$
+
+%$Term := Category\ |\ Set\ \texttt{/}\ ident$
 
 
+$Set := Set'\ |\ Set'\ \texttt{\&\&}\ Set$ 
 
+$Set' := Set''\ |\ Set''\ \texttt{||}\ Set'$ 
+
+$Set'' := Set'''\ (\texttt{(}\ Range\ \texttt{)})?\ (\texttt{[}\ int\ \texttt{]})? $ 
+
+%$Set''' := \texttt{(}\ Set\ \texttt{)}\ |\ 
+%	UserIdent\ \texttt{/}\ Category\ ident\ \texttt{.}\ Relation\ |\ 
+%	ident
+%$ 
+
+$Set''' := \texttt{(}\ Set\ \texttt{)}\ |\ 
+	Set'''\ \texttt{/}\ ident\ \texttt{.}\ ident\ |\ 
+	ident\ |\ 
+	User
+$ 
+
+%(16:09) Ja, det blev noget nemmere, og nu skal jeg bare lige huske, hvordan jeg laver et tilde i monospace font.. ...(16:22) Okay, det er åbenbart: \texttt{$\mathtt{\sim}$}$.. ..Ah, eller bare \mathtt{\sim}..
+
+$User := \mathtt{\sim}\ |\ \texttt{/}\ ident$ 
+
+$Range := float\ \texttt{;}\ (float)?\ |\ \texttt{;}\ float$
+
+\ 
+
+(16:27) Ok, så fik jeg lavet ovenstående syntaks. Dette var rigtignok noget nemmere.\,. 
 
 
 
