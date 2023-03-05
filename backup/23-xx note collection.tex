@@ -1115,7 +1115,56 @@ $Range := float\ \texttt{;}\ (float)?\ |\ \texttt{;}\ float$
 
 \ 
 
-(16:27) Ok, så fik jeg lavet ovenstående syntaks. Dette var rigtignok noget nemmere.\,. 
+(16:27) Ok, så fik jeg lavet ovenstående syntaks. Dette var rigtignok noget nemmere.\,. .\,.\,Hov, ændrer lige $Set'''$ i nummer to underproduktion (eller bare produktion? (kan ikke helt 100 huske terminologien.\,.)) af $Set'''$-produktionen til $Set''$ i stedet for.\,. .\,.\,Hm, tja, men så burde jeg også ændre $Path$.\,. Okay, lad mig lige ændre det tilbage, og så i stedet finde ud af, hvad jeg gør i stedet.\,.  .\,.\,(16:41) Hov, det lyder mærkeligt, men er det ikke ligefør, at det (altså $Set'''$ i nr.\ 2 underproduktion) skal ændres til 
+$Set$ i stedet.\,.\,??\,.\,. .\,.\,Nej, så kommer det til at blive svært at gennemskue --- også selvom det måske kunne give mening rent syntaktisk (men så skal man altså spidse for meget øjne, havde jeg nær sagt.\,.).\,. (16:44) .\,.\,Okay, så lad mig prøve at lave det om, så der skal være en parentes, hvis der er unions og/eller intersections før et slash.\,.
+
+
+\ 
+
+\ 
+
+\ 
+
+\ 
+
+$Path :=  Set\ \texttt{/}\ |\ Set\ \texttt{/}\ ident$
+
+%$Term := Category\ |\ Set\ \texttt{/}\ ident$
+
+$Set := Set'\ (\texttt{(}\ Range\ \texttt{)})?\ (\texttt{[}\ int\ \texttt{]})? 
+$ 
+
+$Set' := \texttt{(}\ Set''\ \texttt{)}\ |\ 
+	Set\ \texttt{/}\ ident\ \texttt{.}\ ident\ |\ 
+	ident\ |\ 
+	User
+$ 
+
+$Set'' := Set'''\ |\ Set'''\ \texttt{\&\&}\ Set''$ 
+
+$Set''' := Set\ |\ Set\ \texttt{||}\ Set'''$ 
+
+%(16:09) Ja, det blev noget nemmere, og nu skal jeg bare lige huske, hvordan jeg laver et tilde i monospace font.. ...(16:22) Okay, det er åbenbart: \texttt{$\mathtt{\sim}$}$.. ..Ah, eller bare \mathtt{\sim}..
+
+$User := \mathtt{\sim}\ |\ \texttt{/}\ ident$ 
+
+$Range := float\ \texttt{;}\ (float)?\ |\ \texttt{;}\ float$
+
+\ 
+
+\ldots Sådan.\,. (17:03)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
