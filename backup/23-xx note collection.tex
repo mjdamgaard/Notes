@@ -912,8 +912,57 @@ Så tænkte jeg også noget andet, og det var, at `skabelonerne' jo også kan in
 (12:39) Jeg skal have fundet ud af, hvad jeg gør med ``standard terms, set ID pointers, creators and dates''\ldots 
 
 
+(05.03.23, 9:43) Jeg fik en masse gode idéer i går. Lad mig starte med at nævne, at jeg nu forestiller mig, at alle standard-termerne (som man måske kunne kalde s- eller r-termer (for hhv.\ semantic, standard og resource, regular *(mest for ressource-term, dog))) samt kategorier skal defineres alene ud fra en kort titel samt en pointer (et ID, i.e.) til en henholdsvis en kategori eller en overkategori, om vi snakker et r-/s-term eller en kategori.\,. hm, r-term giver faktisk mest mening, for kategorier er jo også semantiske.\,. Ja, og så kunne s-termer i øvrigt betegne alle ikke-data- og ikke-konstruerede termer.\,:) 
 
+Nå, det helt store nye er så, at med disse ændringer (og hvor hver bruger i princippet selv kan vælge deres egen beskrivelser (selvom hver titel--kategori-pointer-kombination udgør en unik r-term eller kategori (med ét ID))), så giver det pludselig vildt god mening, at fortolke hele det semantiske træ som et slags filsystem (med filsti-agtige stier).\,! Nu vil jeg derfor prøve at beskrive syntaksen for disse ``filstier''.\,. hm, lad mig bare kalde dem paths.\,. eller s-paths.\,. hm.\,. Nå, lad mig beskrive syntaksen for disse stier. (9:54)
 
+Vi starter med at vælge en bruger (i starten af stien). Hm, det gør jo forresten også, at hver bruger skal have.\,. Nå nej, man kan jo godt bruge et bruger-ID, hvis ikke brugeren har et unikt alias i systemet.\,. Nå, og så kommer en række kategorier og underkategorier, separeret med `$>$.' .\,.\,Hov, måske skal der faktisk være to udgaver af `$>$,' lad mig lige tænke mig om en gang\ldots 
+
+\ldots (10:47) Okay, jeg har tænkt mig lidt om, og nu har jeg en faktisk mere simpel syntaks, der også faktisk minder mere om gængse filstier. Lad mig faktisk bare starte med at prøve at definere syntaksen.
+
+Vi har:
+
+%$Path := UserIdent\ \texttt{/}\ Set\ |\ UserIdent\ \texttt{/}\ Term$
+%
+%$UserIdent := ident$
+%
+%$Set := Set'\ |\ Set'\ \texttt{\&\&}\ Set$ 
+%
+%$Set' := (Set)\ |\ Set''\ |\ Set''\ \texttt{||}\ Set'$ 
+%
+%$Set'' := Term\ \texttt{.}\ Relation\ \texttt{/}\ |\ ident\ \texttt{/}$ 
+%
+%$Relation := ident$
+%
+%$Term := Term'\ |\ Category\ \texttt{/}\ Term'$
+%
+%%$Term' := $ ..(11:18)...
+%
+%%(11:34) Hm, jeg skal lige overveje nogle ting... ...(11:44) Okay, lad mig prøve igen..
+
+$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+
+$UserIdent := ident$
+
+$Set := Set'\ |\ Set'\ \texttt{\&\&}\ Set$ 
+
+$Set' := Set''\ |\ Set''\ \texttt{||}\ Set'$ 
+
+$Set'' := (Set)\ |\ Term\ \texttt{.}\ Relation\ |\ ident$ 
+
+$Relation := ident$
+
+$Term := Category\ |\ Set''\ \texttt{/}\ ident$
+
+%Hm, kunne det være sådan her..? (12:03) ..Ja, det fungerer vist, for man kan altid se, om stien slutter med en skråstreg, og hvis det gør, så skal det parses som et Set, og hvis ikke, så skal det parses som en Term.. (12:06) ..Og så tænker jeg, at Category skal indebære følgende syntaks:
+
+$Category := Category\ \texttt{/}\ ident\ |\ ident$
+
+\ 
+
+Når jeg skriver $ident$ og ikke $id$, så er det for at præcisere, at det ikke behøver at være et BIGINT-id, men at det også sagtens (og som regel vil være) en streng-identifyer.\,. (12:13)
+
+.\,.\,(12:17) Hov nej, det kan godt være, at vi lige skal gøre sådan, at $Category$ ikke kan komme efter.\,. .\,.\,efter.\,. Hm nej, måske fungerer det; jeg tror ikke $Category$ kan være andet end i starten med denne syntaks, vel.\,.\,? (12:20) .\,.\,Nej, så måske fungerer det altså, som den er.\,. (12:22)
 
 \section{Hvad jeg gerne vil sigte efter med det basale applikationsdesign}
 
