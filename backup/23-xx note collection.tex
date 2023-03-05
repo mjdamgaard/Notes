@@ -968,13 +968,44 @@ Når jeg skriver $ident$ og ikke $id$, så er det for at præcisere, at det ikke
 
 Jeg forestiller mig også at brugere selv skal kunne definere forkortelser for relationer og andre ting, men det vil jeg nu nok undlade at implementere i betaversionen. 
 
-Nå ja, og hvis i øvrigt at et element af en kategori har denne kategori som dens definerende kategori, så kan $ident$ (altså i `$Set''\ \texttt{/}\ ident$'-produktionen) bare være termens titel. Og tilsvarende gælder for kategorier, hvorfor at et kategori-præfiks fra `$Category$'-produktionen altid vil bestå af navne/titler frem for BIGINT-ID'er. (12:41)
+Nå ja, og hvis i øvrigt at et element af en kategori har denne kategori som dens definerende kategori, så kan $ident$ (altså i `$Set''\ \texttt{/}\ ident$'-underproduktionen) bare være termens titel. Og tilsvarende gælder for kategorier, hvorfor at et kategori-præfiks fra `$Category$'-produktionen altid vil bestå af navne/titler frem for BIGINT-ID'er. (12:41)
 
-Hvis ikke et element eller en underkategori har kategorien som sin definerende kategori.\,. ja, så skulle man måske faktisk indføre, at brugere kan lade kategorier ``med-adoptere'' andre kategoriers børn.\,. For eksempel kunne vi, hvis `Rock music' er defineret ud fra en anden kategori end `Music,' gøre sådan at `Music' bare vælger at (eller rettere at brugeren vælger at lade `Music') adoptere `Rock music' som sit barn også. .\,.\,Ja, og så vil man endda igen kunne erstatte `.s/' med `/', for det kræves så selvfølgelig bare, at en kategori ikke må adoptere flere børn med samme titel --- i hvert fald ikke uden at lave aliaser for dem. Og der kan man bare se, så får vi jo hermed også allerede en mulighed for, at brugere kan lave forkortelser (nemlig via aliaser, hvis man altså bare gør, at en kategori også kan ``adoptere'' og omdøbe sine egne børn). Nice nok. (12:46) 
+Hvis ikke et element eller en underkategori har kategorien som sin definerende kategori.\,. ja, så skulle man måske faktisk indføre, at brugere kan lade kategorier ``med-adoptere'' andre kategoriers børn.\,. For eksempel kunne vi, hvis `Rock music' er defineret ud fra en anden kategori end `Music,' gøre sådan at `Music' bare vælger at (eller rettere at brugeren vælger at lade `Music') adoptere `Rock music' som sit barn også. .\,.\,Ja, og så vil man endda igen kunne erstatte `.s/' med `/', for det kræves så selvfølgelig bare, at en kategori ikke må adoptere flere børn med samme titel --- i hvert fald ikke uden at lave aliasser for dem. Og der kan man bare se, så får vi jo hermed også allerede en mulighed for, at brugere kan lave forkortelser (nemlig via aliasser, hvis man altså bare gør, at en kategori også kan ``adoptere'' og omdøbe sine egne børn). Nice nok. (12:46) 
+
+.\,.\,Nå ja, jeg mangler forresten også lige nogle afgrænsnings-suffikser på $Set$sne\ldots (12:51)
+
+.\,.\,
+
+$Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+
+$UserIdent := ident$
+
+$Set := Set'\ |\ Set'\ \texttt{\&\&}\ Set$ 
+
+$Set' := Set''\ |\ Set''\ \texttt{||}\ Set'$ 
+
+$Set'' := Set'''\ (\texttt{[}\ num\ \texttt{]})? $ 
+
+$Set''' := (Set)\ |\ 
+	Term\ \texttt{.}\ Relation\ (\texttt{(}\ Range\ \texttt{)})?\ |\ 
+	ident\ (\texttt{(}\ Range\ \texttt{)})?
+$ 
+
+$Relation := ident$
 
 
+$Range := \mathrm{TBD,\ but\ perhaps\ something\ like\!:}\ \ 
+	num\ \texttt{;}\ (num)?\ |\ 
+	\texttt{;}\ num
+$
 
+$Term := Category\ |\ Set\ \texttt{/}\ ident$
 
+$Category := Category\ \texttt{/}\ ident\ |\ ident$
+
+\ 
+
+\noindent(Nu fik jeg også lige rettet $Set''$ til $Set$ for $Term$-produktionen.\,.)
 
 
 
