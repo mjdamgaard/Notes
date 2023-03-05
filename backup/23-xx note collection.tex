@@ -1013,6 +1013,8 @@ $Category := Category\ \texttt{/}\ ident\ |\ ident$
 
 .\,.\,Hm, man kunne måske bare angive dette via $Range$en. Lad mig i øvrigt lige erstatte $num$ i $Range$ med $float$ og $num$ i $\texttt{[}\ num\ \texttt{]}$ med $int$, sådan at det bliver:
 
+\ 
+
 $Path := UserIdent\ \texttt{//}\ Set\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
 
 $UserIdent := ident$
@@ -1044,7 +1046,38 @@ $Category := Category\ \texttt{/}\ ident\ |\ ident$
 
 Her betegner $float$sne i $Range$en jo så selvfølgelig min og maks på, hvilke nogle ratingværdier, man gerne vil query'e efter. (13:34)
 
+.\,.\,Hov, det var forkert at rette $Set''$ til $Set$ i $Term$. Lad mig lige tænke over, om det skal rettes tilbage til $Set''$, eller hvad.\,. .\,.\,Hm, måske skulle rette det tilbage, og så også bare rette $Set$ til $Set''$ i $Path$.\,.\,? (13:40) .\,.\,Ja, lad mig bare gøre dette for nu. Så får vi:
 
+\ 
+
+$Path := UserIdent\ \texttt{//}\ Set''\ \texttt{/}\ |\ UserIdent\ \texttt{/}\ Term$
+
+$UserIdent := ident$
+
+$Set := Set'\ |\ Set'\ \texttt{\&\&}\ Set$ 
+
+$Set' := Set''\ |\ Set''\ \texttt{||}\ Set'$ 
+
+$Set'' := Set'''\ (\texttt{[}\ int\ \texttt{]})? $ 
+
+$Set''' := (Set)\ |\ 
+Term\ \texttt{.}\ Relation\ (\texttt{(}\ Range\ \texttt{)})?\ |\ 
+ident\ (\texttt{(}\ Range\ \texttt{)})?
+$ 
+
+$Relation := ident$
+
+
+$Range := \mathrm{TBD,\ but\ perhaps\ something\ like\!:}\ \ 
+float\ \texttt{;}\ (float)?\ |\ 
+\texttt{;}\ float
+$
+
+$Term := Category\ |\ Set''\ \texttt{/}\ ident$
+
+$Category := Category\ \texttt{/}\ ident\ |\ ident$
+
+\ 
 
 
 
