@@ -1007,6 +1007,7 @@ $Category := Category\ \texttt{/}\ ident\ |\ ident$
 
 \noindent(Nu fik jeg også lige rettet $Set''$ til $Set$ for $Term$-produktionen.\,.)
 
+.\,.\,Så er det så meningen at \texttt{\&\&} betyder en intersection (fællesmængde) af mængderne, og \texttt{||} betyder en union (foreningsmængde). Begge disse ting handler altså så at sætte flere mængder sammen (ved at man først ordner efter term-ID'et), og for begge ting beholdes alle ratings fra hver indgående mængde, således at det altså først er i applikationslaget, at den endelige aritmetik og listesortering foregår (og hvor brugerne nemlig så kan ændre sorteringen for listen, uden at skulle query'e serveren igen). Forskellen er så bare lige, at for \texttt{\&\&} fjernes alle de termer, der ikke indgår i begge mængder på hver side af operatoren, inden at listen/mængden serveres til browseren, og altså til applikationen, der kører i den. (13:21) 
 
 
 
