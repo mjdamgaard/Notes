@@ -1173,10 +1173,55 @@ Selvom man i princippet kan gøre hvad man vil herfra, og dermed i princippet og
 
 Og derfor, når en bruger ``logger sig på'' en anden bruger, der har tilladt flere (måske nyere) JS-funktioner, som den på-loggende bruger ikke selv har godkendt (enten via up-rates eller ved ikke at have installeret den fornødne browserudvidelse), så kan det jo dermed alligevel blive muligt, at brugeren stadig kan se meget af det samme, som ejeren af ``kontoen'' ser, netop pga.\ den mulige bagudkompatibilitet (fordi den på-loggende brugers JS-funktion stadig kan indsætte de fleste ting, som ``ejeren af kontoen'' ville få vist). (10:40)
 
+Okay, hermed har vi så et system, hvor brugerne i princippet selv kan bygge oven på og ændre ad libitum. Lad mig så forklare lidt mere om, hvad jeg forestiller mig, at de tidlige JS-funktioner skal gøre. Jeg forestiller mig, at brugere så for hver kategori (ikke bare for Term-kategorien) kan brugere up-rate %..
+HTML- og CSS-data for forskellige passende relationer til, hvordan forskellige felter og lister skal vises for elementerne i kategorien. Vi kan jo starte med at tænke på, hvordan elementerne skal vises i listen, man får serveret, når man bader om kategoriens elementer. Hertil kan der så være en relation der siger ``desired HTML for showing elements,'' som man så kan up-rate HTML-data til. Der kan også være en relation, hvor man kan ændre selve den omkringliggende HTML for elementvisningen. Her kunne man f.eks.\ forestille sig, at når brugeren klikker sig ind på elementmængden til kategorien, så vises underkategorier faktisk også i en liste til venstre for elementerne. Og dette kan man sagtens implementere via denne ``omkringliggende HTML til elementvisningen''-relation, for hver HTML-template har nemlig inden begrænsninger på --- udover de begrænsninger der er sat med vilje selvfølgelig --- hvad HTML'en kan query'e serveren efter; det behøver f.eks.\ ikke kun at være elementer til kategorien, bare fordi disse ligesom er temat / den centrale del af denne visning. (11:00) 
+
+Lad mig lige allerede nævne her, at en vigtig pointe med det hele er så, at en underkategori så altid arver indstiller fra en overkategori, medmindre at brugeren har valgt (via up-rates), at underkategorien selv skal overskrive de gamle indstillinger og tilføje nye indstillinger til sine underkategorier. .\,.\,Ja, det er faktisk ikke så meget mere at sige om dette nu her, men lad mig bare lige understrege, hvor vigtigt denne pointe er for det hele ved at slutte denne paregraf af med et udråbstegn. ! (11:03) *(11:08) Nå jo, jeg havde mere at sige om det. En vigtig ting at forklare er, at kategorier ikke arver fra deres ``definerende overkategorier,'' som jeg har kaldt dem, nødvendigvis, men fra deres overkategorier i den nuværende $Path$.\,! Dermed kan visningen for en kategori altså ændre sig afhængigt af, hvordan brugeren navigerede hen til kategorien! (11:11) 
+
+Nå, og hvad angår den indre element-HTML, så vil denne jo også indeholde knapper, som brugeren kan trykke på (og med specifikationer af, hvad der så skal ske ved tryk på disse knapper). Dette kan jo så f.eks.\ være at udfolde flere felter for elementet (og/eller at vise mere af diverse tekstfelter, som måske er afkortet i en umiddelbare listevisning). Knapperne kan så også specificeres (alt sammen via den samme HTML-data, nemlig den omkring ``den indre HTML for elementerne'') så de åbner ny sider. (11:08) .\,.\,(11:11) Jeg forestiller mig så nu, at nye sider generelt åbnes ved at angive en $Path$ til applikationen, og altså bede applikationen om at åbne denne sti. 
+
+Lad mig i den forbindelse forresten indskyde, at selvom de her stier er implementeret ind i applikationen, og at applikationen godt kan køre på samme side, så forestiller jeg mig dog, at $Path$s også gerne skal kunne opdateres vi GET-metoden, nærmere bestemt således at brugeren kan toggle mellem GET og POST metoden, alt efter om brugeren vil have, at browseren gemmer navigeringshistorikken eller ej. (11:15)
+
+Nå, men er det så kun de to relationer, nemlig den om ``omkringliggende'' og ``indre'' HTML for elementvisningen, som brugerne skal (kunne) up-rate HTML-data for? Nej, for en kategori har jo ikke kun `.Elements'/`.e' som sin eneste relevante relation. Det samme skal kunne gøres for `.Subcategories'/`.s'-visningen (hvor man altså også kan dele det op i indre og omkringliggende HTML, hvis man vil). Og der er også andre relationer, f.eks.\ er der jo selve alle disse relationer, som bruges til at vælge HTML-data (eller anden data; det behøver slet ikke at have form som HTML; det kommer alt sammen bare an på, hvordan JS-funktionen(/funktionsfamilien), man bruger, er defineret). For ikke at få et uendeligt antal relationer til dette, så kunne man så have én relation til at indstille præferencerne for visningen af disse lister, som nemlig så også kan bruges til visningen af selve den liste, hvor man indstiller visningen for sådanne lister (sådan at det valgte (mest up-ratede) visningsdata for denne relation altså også kommer til at definere visningen for relationen selv). (11:24) 
+
+.\,.\,Bum. Og det forklarer sådan set allerede meget godt, hvordan jeg nu forestiller mig, at fundamentet i applikationslaget skal være opbygget på. Nu bør jeg så lige prøve at omdefinere $Path$en en gang (og give nogle forklaringer på ændringerne), og så vil jeg ellers begynde at ændre i min databaseimplementation.\,. (11:26)
+
+.\,.\,Hov, lad mig lige sige, at jeg sikkert kommer til at lave mange ændringer i denne syntaks løbende. Men det gør ikke så meget, for det.\,. Nå ja, det skulle jeg måske også lige overveje: Er det samme JS-funktion, der skal parse $Path$en, når siden opdateres med en ny sådan $Path$ (enten via GET- eller via POST-metoden)?\,.\,. .\,.\,Hm, det synes jeg faktisk på en måde, men lad os så faktisk sige, at der i stedet for at være tale om en enkelt funktion for hver ID i JS-funktions-listen, så faktisk skal være tale om et helt namespace af funktioner, nemlig således at nr.\ to element i hver tupel i denne liste (nemlig hvor første element så er JS-program-term-ID'et) så er.\,. Hm, nå, det er faktisk også lige meget, hvad strukturen helt præcis kommer til at blive, men pointen er bare, at hvert samlet element (om så disse er tupler eller ej) i omtalte JS-liste altså definerer et helt namespace af funktioner, som applikationen kan benytte, hvis brugeren også tillader denne brug via up-rates for ``gyldig JS''-relationen for Term-kategorien. (11:35)
+
+Nå, men lad mig så sige, at nu forestiller jeg mig en syntaks for $Path$ mere a la:
 
 
 
+\ 
 
+$Path :=  Set\ \texttt{/}\ |\ Set\ \texttt{/}\ ident$
+
+%$Term := Category\ |\ Set\ \texttt{/}\ ident$
+
+$Set := Set'\ (\texttt{(}\ RatingRange\ \texttt{)})?\ (\texttt{[}\ ListRange\ \texttt{]})? 
+$ 
+
+$Set' := \texttt{(}\ Set''\ \texttt{)}\ |\ 
+	Set\ \texttt{/}\ ident\ \texttt{.}\ ident\ |\ 
+	ident\ |\ 
+	User
+$ 
+
+$Set'' := Set'''\ |\ Set'''\ \texttt{\&\&}\ Set''$ 
+
+$Set''' := Set\ |\ Set\ \texttt{||}\ Set'''$ 
+
+%(16:09) Ja, det blev noget nemmere, og nu skal jeg bare lige huske, hvordan jeg laver et tilde i monospace font.. ...(16:22) Okay, det er åbenbart: \texttt{$\mathtt{\sim}$}$.. ..Ah, eller bare \mathtt{\sim}..
+
+$User := \mathtt{\sim}\ |\ \texttt{../}\ ident$ 
+
+$RatingRange := float\ \texttt{;}\ (float)?\ |\ \texttt{;}\ float$
+
+$ListRange := int\ |\ int\ \texttt{..}\ int$
+
+\ 
+
+Desuden forestiller jeg mig også (foruden det med at `.s/' skal kunne forkortes til `/' givet visse omstændigheder, jeg har snakket om), at man skal kunne definere macro-variable, sådan at gentagne første dele af $Path$s i stedet kan defineres som en macro, som så både brugeren kan bruge, hvis denne vil skrive en $Path$ selv, og som applikationen kan bruge, når denne vil vise/printe en $Path$ (måske den pågældende for ``siden'') for brugeren. (11:45, 06.03.23)
 
 
 
