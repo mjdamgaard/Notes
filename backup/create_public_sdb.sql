@@ -2,49 +2,44 @@
 
 
 
-DELETE FROM SemanticUserInputs;
-DELETE FROM SemanticUserGroupInputs;
 DELETE FROM Sets;
+DELETE FROM SemanticInputs;
 
 DELETE FROM UserGroups;
 DELETE FROM Users;
 
 DELETE FROM Categories;
+DELETE FROM StandardTerms;
 DELETE FROM Relations;
 DELETE FROM KeywordStrings;
 
+-- DELETE FROM SavedSets;
+
 DELETE FROM Creators;
-DELETE FROM NextIDPointers;
 
-
+DELETE FROM Texts;
 DELETE FROM Lists;
 DELETE FROM Binaries;
-DELETE FROM Blobs;
-DELETE FROM Strings;
-DELETE FROM Texts;
 
 
--- DROP TABLE SemanticUserInputs;
--- DROP TABLE SemanticUserGroupInputs;
--- DROP VIEW  SemanticInputs;
 -- DROP TABLE Sets;
+-- DROP TABLE SemanticInputs;
 --
 -- DROP TABLE UserGroups;
 -- DROP TABLE Users;
 --
 -- DROP TABLE Categories;
+-- DROP TABLE StandardTerms;
 -- DROP TABLE Relations;
 -- DROP TABLE KeywordStrings;
 --
--- DROP TABLE NextIDPointers;
--- DROP TABLE Creators;
--- DROP PROCEDURE createTerm;
+-- DROP TABLE SavedSets;
 --
+-- DROP TABLE Creators;
+--
+-- DROP TABLE Texts;
 -- DROP TABLE Lists;
 -- DROP TABLE Binaries;
--- DROP TABLE Blobs;
--- DROP TABLE Strings;
--- DROP TABLE Texts;
 
 
 
@@ -59,39 +54,72 @@ DELETE FROM Texts;
 
 
 
+-- (07.03.23, 12:31) Okay, jeg tror faktisk, at jeg bare vil implementere
+-- det på en ikke-effektiv måde, som til gengæld er mere overskulig, fra
+-- starten her, nemlig ved at jeg simpelthen indfører user_t, subj_t og obj_t,
+-- som jeg havde det engang, og hvor jeg endda simpelthen siger fuck it og
+-- lader disse typer være CHAR(3)'s! (hvilket de nemlig bliver i det indledende
+-- query-format).
+
 
 CREATE TABLE Sets (
     -- user or user group who states the statement.
+    user_t CHAR(3),
     user_id BIGINT UNSIGNED,
 
     -- subject of relation.
+    subj_t CHAR(3),
     subj_id BIGINT UNSIGNED,
 
     -- relation.
     rel_id BIGINT UNSIGNED,
 
     PRIMARY KEY (
+        user_t,
         user_id,
+        subj_t,
         subj_id,
         rel_id
     ),
 
-    set_id BIGINT UNSIGNED NOT NULL, -- sets are not Terms, so IDs take any val.
+    set_id BIGINT UNSIGNED NOT NULL UNIQUE
+    -- Sets are not Terms, so IDs take any value.
 
-    CONSTRAINT CHK_Sets_user CHECK (
-        user_id BETWEEN 0 AND 0x2000000000000000 - 1
-    ),
+    -- CONSTRAINT CHK_Sets_user CHECK (
+    --     user_id BETWEEN 0 AND 0x2000000000000000 - 1
+    -- ),
 
     -- relations cannot be users/bots or any data terms (0x70 and up). They
     -- can only be "semantic terms" in other words.
-    CONSTRAINT CHK_Sets_rel_is_semantic CHECK (
-        rel_id BETWEEN 0x2000000000000000 AND 0x7000000000000000 - 1
-    )
+    -- CONSTRAINT CHK_Sets_rel_is_semantic CHECK (
+    --     rel_id BETWEEN 0x2000000000000000 AND 0x7000000000000000 - 1
+    -- )
 
 
 );
 
 
+
+-- (12:56, 07.03.23) Jeg tror faktisk, at jeg vil sige, at både Users og
+-- UserGroups bare holder en VARBINARY i stedet for rat_val og anden data,
+-- og så sørger jeg bare for at denne "rat_data" bliver en del af nøglen.
+-- Serveren skal så bare give al rat_data med i applikationen, så det går
+-- ligesom udover brugerne selv, hvis de vælger at uploade mere data end
+-- nødvendigt, både den ene vej fordi de så forbruger mere af deres
+-- månedntlige upload-data-kvote, som jeg nemlig lidt forestiller mig, at
+-- de skal have, men også den anden vej fordi det så tager længere tid at
+-- downloade denne data --- og det forbruger mere af download-kvoten, som
+-- jeg altså også forestiller mig, skal være.
+-- Nå ja, og det fine er jo så, at VARBINARY vist ligesom VARCHAR ordnes
+-- alfanummerisk, hvilket vil sige, at brugere og brugergrupper sådan set
+-- bare skal sørger for, at den første byte, eller de første par bytes,
+-- bliver betydende for, hvor højt objektet er placeret i mængden (når denne
+-- enten ordnes efter ascending eller descending order). (13:04)
+-- ..(13:12) Ah, og så kan vi forresten også samle SemanticUserInputs og
+-- SemanticUserGroupInputs igen til bare SemanticInputs..
+-- (14:50) Hm, jeg tror nu, at jeg alligevel vil kalde det 'rat_val' i stedet
+-- for rat_data, og så bliver det bare underforstået, at val også kan
+-- indeholde data på de mindre betydende bytes.
 
 
 /* Statements which the users (or bots) give as input to the semantic network.
@@ -99,7 +127,7 @@ CREATE TABLE Sets (
  * with a numerical value which represents the degree to which the user deems
  * that the statement is correct (like when answering a survey).
  **/
-CREATE TABLE SemanticUserInputs (
+CREATE TABLE SemanticInputs (
     /* Set */
     -- set id.
     set_id BIGINT UNSIGNED,
@@ -109,19 +137,21 @@ CREATE TABLE SemanticUserInputs (
     /* Member */
     -- The members of sets include a rating value and a Term.
 
-    -- rat_val is a numerical rating value (signed) which defines the
-    -- degree to which the user/user group of the set deems the statement
-    -- to be true/fitting.
-    -- When dividing rat_val with 128, this value runs from -1 to (almost) 1.
-    -- And then -1 is taken to mean "very far from true/fitting," 0 is taken
-    -- to mean "not sure" / "not particularly fitting or unfitting," and 1 is
-    -- taken to mean "very much true/fitting."
-    -- inv_rat_val is the multiplicational inverse of rat_val, meaning that
-    -- it is rat_val with its sign flipped.
-    inv_rat_val TINYINT,
+    -- -- rat_val is a numerical rating value (signed) which defines the
+    -- -- degree to which the user/user group of the set deems the statement
+    -- -- to be true/fitting.
+    -- -- When dividing rat_val with 128, this value runs from -1 to (almost) 1.
+    -- -- And then -1 is taken to mean "very far from true/fitting," 0 is taken
+    -- -- to mean "not sure" / "not particularly fitting or unfitting," and 1 is
+    -- -- taken to mean "very much true/fitting."
+    -- -- inv_rat_val is the multiplicational inverse of rat_val, meaning that
+    -- -- it is rat_val with its sign flipped.
+    -- inv_rat_val TINYINT,
+    rat_val VARBINARY(255) NOT NULL,
 
     -- object of the relation defining the set (i.e. the primary part of the
     -- member of which the rating is about).
+    obj_t CHAR(3),
     obj_id BIGINT UNSIGNED,
 
     -- PRIMARY KEY (
@@ -133,15 +163,17 @@ CREATE TABLE SemanticUserInputs (
 
     PRIMARY KEY (
         set_id,
-        inv_rat_val,
+        -- inv_rat_val,
+        rat_val,
+        obj_t,
         obj_id
-    ),
+    )
 
-    -- w_exp is a nummerical value which gives the weight of the rating
-    -- when plugged into the equation w = 2^(w_exp / 32).
-    -- inv_w_exp is the multiplicational inverse of w_exp, meaning that
-    -- w = 2^(- inv_w_exp / 32).
-    inv_w_exp_t32 TINYINT UNSIGNED NOT NULL
+    -- -- w_exp is a nummerical value which gives the weight of the rating
+    -- -- when plugged into the equation w = 2^(w_exp / 32).
+    -- -- inv_w_exp is the multiplicational inverse of w_exp, meaning that
+    -- -- w = 2^(- inv_w_exp / 32).
+    -- inv_w_exp_t32 TINYINT UNSIGNED NOT NULL
 
 
     -- CONSTRAINT CHK_rat_val_not_min CHECK (rat_val <> 0x80)
@@ -151,16 +183,16 @@ CREATE TABLE SemanticUserInputs (
 
 );
 
-INSERT INTO SemanticUserInputs (
+INSERT INTO SemanticInputs (
     set_id,
-    inv_rat_val,
-    inv_w_exp_t32,
+    rat_val,
+    obj_t,
     obj_id
 )
 VALUES (
     1,
     2,
-    3,
+    "cat",
     4
 );
 
@@ -168,59 +200,62 @@ VALUES (
 
 
 
-CREATE TABLE SemanticUserGroupInputs (
-    /* Set */
-    -- set id.
-    set_id BIGINT UNSIGNED,
-    -- (while identifying a set uniquely, set_id is not part of the key for
-    -- the Sets table and should therefore not be searched for.)
-
-    /* Member */
-    -- The members of sets include a rating value and a Term.
-
-    -- rat_val is a numerical rating value (signed) which defines the
-    -- degree to which the user/user group of the set deems the statement
-    -- to be true/fitting.
-    -- When dividing rat_val with 128, this value runs from -1 to (almost) 1.
-    -- And then -1 is taken to mean "very far from true/fitting," 0 is taken
-    -- to mean "not sure" / "not particularly fitting or unfitting," and 1 is
-    -- taken to mean "very much true/fitting."
-    -- inv_rat_val is the multiplicational inverse of rat_val, meaning that
-    -- it is rat_val with its sign flipped.
-    inv_rat_val TINYINT,
-
-    -- wc_exp_t4 is a nummerical value which gives a weighted user count
-    -- of how many users in the user group have given their voice to the
-    -- rating. If the user group has equal weights for all its members, the
-    -- weigthed count would be the actual count of users.
-    -- When plugged into the equation,
-    -- wc_lb = floor(2^(wc_exp_t4 / 4)),
-    -- one gets a lower bound, wc_lb, on the weighted count. In other words,
-    -- if wc is the actual weighted count, then
-    -- floor(2^(wc_exp_t4 / 4)) <= wc <= floor(2^((wc_exp_t4 + 1) / 4)).
-    -- inv_wc_exp_t4 is then given by inv_wc_exp_t4 = 254 - wc_exp_t4.
-    -- This means that when inv_wc_exp_t4 runs from 0 to 255, then wc_exp_t4
-    -- runs from 254 to -1.
-    inv_wc_exp_t4 TINYINT UNSIGNED,
-
-    -- object of the relation defining the set (i.e. the primary part of the
-    -- member of which the rating is about).
-    obj_id BIGINT UNSIGNED,
-
-
-    PRIMARY KEY (
-        set_id,
-        inv_rat_val,
-        inv_wc_exp_t4,
-        obj_id
-    )
-
-    -- CONSTRAINT CHK_rat_val_not_min CHECK (rat_val <> 0x80)
-    -- -- This makes max and min values equal to 127 and -127, respectively.
-    -- -- Divide by 127 to get floating point number strictly between -1 and 1.
-    -- Maybe rat_val = 0x80 can be used as a report for removal flag..
-
-);
+-- CREATE TABLE SemanticUserGroupInputs (
+--     /* Set */
+--     -- set id.
+--     set_id BIGINT UNSIGNED,
+--     -- (while identifying a set uniquely, set_id is not part of the key for
+--     -- the Sets table and should therefore not be searched for.)
+--
+--     /* Member */
+--     -- The members of sets include a rating value and a Term.
+--
+--     -- -- rat_val is a numerical rating value (signed) which defines the
+--     -- -- degree to which the user/user group of the set deems the statement
+--     -- -- to be true/fitting.
+--     -- -- When dividing rat_val with 128, this value runs from -1 to (almost) 1.
+--     -- -- And then -1 is taken to mean "very far from true/fitting," 0 is taken
+--     -- -- to mean "not sure" / "not particularly fitting or unfitting," and 1 is
+--     -- -- taken to mean "very much true/fitting."
+--     -- -- inv_rat_val is the multiplicational inverse of rat_val, meaning that
+--     -- -- it is rat_val with its sign flipped.
+--     -- inv_rat_val TINYINT,
+--     rat_data VARBINARY(255) NOT NULL,
+--
+--     -- -- wc_exp_t4 is a nummerical value which gives a weighted user count
+--     -- -- of how many users in the user group have given their voice to the
+--     -- -- rating. If the user group has equal weights for all its members, the
+--     -- -- weigthed count would be the actual count of users.
+--     -- -- When plugged into the equation,
+--     -- -- wc_lb = floor(2^(wc_exp_t4 / 4)),
+--     -- -- one gets a lower bound, wc_lb, on the weighted count. In other words,
+--     -- -- if wc is the actual weighted count, then
+--     -- -- floor(2^(wc_exp_t4 / 4)) <= wc <= floor(2^((wc_exp_t4 + 1) / 4)).
+--     -- -- inv_wc_exp_t4 is then given by inv_wc_exp_t4 = 254 - wc_exp_t4.
+--     -- -- This means that when inv_wc_exp_t4 runs from 0 to 255, then wc_exp_t4
+--     -- -- runs from 254 to -1.
+--     -- inv_wc_exp_t4 TINYINT UNSIGNED,
+--
+--     -- object of the relation defining the set (i.e. the primary part of the
+--     -- member of which the rating is about).
+--     obj_t CHAR(3),
+--     obj_id BIGINT UNSIGNED,
+--
+--
+--     PRIMARY KEY (
+--         set_id,
+--         inv_rat_val,
+--         inv_wc_exp_t4,
+--         obj_t,
+--         obj_id
+--     )
+--
+--     -- CONSTRAINT CHK_rat_val_not_min CHECK (rat_val <> 0x80)
+--     -- -- This makes max and min values equal to 127 and -127, respectively.
+--     -- -- Divide by 127 to get floating point number strictly between -1 and 1.
+--     -- Maybe rat_val = 0x80 can be used as a report for removal flag..
+--
+-- );
 
 -- INSERT INTO SemanticUserGroupInputs (
 --     set_id,
@@ -238,27 +273,24 @@ CREATE TABLE SemanticUserGroupInputs (
 
 
 
-/* Statements which the users (or bots) give as input to the semantic network.
- * A central feature of this semantic system is that all such statements come
- * with a numerical value which represents the degree to which the user deems
- * that the statement is correct (like when answering a survey).
- **/
-CREATE VIEW SemanticInputs AS
-SELECT
-    set_id,
-    - inv_rat_val AS rat_val,
-    - inv_w_exp_t32 AS w_exp_t32,
-    NULL AS wc_exp_t4,
-    obj_id
-FROM SemanticUserInputs
-UNION
-SELECT
-    set_id,
-    - inv_rat_val AS rat_val,
-    NULL AS w_exp_t32,
-    254 - inv_wc_exp_t4 AS wc_exp_t4,
-    obj_id
-FROM SemanticUserGroupInputs;
+-- CREATE VIEW SemanticInputs AS
+-- SELECT
+--     set_id,
+--     - inv_rat_val AS rat_val,
+--     - inv_w_exp_t32 AS w_exp_t32,
+--     NULL AS wc_exp_t4,
+--     obj_t,
+--     obj_id
+-- FROM SemanticUserInputs
+-- UNION
+-- SELECT
+--     set_id,
+--     - inv_rat_val AS rat_val,
+--     NULL AS w_exp_t32,
+--     254 - inv_wc_exp_t4 AS wc_exp_t4,
+--     obj_t,
+--     obj_id
+-- FROM SemanticUserGroupInputs;
 
 
 
@@ -348,7 +380,7 @@ FROM SemanticUserGroupInputs;
 CREATE TABLE UserGroups (
     -- user group ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    -- type code = 0x00,
+    -- type = "ugr".
 
     -- id of the creating user group (or user or bot).
     creator_id BIGINT UNSIGNED,
@@ -394,15 +426,15 @@ CREATE TABLE UserGroups (
     -- -- by the servers. The value of the flag might signal the reason.
     -- is_inactive TINYINT -- BOOL
 );
--- ALTER TABLE UserGroups AUTO_INCREMENT = CONV(0x0000000000000001, 16, 10);
--- 0x0000000000000001 = 1.
-ALTER TABLE UserGroups AUTO_INCREMENT = 1;
+-- -- ALTER TABLE UserGroups AUTO_INCREMENT = CONV(0x0000000000000001, 16, 10);
+-- -- 0x0000000000000001 = 1.
+-- ALTER TABLE UserGroups AUTO_INCREMENT = 1;
 
 
 CREATE TABLE Users (
     -- user ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    -- type code = 0x10,
+    -- type = "usr".
 
     -- num_inserts_today INT,
 
@@ -411,10 +443,10 @@ CREATE TABLE Users (
     /* timestamp */
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- ALTER TABLE Users AUTO_INCREMENT = CONV(0x1000000000000001, 16, 10);
--- -- 0x1000000000000001 = 1152921504606846977.
--- A..TABLE UserGroups AUTO_INCREMENT = 1152921504606846977;
-ALTER TABLE Users AUTO_INCREMENT = 1000000000000000001;
+-- -- ALTER TABLE Users AUTO_INCREMENT = CONV(0x1000000000000001, 16, 10);
+-- -- -- 0x1000000000000001 = 1152921504606846977.
+-- -- A..TABLE UserGroups AUTO_INCREMENT = 1152921504606846977;
+-- ALTER TABLE Users AUTO_INCREMENT = 1000000000000000001;
 
 
 
@@ -427,17 +459,19 @@ ALTER TABLE Users AUTO_INCREMENT = 1000000000000000001;
 CREATE TABLE Categories (
     -- category ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- type = "cat".
 
     -- title of the category, preferably a plural noun describing/referencing
     -- the elements in the category.
     title VARCHAR(255) NOT NULL,
+    FULLTEXT idx (title),
 
     -- -- possible empty list of BIGINTs pointing to super categories.
     -- super_cats VARBINARY(248)
     -- -- this is useful when the title is best understood in the context of
     -- -- one or more super categories.
 
-    -- id of a super category.
+    -- id of a defining super category.
     super_cat BIGINT UNSIGNED NOT NULL,
     -- This is useful when the title is best understood in the context of
     -- a super category.
@@ -446,28 +480,52 @@ CREATE TABLE Categories (
     -- -- description.
     -- descr TEXT
 
-    INDEX (title, super_cat),
+    UNIQUE INDEX (title, super_cat)
 
-    CONSTRAINT CHK_Categories_super_cat CHECK (
-        super_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
-    )
+    -- CONSTRAINT CHK_Categories_super_cat CHECK (
+    --     super_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    -- )
 );
-ALTER TABLE Categories AUTO_INCREMENT = 2000000000000000001;
+-- ALTER TABLE Categories AUTO_INCREMENT = 2000000000000000001;
+
+CREATE TABLE StandardTerms (
+    -- term ID.
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- type = "std".
+
+    -- title of the term.
+    title VARCHAR(255) NOT NULL,
+    FULLTEXT idx (title),
+
+    -- id of a defining category.
+    cat BIGINT UNSIGNED NOT NULL,
+    -- Note that 0x2000000000000001 is category of all Terms.
+
+    UNIQUE INDEX (title, cat)
+
+    -- CONSTRAINT CHK_Terms_super_cat CHECK (
+    --     super_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    -- )
+);
+-- ALTER TABLE StandardTerms AUTO_INCREMENT = 2000000000000000001;
+
 
 
 CREATE TABLE Relations (
     -- relation ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- type = "rel".
 
     -- noun describing the object in terms of what the object is to the
     -- subject of the relation.
     -- TODO: mention forward and backwards syntax for parsing this noun from
     -- the realtion expressed as a verb.
     obj_noun VARCHAR(255) NOT NULL,
-
-    subj_cat BIGINT UNSIGNED NOT NULL,
+    FULLTEXT idx (obj_noun),
 
     obj_cat BIGINT UNSIGNED NOT NULL,
+
+    subj_cat BIGINT UNSIGNED NOT NULL,
 
     -- flag representing if relation expects only one object (in general) per
     -- subject.
@@ -476,28 +534,29 @@ CREATE TABLE Relations (
     -- -- description.
     -- descr TEXT
 
-    INDEX (obj_noun, obj_cat, subj_cat),
+    UNIQUE INDEX (obj_noun, obj_cat, subj_cat, is_one_to_one)
 
-    CONSTRAINT CHK_Relations_subj_cat CHECK (
-        subj_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
-    ),
+    -- CONSTRAINT CHK_Relations_subj_cat CHECK (
+    --     subj_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    -- ),
 
-    CONSTRAINT CHK_Relations_obj_cat CHECK (
-        obj_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
-    )
+    -- CONSTRAINT CHK_Relations_obj_cat CHECK (
+    --     obj_cat BETWEEN 0x2000000000000000 AND 0x3000000000000000 - 1
+    -- )
 );
-ALTER TABLE Relations AUTO_INCREMENT = 3000000000000000001;
+-- ALTER TABLE Relations AUTO_INCREMENT = 3000000000000000001;
 
 
 CREATE TABLE KeywordStrings (
     /* keyword string ID */
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- type = "kws".
 
     -- keyword string.
-    str VARCHAR(255) UNIQUE,
+    str VARCHAR(255) NOT NULL UNIQUE,
     FULLTEXT idx (str)
 );
-ALTER TABLE KeywordStrings AUTO_INCREMENT = 4000000000000000001;
+-- ALTER TABLE KeywordStrings AUTO_INCREMENT = 4000000000000000001;
 
 
 -- CREATE TABLE FundamentalTerms (
@@ -589,50 +648,66 @@ ALTER TABLE KeywordStrings AUTO_INCREMENT = 4000000000000000001;
 
 
 
+-- Jeg tror at SavedSets ("set") bare simpelthen skal være en
+-- VARBINARY(2**16).. ..eller en BLOB med andre ord.. som så indeholder
+-- en liste over (rat_data, (obj_t, obj_id))-tupler..
 
+CREATE TABLE SavedSets (
+    /* saved set ID */
+    id BIGINT UNSIGNED PRIMARY KEY,
+    -- type = "set".
+    -- (We are free to use "set" since the Sets entities are not terms.)
 
-
-
-
-
-
-
-
-
-
--- I think it will be easiest to use the same procedure for getting next id
--- pointers for all terms, so let me actually just make NextIDPointers
--- include all types. ..(Then it will also be easier to implement, if I want
--- to have several pointers in play for the same type at a time (maybe in
--- order to allocate ids..))..
-CREATE TABLE NextIDPointers (
-    type_code TINYINT UNSIGNED,
-    next_id_pointer BIGINT UNSIGNED,
-
-    -- this id is not intended for any use!
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
-    -- PRIMARY KEY (type_code, id)
+    /* data */
+    elems BLOB
 );
-INSERT INTO NextIDPointers (type_code, next_id_pointer)
-VALUES
-    (0x00, 0x0000000000000001),
-    -- (0x06, 0x0600000000000001),
-    (0x10, 0x1000000000000001),
-    (0x20, 0x2000000000000001),
-    (0x30, 0x3000000000000001),
-    (0x70, 0x7000000000000001),
-    (0x80, 0x8000000000000001),
-    (0x90, 0x9000000000000001),
-    (0xA0, 0xA000000000000001),
-    (0xB0, 0xB000000000000001)
-;
+
+
+
+
+
+
+
+
+
+
+-- -- I think it will be easiest to use the same procedure for getting next id
+-- -- pointers for all terms, so let me actually just make NextIDPointers
+-- -- include all types. ..(Then it will also be easier to implement, if I want
+-- -- to have several pointers in play for the same type at a time (maybe in
+-- -- order to allocate ids..))..
+-- CREATE TABLE NextIDPointers (
+--     type_code TINYINT UNSIGNED,
+--     next_id_pointer BIGINT UNSIGNED,
+--
+--     -- this id is not intended for any use!
+--     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+--     -- PRIMARY KEY (type_code, id)
+-- );
+-- INSERT INTO NextIDPointers (type_code, next_id_pointer)
+-- VALUES
+--     (0x00, 0x0000000000000001),
+--     -- (0x06, 0x0600000000000001),
+--     (0x10, 0x1000000000000001),
+--     (0x20, 0x2000000000000001),
+--     (0x30, 0x3000000000000001),
+--     (0x70, 0x7000000000000001),
+--     (0x80, 0x8000000000000001),
+--     (0x90, 0x9000000000000001),
+--     (0xA0, 0xA000000000000001),
+--     (0xB0, 0xB000000000000001)
+-- ;
 
 
 
 CREATE TABLE Creators (
-    user_id BIGINT UNSIGNED,
+    term_t CHAR(3),
     term_id BIGINT UNSIGNED,
-    PRIMARY KEY (user_id, term_id)
+    PRIMARY KEY (term_t, term_id),
+
+    -- creator (always has type = "usr").
+    user_id BIGINT UNSIGNED,
+    INDEX (user_id)
 );
 
 
@@ -640,54 +715,55 @@ CREATE TABLE Creators (
 
 
 -- DELIMITER //
--- CREATE PROCEDURE SelectNextRelPredID ()
+-- CREATE PROCEDURE createTerm (
+--     IN tc TINYINT UNSIGNED,
+--     IN u_id BIGINT UNSIGNED,
+--     OUT new_id BIGINT UNSIGNED
+-- )
 -- BEGIN
 --     SELECT next_id_pointer
---     FROM NextRelPredIDs
---     WHERE type_code = 0x20
+--     INTO new_id
+--     FROM NextIDPointers
+--     WHERE type_code = tc
 --     FOR UPDATE;
 --
---     UPDATE NextRelPredIDs
+--     UPDATE NextIDPointers
 --     SET next_id_pointer = next_id_pointer + 1
---     WHERE type_code = 0x20;
+--     WHERE type_code = tc;
+--
+--     INSERT INTO Creators (user_id, term_id)
+--     VALUES (u_id, new_id);
 -- END //
 -- DELIMITER ;
-DELIMITER //
-CREATE PROCEDURE createTerm (
-    IN tc TINYINT UNSIGNED,
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED
-)
-BEGIN
-    SELECT next_id_pointer
-    INTO new_id
-    FROM NextIDPointers
-    WHERE type_code = tc
-    FOR UPDATE;
 
-    UPDATE NextIDPointers
-    SET next_id_pointer = next_id_pointer + 1
-    WHERE type_code = tc;
 
-    INSERT INTO Creators (user_id, term_id)
-    VALUES (u_id, new_id);
-END //
-DELIMITER ;
 
--- CREATE TABLE NextRelPredIDs (
---     next_id_pointer BIGINT UNSIGNED
--- );
--- INSERT INTO NextRelPredIDs (next_id_pointer) VALUES (0x2000000000000001);
+
+
+
+
+-- CREATE TABLE Strings (
+--     /* variable character string ID */
+--     id BIGINT UNSIGNED PRIMARY KEY,
 --
--- CREATE TABLE NextTermIDs (
---     next_id_pointer BIGINT UNSIGNED
+--     -- /* creator */
+--     -- user_id BIGINT UNSIGNED,
+--
+--     /* data */
+--     str VARCHAR(255) UNIQUE,
+--     FULLTEXT idx (str)
 -- );
--- INSERT INTO NextTermIDs (next_id_pointer) VALUES (0x3000000000000001);
+-- -- INSERT INTO Strings (id) VALUES (0xA000000000000000);
 
+CREATE TABLE Texts (
+    /* text ID */
+    id BIGINT UNSIGNED PRIMARY KEY,
+    -- type = "txt".
 
-
-
-
+    /* data */
+    str TEXT
+);
+-- INSERT INTO Strings (id) VALUES (0xB000000000000000);
 
 
 
@@ -696,12 +772,10 @@ DELIMITER ;
 CREATE TABLE Lists (
     /* list ID */
     id BIGINT UNSIGNED PRIMARY KEY,
-
-    -- /* creator */
-    -- user_id BIGINT UNSIGNED,
+    -- type = "lst".
 
     /* data */
-    len SMALLINT UNSIGNED,
+    len SMALLINT UNSIGNED NOT NULL,
 
     elems VARBINARY(248),
 
@@ -733,62 +807,24 @@ CREATE TABLE Lists (
 
 
 
-
-
 CREATE TABLE Binaries (
-    /* variable character string ID */
+    /* binary string ID */
     id BIGINT UNSIGNED PRIMARY KEY,
-
-    -- /* creator */
-    -- user_id BIGINT UNSIGNED,
-
-    /* data */
-    str VARCHAR(500) UNIQUE
-    -- FULLTEXT idx (str)
-);
--- INSERT INTO Binaries (id) VALUES (0x8000000000000000);
-
-CREATE TABLE Blobs (
-    /* variable character string ID */
-    id BIGINT UNSIGNED PRIMARY KEY,
-
-    -- /* creator */
-    -- user_id BIGINT UNSIGNED,
+    -- type = "bin".
 
     /* data */
     bin BLOB
 );
--- INSERT INTO Blobs (id) VALUES (0x9000000000000000);
+-- INSERT INTO Binaries (id) VALUES (0x8000000000000000);
 
-
-
-
-
-
-CREATE TABLE Strings (
-    /* variable character string ID */
-    id BIGINT UNSIGNED PRIMARY KEY,
-
-    -- /* creator */
-    -- user_id BIGINT UNSIGNED,
-
-    /* data */
-    str VARCHAR(255) UNIQUE,
-    FULLTEXT idx (str)
-);
--- INSERT INTO Strings (id) VALUES (0xA000000000000000);
-
-CREATE TABLE Texts (
-    /* text ID */
-    id BIGINT UNSIGNED PRIMARY KEY,
-
-    /* creator */
-    user_id BIGINT UNSIGNED,
-
-    /* data */
-    str TEXT
-);
--- INSERT INTO Strings (id) VALUES (0xB000000000000000);
+-- CREATE TABLE Blobs (
+--     /* variable character string ID */
+--     id BIGINT UNSIGNED PRIMARY KEY,
+--
+--     /* data */
+--     bin BLOB
+-- );
+-- -- INSERT INTO Blobs (id) VALUES (0x9000000000000000);
 
 
 
