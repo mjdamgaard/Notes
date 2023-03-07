@@ -1,4 +1,4 @@
-USE mydatabase;
+-- USE mydatabase;
 
 
 DROP PROCEDURE insertString;
@@ -19,159 +19,176 @@ DROP PROCEDURE insertTerm;
 DROP PROCEDURE insertRelationalPredicate;
 
 
-DELETE FROM SemanticInputs;
 
-DELETE FROM NativeBots;
-DELETE FROM UserGroups;
-DELETE FROM Users;
 
-DELETE FROM DerivedTerms;
 
-DELETE FROM NextIDPointers;
-INSERT INTO NextIDPointers (type_code, next_id_pointer)
-VALUES
-    (0x00, 0x0000000000000001),
-    (0x06, 0x0600000000000001),
-    (0x10, 0x1000000000000001),
-    (0x20, 0x2000000000000001),
-    (0x30, 0x3000000000000001),
-    (0x70, 0x7000000000000001),
-    (0x80, 0x8000000000000001),
-    (0x90, 0x9000000000000001),
-    (0xA0, 0xA000000000000001),
-    (0xB0, 0xB000000000000001)
-;
+DROP PROCEDURE insertOrFindCat;
+DROP PROCEDURE insertOrFindStd;
+DROP PROCEDURE insertOrFindRel;
+
+
+
+
+
+
+-- DELETE FROM Sets;
+-- DELETE FROM SemanticInputs;
+--
+-- DELETE FROM UserGroups;
+-- DELETE FROM Users;
+--
+TRUNCATE TABLE Categories; -- slow..
+-- DELETE FROM StandardTerms;
+-- DELETE FROM Relations;
+-- DELETE FROM KeywordStrings;
+-- DELETE FROM SavedSets;
+-- DELETE FROM Texts;
+-- DELETE FROM Lists;
+-- DELETE FROM Binaries;
+--
 DELETE FROM Creators;
 
-DELETE FROM Lists;
-DELETE FROM Binaries;
-DELETE FROM Blobs;
-DELETE FROM Strings;
-DELETE FROM Texts;
 
 
-/* This library is for the basic insert functions used to initialize
- * the semantic tree (adding some fundamental terms).
- * I intend to also write more advanced term insertion functions,
- * but I will then do so in another library so that I can make a
- * term insertion script for the fundamental terms which only depennds
- * on this basic (and more constant) library.
- **/
+
+
 
 
 DELIMITER //
-CREATE PROCEDURE insertString (
-    IN str VARCHAR(255),
-    IN u_id BIGINT UNSIGNED,
+CREATE PROCEDURE insertOrFindCat (
+    IN in_title TEXT,
+    IN in_super_cat_id BIGINT UNSIGNED,
+    IN in_user_id BIGINT UNSIGNED,
     OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT
+    OUT exit_code TINYINT -- 0 is successful insertion, 1 is successful find.
 )
 BEGIN
-    DECLARE `_rollback` BOOL DEFAULT 0;
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
-    START TRANSACTION;
-        CALL createTerm (0xA0, u_id, new_id);
-        INSERT INTO Strings (id, str) VALUES (new_id, str);
-    IF `_rollback` THEN
-        ROLLBACK;
-        SET exit_code = 1; -- failure.
-    ELSE
-        COMMIT;
-        SET exit_code = 0; -- success.
-    END IF;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE insertStringWORollback (
-    IN str VARCHAR(255),
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED
-)
-BEGIN
-    CALL createTerm (0xA0, u_id, new_id);
-    INSERT INTO Strings (id, str) VALUES (new_id, str);
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE insertOrFindString (
-    IN in_str VARCHAR(255),
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT -- 0 is successful insertion, 2 is successful find.
-)
-BEGIN
-    SELECT id INTO new_id FROM Strings WHERE str = in_str;
+    SELECT id INTO new_id
+    FROM Categories
+    WHERE (title = in_title AND super_cat_id = in_super_cat_id);
     IF (new_id IS NULL) THEN
-        CALL createTerm (0xA0, u_id, new_id);
-        INSERT INTO Strings (id, str) VALUES (new_id, in_str);
+        INSERT INTO Categories (title, super_cat_id)
+        VALUES (in_title, in_super_cat_id);
+        SELECT LAST_INSERT_ID() INTO new_id;
+        IF (in_user_id IS NOT NULL) THEN
+            -- NOTE: This procedure assumes that user_id is correct if not null.
+            INSERT INTO Creators (term_t, term_id, user_id)
+            VALUES ("cat", new_id, in_user_id);
+        END IF;
         SET exit_code = 0; -- insert.
     ELSE
-        SET exit_code = 2; -- find.
+        SET exit_code = 1; -- find.
     END IF;
 END //
 DELIMITER ;
 
 
 
-
-
-
 DELIMITER //
-CREATE PROCEDURE insertText (
-    IN str TEXT,
-    IN u_id BIGINT UNSIGNED,
+CREATE PROCEDURE insertOrFindStd (
+    IN in_title TEXT,
+    IN in_cat_id BIGINT UNSIGNED,
+    IN in_user_id BIGINT UNSIGNED,
     OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT
+    OUT exit_code TINYINT -- 0 is successful insertion, 1 is successful find.
 )
 BEGIN
-    DECLARE `_rollback` BOOL DEFAULT 0;
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
-    START TRANSACTION;
-        CALL createTerm (0xB0, u_id, new_id);
-        INSERT INTO Texts (id, str) VALUES (new_id, str);
-    IF `_rollback` THEN
-        ROLLBACK;
-        SET exit_code = 1; -- failure.
-    ELSE
-        COMMIT;
-        SET exit_code = 0; -- success.
-    END IF;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE insertTextWORollback (
-    IN str TEXT,
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED
-)
-BEGIN
-    CALL createTerm (0xB0, u_id, new_id);
-    INSERT INTO Texts (id, str) VALUES (new_id, str);
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE insertOrFindText (
-    IN in_str TEXT,
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT -- 0 is successful insertion, 2 is successful find.
-)
-BEGIN
-    SELECT id INTO new_id FROM Texts WHERE str = in_str;
+    SELECT id INTO new_id
+    FROM StandardTerms
+    WHERE (title = in_title AND cat_id = in_cat_id);
     IF (new_id IS NULL) THEN
-        CALL createTerm (0xB0, u_id, new_id);
-        INSERT INTO Texts (id, str) VALUES (new_id, in_str);
+        INSERT INTO StandardTerms (title, cat_id)
+        VALUES (in_title, in_cat_id);
+        SELECT LAST_INSERT_ID() INTO new_id;
+        IF (in_user_id IS NOT NULL) THEN
+            -- NOTE: This procedure assumes that user_id is correct if not null.
+            INSERT INTO Creators (term_t, term_id, user_id)
+            VALUES ("std", new_id, in_user_id);
+        END IF;
         SET exit_code = 0; -- insert.
     ELSE
-        SET exit_code = 2; -- find.
+        SET exit_code = 1; -- find.
     END IF;
 END //
 DELIMITER ;
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindRel (
+    IN in_obj_noun TEXT,
+    IN in_obj_cat_id BIGINT UNSIGNED,
+    IN in_subj_cat_id BIGINT UNSIGNED,
+    IN in_user_id BIGINT UNSIGNED,
+    OUT new_id BIGINT UNSIGNED,
+    OUT exit_code TINYINT -- 0 is successful insertion, 1 is successful find.
+)
+BEGIN
+    SELECT id INTO new_id
+    FROM Relations
+    WHERE (
+        obj_noun = in_obj_noun AND
+        obj_cat_id = in_obj_cat_id AND
+        subj_cat_id = in_subj_cat_id
+    );
+    IF (new_id IS NULL) THEN
+        INSERT INTO Relations (obj_noun, obj_cat_id, subj_cat_id)
+        VALUES (in_obj_noun, in_obj_cat_id, in_subj_cat_id);
+        SELECT LAST_INSERT_ID() INTO new_id;
+        IF (in_user_id IS NOT NULL) THEN
+            -- NOTE: This procedure assumes that user_id is correct if not null.
+            INSERT INTO Creators (term_t, term_id, user_id)
+            VALUES ("rel", new_id, in_user_id);
+        END IF;
+        SET exit_code = 0; -- insert.
+    ELSE
+        SET exit_code = 1; -- find.
+    END IF;
+END //
+DELIMITER ;
+
+
+
+
+
+
+
+--
+-- DELIMITER //
+-- CREATE PROCEDURE insertText (
+--     IN str TEXT,
+--     IN u_id BIGINT UNSIGNED,
+--     OUT new_id BIGINT UNSIGNED,
+--     OUT exit_code TINYINT
+-- )
+-- BEGIN
+--     DECLARE `_rollback` BOOL DEFAULT 0;
+--     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
+--     START TRANSACTION;
+--         CALL createTerm (0xB0, u_id, new_id);
+--         INSERT INTO Texts (id, str) VALUES (new_id, str);
+--     IF `_rollback` THEN
+--         ROLLBACK;
+--         SET exit_code = 1; -- failure.
+--     ELSE
+--         COMMIT;
+--         SET exit_code = 0; -- success.
+--     END IF;
+-- END //
+-- DELIMITER ;
+--
+-- DELIMITER //
+-- CREATE PROCEDURE insertTextWORollback (
+--     IN str TEXT,
+--     IN u_id BIGINT UNSIGNED,
+--     OUT new_id BIGINT UNSIGNED
+-- )
+-- BEGIN
+--     CALL createTerm (0xB0, u_id, new_id);
+--     INSERT INTO Texts (id, str) VALUES (new_id, str);
+-- END //
+-- DELIMITER ;
 
 
 
