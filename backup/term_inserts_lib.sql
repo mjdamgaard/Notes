@@ -1,22 +1,6 @@
 -- USE mydatabase;
 
 
-DROP PROCEDURE insertString;
-DROP PROCEDURE insertStringWORollback;
-DROP PROCEDURE insertOrFindString;
-DROP PROCEDURE insertText;
-DROP PROCEDURE insertTextWORollback;
-DROP PROCEDURE insertOrFindText;
-
-DROP PROCEDURE inputUpvote;
-DROP PROCEDURE inputUpvoteDuringCreation;
-
-DROP PROCEDURE insertRels_hasLexItem_and_hasDescription;
-
-DROP PROCEDURE insertTermWODescription;
-DROP PROCEDURE insertTerm;
-
-DROP PROCEDURE insertRelationalPredicate;
 
 
 
@@ -26,8 +10,7 @@ DROP PROCEDURE insertOrFindCat;
 DROP PROCEDURE insertOrFindStd;
 DROP PROCEDURE insertOrFindRel;
 
-
-
+DROP PROCEDURE insertTxt;
 
 
 
@@ -37,7 +20,7 @@ DROP PROCEDURE insertOrFindRel;
 -- DELETE FROM UserGroups;
 -- DELETE FROM Users;
 --
-TRUNCATE TABLE Categories; -- slow..
+-- TRUNCATE TABLE Categories; -- slow..
 -- DELETE FROM StandardTerms;
 -- DELETE FROM Relations;
 -- DELETE FROM KeywordStrings;
@@ -46,7 +29,7 @@ TRUNCATE TABLE Categories; -- slow..
 -- DELETE FROM Lists;
 -- DELETE FROM Binaries;
 --
-DELETE FROM Creators;
+-- DELETE FROM Creators;
 
 
 
@@ -56,28 +39,28 @@ DELETE FROM Creators;
 
 DELIMITER //
 CREATE PROCEDURE insertOrFindCat (
-    IN in_title TEXT,
-    IN in_super_cat_id BIGINT UNSIGNED,
-    IN in_user_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT -- 0 is successful insertion, 1 is successful find.
+    IN catTitle TEXT,
+    IN subjCatID BIGINT UNSIGNED,
+    IN userID BIGINT UNSIGNED,
+    OUT newID BIGINT UNSIGNED,
+    OUT exitCode TINYINT -- 0 is successful insertion, 1 is successful find.
 )
 BEGIN
-    SELECT id INTO new_id
+    SELECT id INTO newID
     FROM Categories
-    WHERE (title = in_title AND super_cat_id = in_super_cat_id);
-    IF (new_id IS NULL) THEN
+    WHERE (title = catTitle AND super_cat_id = subjCatID);
+    IF (newID IS NULL) THEN
         INSERT INTO Categories (title, super_cat_id)
-        VALUES (in_title, in_super_cat_id);
-        SELECT LAST_INSERT_ID() INTO new_id;
-        IF (in_user_id IS NOT NULL) THEN
+        VALUES (catTitle, subjCatID);
+        SELECT LAST_INSERT_ID() INTO newID;
+        IF (userID IS NOT NULL) THEN
             -- NOTE: This procedure assumes that user_id is correct if not null.
             INSERT INTO Creators (term_t, term_id, user_id)
-            VALUES ("cat", new_id, in_user_id);
+            VALUES ("c", newID, userID);
         END IF;
-        SET exit_code = 0; -- insert.
+        SET exitCode = 0; -- insert.
     ELSE
-        SET exit_code = 1; -- find.
+        SET exitCode = 1; -- find.
     END IF;
 END //
 DELIMITER ;
@@ -86,28 +69,28 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE insertOrFindStd (
-    IN in_title TEXT,
-    IN in_cat_id BIGINT UNSIGNED,
-    IN in_user_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT -- 0 is successful insertion, 1 is successful find.
+    IN stdTitle TEXT,
+    IN catID BIGINT UNSIGNED,
+    IN userID BIGINT UNSIGNED,
+    OUT newID BIGINT UNSIGNED,
+    OUT exitCode TINYINT -- 0 is successful insertion, 1 is successful find.
 )
 BEGIN
-    SELECT id INTO new_id
+    SELECT id INTO newID
     FROM StandardTerms
-    WHERE (title = in_title AND cat_id = in_cat_id);
-    IF (new_id IS NULL) THEN
+    WHERE (title = stdTitle AND cat_id = catID);
+    IF (newID IS NULL) THEN
         INSERT INTO StandardTerms (title, cat_id)
-        VALUES (in_title, in_cat_id);
-        SELECT LAST_INSERT_ID() INTO new_id;
-        IF (in_user_id IS NOT NULL) THEN
+        VALUES (stdTitle, catID);
+        SELECT LAST_INSERT_ID() INTO newID;
+        IF (userID IS NOT NULL) THEN
             -- NOTE: This procedure assumes that user_id is correct if not null.
             INSERT INTO Creators (term_t, term_id, user_id)
-            VALUES ("std", new_id, in_user_id);
+            VALUES ("s", newID, userID);
         END IF;
-        SET exit_code = 0; -- insert.
+        SET exitCode = 0; -- insert.
     ELSE
-        SET exit_code = 1; -- find.
+        SET exitCode = 1; -- find.
     END IF;
 END //
 DELIMITER ;
@@ -117,33 +100,31 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE insertOrFindRel (
-    IN in_obj_noun TEXT,
-    IN in_obj_cat_id BIGINT UNSIGNED,
-    IN in_subj_cat_id BIGINT UNSIGNED,
-    IN in_user_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT -- 0 is successful insertion, 1 is successful find.
+    IN objNoun TEXT,
+    IN subjCatID BIGINT UNSIGNED,
+    IN userID BIGINT UNSIGNED,
+    OUT newID BIGINT UNSIGNED,
+    OUT exitCode TINYINT -- 0 is successful insertion, 1 is successful find.
 )
 BEGIN
-    SELECT id INTO new_id
+    SELECT id INTO newID
     FROM Relations
     WHERE (
-        obj_noun = in_obj_noun AND
-        obj_cat_id = in_obj_cat_id AND
-        subj_cat_id = in_subj_cat_id
+        obj_noun = objNoun AND
+        subj_cat_id = subjCatID
     );
-    IF (new_id IS NULL) THEN
-        INSERT INTO Relations (obj_noun, obj_cat_id, subj_cat_id)
-        VALUES (in_obj_noun, in_obj_cat_id, in_subj_cat_id);
-        SELECT LAST_INSERT_ID() INTO new_id;
-        IF (in_user_id IS NOT NULL) THEN
+    IF (newID IS NULL) THEN
+        INSERT INTO Relations (obj_noun, subj_cat_id)
+        VALUES (objNoun, subjCatID);
+        SELECT LAST_INSERT_ID() INTO newID;
+        IF (userID IS NOT NULL) THEN
             -- NOTE: This procedure assumes that user_id is correct if not null.
             INSERT INTO Creators (term_t, term_id, user_id)
-            VALUES ("rel", new_id, in_user_id);
+            VALUES ("r", newID, userID);
         END IF;
-        SET exit_code = 0; -- insert.
+        SET exitCode = 0; -- insert.
     ELSE
-        SET exit_code = 1; -- find.
+        SET exitCode = 1; -- find.
     END IF;
 END //
 DELIMITER ;
@@ -154,315 +135,22 @@ DELIMITER ;
 
 
 
---
--- DELIMITER //
--- CREATE PROCEDURE insertText (
---     IN str TEXT,
---     IN u_id BIGINT UNSIGNED,
---     OUT new_id BIGINT UNSIGNED,
---     OUT exit_code TINYINT
--- )
--- BEGIN
---     DECLARE `_rollback` BOOL DEFAULT 0;
---     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
---     START TRANSACTION;
---         CALL createTerm (0xB0, u_id, new_id);
---         INSERT INTO Texts (id, str) VALUES (new_id, str);
---     IF `_rollback` THEN
---         ROLLBACK;
---         SET exit_code = 1; -- failure.
---     ELSE
---         COMMIT;
---         SET exit_code = 0; -- success.
---     END IF;
--- END //
--- DELIMITER ;
---
--- DELIMITER //
--- CREATE PROCEDURE insertTextWORollback (
---     IN str TEXT,
---     IN u_id BIGINT UNSIGNED,
---     OUT new_id BIGINT UNSIGNED
--- )
--- BEGIN
---     CALL createTerm (0xB0, u_id, new_id);
---     INSERT INTO Texts (id, str) VALUES (new_id, str);
--- END //
--- DELIMITER ;
-
-
-
-
--- DELIMITER //
--- CREATE PROCEDURE authorBotInsert (
---     IN s_id BIGINT UNSIGNED,
---     IN r_id BIGINT UNSIGNED,
---     IN o_id BIGINT UNSIGNED
--- )
--- BEGIN
---     INSERT INTO SemanticInputs (
---         subj_id,
---         user_id,
---         rel_id,
---         obj_id,
---         rat_val, opt_data
---     )
---     VALUES (
---         s_id,
---         1,
---         r_id,
---         o_id,
---         0x7F, NULL
---     );
--- END //
--- DELIMITER ;
-
 
 DELIMITER //
-CREATE PROCEDURE inputUpvote (
-    IN u_id BIGINT UNSIGNED,
-    IN s_id BIGINT UNSIGNED,
-    IN r_id BIGINT UNSIGNED,
-    IN o_id BIGINT UNSIGNED
+CREATE PROCEDURE insertTxt (
+    IN textStr TEXT,
+    IN userID BIGINT UNSIGNED,
+    OUT newID BIGINT UNSIGNED,
+    OUT exitCode TINYINT -- 0 is successful insertion.
 )
 BEGIN
-    INSERT INTO SemanticInputs (
-        subj_id,
-        user_id,
-        rel_id,
-        obj_id,
-        rat_val, opt_data
-    )
-    VALUES (
-        s_id,
-        u_id,
-        r_id,
-        o_id,
-        0x7F, NULL
-    );
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE inputUpvoteDuringCreation (
-    IN u_id BIGINT UNSIGNED,
-    IN s_id BIGINT UNSIGNED,
-    IN r_id BIGINT UNSIGNED,
-    IN o_id BIGINT UNSIGNED
-)
-BEGIN
-    INSERT INTO SemanticInputs (
-        subj_id,
-        user_id,
-        rel_id,
-        obj_id,
-        rat_val, opt_data
-    )
-    VALUES (
-        s_id,
-        u_id,
-        r_id,
-        o_id,
-        0x7F, NULL
-    ), (
-        s_id,
-        1,
-        r_id,
-        o_id,
-        0x7F, NULL
-    );
-END //
-DELIMITER ;
-
-
-
-
--- First two relations:
-
--- use once (then drop procedure).
-DELIMITER //
-CREATE PROCEDURE insertRels_hasLexItem_and_hasDescription (
-    IN str_lexItem_of_hasLexItem VARCHAR(255),
-    IN str_description_of_hasLexItem TEXT,
-    IN str_lexItem_of_hasDescription VARCHAR(255),
-    IN str_description_of_hasDescription TEXT
-)
-BEGIN
-    CALL createTerm (0x30, 1, @TermID_hasLexItem);
-    CALL createTerm (0x30, 1, @TermID_hasDescription);
-    -- There apparently cannot be any selects in a MySQLi prepared statement
-    -- for insertion. (?..)
-    -- SELECT @TermID_hasLexItem;
-    -- SELECT @TermID_hasDescription;
-
-    CALL insertStringWORollback(
-        str_lexItem_of_hasLexItem,
-        1,
-        @StrID_LexItem_of_hasLexItem
-    );
-    CALL insertTextWORollback(
-        str_description_of_hasLexItem,
-        1,
-        @StrID_Description_of_hasLexItem
-    );
-    CALL insertStringWORollback(
-        str_lexItem_of_hasDescription,
-        1,
-        @StrID_LexItem_of_hasDescription
-    );
-    CALL insertTextWORollback(
-        str_description_of_hasDescription,
-        1,
-        @StrID_Description_of_hasDescription
-    );
-
-
-    CALL inputUpvote (
-        1,
-        @TermID_hasLexItem,
-        @TermID_hasLexItem,
-        @StrID_LexItem_of_hasLexItem
-    );
-    CALL inputUpvote (
-        1,
-        @TermID_hasLexItem,
-        @TermID_hasDescription,
-        @StrID_Description_of_hasLexItem
-    );
-    CALL inputUpvote (
-        1,
-        @TermID_hasDescription,
-        @TermID_hasLexItem,
-        @StrID_LexItem_of_hasDescription
-    );
-    CALL inputUpvote (
-        1,
-        @TermID_hasDescription,
-        @TermID_hasLexItem,
-        @StrID_Description_of_hasDescription
-    );
-
-    IF (@TermID_hasLexItem != 0x3000000000000001) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'TermID_hasLexItem wrong value';
+    INSERT INTO Texts (str) VALUES (textStr);
+    SELECT LAST_INSERT_ID() INTO newID;
+    IF (userID IS NOT NULL) THEN
+        -- NOTE: This procedure assumes that user_id is correct if not null.
+        INSERT INTO Creators (term_t, term_id, user_id)
+        VALUES ("t", newID, userID);
     END IF;
-    IF (@TermID_hasDescription != 0x3000000000000002) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'TermID_hasDescription wrong value';
-    END IF;
+    SET exitCode = 0; -- insert.
 END //
 DELIMITER ;
-
-
-
-
-DELIMITER //
-CREATE PROCEDURE insertTerm (
-    IN str_lexItem VARCHAR(255),
-    IN str_description TEXT,
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code_lex TINYINT,
-    OUT exit_code_dscr TINYINT
-)
-BEGIN
-    CALL createTerm (0x30, u_id, new_id);
-
-    CALL insertOrFindString (
-        str_LexItem, u_id, @StrID_lexItem, exit_code_lex
-    );
-    CALL insertOrFindText (
-        str_description, u_id, @StrID_description, exit_code_dscr
-    );
-
-    CALL inputUpvoteDuringCreation (
-        u_id,
-        new_id,
-        0x3000000000000001, -- TermID of hasLexItem
-        @StrID_lexItem
-    );
-    CALL inputUpvoteDuringCreation (
-        u_id,
-        new_id,
-        0x3000000000000002, -- TermID of hasDescription
-        @StrID_description
-    );
-END //
-DELIMITER ;
-
-
-
-DELIMITER //
-CREATE PROCEDURE insertTermWODescription (
-    IN str_lexItem VARCHAR(255),
-    IN u_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code_lex TINYINT
-)
-BEGIN
-    CALL createTerm (0x30, u_id, new_id);
-
-    CALL insertOrFindString (
-        str_LexItem, u_id, @StrID_lexItem, exit_code_lex
-    );
-
-    CALL inputUpvoteDuringCreation (
-        u_id,
-        new_id,
-        0x3000000000000001, -- TermID of hasLexItem
-        @StrID_lexItem
-    );
-END //
-DELIMITER ;
-
-
-
-DELIMITER //
-CREATE PROCEDURE insertRelationalPredicate (
-    IN u_id BIGINT UNSIGNED,
-    IN r_id BIGINT UNSIGNED,
-    IN o_id BIGINT UNSIGNED,
-    OUT new_id BIGINT UNSIGNED,
-    OUT exit_code TINYINT
-)
-BEGIN
-    -- TODO: change.
-    CALL createTerm (0x20, u_id, new_id);
-
-    CALL insertOrFindString (
-        str_LexItem, u_id, @StrID_lexItem, exit_code_lex
-    );
-
-    CALL inputUpvoteDuringCreation (
-        u_id,
-        new_id,
-        0x3000000000000001, -- TermID of hasLexItem
-        @StrID_lexItem
-    );
-END //
-DELIMITER ;
-
-
-
-
-
-
-
-
--- Some testing.
-
--- CALL insertString ("hello world!", @hello_id, @exit_code);
--- CALL insertString ("hello world!!", @hello_id, @exit_code);
--- CALL insertString ("hello world!! How are you?", @hello_id, @exit_code);
---
--- CALL insertString ("hello world!", @hello_id, @exit_code);
--- -- CALL insertStringWOROllback ("hello world!", @hello_id); -- correct
--- -- -- (throws error).
--- CALL insertOrFindString ("hello world!", @hello_id, @exit_code);
--- -- SELECT @hello_id; SELECT @exit_code; -- correct
--- CALL insertOrFindString ("hello new world!", @hello_id, @exit_code);
--- -- SELECT @hello_id; SELECT @exit_code; -- corret
---
--- -- SET @hello_id = 0xA000000000000000 + 1;
--- -- SELECT @hello_id;
--- -- SELECT @exit_code;
