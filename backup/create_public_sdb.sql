@@ -26,7 +26,7 @@ DELETE FROM Creators;
 -- DROP TABLE UserGroups;
 -- DROP TABLE Users;
 --
--- DROP TABLE Categories;
+DROP TABLE Categories;
 -- DROP TABLE StandardTerms;
 -- DROP TABLE Relations;
 -- DROP TABLE KeywordStrings;
@@ -51,6 +51,13 @@ DELETE FROM Creators;
 -- alligevel ingen kollisioner med de typer jeg har. Dette betyder dog ikke,
 -- at jeg ikke nødvendigvis vil beholde tre chars i applikation--control-
 -- grænsefladen (interfacet). (09.03.23)
+
+-- Det kan jo sagtens være, at jeg lader Sets smelte sammen med SemanticInputs
+-- på et tidspunkt. Jeg tror bare, jeg holder dem adskilte fordi, måske fordi
+-- jeg kunne forestille mig, at det letter komprimeringsarbejdet, når
+-- SemanticInputs skal opdateres, når jeg skal komprimere det (hvad jeg helt
+-- sikkert ville skulle, hvis nu et samlet SemanticInputs (samlet med Sets)
+-- viser sig at være det mest effektive).
 
 CREATE TABLE Sets (
     -- set ID (which is not a term ID).
@@ -146,8 +153,8 @@ CREATE TABLE SemanticInputs (
     -- -- rat_val is a numerical rating value (signed) which defines the
     -- -- degree to which the user/user group of the set deems the statement
     -- -- to be true/fitting.
-    -- -- When dividing rat_val with 128, this value runs from -1 to (almost) 1.
-    -- -- And then -1 is taken to mean "very far from true/fitting," 0 is taken
+    -- -- When dividing rat_val with 255, this value runs from 0 to 1.
+    -- -- And then 0 is taken to mean "very far from true/fitting," 0.5 is taken
     -- -- to mean "not sure" / "not particularly fitting or unfitting," and 1 is
     -- -- taken to mean "very much true/fitting."
     -- -- inv_rat_val is the multiplicational inverse of rat_val, meaning that
@@ -165,7 +172,12 @@ CREATE TABLE SemanticInputs (
         rat_val,
         obj_t,
         obj_id
-    )
+    ),
+
+    -- (obj_t, obj_id and set_id will not be redundantly repeated in this
+    -- secondary index. The size of the index will thus be the same as the
+    -- clustered index.)
+    INDEX (obj_t, obj_id, set_id)
 
     -- -- w_exp is a nummerical value which gives the weight of the rating
     -- -- when plugged into the equation w = 2^(w_exp / 32).
@@ -266,6 +278,7 @@ CREATE TABLE Categories (
     UNIQUE INDEX (title, super_cat_id)
 );
 
+
 CREATE TABLE StandardTerms (
     -- term ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -280,7 +293,6 @@ CREATE TABLE StandardTerms (
 
     UNIQUE INDEX (title, cat_id)
 );
-
 
 
 CREATE TABLE Relations (
