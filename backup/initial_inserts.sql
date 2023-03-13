@@ -1,23 +1,34 @@
--- TODO:
--- insertOrFindCategory("Categories", 0, NULL);
--- insertOrFindCategory("Terms", 0, NULL);
--- // insertOrFindCategory("Standard terms", 1, NULL);
--- insertOrFindCategory("Relations", 2, NULL);
---
--- $res = insertOrFindCategory("Users and bots", 2, NULL);
--- $catUserEtcID = $res["id"];
---
--- insertOrFindCategory("Users", $catUserEtcID, NULL);
--- insertOrFindCategory("User groups", $catUserEtcID, NULL);
---
--- $res = insertOrFindCategory("Internal data", 1, NULL);
--- $catDataTermsID = $res["id"];
---
--- insertOrFindCategory("Keyword strings", $catDataTermsID, NULL);
--- insertOrFindCategory("Lists", $catDataTermsID, NULL);
--- insertOrFindCategory("Texts", $catDataTermsID, NULL);
--- insertOrFindCategory("Binaries", $catDataTermsID, NULL);
---
--- // relations.
--- insertOrFindRelation("Subcategories", 1, NULL);
--- insertOrFindRelation("Elements", 1, NULL);
+
+-- TRUNCATE TABLE Categories; -- very slow, but this is much faster:
+DELETE FROM Categories;
+ALTER TABLE Categories AUTO_INCREMENT=1;
+
+-- TRUNCATE TABLE Creators;
+
+
+-- insert the fundamental category of all terms (with no super category).
+INSERT INTO Categories (id, title, super_cat_id)
+VALUES (1, "Terms", 0); -- ('super_cat_id = 0' means 'no super category.')
+SET @termsID = "1";
+
+-- insert categories for all the fundamental term types.
+CALL insertOrFindCat ("Categories", @termsID, NULL, @ec, @nid);
+CALL insertOrFindCat ("Standard terms", @termsID, NULL, @ec, @nid);
+CALL insertOrFindCat ("Relations", @termsID, NULL, @ec, @nid);
+
+CALL insertOrFindCat ("Users and bots", @termsID, NULL, @ec, @usersEtcCatID);
+
+CALL insertOrFindCat ("Users", @usersEtcCatID, NULL, @ec, @nid);
+CALL insertOrFindCat ("User groups", @usersEtcCatID, NULL, @ec, @nid);
+
+CALL insertOrFindCat ("Internal data", @termsID, NULL, @ec, @dataCatID);
+
+CALL insertOrFindCat ("Keyword strings", @dataCatID, NULL, @ec, @nid);
+CALL insertOrFindCat ("Lists", @dataCatID, NULL, @ec, @nid);
+CALL insertOrFindCat ("Texts", @dataCatID, NULL, @ec, @nid);
+CALL insertOrFindCat ("Binaries", @dataCatID, NULL, @ec, @nid);
+
+
+-- insert fundamental relations.
+CALL insertOrFindRel ("Subcategories", @termsID, NULL, @ec, @nid);
+CALL insertOrFindRel ("Elements", @termsID, NULL, @ec, @nid);

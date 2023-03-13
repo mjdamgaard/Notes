@@ -1306,6 +1306,31 @@ Hm, og hvad mere skal jeg egentligt sige.\,.\,? Selvfølgelig er tanken så.\,. 
 
 
 
+(13.03.23, 16:43) Ah, jeg tror, at man i stedet for at up-rate HTML-skabeloner for individuelle relationer, så skal man bare up-rate én skabelon (i.e.\ den bedst ratede) for en given kategori, og så kan denne skabelon kalde sig selv rekursivt, så at sige, og kalde andre skabeloner, som så bestemmer, hvilken HTML skal komme frem, når man trykker på diverse knapper i skabelonen --- hvilke nu altså ikke nødvendigvis er bundet op på en relation hver især! I stedet beskriver skabelonen bare fuldstændig, hvilken HTML skal komme frem, når man trykker på en knap, og \emph{denne} (barne-)skabelon kan så \emph{eksempelvis} vælge at sende en AJAX-query til en relation (men jo også mske eventuelt til flere relationer). Nå, og den store pointe, jeg så lige har fundet på, er at man til en sådan skabelon (for en kategori (eller rettere for elementerne i denne)) også skal kunne up-rate kategori--skabelons-par, således at hvis den pågældende skabelon er i $Path$en, og man i denne path query'er termer, hvor visnings-skabelonen ikke er defineret som en del af den samlede skabelon, så kan applikationen i første omgang så gå over og søge i disse kategori--skabelons-par for at finde den nærmeste overkategori i termens ``definerende overkategorier,'' og hvis der findes et match her, så for termen så den skabelon fra det kategori--skabelons-par med den nærmeste overkategori. Og hvis ikke der er noget match her, så kan applikationen i sidste ende bare følge hele listen af ``definerende overkategorier,'' indtil den støder på en overkategori, som har en skabelon defineret for sig (hvilket muligvis kunne være `Terms'-kategorien som rosinen i pølseenden). Lad mig prøve at gentage det.\,. Så for en given kategori kan man i første omgang up-rate en skabelon, som definere en HTML-visning, der bl.a.\ kan indeholde knapper, som så kan kalde andre skabeloner, inklusiv skabelonen selv rekursivt. Men denne skabelon kan nu altså også bare query'e mængder og termer, uden at skabelonen definere, hvordan disse termer vises, i en listevisning eller en alene-visning (m.m.). Så skal applikationen så selv finde frem til, udenom den givne skabelon, hvordan disse termer skal vises. Og her kan den så altså i første omgang kigge i eventuelt up-ratede kategori--skabelons-par til samme kategori for at finde den nærmeste overkategori her, og så bruge den korresponderende skabelon i dette par, eller den kan i sidste ende (hvis dette ikke giver noget) simpelthen bare følge rækken af overkategorier (som slutter på `Terms'), indtil den støder på en kategori, som selv har en skabelon up-ratet for sig (over en vis tærskel skarpt større end 0!), og når den finder en skabelon herved (hvad den altid vil gøre, hvis bare `Terms' har en skabelon up-ratet for sig), så kan denne skabelon altså så vælges til term-visningen. (17:03)
+
+
+.\,.\,For resten tænker jeg igen at starte med at implementere $Path$en allerede nu her (skal snart i gang med front-end'en). Jeg har dog nogle rettelser til dens grammatik, men det gider jeg ikke lige at skrive om; jeg vil hellere bare prøve at bygge det.\,. (17:04)
+
+.\,.\,Nå ja, og lad mig lige sige, at nu hælder jeg faktisk mest over imod at kalde systemet/siden for openSDB i stedet.\,. (17:05)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \chapter{Hopes for the future}
 
 \section{Some hopes for the future in terms of what my ideas can hopefully help bring about}
