@@ -1314,6 +1314,49 @@ Hm, og hvad mere skal jeg egentligt sige.\,.\,? Selvfølgelig er tanken så.\,. 
 .\,.\,Nå ja, og lad mig lige sige, at nu hælder jeg faktisk mest over imod at kalde systemet/siden for openSDB i stedet.\,. (17:05)
 
 
+(16.03.23, 9:38) Okay, jeg tror, jeg er nærmere nu på, hvordan skabelon-halløjet skal implementeres overordnet set. Jeg forestiller mig nu, at skabelondefinitioner i første omgang bør bestå af en liste af tre lister (hver især af variabel længde, som henholdsvis indeholder javascript programmer, HTML-tekster og CSS-tekster. Javascript programmerne skal så ikke loades af siden, men i stedet kan siden bare læse dem og se på, om de er indeholdt i en liste over JS-programmer, hvis funktionaliteter er inkluderet i det nuværende kørende JS-program i browseren/applikationen. Hvis ikke JS-programmet genkendes, så kan applikationen give en advarsel til brugerne om, at den valgte skabelon altså muligvis ikke får den ønskede rendering, når HTML-teksterne indsættes på siden. Og hvis applikationen genkender JS-programmet, men ikke har disse funktionaliteter med i det nuværende kørende JS-program, så kan applikationen måske eventuelt se på, om man kan gøre noget for at loade de funktionaliteter alligevel, muligvis ved at stoppe andre del-programmer sådan at der ikke bliver en kollision ved at loade de ønskede funktionaliteter. Bemærk dog, at dette dog er noget der \emph{eventuelt} kunne blive \emph{en smule} nyttigt, men jeg regner dog altså ikke med, at det bliver særligt nyttigt i praksis; man kan nok komme rigeligt langt med bare at sørge for, at applikationen bare har en liste af programmer, som den kan køre, hvis der er behov for det, hvor der bare allerede er sørget for i forvejen, at disse programmer ikke kolliderer i deres semantik. Ja, det vil klart være det mest praktiske, bare at sørge for dette.\,. Okay, nå, men både HTML- og CSS-teksterne må derimod godt loades af applikationen direkte fra listen, for her sørger man nemlig bare for, at de loades ved køre i gennem et tjek-og-verifikations-program, der for det første kører htmlspecialchars modsat, men også i samme omgang tjekker, at syntaksen overholder en vis grammatik, hvilket for HTML'ens vedkomne også indebærer, at script-tags er ulovlige i syntaksen. .\,.\,Hm, og hvad i øvrigt med links.\,.\,? .\,.\,Hm, applikationen kunne jo i forvejen have en umiddelbar whitelist over URL-syntakser, som kan bruges.\,. .\,.\,Hm, og så skal brugerne selv kunne tilføje whitelistede hjemmesider via et specialt prædikat (som implementeres som en relation med en kategori som subjekt, ligesom alle andre prædikater, og her skal kategorien selvfølgelig bare være overkategorien, `Terms'), og kan så også tilføje blacklistede hjemmesider til et andet prædikat, hvilket så bl.a.\ også giver mulighed for at overskrive og fjerne hjemmesider i applikationens start-whitelist. .\,.\,Men spørgsmålet er så, om dette virkeligt skal indgå i parsingen af HTML-teksterne, eller om ikke man kan gøre noget smartere.\,.(?)
+
+\ldots Okay, svaret på det sidste spørgsmål her er meget simpelt, for man gør jo også bare links ulovlige i parsingen, men så kan man tilgengæld lave nogle klasser/attribut-specifikationer, som siger til et inkluderet JS-program, at elementet gerne skal udskiftes med et links, \emph{hvis} altså at linket også først kan godkendes fra listen over whitelistede syntakser (og hvis selvfølgelig den ikke matcher nogen blacklistede syntakser heller). Ok, men jeg har dog nogle andre ting, jeg også lige overvejer.\,. 
+
+\ldots Nå, jeg har overvejet lidt omkring, JS-programmet, men er nu ikke kommet frem til noget vigtigt, der er værd at nævne. Okay, men lad mig færdiggøre denne tråd om skabelonerne. Vi er faktisk næsten i mål, for når man så har disse skabelondefinitioner (en liste af tre lister), så mangler man også lige én information mere for at have sig en skabelon, og der er et tal, der fortæller, hvilken HTML-tekst i listen, man starter på. Husk nemlig på, at HTML-teksterne/-delskabelonerne kan kalde sig selv og andre HTML-delskabeloner, og det er altså dem i denne liste. Men det kan være, at forskellige kategorier kan bruge samme skabelondefinition, men hvor man bare starter på forskellige start-HTML-delskabeloner, og herved kommer dette tal altså ind i billedet, for så kan alle disse kategorier referere til den samme skabelondefinition, men bare have hver deres tal. Så en `skabelon' bliver altså hermed en liste af to ting: et tal, og så en skabelondefinition (som altså igen er en liste af tre ting, nemlig JS-/HTML-/CSS-tekst-lister). (11:17)
+
+Nå, det gode er så dog, at jeg bare kan starte med at have ét JS-program --- og én CSS-fil i øvrigt --- og så bare definere alle HTML-delskabelonerne, som jeg vil bruge til prototypen, ud fra dette/disse. Og herved vil jeg så også bare helt undgå at implementere noget som helst omkring de her skabelon-up-ratings (som brugeren kan gøre for hver kategori i princippet) lige i starten (indtil jeg lige kommer i gang og for testet at hele applikation-til/fra-database-kommunikationen er kommet op at køre og fungerer nogenlunde korrekt). Så lige i starten definerer jeg altså bare lige nogle få HTML-delskabeloner.\,.
+
+Nå, men til gengæld er en anden vigtig ting omkring brugernes mulighed for at bruge forskellige brugergrupper automatisk til forskellige valgte kategorier, men det virker nu også som en ret stor opgave alt i alt, så den må jeg også lige gå at summe lidt over, imens jeg laver en grundlæggende applikationsprototype.\,. (11:26)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -7,7 +7,7 @@ DROP PROCEDURE selectCatDef;
 DROP PROCEDURE selectStdDef;
 DROP PROCEDURE selectRelDef;
 
-DROP PROCEDURE selectSuperCats;
+DROP PROCEDURE selectSuperCatDefs;
 
 DROP PROCEDURE selectData;
 
@@ -19,10 +19,10 @@ DROP PROCEDURE selectCreations;
 DELIMITER //
 CREATE PROCEDURE selectSet (
     IN userType CHAR(1),
-    IN userIDHex VARCHAR(16),
+    IN userIDBin VARCHAR(16),
     IN subjType CHAR(1),
-    IN subjIDHex VARCHAR(16),
-    IN relIDHex VARCHAR(16),
+    IN subjIDBin VARCHAR(16),
+    IN relIDBin VARCHAR(16),
     IN ratingRangeMin VARBINARY(255),
     IN ratingRangeMax VARBINARY(255),
     IN num INT UNSIGNED,
@@ -31,59 +31,57 @@ CREATE PROCEDURE selectSet (
 )
 BEGIN
     DECLARE userID, subjID, relID, setID BIGINT UNSIGNED;
-    SET userID = CONV(userIDHex, 16, 10);
-    SET subjID = CONV(subjIDHex, 16, 10);
-    SET relID = CONV(relIDHex, 16, 10);
+    SET userID = CONV(userIDBin, 16, 10);
+    SET subjID = CONV(subjIDBin, 16, 10);
+    SET relID = CONV(relIDBin, 16, 10);
 
     -- DECLARE setID BIGINT UNSIGNED;
     SELECT set_id INTO setID
     FROM Sets
     WHERE (
         user_t = userType AND
-        user_id = userID AND
+        user_id = userID AND -- CONV(userIDBin, 2, 10) AND
         subj_t = subjType AND
-        subj_id = subjID AND
-        rel_id = relID
+        subj_id = subjID AND -- CONV(subjIDBin, 2, 10) AND
+        rel_id = relID -- CONV(relIDBin, 2, 10)
     );
-    IF (isAscOrder) THEN
-        SELECT HEX(rat_val) AS ratingVal, obj_t AS objType, obj_id AS objID
-        FROM SemanticInputs
-        WHERE (
-            set_id = setID AND
-            rat_val BETWEEN ratingRangeMin AND ratingRangeMax
-        )
-        ORDER BY rat_val, obj_t, obj_id ASC
-        LIMIT numOffset, num;
-    ELSE
-        SELECT HEX(rat_val) AS ratingVal, obj_t AS objType, obj_id AS objID
-        FROM SemanticInputs
-        WHERE (
-            set_id = setID AND
-            rat_val BETWEEN ratingRangeMin AND ratingRangeMax
-        )
-        ORDER BY rat_val, obj_t, obj_id DESC
-        LIMIT numOffset, num;
-    END IF;
+    SELECT
+        HEX(rat_val) AS ratingVal,
+        obj_t AS objType,
+        HEX(obj_id) AS objID
+    FROM SemanticInputs
+    WHERE (
+        set_id = setID AND
+        (ratingRangeMin = "" OR rat_val >= ratingRangeMin) AND
+        (ratingRangeMax = "" OR rat_val <= ratingRangeMax)
+    )
+    ORDER BY
+        CASE WHEN isAscOrder THEN rat_val END ASC,
+        CASE WHEN NOT isAscOrder THEN rat_val END DESC,
+        obj_t ASC,
+        obj_id ASC
+    LIMIT numOffset, num;
 END //
 DELIMITER ;
+-- SHOW WARNINGS;
 
 
 DELIMITER //
 CREATE PROCEDURE selectRating (
     IN objType CHAR(1),
-    IN objIDHex VARCHAR(16),
+    IN objIDBin VARCHAR(16),
     IN userType CHAR(1),
-    IN userIDHex VARCHAR(16),
+    IN userIDBin VARCHAR(16),
     IN subjType CHAR(1),
-    IN subjIDHex VARCHAR(16),
-    IN relIDHex VARCHAR(16)
+    IN subjIDBin VARCHAR(16),
+    IN relIDBin VARCHAR(16)
 )
 BEGIN
     DECLARE objID, userID, subjID, relID, setID BIGINT UNSIGNED;
-    SET objID = CONV(objIDHex, 16, 10);
-    SET userID = CONV(userIDHex, 16, 10);
-    SET subjID = CONV(subjIDHex, 16, 10);
-    SET relID = CONV(relIDHex, 16, 10);
+    SET objID = CONV(objIDBin, 16, 10);
+    SET userID = CONV(userIDBin, 16, 10);
+    SET subjID = CONV(subjIDBin, 16, 10);
+    SET relID = CONV(relIDBin, 16, 10);
 
     -- DECLARE setID BIGINT UNSIGNED;
     SELECT set_id INTO setID
@@ -111,11 +109,11 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectCatDef (
-    IN catIDHex VARCHAR(16)
+    IN catIDBin VARCHAR(16)
 )
 BEGIN
     DECLARE catID BIGINT UNSIGNED;
-    SET catID = CONV(catIDHex, 16, 10);
+    SET catID = CONV(catIDBin, 16, 10);
 
     SELECT title AS title, HEX(super_cat_id) AS superCatID
     FROM Categories
@@ -126,11 +124,11 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectStdDef (
-    IN stdIDHex VARCHAR(16)
+    IN stdIDBin VARCHAR(16)
 )
 BEGIN
     DECLARE stdID BIGINT UNSIGNED;
-    SET stdID = CONV(stdIDHex, 16, 10);
+    SET stdID = CONV(stdIDBin, 16, 10);
 
     SELECT title AS title, HEX(cat_id) AS catID
     FROM StandardTerms
@@ -141,11 +139,11 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectRelDef (
-    IN relIDHex VARCHAR(16)
+    IN relIDBin VARCHAR(16)
 )
 BEGIN
     DECLARE relID BIGINT UNSIGNED;
-    SET relID = CONV(relIDHex, 16, 10);
+    SET relID = CONV(relIDBin, 16, 10);
 
     SELECT obj_noun AS objNoun, HEX(subj_cat_id) AS subjCatID
     FROM Relations
@@ -157,27 +155,34 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE selectSuperCats (
-    IN catIDHex VARCHAR(16)
+CREATE PROCEDURE selectSuperCatDefs (
+    IN catIDBin VARCHAR(16)
 )
 BEGIN
     DECLARE catID BIGINT UNSIGNED;
     DECLARE str VARCHAR(255);
     DECLARE n TINYINT UNSIGNED;
-    SET catID = CONV(catIDHex, 16, 10);
+    SET catID = CONV(catIDBin, 16, 10);
 
-    SET n = 255;
+    CREATE TEMPORARY TABLE ret
+        SELECT title, super_cat_id AS superCatID
+        FROM Categories
+        WHERE id = NULL;
+
+    SET n = 0;
     label1: LOOP
-        IF (NOT catID > 0 OR n = 0) THEN
+        IF (NOT catID > 0 OR n >= 255) THEN
             LEAVE label1;
         END IF;
         SELECT title, super_cat_id INTO str, catID
         FROM Categories
         WHERE id = catID;
-        SELECT str as title, catID;
-        SET n = n - 1;
+        INSERT INTO ret (title, superCatID)
+        VALUES (str, catID);
+        SET n = n + 1;
         ITERATE label1;
     END LOOP label1;
+    SELECT title, CONV(superCatID, 10, 16) FROM ret ORDER BY superCatID DESC;
 END //
 DELIMITER ;
 
@@ -188,11 +193,11 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE selectData (
     IN dataType CHAR(1),
-    IN dataIDHex VARCHAR(16)
+    IN dataIDBin VARCHAR(16)
 )
 BEGIN
     DECLARE dataID BIGINT UNSIGNED;
-    SET dataID = CONV(dataIDHex, 16, 10);
+    SET dataID = CONV(dataIDBin, 16, 10);
 
     CASE dataType
         WHEN "t" THEN
@@ -211,7 +216,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectCreations (
-    IN userIDHex VARCHAR(16),
+    IN userIDBin VARCHAR(16),
     IN termType CHAR(1),
     IN num INT UNSIGNED,
     IN numOffset INT UNSIGNED,
@@ -219,16 +224,16 @@ CREATE PROCEDURE selectCreations (
 )
 BEGIN
     DECLARE userID BIGINT UNSIGNED;
-    SET userID = CONV(userIDHex, 16, 10);
+    SET userID = CONV(userIDBin, 16, 10);
 
     IF (isAscOrder) THEN
-        SELECT HEX(term_id) AS termID
+        SELECT CONV(term_id, 10, 16) AS termID
         FROM Creators
         WHERE (user_id = userID AND term_t = termType)
         ORDER BY term_id ASC
         LIMIT numOffset, num;
     ELSE
-        SELECT HEX(term_id) AS termID
+        SELECT CONV(term_id, 10, 16) AS termID
         FROM Creators
         WHERE (user_id = userID AND term_t = termType)
         ORDER BY term_id DESC
