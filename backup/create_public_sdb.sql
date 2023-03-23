@@ -10,7 +10,7 @@
 -- DELETE FROM Users;
 --
 -- DELETE FROM Categories;
--- DELETE FROM StandardTerms;
+-- DELETE FROM ElementaryTerms;
 -- DELETE FROM Relations;
 -- DELETE FROM KeywordStrings;
 -- DELETE FROM Lists;
@@ -29,7 +29,7 @@
 -- DROP TABLE Users;
 --
 -- DROP TABLE Categories;
--- DROP TABLE StandardTerms;
+-- DROP TABLE ElementaryTerms;
 -- DROP TABLE Relations;
 -- DROP TABLE KeywordStrings;
 -- DROP TABLE Lists;
@@ -63,7 +63,7 @@
 
 CREATE TABLE Sets (
     -- set ID (which is not a term ID).
-    set_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- Sets are not Terms, so IDs take any value.
 
     -- user or user group who states the statement.
@@ -77,6 +77,9 @@ CREATE TABLE Sets (
     -- relation.
     rel_id BIGINT UNSIGNED NOT NULL,
 
+    -- number of elements.
+    elem_num BIGINT UNSIGNED NOT NULL,
+
     UNIQUE INDEX (
         user_t,
         user_id,
@@ -84,6 +87,7 @@ CREATE TABLE Sets (
         subj_id,
         rel_id
     )
+
 
 );
 
@@ -177,7 +181,7 @@ CREATE TABLE SemanticInputs (
     -- (obj_t, obj_id and set_id will not be redundantly repeated in this
     -- secondary index. The size of the index will thus be the same as the
     -- clustered index.)
-    INDEX (obj_t, obj_id, set_id)
+    INDEX (obj_t, obj_id, set_id) -- This index is already unique due to the PK.
 
     -- -- w_exp is a nummerical value which gives the weight of the rating
     -- -- when plugged into the equation w = 2^(w_exp / 32).
@@ -309,7 +313,7 @@ CREATE TABLE Categories (
 );
 -- SHOW WARNINGS;
 
-CREATE TABLE StandardTerms (
+CREATE TABLE ElementaryTerms (
     -- term ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- type = "std".
