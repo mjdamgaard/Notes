@@ -1404,6 +1404,9 @@ I går aftes kom jeg frem til noget omkring, at jeg nok, fordi man jo kan define
 (16:06) Angående full-text searches så bliver svaret egentligt rigtig simpelt: Det skal simpelthen bare \emph{kun} være KeywordStrings, at man kan søge i med FULLTEXT searches. Og det man så typisk vil gøre her, er, at man så med det samme tilføjer en relation (og en bruger), sådan at man finder frem til en mængde af termer, der passer godt på de indeholdte nøgleord i den valgte streng (som så typisk vil indeholde en overmængde af de nøgleord, man selv har tastet ind). Og alle andre søgninger i databasen skal så simpelthen bare være semantiske søgninger, foruden primær- og sekundærindekssøgninger (hvilket også inkluderer sekundærindekssøgninger på term-titler m.m.). (16:12)
 
 
+(24.04.23, 12:10) Kopieret fra commit message: ``Oh, I just realized something. I was leaning towards abandoning the syntax check (including even for JS programs), and now I just realized how doing so would actually just provide a perfect opportunity to showcase the potential for semantic technologies when it comes to program semantics verification..! So I'll keep the outer ideas about the UPA, including getting script from textID's in the SDB, but I will put a pin in all the ideas about automatic verification (and thus about my JS subset) for now.''
+
+.\,.\,Well, I'm putting a pin in syntax-checking the JS subset, but I can still propose a standard of using various `upaf\_', `upav\_', `upai\_', `upak\_' prefixes, such that it is much easier to verify, that the user script does not cause any unwanted collisions. (12:16)
 
 
 
