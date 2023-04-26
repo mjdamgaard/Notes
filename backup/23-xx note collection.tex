@@ -1443,7 +1443,7 @@ About the content loader ``leaves,'' let me first mention that I forgot that the
 
 (19:10) I should also mention that users who are logged in can always load and run the scripts that they have uploaded themselves. And let me also mention that the ``more dynamic'' scripts doesn't have to use import(): We can also implement dynamic script by inserting module scripts the same way as is done for the sequence of initial scripts (where these scripts can then change and/or add to the (prefixed) global variable(s) manually for the window).
 
-
+\ldots (19:30) Ah, and the initial input that a content loader needs is also just given by signals. This also means that the parent can initialize the child instances without them activating before they receive their first signal to activate, which should then of course include a payload of the needed inputs. 
 
 
 
