@@ -11,37 +11,49 @@ DROP PROCEDURE selectCatDef;
 DROP PROCEDURE selectETermDef;
 DROP PROCEDURE selectRelDef;
 
+DROP PROCEDURE selectCatInfoFromSecKey;
+DROP PROCEDURE selectETermInfoFromSecKey;
+DROP PROCEDURE selectRelInfoFromSecKey;
+
 DROP PROCEDURE selectSuperCatDefs;
 
 DROP PROCEDURE selectText;
 DROP PROCEDURE selectBinary;
+DROP PROCEDURE selectList;
+DROP PROCEDURE selectKeywordString;
+DROP PROCEDURE selectKeywordIDFromSearch;
+DROP PROCEDURE selectPattern;
+DROP PROCEDURE selectPatternInfoFromSecKey;
 
+DROP PROCEDURE selectCreator;
 DROP PROCEDURE selectCreations;
 
+DROP PROCEDURE selectRecentInputs;
+
+DROP PROCEDURE selectPublicUserKey;
+
+DROP PROCEDURE selectUserGroupInfo;
 
 
 
 
 DELIMITER //
 CREATE PROCEDURE selectSet (
-    IN setCombID VARCHAR(17),
+    IN setID BIGINT UNSIGNED,
     IN ratingRangeMinHex VARCHAR(510),
     IN ratingRangeMaxHex VARCHAR(510),
-    IN num INT UNSIGNED,
+    IN maxNum INT UNSIGNED,
     IN numOffset INT UNSIGNED,
     IN isAscOrder BOOL
 )
 BEGIN
-    DECLARE setID BIGINT UNSIGNED;
     DECLARE ratMin, ratMax VARBINARY(255);
-
-    CALL getConvID (setCombID, setID);
     SET ratMin = UNHEX(ratingRangeMinHex);
     SET ratMax = UNHEX(ratingRangeMaxHex);
 
     SELECT
         HEX(rat_val) AS ratVal,
-        CONCAT(obj_t, CONV(obj_id, 10, 16)) AS objID
+        obj_id AS objID
     FROM SemanticInputs
     WHERE (
         set_id = setID AND
@@ -51,11 +63,9 @@ BEGIN
     ORDER BY
         CASE WHEN isAscOrder THEN rat_val END ASC,
         CASE WHEN NOT isAscOrder THEN rat_val END DESC,
-        CASE WHEN isAscOrder THEN obj_t END ASC,
-        CASE WHEN NOT isAscOrder THEN obj_t END DESC,
         CASE WHEN isAscOrder THEN obj_id END ASC,
         CASE WHEN NOT isAscOrder THEN obj_id END DESC
-    LIMIT numOffset, num;
+    LIMIT numOffset, maxNum;
 END //
 DELIMITER ;
 
@@ -63,176 +73,131 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectSetInfo (
-    IN setCombID VARCHAR(17)
+    IN setID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE setID BIGINT UNSIGNED;
-    CALL getConvID (setCombID, setID);
-
     SELECT
-        CONCAT(user_t, CONV(user_id, 10, 16)) AS userID,
-        CONCAT(subj_t, CONV(subj_id, 10, 16)) AS subjID,
-        CONCAT('r', CONV(rel_id, 10, 16)) AS relID,
-        elem_num AS elemNum
-    FROM Sets
-    WHERE id = setID;
+        Sets.id AS setID,
+        Sets.user_id AS userID,
+        Relations.subj_t AS subjType
+        Sets.subj_id AS subjID,
+        Sets.rel_id AS relID,
+        Relations.obj_noun AS relObjNoun
+        Relations.obj_t AS objType
+        Sets.elem_num AS elemNum
+    FROM Sets INNER JOIN Relations ON Sets.rel_id = Relations.id
+    WHERE Sets.id = setID;
 END //
 DELIMITER ;
 
 
 DELIMITER //
 CREATE PROCEDURE selectSetInfoFromSecKey (
-    IN userCombID VARCHAR(17),
-    IN subjCombID VARCHAR(17),
-    IN relCombID VARCHAR(17)
+    IN userID BIGINT UNSIGNED,
+    IN subjID BIGINT UNSIGNED,
+    IN relID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE userType, subjType CHAR(1);
-    DECLARE userID, subjID, relID, setID, elemNum BIGINT UNSIGNED;
-
-    CALL getTypeAndConvID (userCombID, userType, userID);
-    CALL getTypeAndConvID (subjCombID, subjType, subjID);
-    CALL getConvID (relCombID, relID);
-    SELECT id, elem_num INTO setID, elemNum
+    DECLARE setID BIGINT UNSIGNED;
+    SELECT id INTO setID
     FROM Sets
     WHERE (
-        user_t = userType AND
         user_id = userID AND
-        subj_t = subjType AND
         subj_id = subjID AND
         rel_id = relID
     );
-
-    SELECT
-        CONCAT('s', CONV(setID, 10, 16)) AS setID,
-        elemNum;
+    CALL selectSetInfo (setID);
 END //
 DELIMITER ;
 
-
--- DELIMITER //
--- CREATE PROCEDURE selectSetElemNumFromID(
---     IN setIDHex VARCHAR(16)
--- )
--- BEGIN
---     DECLARE setID BIGINT UNSIGNED;
---     SET setID = CONV(setIDHex, 16, 10);
---     SELECT elem_num AS elemNum
---     FROM Sets
---     WHERE (id = setID);
--- END //
--- DELIMITER ;
-
-
--- DELIMITER //
--- CREATE PROCEDURE selectSetFromSecKey(
---     IN userType CHAR(1),
---     IN userIDHex VARCHAR(16),
---     IN subjType CHAR(1),
---     IN subjIDHex VARCHAR(16),
---     IN relIDHex VARCHAR(16),
---     IN ratingRangeMin VARBINARY(255),
---     IN ratingRangeMax VARBINARY(255),
---     IN num INT UNSIGNED,
---     IN numOffset INT UNSIGNED,
---     IN isAscOrder BOOL
--- )
--- BEGIN
---     DECLARE setID BIGINT UNSIGNED;
---     CALL getSetIntsFromSecKey (
---         userType,
---         userIDHex,
---         subjType,
---         subjIDHex,
---         relIDHex,
---         setID
---     );
---     CALL selectSetFromSetIDInt (
---         setID,
---         ratingRangeMin,
---         ratingRangeMax,
---         num,
---         numOffset,
---         isAscOrder
---     );
--- END //
--- DELIMITER ;
-
-
-
-
-
-
--- DELIMITER //
--- CREATE PROCEDURE selectRatingFromSecKey (
---     IN objCombID VARCHAR(17),
---     IN userCombID VARCHAR(17),
---     IN subjCombID VARCHAR(17),
---     IN relCombID VARCHAR(17)
--- )
--- BEGIN
---     DECLARE objType, userType, subjType CHAR(1);
---     DECLARE objID, userID, subjID, relID, setID BIGINT UNSIGNED;
---
---     CALL getTypeAndConvID (objCombID, objType, objID);
---     CALL getTypeAndConvID (userCombID, userType, userID);
---     CALL getTypeAndConvID (subjCombID, subjType, subjID);
---     CALL getConvID (relCombID, relID);
---     SELECT id INTO setID
---     FROM Sets
---     WHERE (
---         user_t = userType AND
---         user_id = userID AND
---         subj_t = subjType AND
---         subj_id = subjID AND
---         rel_id = relID
---     );
---
---     SELECT HEX(rat_val) AS ratVal
---     FROM SemanticInputs
---     WHERE (obj_t = objType AND obj_id = objID AND set_id = setID);
--- END //
--- DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE selectSetID (
+    IN userID BIGINT UNSIGNED,
+    IN subjID BIGINT UNSIGNED,
+    IN relID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT id AS setID
+    FROM Sets
+    WHERE (
+        user_id = userID AND
+        subj_id = subjID AND
+        rel_id = relID
+    );
+END //
+DELIMITER ;
 
 
 
 DELIMITER //
 CREATE PROCEDURE selectRating (
-    IN objCombID VARCHAR(17),
-    IN setCombID VARCHAR(17)
+    IN objID BIGINT UNSIGNED,
+    IN setID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE objType CHAR(1);
-    DECLARE objID, setID BIGINT UNSIGNED;
-
-    CALL getTypeAndConvID (objCombID, objType, objID);
-    CALL getConvID (setCombID, setID);
-
     SELECT HEX(rat_val) AS ratVal
     FROM SemanticInputs
-    WHERE (obj_t = objType AND obj_id = objID AND set_id = setID);
+    WHERE (obj_id = objID AND set_id = setID);
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectRecentInputs (
+    IN setID BIGINT UNSIGNED,
+    IN objID BIGINT UNSIGNED,
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    IF (objID = 0) THEN
+        SELECT
+            obj_id AS objID,
+            changed_at AS changedAt,
+            HEX(old_rat_val) AS oldRatVal,
+            HEX(new_rat_val) AS newRatVal
+        FROM RecentInputs
+        WHERE set_id = setID
+        ORDER BY obj_id DESC, changed_at DESC
+        LIMIT numOffset, maxNum;
+    ELSE
+        SELECT
+            changed_at AS changedAt,
+            HEX(old_rat_val) AS oldRatVal,
+            HEX(new_rat_val) AS newRatVal
+        FROM RecentInputs
+        WHERE (set_id = setID AND obj_id = objID)
+        ORDER BY changed_at DESC
+        LIMIT numOffset, maxNum;
+    END IF;
 END //
 DELIMITER ;
 
 
 
 
-
+DELIMITER //
+CREATE PROCEDURE selectUserInfo (
+    IN userID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT public_keys_for_authentication AS publicKeys
+    FROM Users
+    WHERE id = userID;
+END //
+DELIMITER ;
 
 
 
 
 DELIMITER //
-CREATE PROCEDURE selectCatDef (
-    IN catCombID VARCHAR(17)
+CREATE PROCEDURE selectCat (
+    IN catID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE catID BIGINT UNSIGNED;
-    CALL getConvID (catCombID, catID);
-
     SELECT
-        title AS catTitle,
-        CONCAT('c', CONV(super_cat_id, 10, 16)) AS superCatID
+        title AS title,
+        super_cat_id AS superCatID
     FROM Categories
     WHERE id = catID;
 END //
@@ -240,33 +205,28 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE selectETermDef (
-    IN eTermCombID VARCHAR(17)
+CREATE PROCEDURE selectTerm (
+    IN termID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE eTermID BIGINT UNSIGNED;
-    CALL getConvID (eTermCombID, eTermID);
-
     SELECT
-        title AS eTermTitle,
-        CONCAT('e', CONV(cat_id, 10, 16)) AS catID
-    FROM ElementaryTerms
-    WHERE id = eTermID;
+        title AS title,
+        cat_id AS catID
+    FROM Terms
+    WHERE id = termID;
 END //
 DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE selectRelDef (
-    IN relCombID VARCHAR(17)
+CREATE PROCEDURE selectRel (
+    IN relID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE relID BIGINT UNSIGNED;
-    CALL getConvID (relCombID, relID);
-
     SELECT
-        obj_noun AS objNoun,
-        CONCAT('c', CONV(subj_cat_id, 10, 16)) AS subjCatID
+        subj_t AS subjType,
+        obj_t AS objType,
+        obj_noun AS objNoun
     FROM Relations
     WHERE id = relID;
 END //
@@ -274,17 +234,172 @@ DELIMITER ;
 
 
 
+DELIMITER //
+CREATE PROCEDURE selectKeywordString (
+    IN kwsID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT str AS str
+    FROM KeywordStrings
+    WHERE id = kwsID;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectPattern (
+    IN pattID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT str AS str
+    FROM Patterns
+    WHERE id = pattID;
+END //
+DELIMITER ;
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE selectCatIDs (
+    IN str VARCHAR(255),
+    IN superCatID BIGINT UNSIGNED,
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        title AS title,
+        id AS catID
+    FROM Categories
+    WHERE (title >= str AND super_cat_id = superCatID)
+    ORDER BY title ASC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectTermIDs (
+    IN str VARCHAR(255),
+    IN catID BIGINT UNSIGNED,
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        title AS title,
+        id AS termID
+    FROM Terms
+    WHERE (title >= str AND cat_id = catID)
+    ORDER BY title ASC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectRelIDs (
+    IN subjType CHAR(1),
+    IN objType CHAR(1),
+    IN str VARCHAR(255),
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        obj_noun AS objNoun,
+        id AS relID
+    FROM Relations
+    WHERE (subj_t = subjType AND obj_t = objType AND obj_noun >= str)
+    ORDER BY obj_noun ASC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectKeywordStringIDs (
+    IN s VARCHAR(768),
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        str AS str,
+        id AS kwsID
+    FROM KeywordStrings
+    WHERE str >= s
+    ORDER BY str ASC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectPatternIDs (
+    IN s VARCHAR(768),
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        str AS str,
+        id as pattID
+    FROM Patterns
+    WHERE str >= s
+    ORDER BY str ASC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+
+DELIMITER //
+CREATE PROCEDURE searchForKeywordStrings (
+    IN s VARCHAR(768),
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        str AS str,
+        id AS kwsID
+    FROM KeywordStrings
+    WHERE MATCH (str) AGAINST (s IN NATURAL LANGUAGE MODE)
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE searchForKeywordStringsBooleanMode (
+    IN s VARCHAR(768),
+    IN maxNum INT,
+    IN numOffset INT
+)
+BEGIN
+    SELECT
+        str AS str,
+        id AS kwsID
+    FROM KeywordStrings
+    WHERE MATCH (str) AGAINST (s IN BOOLEAN MODE)
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+
+
+
 
 DELIMITER //
 CREATE PROCEDURE selectSuperCatDefs (
-    IN catCombID VARCHAR(17)
+    IN catID BIGINT UNSIGNED,
+    IN maxNum INT
 )
 BEGIN
-    DECLARE catID BIGINT UNSIGNED;
     DECLARE str VARCHAR(255);
-    DECLARE n TINYINT UNSIGNED;
-
-    CALL getConvID (catCombID, catID);
+    DECLARE n INT UNSIGNED;
 
     CREATE TEMPORARY TABLE ret
         SELECT title, super_cat_id
@@ -293,7 +408,7 @@ BEGIN
 
     SET n = 0;
     label1: LOOP
-        IF (NOT catID > 0 OR n >= 255) THEN
+        IF (catID = 0 OR n >= maxNum) THEN
             LEAVE label1;
         END IF;
         SELECT title, super_cat_id INTO str, catID
@@ -306,18 +421,12 @@ BEGIN
     END LOOP label1;
 
     SELECT
-        title AS catTitle,
-        CONCAT('c', CONV(super_cat_id, 10, 16)) AS superCatID
+        title AS title,
+        super_cat_id AS superCatID
     FROM ret
     ORDER BY super_cat_id DESC;
 END //
 DELIMITER ;
-
--- SHOW WARNINGS;
-
-
-
-
 
 
 
@@ -325,88 +434,83 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectText (
-    IN txtCombID VARCHAR(17)
+    IN textID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE txtID BIGINT UNSIGNED;
-    CALL getConvID (txtCombID, txtID);
-
-    SELECT str as text
+    SELECT str AS text
     FROM Texts
-    WHERE id = txtID;
+    WHERE id = textID;
 END //
 DELIMITER ;
 
+
 DELIMITER //
 CREATE PROCEDURE selectBinary (
-    IN binCombID VARCHAR(17)
+    IN binID BIGINT UNSIGNED
 )
 BEGIN
-    DECLARE binID BIGINT UNSIGNED;
-    CALL getConvID (binCombID, binID);
-
-    SELECT bin as bin
+    SELECT bin AS bin
     FROM Binaries
     WHERE id = binID;
 END //
 DELIMITER ;
 
 
-
--- TODO: Add data select procedures.
-
--- DELIMITER //
--- CREATE PROCEDURE selectData (
---     IN dataType CHAR(1),
---     IN dataIDHex VARCHAR(16)
--- )
--- BEGIN
---     DECLARE dataID BIGINT UNSIGNED;
---     SET dataID = CONV(dataIDHex, 16, 10);
---
---     CASE dataType
---         WHEN "t" THEN
---             SELECT str AS str FROM Texts WHERE (id = dataID);
---         -- TODO: Implement more data term types.
---         ELSE
---             SELECT NULL;
---     END CASE;
--- END //
--- DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE selectList (
+    IN listID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT
+        len AS len,
+        elem_ts AS elemTypes,
+        elem_ids AS elemIDs,
+        tail_id AS tailID
+    FROM Lists
+    WHERE id = listID;
+END //
+DELIMITER ;
 
 
 
 
--- TODO: Add selectRecentInputs()..
 
 
+DELIMITER //
+CREATE PROCEDURE selectCreator (
+    IN entityType CHAR(1),
+    IN entityID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT user_id AS userID
+    FROM Creators
+    WHERE (entity_t = entityType AND entity_id = entityID);
+END //
+DELIMITER ;
 
--- TODO: Correct and add selectCreations() procedure below (out-commented).
 
--- DELIMITER //
--- CREATE PROCEDURE selectCreations (
---     IN userIDHex VARCHAR(16),
---     IN termType CHAR(1),
---     IN num INT UNSIGNED,
---     IN numOffset INT UNSIGNED,
---     IN isAscOrder BOOL
--- )
--- BEGIN
---     DECLARE userID BIGINT UNSIGNED;
---     SET userID = CONV(userIDHex, 16, 10);
---
---     IF (isAscOrder) THEN
---         SELECT CONV(term_id, 10, 16) AS termID
---         FROM Creators
---         WHERE (user_id = userID AND term_t = termType)
---         ORDER BY term_id ASC
---         LIMIT numOffset, num;
---     ELSE
---         SELECT CONV(term_id, 10, 16) AS termID
---         FROM Creators
---         WHERE (user_id = userID AND term_t = termType)
---         ORDER BY term_id DESC
---         LIMIT numOffset, num;
---     END IF;
--- END //
--- DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE selectCreations (
+    IN userID BIGINT UNSIGNED,
+    IN entityType CHAR(1),
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED,
+    IN isAscOrder BOOL
+)
+BEGIN
+    SELECT
+        entity_t AS entityType,
+        entity_id AS entityID
+    FROM Creators
+    WHERE (
+        user_id = userID AND
+        (entityType IS NULL OR term_t = termType)
+    )
+    ORDER BY
+        CASE WHEN isAscOrder THEN entity_t END ASC,
+        CASE WHEN NOT isAscOrder THEN entity_t END DESC,
+        CASE WHEN isAscOrder THEN entity_id END ASC,
+        CASE WHEN NOT isAscOrder THEN entity_id END DESC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
