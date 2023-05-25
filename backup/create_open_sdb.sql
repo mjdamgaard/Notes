@@ -20,26 +20,25 @@
 -- DELETE FROM Creators;
 
 -- /* Semantic inputs */
-DROP TABLE Sets;
-DROP TABLE SemanticInputs;
-DROP TABLE RecentInputs;
+-- DROP TABLE Sets;
+-- DROP TABLE SemanticInputs;
+-- DROP TABLE PrivateRecentInputs;
+-- DROP TABLE RecentInputs;
+-- DROP TABLE RecordedInputs;
 --
 -- /* Terms */
-DROP TABLE UserGroups;
-DROP TABLE Users;
---
-DROP TABLE Categories;
-DROP TABLE ElementaryTerms;
-DROP TABLE Terms;
-DROP TABLE Relations;
+-- DROP TABLE Users;
+-- DROP TABLE Categories;
+-- DROP TABLE Terms;
+-- DROP TABLE Relations;
 -- DROP TABLE KeywordStrings;
 -- DROP TABLE Patterns;
--- DROP TABLE Lists;
 -- DROP TABLE Texts;
 -- DROP TABLE Binaries;
+-- DROP TABLE Lists;
 --
 -- /* Meta data */
-DROP TABLE Creators;
+-- DROP TABLE Creators;
 
 
 
@@ -111,16 +110,42 @@ CREATE TABLE SemanticInputs (
 );
 
 
-CREATE TABLE RecentInputs (
+CREATE TABLE PrivateRecentInputs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
     set_id BIGINT UNSIGNED NOT NULL,
-
-    -- old and new rating value (NULL means nonexistent or removed).
-    old_rat_val VARBINARY(255),
-    new_rat_val VARBINARY(255),
-
+    -- new rating value.
+    rat_val VARBINARY(255),
     obj_id BIGINT UNSIGNED NOT NULL,
 
     changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    live_at DATETIME
+);
+CREATE TABLE RecentInputs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    set_id BIGINT UNSIGNED NOT NULL,
+    -- new rating value.
+    rat_val VARBINARY(255),
+    obj_id BIGINT UNSIGNED NOT NULL
+
+    -- changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    -- UNIQUE INDEX (
+    --     set_id,
+    --     obj_id,
+    --     changed_at
+    -- )
+);
+CREATE TABLE RecordedInputs (
+    set_id BIGINT UNSIGNED NOT NULL,
+    -- new rating value.
+    rat_val VARBINARY(255),
+    obj_id BIGINT UNSIGNED NOT NULL,
+
+    -- This needs to be calculated from the RecentInputs table's id, so a rough
+    -- record of how this id counter corresponds to time needs to be kept.
+    changed_at DATETIME,
 
     PRIMARY KEY (
         set_id,
@@ -128,7 +153,6 @@ CREATE TABLE RecentInputs (
         changed_at
     )
 );
-
 
 -- CREATE TABLE UserGroups (
 --  -- user group ID.
@@ -188,10 +212,10 @@ CREATE TABLE Users (
     -- upload_vol_this_month BIGINT,
     -- download_vol_this_month BIGINT,
 
-    -- In order for third parties to be able to copy the database and then
-    -- be able to have users log on, without the need for exchanging
-    -- passwords between (third) parties.
     public_keys_for_authentication TEXT
+    -- (In order for third parties to be able to copy the database and then
+    -- be able to have users log on, without the need to exchange passwords
+    -- between databases.)
 );
 
 
@@ -228,6 +252,7 @@ CREATE TABLE Terms (
     UNIQUE INDEX (title, cat_id)
 );
 
+
 CREATE TABLE Relations (
     -- relation ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -250,11 +275,6 @@ CREATE TABLE Relations (
     -- adjective form>", e.g. "Elements related to so and so". Then the app
     -- can also remove the "Elements" in front and only print the rest.)
     obj_noun VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    -- FULLTEXT idx (obj_noun),
-
-
-    -- subj_cat_id BIGINT UNSIGNED NOT NULL,
-    -- -- obj_cat_id BIGINT UNSIGNED NOT NULL,
 
     UNIQUE INDEX (subj_t, obj_t, obj_noun)
 );
@@ -287,7 +307,7 @@ CREATE TABLE Patterns (
 
 CREATE TABLE Texts (
     /* text ID */
-    id BIGINT UNSIGNED PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- type = "x".
 
     /* data */
@@ -296,26 +316,26 @@ CREATE TABLE Texts (
 
 CREATE TABLE Binaries (
     /* binary string ID */
-    id BIGINT UNSIGNED PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- type = "b".
 
     /* data */
-    bin BLOB NOT NULL
+    bin LONGBLOB NOT NULL
 );
 
 
 CREATE TABLE Lists (
     /* list ID */
-    id BIGINT UNSIGNED PRIMARY KEY,
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- type = "l".
 
     /* data */
-    len SMALLINT UNSIGNED NOT NULL,
-
     elem_ts VARCHAR(31) NOT NULL,
     elem_ids VARBINARY(248) NOT NULL,
 
-    tail_id BIGINT UNSIGNED
+    tail_id BIGINT UNSIGNED,
+
+    UNIQUE INDEX (elem_ts, elem_ids, tail_id)
 );
 
 
