@@ -1,129 +1,196 @@
 
-SELECT "rating_inputs";
+SELECT "Input procedures";
+
+-- DROP PROCEDURE createOrFindSet;
+-- DROP PROCEDURE inputOrChangeRating;
+-- DROP PROCEDURE inputOrChangeRatingFromSecKey;
+-- DROP PROCEDURE insertOrFindCat;
+-- DROP PROCEDURE insertOrFindTerm;
+-- DROP PROCEDURE insertOrFindRel;
+-- DROP PROCEDURE insertOrFindKeywordString;
+-- DROP PROCEDURE insertOrFindPattern;
+-- DROP PROCEDURE insertText;
+-- DROP PROCEDURE insertBinary;
+-- DROP PROCEDURE insertOrFindList;
 
 
 
+DELIMITER //
+CREATE PROCEDURE createOrFindSet (
+    IN userID BIGINT UNSIGNED,
+    IN subjID BIGINT UNSIGNED,
+    IN relID BIGINT UNSIGNED
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
 
-DROP PROCEDURE inputOrChangeRatingSecKey;
-DROP PROCEDURE inputOrChangeRating;
-
+    SELECT id INTO outID
+    FROM Sets
+    WHERE (
+        user_id = userID AND
+        subj_id = subjID AND
+        rel_id = relID
+    );
+    IF (outID IS NULL) THEN
+        INSERT INTO Sets (
+            user_id,
+            subj_id,
+            rel_id,
+            elem_num
+        )
+        VALUES (
+            userID,
+            subjID,
+            relID,
+            0
+        );
+        SELECT LAST_INSERT_ID() INTO outID;
+        SET exitCode = 0; -- create.
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("s", outID, userID);
+    ELSE
+        SET exitCode = 1; -- find.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
 
 
 
 
 DELIMITER //
 CREATE PROCEDURE inputOrChangeRating (
-    IN userCombID VARCHAR(17),
-    IN subjCombID VARCHAR(17),
-    IN relCombID VARCHAR(17),
-    IN objCombID VARCHAR(17),
-    IN ratingValHex VARCHAR(510),
-    -- OUT newCombID VARCHAR(17),
-    OUT exitCode TINYINT
+    IN userID BIGINT UNSIGNED,
+    IN setID BIGINT UNSIGNED,
+    IN objID BIGINT UNSIGNED,
+    IN ratValHex VARCHAR(510),
+    IN delayTime TIME
 )
 BEGIN
-    DECLARE userType, subjType, objType CHAR(1);
-    DECLARE userID, subjID, relID, objID, setID BIGINT UNSIGNED;
-    DECLARE previousRating, ratingVal VARBINARY(255);
-    DECLARE ecFindOrCreateSet TINYINT;
+    DECLARE exitCode TINYINT;
+    DECLARE prevRatVal, ratVal VARBINARY(255);
+    DECLARE setUserID, prevElemNum BIGINT UNSIGNED;
 
-    CALL getTypeAndConvID (userCombID, userType, userID);
-    CALL getTypeAndConvID (subjCombID, subjType, subjID);
-    CALL getConvID (relCombID, relID);
-    CALL getTypeAndConvID (objCombID, objType, objID);
-    SET ratingVal = UNHEX(ratingValHex);
-    CALL findOrCreateSet (
-        userType,
-        userID,
-        subjType,
-        subjID,
-        relID,
-        setID, -- OUT
-        ecFindOrCreateSet -- OUT
-    );
-    SELECT rat_val INTO previousRating
-    FROM SemanticInputs
-    WHERE (
-        obj_t = objType AND
-        obj_id = objID AND
-        set_id = setID
-    );
-    -- FOR UPDATE; -- Since this search only touches one row, only that row will
-    -- be locked. *No, this might cause some weird next-key locking.. Let me
-    -- see what to do.. ...Wait no, that actually shouldn't hurt much..
-    -- ..Yes, it might hurt (by beeing slow), who knows. I think I will
-    -- actually just query the Users table FOR UPDATE, which might actually
-    -- be reasonable in the future as well to check if the user is allowed
-    -- to make more inputs today, and thereby we will then also create a
-    -- mutex lock to ensure that a user (or user group (bot)) can only input/
-    -- update one rating at a time even when using several server clients at
-    -- the same time. ..But let me implement all this at a later time..
-    IF (previousRating IS NULL AND ratingVal IS NOT NULL) THEN
-        INSERT INTO SemanticInputs (
-            set_id,
-            rat_val,
-            obj_t,
-            obj_id
-        )
-        VALUES (
-            setID,
-            ratingVal,
-            objType,
-            objID
-        ); -- This might throw error due to race condition, but only if several
-        -- clients are logged in as the same user and rates at the same time.
-        -- ...(At least I think so, because FOR SHARE shouldn't lock indices..)
-        -- If the insert succeeds, we can then update elem_num.
-        UPDATE Sets
-        SET elem_num = elem_num + 1
-        WHERE id = setID;
-        CALL insertOrUpdateRecentInput (
-            setID,
-            objType,
-            objID,
-            ratingVal,
-            previousRating
-        );
-        SET exitCode = (0 + ecFindOrCreateSet); -- no prior rating.
-    -- nothing happens if (previousRating IS NULL AND ratingVal IS NULL).
-    ELSEIF (previousRating IS NOT NULL AND ratingVal IS NOT NULL) THEN
-        CALL insertOrUpdateRecentInput (
-            setID,
-            objType,
-            objID,
-            ratingVal,
-            previousRating
-        );
-        UPDATE SemanticInputs
-        SET rat_val = ratingVal
+    IF NOT EXISTS (
+        SELECT id FROM Sets WHERE (id = setID AND user_id = userID)
+    ) THEN
+        SET exitCode = 2; -- user does not own the set (or set doesn't exist).
+    ELSE
+        IF (ratValHex = "") THEN
+            SET ratValHex = NULL;
+        END IF;
+        SET ratVal = UNHEX(ratValHex);
+
+        SELECT rat_val INTO prevRatVal
+        FROM SemanticInputs
         WHERE (
-            obj_t = objType AND
             obj_id = objID AND
             set_id = setID
         );
-        SET exitCode = (2 + ecFindOrCreateSet); -- overwriting an old rating.
-    ELSEIF (previousRating IS NOT NULL AND ratingVal IS NULL) THEN
-        CALL insertOrUpdateRecentInput (
-            setID,
-            objType,
-            objID,
-            ratingVal,
-            previousRating
-        );
-        DELETE FROM SemanticInputs
+        SELECT elem_num INTO prevElemNum
+        FROM Sets
+        WHERE id = setID
+        FOR UPDATE;
+        SELECT rat_val INTO prevRatVal
+        FROM SemanticInputs
         WHERE (
-            set_id = setID AND
-            obj_t = objType AND
-            obj_id = objID
+            obj_id = objID AND
+            set_id = setID
+        )
+        FOR UPDATE;
 
-        );
-        -- This UPDATE statement might cause a harmful race condition until
-        -- I reimplement this procedure more correctly at some point.
-        UPDATE Sets
-        SET elem_num = elem_num - 1
-        WHERE id = setID;
-        SET exitCode = (2 + ecFindOrCreateSet); -- overwriting an old rating.
+        -- TODO: Change this to update PrivateRecentInputs instead, make a
+        -- scheduled event to move private recent inputs into (the public)
+        -- RecentInputs, and at some point also make an event to record
+        -- recent inputs into RecordedInputs when there is long enough time
+        -- between the last last recent input before that.
+        SET delayTime = 0; -- (not implemented yet)
+        INSERT INTO RecentInputs (set_id, rat_val, obj_id)
+        VALUES (setID, ratVal, objID); -- (This can in theory fail if to
+        -- changes can happen at the same millisecond, so let's keep it here
+        -- above the following updates, for aesthetics if nothing else.)
+
+        IF (ratVal IS NOT NULL AND prevRatVal IS NULL) THEN
+            INSERT INTO SemanticInputs (set_id, rat_val, obj_id)
+            VALUES (setID, ratVal, objID);
+            UPDATE Sets
+            SET elem_num = prevElemNum + 1
+            WHERE id = setID;
+            SET exitCode = 0; -- success(ful insertion of new rating).
+        ELSEIF (ratVal IS NOT NULL AND prevRatVal IS NOT NULL) THEN
+            UPDATE SemanticInputs
+            SET rat_val = ratVal
+            WHERE (
+                obj_id = objID AND
+                set_id = setID
+            );
+            SET exitCode = 0; -- success(ful update of previous rating).
+        ELSEIF (ratVal IS NULL AND prevRatVal IS NOT NULL) THEN
+            DELETE FROM SemanticInputs
+            WHERE (
+                obj_id = objID AND
+                set_id = setID
+            );
+            UPDATE Sets
+            SET elem_num = prevElemNum - 1
+            WHERE id = setID;
+            SET exitCode = 0; -- success(ful deletion of previous rating).
+        ELSE
+            SET exitCode = 1; -- trying to delete a non-existing rating.
+        END IF;
     END IF;
+    SELECT setID AS outID, exitCode;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE inputOrChangeRatingFromSecKey (
+    IN userID BIGINT UNSIGNED,
+    IN subjID BIGINT UNSIGNED,
+    IN relID BIGINT UNSIGNED,
+    IN objID BIGINT UNSIGNED,
+    IN ratValHex VARCHAR(510),
+    IN delayTime TIME
+)
+BEGIN
+    DECLARE setID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+    SET exitCode = 1; -- means that set was found (perhaps overwritten below).
+
+    SELECT id INTO setID
+    FROM Sets
+    WHERE (
+        user_id = userID AND
+        subj_id = subjID AND
+        rel_id = relID
+    );
+    IF (setID IS NULL) THEN
+        INSERT INTO Sets (
+            user_id,
+            subj_id,
+            rel_id,
+            elem_num
+        )
+        VALUES (
+            userID,
+            subjID,
+            relID,
+            0
+        );
+        SELECT LAST_INSERT_ID() INTO setID;
+        SET exitCode = 0; -- set was created.
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("s", setID, userID);
+    END IF;
+    CALL inputOrChangeRating (
+        userID,
+        setID,
+        objID,
+        ratValHex,
+        delayTime
+    );
 END //
 DELIMITER ;
 
@@ -131,114 +198,235 @@ DELIMITER ;
 
 
 
--- DELIMITER //
--- CREATE PROCEDURE inputOrChangeRating (
---     IN userCombID VARCHAR(17),
---     IN setCombID VARCHAR(17),
---     IN objCombID VARCHAR(17),
---     IN ratingValHex VARCHAR(510),
---     -- OUT newCombID VARCHAR(17),
---     OUT exitCode TINYINT
--- )
--- BEGIN
---     DECLARE userType, objType CHAR(1);
---     DECLARE userID, setID, objID BIGINT UNSIGNED;
---     DECLARE previousRating, ratingVal VARBINARY(255);
---     DECLARE ecFindOrCreateSet TINYINT;
---
---     CALL getTypeAndConvID (userCombID, userType, userID);
---     CALL getConvID (setCombID, setID);
---     CALL getTypeAndConvID (objCombID, objType, objID);
---     SET ratingVal = UNHEX(ratingValHex);
---     IF NOT EXISTS (
---         SELECT * FROM Sets
---         WHERE id = setID AND user_t = userType AND user_id = userID
---     ) THEN
---         SET exitCode = 4; -- set with that id and user does not exist.
---     ELSE
---         SELECT rat_val INTO previousRating
---         FROM SemanticInputs
---         WHERE (
---             obj_t = objType AND
---             obj_id = objID AND
---             set_id = setID
---         );
---         -- FOR UPDATE; -- Since this search only touches one row, only that row will
---         -- be locked. *No, this might cause some weird next-key locking.. Let me
---         -- see what to do.. ...Wait no, that actually shouldn't hurt much..
---         -- ..Yes, it might hurt (by beeing slow), who knows. I think I will
---         -- actually just query the Users table FOR UPDATE, which might actually
---         -- be reasonable in the future as well to check if the user is allowed
---         -- to make more inputs today, and thereby we will then also create a
---         -- mutex lock to ensure that a user (or user group (bot)) can only input/
---         -- update one rating at a time even when using several server clients at
---         -- the same time. ..But let me implement all this at a later time..
---         IF (previousRating IS NULL AND ratingVal IS NOT NULL) THEN
---             INSERT INTO SemanticInputs (
---                 set_id,
---                 rat_val,
---                 obj_t,
---                 obj_id
---             )
---             VALUES (
---                 setID,
---                 ratingVal,
---                 objType,
---                 objID
---             ); -- This might throw error due to race condition, but only if several
---             -- clients are logged in as the same user and rates at the same time.
---             -- ...(At least I think so, because FOR SHARE shouldn't lock indices..)
---             -- If the insert succeeds, we can then update elem_num.
---             UPDATE Sets
---             SET elem_num = elem_num + 1
---             WHERE id = setID;
---             CALL insertOrUpdateRecentInput (
---                 setID,
---                 objType,
---                 objID,
---                 ratingVal,
---                 previousRating
---             );
---             SET exitCode = 0; -- no prior rating.
---         -- nothing happens if (previousRating IS NULL AND ratingVal IS NULL).
---         ELSEIF (previousRating IS NOT NULL AND ratingVal IS NOT NULL) THEN
---             CALL insertOrUpdateRecentInput (
---                 setID,
---                 objType,
---                 objID,
---                 ratingVal,
---                 previousRating
---             );
---             UPDATE SemanticInputs
---             SET rat_val = ratingVal
---             WHERE (
---                 obj_t = objType AND
---                 obj_id = objID AND
---                 set_id = setID
---             );
---             SET exitCode = 2; -- overwriting an old rating.
---         ELSEIF (previousRating IS NOT NULL AND ratingVal IS NULL) THEN
---             CALL insertOrUpdateRecentInput (
---                 setID,
---                 objType,
---                 objID,
---                 ratingVal,
---                 previousRating
---             );
---             DELETE FROM SemanticInputs
---             WHERE (
---                 set_id = setID AND
---                 obj_t = objType AND
---                 obj_id = objID
---
---             );
---             -- This UPDATE statement might cause a harmful race condition until
---             -- I reimplement this procedure more correctly at some point.
---             UPDATE Sets
---             SET elem_num = elem_num - 1
---             WHERE id = setID;
---             SET exitCode = 2; -- overwriting an old rating.
---         END IF;
---     END IF;
--- END //
--- DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindCat (
+    IN userID BIGINT UNSIGNED,
+    IN superCatID BIGINT UNSIGNED,
+    IN catTitle VARCHAR(255)
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+
+    SELECT id INTO outID
+    FROM Categories
+    WHERE (title = catTitle AND super_cat_id = superCatID);
+    IF (outID IS NOT NULL) THEN
+        SET exitCode = 1; -- find.
+    ELSEIF (NOT EXISTS (SELECT id FROM Categories WHERE id = superCatID)) THEN
+        SET exitCode = 2; -- super category does not exist.
+    ELSE
+        INSERT INTO Categories (title, super_cat_id)
+        VALUES (catTitle, superCatID);
+        SELECT LAST_INSERT_ID() INTO outID;
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("c", outID, userID);
+        SET exitCode = 0; -- insert.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindTerm (
+    IN userID BIGINT UNSIGNED,
+    IN catID BIGINT UNSIGNED,
+    IN termTitle VARCHAR(255)
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+
+    SELECT id INTO outID
+    FROM Terms
+    WHERE (title = termTitle AND cat_id = catID);
+    IF (outID IS NOT NULL) THEN
+        SET exitCode = 1; -- find.
+    ELSEIF (NOT EXISTS (SELECT id FROM Categories WHERE id = catID)) THEN
+        SET exitCode = 2; -- category doesn't exist.
+    ELSE
+        INSERT INTO Terms (title, cat_id)
+        VALUES (termTitle, catID);
+        SELECT LAST_INSERT_ID() INTO outID;
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("t", outID, userID);
+        SET exitCode = 0; -- insert.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindRel (
+    IN userID BIGINT UNSIGNED,
+    IN subjType CHAR(1),
+    IN objType CHAR(1),
+    IN objNoun VARCHAR(255)
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+
+    SELECT id INTO outID
+    FROM Relations
+    WHERE (subj_t = subjType AND obj_t = objType AND obj_noun = objNoun);
+    IF (outID IS NOT NULL) THEN
+        SET exitCode = 1; -- find.
+    ELSE
+        INSERT INTO Relations (subj_t, obj_t, obj_noun)
+        VALUES (subjType, objType, objNoun);
+        SELECT LAST_INSERT_ID() INTO outID;
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("r", outID, userID);
+        SET exitCode = 0; -- insert.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
+
+
+
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindKeywordString (
+    IN userID BIGINT UNSIGNED,
+    IN s VARCHAR(768)
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+
+    SELECT id INTO outID
+    FROM KeywordStrings
+    WHERE str = s;
+    IF (outID IS NOT NULL) THEN
+        SET exitCode = 1; -- find.
+    ELSE
+        INSERT INTO KeywordStrings (str)
+        VALUES (s);
+        SELECT LAST_INSERT_ID() INTO outID;
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("k", outID, userID);
+        SET exitCode = 0; -- insert.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindPattern (
+    IN userID BIGINT UNSIGNED,
+    IN s VARCHAR(768)
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+
+    SELECT id INTO outID
+    FROM Patterns
+    WHERE str = s;
+    IF (outID IS NOT NULL) THEN
+        SET exitCode = 1; -- find.
+    ELSE
+        INSERT INTO Patterns (str)
+        VALUES (s);
+        SELECT LAST_INSERT_ID() INTO outID;
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("p", outID, userID);
+        SET exitCode = 0; -- insert.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
+
+
+
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertText (
+    IN userID BIGINT UNSIGNED,
+    IN s TEXT
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+
+    INSERT INTO Texts (str)
+    VALUES (s);
+    SELECT LAST_INSERT_ID() INTO outID;
+    INSERT INTO Creators (entity_t, entity_id, user_id)
+    VALUES ("x", outID, userID);
+    SELECT outID, 0; -- insert.
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE insertBinary (
+    IN userID BIGINT UNSIGNED,
+    IN b TEXT,
+    OUT outID BIGINT UNSIGNED,
+    OUT exitCode TINYINT
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+
+    INSERT INTO Binaries (bin)
+    VALUES (b);
+    SELECT LAST_INSERT_ID() INTO outID;
+    INSERT INTO Creators (entity_t, entity_id, user_id)
+    VALUES ("b", outID, userID);
+    SELECT outID, 0; -- insert.
+END //
+DELIMITER ;
+
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertOrFindList (
+    IN userID BIGINT UNSIGNED,
+    IN elemTypeStr VARCHAR(31),
+    IN elemIDHexStr VARCHAR(496),
+    IN tailID BIGINT UNSIGNED
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+    DECLARE exitCode TINYINT;
+    DECLARE elemIDs VARBINARY(248);
+    SET elemIDs = UNHEX(elemIDHexStr);
+
+    IF (tailID = 0) THEN
+        SET tailID = NULL;
+    END IF;
+
+    SELECT id INTO outID
+    FROM Lists
+    WHERE (elem_ts = elemTypeStr AND elem_ids = elemIDs AND tail_id = tailID);
+    IF (outID IS NOT NULL) THEN
+        SET exitCode = 1; -- find.
+    ELSE
+        INSERT INTO Lists (elem_ts, elem_ids, tail_id)
+        VALUES (elemTypeStr, elemIDs, tailID);
+        SELECT LAST_INSERT_ID() INTO outID;
+        INSERT INTO Creators (entity_t, entity_id, user_id)
+        VALUES ("l", outID, userID);
+        SET exitCode = 0; -- insert.
+    END IF;
+    SELECT outID, exitCode;
+END //
+DELIMITER ;
