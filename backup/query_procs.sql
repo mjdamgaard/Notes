@@ -1,160 +1,57 @@
 
 SELECT "Query procedures";
 
--- DROP PROCEDURE selectSet;
--- DROP PROCEDURE selectSetFromSecKey;
--- DROP PROCEDURE selectSetInfo;
--- DROP PROCEDURE selectSetInfoFromSecKey;
--- DROP PROCEDURE selectSetID;
+-- DROP PROCEDURE selectInputSet;
 -- DROP PROCEDURE selectRating;
+-- DROP PROCEDURE selectUsersAndRatings;
 -- DROP PROCEDURE selectRecentInputs;
 -- DROP PROCEDURE selectRecordedInputs;
 -- DROP PROCEDURE selectUserInfo;
--- DROP PROCEDURE selectCat;
+-- DROP PROCEDURE selectContext;
 -- DROP PROCEDURE selectTerm;
--- DROP PROCEDURE selectRel;
--- DROP PROCEDURE selectKeywordString;
--- DROP PROCEDURE selectPattern;
--- DROP PROCEDURE selectCatIDs;
+-- DROP PROCEDURE selectContextID;
+-- DROP PROCEDURE selectTermID;
+-- DROP PROCEDURE selectContextIDs;
 -- DROP PROCEDURE selectTermIDs;
--- DROP PROCEDURE selectRelIDs;
--- DROP PROCEDURE selectKeywordStringIDs;
--- DROP PROCEDURE selectPatternIDs;
--- DROP PROCEDURE searchForKeywordStrings;
--- DROP PROCEDURE searchForKeywordStringsBooleanMode;
--- DROP PROCEDURE selectSuperCatDefs;
--- DROP PROCEDURE selectSuperCatTitleAndIDs;
 -- DROP PROCEDURE selectText;
 -- DROP PROCEDURE selectBinary;
--- DROP PROCEDURE selectList;
--- DROP PROCEDURE selectListID;
--- DROP PROCEDURE selectListRecursive;
+-- DROP PROCEDURE searchForKeywordStrings;
+-- DROP PROCEDURE searchForKeywordStringsBooleanMode;
+-- DROP PROCEDURE selectKeywordStringIDs;
 -- DROP PROCEDURE selectCreator;
 -- DROP PROCEDURE selectCreations;
 
 
 
 DELIMITER //
-CREATE PROCEDURE selectSet (
-    IN setID BIGINT UNSIGNED,
-    IN ratingRangeMinHex VARCHAR(510),
-    IN ratingRangeMaxHex VARCHAR(510),
+CREATE PROCEDURE selectInputSet (
+    IN userID BIGINT UNSIGNED,
+    IN predID BIGINT UNSIGNED,
+    IN subjType CHAR(1),
+    IN ratingRangeMin SMALLINT,
+    IN ratingRangeMax SMALLINT,
     IN maxNum INT UNSIGNED,
     IN numOffset INT UNSIGNED,
     IN isAscOrder BOOL
 )
 BEGIN
-    DECLARE ratMin, ratMax VARBINARY(255);
-    SET ratMin = UNHEX(ratingRangeMinHex);
-    SET ratMax = UNHEX(ratingRangeMaxHex);
-
     SELECT
-        HEX(rat_val) AS ratVal,
-        obj_id AS objID
+        rat_val AS ratVal,
+        subj_id AS subjID
     FROM SemanticInputs
     WHERE (
-        set_id = setID AND
-        (ratMin = "" OR rat_val >= ratMin) AND
-        (ratMax = "" OR rat_val <= ratMax)
+        user_id = userID AND
+        pred_id = predID AND
+        subj_t = subjType AND
+        rat_val >= ratingRangeMin AND
+        rat_val <= ratingRangeMax
     )
     ORDER BY
         CASE WHEN isAscOrder THEN rat_val END ASC,
         CASE WHEN NOT isAscOrder THEN rat_val END DESC,
-        CASE WHEN isAscOrder THEN obj_id END ASC,
-        CASE WHEN NOT isAscOrder THEN obj_id END DESC
+        CASE WHEN isAscOrder THEN subj_id END ASC,
+        CASE WHEN NOT isAscOrder THEN subj_id END DESC
     LIMIT numOffset, maxNum;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectSetFromSecKey (
-    IN userID BIGINT UNSIGNED,
-    IN subjID BIGINT UNSIGNED,
-    IN relID BIGINT UNSIGNED,
-    IN ratingRangeMinHex VARCHAR(510),
-    IN ratingRangeMaxHex VARCHAR(510),
-    IN maxNum INT UNSIGNED,
-    IN numOffset INT UNSIGNED,
-    IN isAscOrder BOOL
-)
-BEGIN
-    DECLARE setID BIGINT UNSIGNED;
-    SELECT id INTO setID
-    FROM Sets
-    WHERE (
-        user_id = userID AND
-        subj_id = subjID AND
-        rel_id = relID
-    );
-    CALL selectSet (
-        setID,
-        ratingRangeMinHex,
-        ratingRangeMaxHex,
-        maxNum,
-        numOffset,
-        isAscOrder
-    );
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectSetInfo (
-    IN setID BIGINT UNSIGNED
-)
-BEGIN
-    SELECT
-        Sets.id AS setID,
-        Sets.user_id AS userID,
-        Relations.subj_t AS subjType,
-        Sets.subj_id AS subjID,
-        Sets.rel_id AS relID,
-        Relations.obj_noun AS relObjNoun,
-        Relations.obj_t AS objType,
-        Sets.elem_num AS elemNum
-    FROM Sets
-    INNER JOIN Relations
-    ON Sets.rel_id = Relations.id
-    WHERE Sets.id = setID;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectSetInfoFromSecKey (
-    IN userID BIGINT UNSIGNED,
-    IN subjID BIGINT UNSIGNED,
-    IN relID BIGINT UNSIGNED
-)
-BEGIN
-    DECLARE setID BIGINT UNSIGNED;
-    SELECT id INTO setID
-    FROM Sets
-    WHERE (
-        user_id = userID AND
-        subj_id = subjID AND
-        rel_id = relID
-    );
-    CALL selectSetInfo (setID);
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectSetID (
-    IN userID BIGINT UNSIGNED,
-    IN subjID BIGINT UNSIGNED,
-    IN relID BIGINT UNSIGNED
-)
-BEGIN
-    SELECT id AS setID
-    FROM Sets
-    WHERE (
-        user_id = userID AND
-        subj_id = subjID AND
-        rel_id = relID
-    );
 END //
 DELIMITER ;
 
@@ -162,28 +59,67 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectRating (
-    IN objID BIGINT UNSIGNED,
-    IN setID BIGINT UNSIGNED
+    IN subjType CHAR(1),
+    IN subjID BIGINT UNSIGNED,
+    IN predID BIGINT UNSIGNED,
+    IN userID BIGINT UNSIGNED
 )
 BEGIN
-    SELECT HEX(rat_val) AS ratVal
+    SELECT rat_val AS ratVal
     FROM SemanticInputs
-    WHERE (obj_id = objID AND set_id = setID);
+    WHERE (
+        subj_t = subjType AND
+        subj_id = subjID AND
+        pred_id = predID AND
+        user_id = userID
+    );
 END //
 DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE selectUsersAndRatings (
+    IN subjType CHAR(1),
+    IN subjID BIGINT UNSIGNED,
+    IN predID BIGINT UNSIGNED,
+    IN startUserID BIGINT UNSIGNED,
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
+)
+BEGIN
+    SELECT
+        user_id AS userID,
+        rat_val AS ratVal
+    FROM SemanticInputs
+    WHERE (
+        subj_t = subjType AND
+        subj_id = subjID AND
+        pred_id = predID AND
+        user_id >= userID
+    )
+    ORDER BY user_id ASC
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+
 
 
 
 DELIMITER //
 CREATE PROCEDURE selectRecentInputs (
     IN startID BIGINT UNSIGNED,
-    IN maxNum INT
+    IN maxNum INT UNSIGNED
 )
 BEGIN
     SELECT
-        set_id AS setID,
-        obj_id AS objID,
-        HEX(rat_val) AS ratVal
+        user_id AS userID,
+        pred_id AS predID,
+        subj_t AS subjType,
+        rat_val AS ratVal,
+        subj_id AS subjID,
+        changed_at AS changedAt
     FROM RecentInputs
     WHERE id >= startID
     ORDER BY id ASC
@@ -192,30 +128,42 @@ END //
 DELIMITER ;
 
 
+
 DELIMITER //
 CREATE PROCEDURE selectRecordedInputs (
-    IN setID BIGINT UNSIGNED,
-    IN objID BIGINT UNSIGNED,
-    IN maxNum INT,
-    IN numOffset INT
+    IN userID BIGINT UNSIGNED,
+    IN predID BIGINT UNSIGNED,
+    IN subjType CHAR(1),
+    IN subjID BIGINT UNSIGNED,
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
 )
 BEGIN
-    IF (objID = 0 OR objID IS NULL) THEN
+    IF (subjID = 0 OR subjID IS NULL) THEN
         SELECT
-            obj_id AS objID,
+            subj_id AS subjID,
             changed_at AS changedAt,
-            HEX(rat_val) AS ratVal
+            rat_val AS ratVal
         FROM RecordedInputs
-        WHERE set_id = setID
-        ORDER BY obj_id DESC, changed_at DESC
+        WHERE (
+            user_id = userID AND
+            pred_id = predID AND
+            subj_t = subjType
+        )
+        ORDER BY subj_id DESC, changed_at DESC
         LIMIT numOffset, maxNum;
     ELSE
         SELECT
-            objID AS objID,
+            subjID AS subjID,
             changed_at AS changedAt,
-            HEX(rat_val) AS ratVal
+            rat_val AS ratVal
         FROM RecordedInputs
-        WHERE (set_id = setID AND obj_id = objID)
+        WHERE (
+            user_id = userID AND
+            pred_id = predID AND
+            subj_t = subjType AND
+            subj_id = subjID
+        )
         ORDER BY changed_at DESC
         LIMIT numOffset, maxNum;
     END IF;
@@ -226,12 +174,16 @@ DELIMITER ;
 
 
 
+
+
 DELIMITER //
 CREATE PROCEDURE selectUserInfo (
     IN userID BIGINT UNSIGNED
 )
 BEGIN
-    SELECT public_keys_for_authentication AS publicKeys
+    SELECT
+        username AS username,
+        public_keys_for_authentication AS publicKeys
     FROM Users
     WHERE id = userID;
 END //
@@ -240,16 +192,18 @@ DELIMITER ;
 
 
 
+
+
 DELIMITER //
-CREATE PROCEDURE selectCat (
-    IN catID BIGINT UNSIGNED
+CREATE PROCEDURE selectContext (
+    IN cxtID BIGINT UNSIGNED
 )
 BEGIN
     SELECT
-        title AS title,
-        super_cat_id AS superCatID
-    FROM Categories
-    WHERE id = catID;
+        parent_context_id AS parentCxtID,
+        title AS title
+    FROM SemanticContexts
+    WHERE id = cxtID;
 END //
 DELIMITER ;
 
@@ -260,78 +214,85 @@ CREATE PROCEDURE selectTerm (
 )
 BEGIN
     SELECT
+        context_id AS cxtID,
         title AS title,
-        cat_id AS catID
+        spec_entity_t AS specType,
+        spec_entity_id AS specID
     FROM Terms
     WHERE id = termID;
 END //
 DELIMITER ;
 
 
-DELIMITER //
-CREATE PROCEDURE selectRel (
-    IN relID BIGINT UNSIGNED
-)
-BEGIN
-    SELECT
-        subj_t AS subjType,
-        obj_t AS objType,
-        obj_noun AS objNoun
-    FROM Relations
-    WHERE id = relID;
-END //
-DELIMITER ;
-
-
 
 DELIMITER //
-CREATE PROCEDURE selectKeywordString (
-    IN kwsID BIGINT UNSIGNED
+CREATE PROCEDURE selectContextID (
+    IN parentCxtID BIGINT UNSIGNED,
+    IN str VARCHAR(255)
 )
 BEGIN
-    SELECT str AS str
-    FROM KeywordStrings
-    WHERE id = kwsID;
+    SELECT id AS cxtID
+    FROM SemanticContexts
+    WHERE (
+        parent_context_id = parentCxtID AND
+        title = str
+    );
 END //
 DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE selectPattern (
-    IN pattID BIGINT UNSIGNED
+CREATE PROCEDURE selectTermID (
+    IN cxtID BIGINT UNSIGNED,
+    IN specType CHAR(1),
+    IN specID BIGINT UNSIGNED,
+    IN str VARCHAR(255)
 )
 BEGIN
-    SELECT str AS str
-    FROM Patterns
-    WHERE id = pattID;
+    IF (specID = 0) THEN
+        SET specID = NULL;
+    END IF;
+
+    SELECT id AS termID
+    FROM Terms
+    WHERE (
+        context_id = cxtID AND
+        spec_entity_t = specType AND
+        spec_entity_id <=> specID AND
+        title = str
+    );
 END //
 DELIMITER ;
 
 
-
-
 DELIMITER //
-CREATE PROCEDURE selectCatIDs (
+CREATE PROCEDURE selectContextIDs (
+    IN parentCxtID BIGINT UNSIGNED,
     IN str VARCHAR(255),
-    IN superCatID BIGINT UNSIGNED,
-    IN maxNum INT,
-    IN numOffset INT
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
 )
 BEGIN
     (
         SELECT
             title AS title,
-            id AS catID
-        FROM Categories
-        WHERE (title < str AND (super_cat_id = superCatID OR superCatID = 0))
+            id AS cxtID
+        FROM SemanticContexts
+        WHERE (
+            parent_context_id = parentCxtID AND
+            title < str
+        )
         ORDER BY title DESC
         LIMIT 1
     ) UNION (
         SELECT
             title AS title,
-            id AS catID
-        FROM Categories
-        WHERE (title >= str AND (super_cat_id = superCatID OR superCatID = 0))
+            id AS cxtID
+        FROM SemanticContexts
+        WHERE (
+            parent_context_id = parentCxtID AND
+            title >= str
+        )
         ORDER BY title ASC
         LIMIT numOffset, maxNum
     )
@@ -342,18 +303,29 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE selectTermIDs (
+    IN cxtID BIGINT UNSIGNED,
+    IN specType CHAR(1),
+    IN specID BIGINT UNSIGNED,
     IN str VARCHAR(255),
-    IN catID BIGINT UNSIGNED,
-    IN maxNum INT,
-    IN numOffset INT
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
 )
 BEGIN
+    IF (specID = 0) THEN
+        SET specID = NULL;
+    END IF;
+
     (
         SELECT
             title AS title,
             id AS termID
         FROM Terms
-        WHERE (title < str AND (cat_id = catID OR catID = 0))
+        WHERE (
+            context_id = cxtID AND
+            spec_entity_t = specType AND
+            spec_entity_id <=> specID AND
+            title < str
+        )
         ORDER BY title DESC
         LIMIT 1
     ) UNION (
@@ -361,7 +333,12 @@ BEGIN
             title AS title,
             id AS termID
         FROM Terms
-        WHERE (title >= str AND (cat_id = catID OR catID = 0))
+        WHERE (
+            context_id = cxtID AND
+            spec_entity_t = specType AND
+            spec_entity_id <=> specID AND
+            title >= str
+        )
         ORDER BY title ASC
         LIMIT numOffset, maxNum
     )
@@ -369,210 +346,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
-DELIMITER //
-CREATE PROCEDURE selectRelIDs (
-    IN subjType CHAR(1),
-    IN objType CHAR(1),
-    IN str VARCHAR(255),
-    IN maxNum INT,
-    IN numOffset INT
-)
-BEGIN
-    (
-        SELECT
-            obj_noun AS objNoun,
-            id AS relID
-        FROM Relations
-        WHERE (subj_t = subjType AND obj_t = objType AND obj_noun < str)
-        ORDER BY obj_noun DESC
-        LIMIT 1
-    ) UNION (
-        SELECT
-            obj_noun AS objNoun,
-            id AS relID
-        FROM Relations
-        WHERE (subj_t = subjType AND obj_t = objType AND obj_noun >= str)
-        ORDER BY obj_noun ASC
-        LIMIT numOffset, maxNum
-    )
-    ORDER BY obj_noun ASC;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectKeywordStringIDs (
-    IN s VARCHAR(768),
-    IN maxNum INT,
-    IN numOffset INT
-)
-BEGIN
-    (
-        SELECT
-            str AS str,
-            id AS kwsID
-        FROM KeywordStrings
-        WHERE str < s
-        ORDER BY str DESC
-        LIMIT 1
-    ) UNION (
-        SELECT
-            str AS str,
-            id AS kwsID
-        FROM KeywordStrings
-        WHERE str >= s
-        ORDER BY str ASC
-        LIMIT numOffset, maxNum
-    )
-    ORDER BY str ASC;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectPatternIDs (
-    IN s VARCHAR(768),
-    IN maxNum INT,
-    IN numOffset INT
-)
-BEGIN
-    (
-        SELECT
-            str AS str,
-            id AS pattID
-        FROM Patterns
-        WHERE str < s
-        ORDER BY str DESC
-        LIMIT 1
-    ) UNION (
-        SELECT
-            str AS str,
-            id AS pattID
-        FROM Patterns
-        WHERE str >= s
-        ORDER BY str ASC
-        LIMIT numOffset, maxNum
-    )
-    ORDER BY str ASC;
-END //
-DELIMITER ;
-
-
-
-DELIMITER //
-CREATE PROCEDURE searchForKeywordStrings (
-    IN s VARCHAR(768),
-    IN maxNum INT,
-    IN numOffset INT
-)
-BEGIN
-    SELECT
-        str AS str,
-        id AS kwsID
-    FROM KeywordStrings
-    WHERE MATCH (str) AGAINST (s IN NATURAL LANGUAGE MODE)
-    LIMIT numOffset, maxNum;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE searchForKeywordStringsBooleanMode (
-    IN s VARCHAR(768),
-    IN maxNum INT,
-    IN numOffset INT
-)
-BEGIN
-    SELECT
-        str AS str,
-        id AS kwsID
-    FROM KeywordStrings
-    WHERE MATCH (str) AGAINST (s IN BOOLEAN MODE)
-    LIMIT numOffset, maxNum;
-END //
-DELIMITER ;
-
-
-
-
-
--- TODO: I think I will remove the two following procs and just use selectCat
--- instead.
-
-DELIMITER //
-CREATE PROCEDURE selectSuperCatDefs (
-    IN catID BIGINT UNSIGNED,
-    IN maxNum INT
-)
-BEGIN
-    DECLARE str VARCHAR(255);
-    DECLARE n INT UNSIGNED;
-
-    CREATE TEMPORARY TABLE ret
-        SELECT title, super_cat_id
-        FROM Categories
-        WHERE id = NULL;
-
-    SET n = 0;
-    label1: LOOP
-        IF (catID = 0 OR n >= maxNum) THEN
-            LEAVE label1;
-        END IF;
-        SELECT title, super_cat_id INTO str, catID
-        FROM Categories
-        WHERE id = catID;
-        INSERT INTO ret (title, super_cat_id)
-        VALUES (str, catID);
-        SET n = n + 1;
-        ITERATE label1;
-    END LOOP label1;
-
-    SELECT
-        title AS title,
-        super_cat_id AS superCatID
-    FROM ret
-    ORDER BY super_cat_id DESC;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE selectSuperCatTitleAndIDs (
-    IN catID BIGINT UNSIGNED,
-    IN maxNum INT
-)
-BEGIN
-    DECLARE str VARCHAR(255);
-    DECLARE superCatID BIGINT UNSIGNED;
-    DECLARE n INT UNSIGNED;
-
-    CREATE TEMPORARY TABLE ret
-        SELECT title, id
-        FROM Categories
-        WHERE id = NULL;
-
-    SET n = 0;
-    label1: LOOP
-        IF (catID = 0 OR n >= maxNum) THEN
-            LEAVE label1;
-        END IF;
-        SELECT title, super_cat_id INTO str, superCatID
-        FROM Categories
-        WHERE id = catID;
-        INSERT INTO ret (title, id)
-        VALUES (str, catID);
-        SET catID = superCatID;
-        SET n = n + 1;
-        ITERATE label1;
-    END LOOP label1;
-
-    SELECT
-        title AS title,
-        id AS catID
-    FROM ret
-    ORDER BY id DESC;
-END //
-DELIMITER ;
 
 
 
@@ -601,49 +374,72 @@ END //
 DELIMITER ;
 
 
+
+
 DELIMITER //
-CREATE PROCEDURE selectList (
-    IN listID BIGINT UNSIGNED
+CREATE PROCEDURE searchForKeywordStrings (
+    IN s VARCHAR(768),
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
 )
 BEGIN
     SELECT
-        elem_ts AS elemTypeStr,
-        HEX(elem_ids) AS elemIDHexStr,
-        tail_id AS tailID
-    FROM Lists
-    WHERE id = listID;
+        str AS str,
+        id AS kwsID
+    FROM KeywordStrings
+    WHERE MATCH (str) AGAINST (s IN NATURAL LANGUAGE MODE)
+    LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE searchForKeywordStringsBooleanMode (
+    IN s VARCHAR(768),
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
+)
+BEGIN
+    SELECT
+        str AS str,
+        id AS kwsID
+    FROM KeywordStrings
+    WHERE MATCH (str) AGAINST (s IN BOOLEAN MODE)
+    LIMIT numOffset, maxNum;
 END //
 DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE selectListID (
-    IN elemTypeStr VARCHAR(31),
-    IN elemIDHexStr VARCHAR(496),
-    tailID BIGINT UNSIGNED
+CREATE PROCEDURE selectKeywordStringIDs (
+    IN s VARCHAR(768),
+    IN maxNum INT UNSIGNED,
+    IN numOffset INT UNSIGNED
 )
 BEGIN
-    SELECT id AS listID
-    FROM Lists
-    WHERE (
-        elem_ts = elemTypeStr AND
-        elem_ids = UNHEX(elemIDHexStr) AND
-        tail_id = tailID
-    );
+    (
+        SELECT
+            str AS str,
+            id AS kwsID
+        FROM KeywordStrings
+        WHERE str < s
+        ORDER BY str DESC
+        LIMIT 1
+    ) UNION (
+        SELECT
+            str AS str,
+            id AS kwsID
+        FROM KeywordStrings
+        WHERE str >= s
+        ORDER BY str ASC
+        LIMIT numOffset, maxNum
+    )
+    ORDER BY str ASC;
 END //
 DELIMITER ;
 
 
--- TODO: Implement this procedure.
-DELIMITER //
-CREATE PROCEDURE selectListRecursive (
-    IN listID BIGINT UNSIGNED,
-    IN maxNum INT -- number of list heads (/ concatenations + 1) not elements.
-)
-BEGIN
-    SELECT NULL;
-END //
-DELIMITER ;
+
+
 
 
 
@@ -669,7 +465,7 @@ CREATE PROCEDURE selectCreations (
     IN isAscOrder BOOL
 )
 BEGIN
-    IF entityType = "" THEN
+    IF (entityType = "") THEN
         SET entityType = NULL;
     END IF;
 
