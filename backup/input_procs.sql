@@ -2,11 +2,10 @@
 SELECT "Input procedures";
 
 -- DROP PROCEDURE inputOrChangeRating;
--- DROP PROCEDURE insertOrFindContext;
 -- DROP PROCEDURE insertOrFindTerm;
+-- DROP PROCEDURE private_insertUser;
 -- DROP PROCEDURE insertText;
 -- DROP PROCEDURE insertBinary;
--- DROP PROCEDURE insertOrFindKeywordString;
 
 
 
@@ -15,40 +14,33 @@ DELIMITER //
 CREATE PROCEDURE inputOrChangeRating (
     IN userID BIGINT UNSIGNED,
     IN predID BIGINT UNSIGNED,
-    IN subjType CHAR(1),
     IN subjID BIGINT UNSIGNED,
-    IN ratVal SMALLINT,
+    IN ratValHex VARCHAR(510),
     IN live_after TIME
 )
 BEGIN
     DECLARE exitCode TINYINT;
-    DECLARE prevRatVal SMALLINT;
-
-    IF (ratVal = -32768) THEN
-        SET ratVal = NULL;
-    END IF;
+    DECLARE ratVal, prevRatVal VARBINARY(255);
+    SET ratVal = CONV(ratValHex, 16, 10);
 
     SELECT rat_val INTO prevRatVal
     FROM SemanticInputs
     WHERE (
-        subj_t = subjType AND
-        subj_id = subjID AND
+        user_id = userID AND
         pred_id = predID AND
-        user_id = userID
+        subj_id = subjID
     );
 
     IF (ratVal IS NOT NULL AND prevRatVal IS NULL) THEN
         INSERT INTO SemanticInputs (
             user_id,
             pred_id,
-            subj_t,
             rat_val,
             subj_id
         )
         VALUES (
             userID,
             predID,
-            subjType,
             ratVal,
             subjID
         );
@@ -57,19 +49,17 @@ BEGIN
         UPDATE SemanticInputs
         SET rat_val = ratVal
         WHERE (
-            subj_t = subjType AND
-            subj_id = subjID AND
+            user_id = userID AND
             pred_id = predID AND
-            user_id = userID
+            subj_id = subjID
         );
         SET exitCode = 1; -- a previous rating was updated.
     ELSEIF (ratVal IS NULL AND prevRatVal IS NOT NULL) THEN
         DELETE FROM SemanticInputs
         WHERE (
-            subj_t = subjType AND
-            subj_id = subjID AND
+            user_id = userID AND
             pred_id = predID AND
-            user_id = userID
+            subj_id = subjID
         );
         SET exitCode = 2; -- a previous rating was deleted.
     ELSE
@@ -86,60 +76,24 @@ BEGIN
     INSERT INTO RecentInputs (
         user_id,
         pred_id,
-        subj_t,
         rat_val,
         subj_id
     )
     VALUES (
         userID,
         predID,
-        subjType,
         ratVal,
         subjID
     );
 
     SELECT subjID AS outID, exitCode;
-    -- SELECT HEX(prevRatVal) AS prevRatVal, exitCode;
 END //
 DELIMITER ;
+-- TODO: When moving the ratings from PrivateRecentInputs to the public ones
+-- also implement an automatic procedure to rate a "this user has rated this
+-- statement" relation with user 1 (where the rating then matches the user's
+-- rating)..
 
-
-
-
-
-DELIMITER //
-CREATE PROCEDURE insertOrFindContext (
-    IN userID BIGINT UNSIGNED,
-    IN parentCxtID BIGINT UNSIGNED,
-    IN cxtTitle VARCHAR(255)
-)
-BEGIN
-    DECLARE outID BIGINT UNSIGNED;
-    DECLARE exitCode TINYINT;
-
-    SELECT id INTO outID
-    FROM SemanticContexts
-    WHERE (
-        parent_context_id = parentCxtID AND
-        title = cxtTitle
-    );
-    IF (outID IS NOT NULL) THEN
-        SET exitCode = 1; -- find.
-    ELSEIF (
-        NOT EXISTS (SELECT id FROM SemanticContexts WHERE id = parentCxtID)
-    ) THEN
-        SET exitCode = 2; -- parent context does not exist.
-    ELSE
-        INSERT INTO SemanticContexts (parent_context_id, title)
-        VALUES (parentCxtID, cxtTitle);
-        SELECT LAST_INSERT_ID() INTO outID;
-        INSERT INTO Creators (entity_t, entity_id, user_id)
-        VALUES ("c", outID, userID);
-        SET exitCode = 0; -- insert.
-    END IF;
-    SELECT outID, exitCode;
-END //
-DELIMITER ;
 
 
 
@@ -147,41 +101,37 @@ DELIMITER //
 CREATE PROCEDURE insertOrFindTerm (
     IN userID BIGINT UNSIGNED,
     IN cxtID BIGINT UNSIGNED,
-    IN termTitle VARCHAR(255),
-    IN specType CHAR(1),
-    IN specID BIGINT UNSIGNED
+    IN defStr VARCHAR(255),
+    IN defTermID BIGINT UNSIGNED
 )
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
     DECLARE exitCode TINYINT;
 
-    IF (specID = 0) THEN
-        SET specID = NULL;
+    IF (cxtID = 0) THEN
+        SET cxtID = NULL;
     END IF;
-    -- IF (specType = "0") THEN
-    --     SET specType = NULL; -- No, cause spec_t is not nullable.
-    -- END IF;
+    IF (defTermID = 0) THEN
+        SET defTermID = NULL;
+    END IF;
 
     SELECT id INTO outID
     FROM Terms
     WHERE (
-        context_id = cxtID AND
-        spec_entity_t = specType AND
-        spec_entity_id = specID AND
-        title = termTitle
+        context_id <=> cxtID AND
+        def_str = defStr AND
+        def_term_id <=> defTermID
     );
     IF (outID IS NOT NULL) THEN
         SET exitCode = 1; -- find.
-    ELSEIF (
-        NOT EXISTS (SELECT id FROM SemanticContexts WHERE id = cxtID)
-    ) THEN
-        SET exitCode = 2; -- context does not exist.
+    ELSEIF (cxtID <= 3) THEN
+        SET exitCode = 2; -- user is not permitted to add to this context.
     ELSE
-        INSERT INTO Terms (context_id, title, spec_entity_t, spec_entity_id)
-        VALUES (cxtID, termTitle, specType, specID);
+        INSERT INTO Terms (context_id, def_str, def_term_id)
+        VALUES (cxtID, defStr, defTermID);
         SELECT LAST_INSERT_ID() INTO outID;
-        INSERT INTO Creators (entity_t, entity_id, user_id)
-        VALUES ("t", outID, userID);
+        INSERT INTO PrivateCreators (term_id, user_id)
+        VALUES (outID, userID);
         SET exitCode = 0; -- insert.
     END IF;
     SELECT outID, exitCode;
@@ -192,22 +142,42 @@ DELIMITER ;
 
 
 
+DELIMITER //
+CREATE PROCEDURE private_insertUser (
+    IN username VARCHAR(255),
+    IN textStr TEXT
+)
+BEGIN
+    DECLARE outID BIGINT UNSIGNED;
+
+    INSERT INTO Terms (context_id, def_str, def_term_id)
+    VALUES (3, username, NULL);
+    SELECT LAST_INSERT_ID() INTO outID;
+    INSERT INTO Users (id, username)
+    VALUES (outID, username);
+    SELECT outID, 0; -- insert.
+END //
+DELIMITER ;
+
 
 
 
 DELIMITER //
 CREATE PROCEDURE insertText (
     IN userID BIGINT UNSIGNED,
-    IN s TEXT
+    IN metaStr VARCHAR(255),
+    IN textStr TEXT
 )
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
 
-    INSERT INTO Texts (str)
-    VALUES (s);
+    INSERT INTO Terms (context_id, def_str, def_term_id)
+    VALUES (4, metaStr, NULL);
     SELECT LAST_INSERT_ID() INTO outID;
-    INSERT INTO Creators (entity_t, entity_id, user_id)
-    VALUES ("x", outID, userID);
+    INSERT INTO Texts (id, str)
+    VALUES (outID, textStr);
+    INSERT INTO PrivateCreators (term_id, user_id)
+    VALUES (outID, userID);
     SELECT outID, 0; -- insert.
 END //
 DELIMITER ;
@@ -216,48 +186,19 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE insertBinary (
     IN userID BIGINT UNSIGNED,
-    IN b TEXT,
-    OUT outID BIGINT UNSIGNED,
-    OUT exitCode TINYINT
+    IN metaStr VARCHAR(255),
+    IN bin TEXT
 )
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
 
-    INSERT INTO Binaries (bin)
-    VALUES (b);
+    INSERT INTO Terms (context_id, def_str, def_term_id)
+    VALUES (5, metaStr, NULL);
     SELECT LAST_INSERT_ID() INTO outID;
-    INSERT INTO Creators (entity_t, entity_id, user_id)
-    VALUES ("b", outID, userID);
+    INSERT INTO Binaries (id, bin)
+    VALUES (outID, bin);
+    INSERT INTO PrivateCreators (term_id, user_id)
+    VALUES (outID, userID);
     SELECT outID, 0; -- insert.
-END //
-DELIMITER ;
-
-
-
-
-
-DELIMITER //
-CREATE PROCEDURE insertOrFindKeywordString (
-    IN userID BIGINT UNSIGNED,
-    IN s VARCHAR(768)
-)
-BEGIN
-    DECLARE outID BIGINT UNSIGNED;
-    DECLARE exitCode TINYINT;
-
-    SELECT id INTO outID
-    FROM KeywordStrings
-    WHERE str = s;
-    IF (outID IS NOT NULL) THEN
-        SET exitCode = 1; -- find.
-    ELSE
-        INSERT INTO KeywordStrings (str)
-        VALUES (s);
-        SELECT LAST_INSERT_ID() INTO outID;
-        INSERT INTO Creators (entity_t, entity_id, user_id)
-        VALUES ("k", outID, userID);
-        SET exitCode = 0; -- insert.
-    END IF;
-    SELECT outID, exitCode;
 END //
 DELIMITER ;
