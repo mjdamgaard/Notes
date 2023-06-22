@@ -3,6 +3,7 @@
 -- DROP TABLE SemanticInputs;
 -- DROP TABLE PrivateRecentInputs;
 -- DROP TABLE RecentInputs;
+-- DROP TABLE Indexes;
 --
 -- /* Terms */
 -- DROP TABLE Terms;
@@ -33,7 +34,7 @@ CREATE TABLE SemanticInputs (
     /* The "input set" */
     -- given some constants for the above four columns, the input sets contains
     -- pairs of rating values and the IDs of the predicate subjects.
-    rat_val VARBINARY(255) NOT NULL,
+    rat_val SMALLINT UNSIGNED NOT NULL,
     subj_id BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (
@@ -46,7 +47,7 @@ CREATE TABLE SemanticInputs (
     UNIQUE INDEX (user_id, pred_id, subj_id)
 );
 -- TODO: Compress this table and its sec. index, as well as some other tables
--- below. (But compression is a must for this table.)
+-- and sec. indexes below. (But compression is a must for this table.)
 
 
 CREATE TABLE PrivateRecentInputs (
@@ -55,7 +56,7 @@ CREATE TABLE PrivateRecentInputs (
     user_id BIGINT UNSIGNED NOT NULL,
     pred_id BIGINT UNSIGNED NOT NULL,
     -- new rating value.
-    rat_val VARBINARY(255),
+    rat_val SMALLINT UNSIGNED,
     subj_id BIGINT UNSIGNED NOT NULL,
 
     live_after TIME
@@ -69,7 +70,7 @@ CREATE TABLE RecentInputs (
     user_id BIGINT UNSIGNED NOT NULL,
     pred_id BIGINT UNSIGNED NOT NULL,
     -- new rating value.
-    rat_val VARBINARY(255),
+    rat_val SMALLINT UNSIGNED,
     subj_id BIGINT UNSIGNED NOT NULL,
 
     changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -82,7 +83,7 @@ CREATE TABLE RecentInputs (
 --
 --     changed_at DATETIME,
 --
---     rat_val VARBINARY(255),
+--     rat_val SMALLINT UNSIGNED,
 --
 --     PRIMARY KEY (
 --         user_id,
@@ -91,6 +92,29 @@ CREATE TABLE RecentInputs (
 --         changed_at
 --     )
 -- );
+
+CREATE TABLE Indexes (
+    -- user (or bot) who states the statement.
+    user_id BIGINT UNSIGNED NOT NULL,
+    -- predicate.
+    pred_id BIGINT UNSIGNED NOT NULL,
+
+    /* The "input set" */
+    -- given some constants for the above four columns, the input sets contains
+    -- pairs of rating values and the IDs of the predicate subjects.
+    subj_def_str VARCHAR(255) NOT NULL,
+    subj_id BIGINT UNSIGNED NOT NULL,
+
+    PRIMARY KEY (
+        user_id,
+        pred_id,
+        subj_def_str,
+        subj_id
+    ),
+
+    UNIQUE INDEX (user_id, pred_id, subj_id)
+);
+
 
 
 
@@ -105,10 +129,7 @@ CREATE TABLE Terms (
     -- interpreted.
     context_id BIGINT UNSIGNED,
 
-
-    -- defining string of the term.
-    def_str VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    -- the specifying entity (nullable), which can define the term more than
+    -- the defining term (nullable), which can define the term more than
     -- just the context and the def_str does (useful for specifying instances of
     -- very broad classes of objects, such as texts, images, comments, and so
     -- on, where it is hard to specify the objects using contexts alone).
@@ -116,18 +137,20 @@ CREATE TABLE Terms (
     -- predicates from relation--object pairs, which is of course a central
     -- usage in a semantic system: implementing relations.
     def_term_id BIGINT UNSIGNED,
+    -- defining string of the term.
+    def_str VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
 
-    UNIQUE INDEX (context_id, def_str, def_term_id)
+    UNIQUE INDEX (context_id, def_term_id, def_str)
 );
 
 INSERT INTO Terms (context_id, def_str, def_term_id, id)
 VALUES
-    (NULL, "{Users} of the SDB", 1, 1),
-    (NULL, "{Texts} of the SDB", 1, 2),
-    (NULL, "{Binaries} of the SDB", 1, 3),
-    (1, "admin_1", NULL, 4);
--- Here, context_id = 0 defines the default semantic context, and it should
--- used for only for (0, "Terms", NULL, 1).
+    (NULL, "{Data} and users of the SDB", NULL, 1),
+    (1, "Users", NULL, 2),
+    (2, "admin_1", NULL, 3),
+    (1, "Texts", NULL, 4),
+    (1, "Binaries", NULL, 5);
+
 
 
 CREATE TABLE Users (
@@ -152,7 +175,7 @@ CREATE TABLE Users (
 );
 
 INSERT INTO Users (username, id)
-VALUES ("admin_1", 6);
+VALUES ("admin_1", 3);
 
 
 
@@ -197,3 +220,7 @@ CREATE TABLE PrivateCreators (
     user_id BIGINT UNSIGNED NOT NULL,
     INDEX (user_id)
 );
+-- (These should generally be deleted quite quickly, and instead a special bot
+-- should rate which Term is created by which user, if and only if the given
+-- user has declared that they are the creater themselves (via rating the same
+-- predicate before the bot).)

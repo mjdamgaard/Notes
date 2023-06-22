@@ -6,6 +6,8 @@ ALTER TABLE RecentInputs AUTO_INCREMENT=1;
 DELETE FROM Terms;
 ALTER TABLE Terms AUTO_INCREMENT=1;
 
+DELETE FROM Users;
+ALTER TABLE Users AUTO_INCREMENT=1;
 -- DELETE FROM Texts;
 -- ALTER TABLE Texts AUTO_INCREMENT=1;
 
@@ -16,50 +18,47 @@ DELETE FROM PrivateCreators;
 /* From create_open_sdb.sql */
 INSERT INTO Terms (context_id, def_str, def_term_id, id)
 VALUES
-    (NULL, "{Users} of the SDB", 1, 1),
-    (NULL, "{Texts} of the SDB", 1, 2),
-    (NULL, "{Binaries} of the SDB", 1, 3),
-    (1, "admin_1", NULL, 4);
-
+    (NULL, "{Data} and users of the SDB", NULL, 1),
+    (1, "Users", NULL, 2),
+    (2, "admin_1", NULL, 3),
+    (1, "Texts", NULL, 4),
+    (1, "Binaries", NULL, 5);
+INSERT INTO Users (username, id)
+VALUES ("admin_1", 3);
 
 /* Some other important initial inserts */
 INSERT INTO Terms (context_id, def_str, def_term_id, id)
 VALUES
-    (NULL, "Terms", NULL, 5),
-    (NULL, "Predicates", NULL, 6),
-    (6, ">Adjectives and Verbs, s.", NULL, 7), -- (s.: singular)
-    (NULL, "Nouns for predicate definitions", NULL, 8),
-    (7, ">is a useful instance of the {{$s} of }the Term, {$t}", NULL, 9),
-    (NULL, "Statements", NULL, 10),
-    (10, ">{$s[0] applies to $t}", NULL, 11);
-    -- (NULL, CONCAT(
-    --     "The statement formed by applying the predicate, $s[0], to the term, ",
-    --     "$t, abbreviate it as: {$s[0] applies to $t}"
-    -- ), NULL, 10);
+    (NULL, "Terms", NULL, 6),
+    (NULL, "Predicates", NULL, 7),
+    (7, ":is an important/useful instance of the {$s of }the Term, {$t}", NULL, 8),
+    (NULL, "Statements", NULL, 9),
+    (9, ":$l[0] applies to $t", NULL, 10),
+    -- some room for more important inserts..
+    (NULL, "ExAmPlE oF a NoT vErY uSeFuL tErM", NULL, 21);
 
 
 
 /* More inserts for testing */
 
-CALL insertOrFindTerm(4, 0, "Science", 0); -- id: 12
-CALL insertOrFindTerm(4, 0, "Music", 0); -- id: 13
--- CALL insertOrFindTerm(4, 0, "{Rock} (musical genre)", 0); -- id: 14
-CALL insertOrFindTerm(4, 13, "Rock", 0); -- id: 14
-CALL insertOrFindTerm(4, 13, "Jazz", 0); -- id: 15
-CALL insertOrFindTerm(4, 13, "Hip hop", 0); -- id: 16
+CALL insertOrFindTerm(3, 0, "Science", 0); -- id: 22
+CALL insertOrFindTerm(3, 0, "Music", 0); -- id: 23
+CALL insertOrFindTerm(3, 23, "Rock", 0); -- id: 24
+CALL insertOrFindTerm(3, 23, "Jazz", 0); -- id: 25
+CALL insertOrFindTerm(3, 23, "Hip hop", 0); -- id: 26
 
-CALL insertOrFindTerm(4, 0, "Movies", 0); -- id: 17
-CALL insertOrFindTerm(4, 17,
-    "{The Lord of the Rings: The Fellowship of the Ring} (2001)", 0
-);-- id: 18
-CALL insertOrFindTerm(4, 17,
-    "{The Lord of the Rings: The Two Towers} (2002)", 0
-); -- id: 19
+CALL insertOrFindTerm(3, 0, "Movies", 0); -- id: 27
+CALL insertOrFindTerm(3, 27,
+    "The Lord of the Rings: The Fellowship of the Ring (2001)", 0
+);-- id: 28
+CALL insertOrFindTerm(3, 27,
+    "The Lord of the Rings: The Two Towers (2002)", 0
+); -- id: 29
 
-CALL insertOrFindTerm(4, 12, "Music", 0); -- id: 20
-CALL insertOrFindTerm(4, 12, "Cinematography", 0); -- id: 21
-CALL insertOrFindTerm(4, 12, "Physics", 0); -- id: 22
-CALL insertOrFindTerm(4, 12, "Mathematics", 0); -- id: 23
+CALL insertOrFindTerm(3, 22, "Music", 0); -- id: 30
+CALL insertOrFindTerm(3, 22, "Cinematography", 0); -- id: 31
+CALL insertOrFindTerm(3, 22, "Physics", 0); -- id: 32
+CALL insertOrFindTerm(3, 22, "Mathematics", 0); -- id: 33
 
 
 
@@ -77,7 +76,7 @@ BEGIN
     loop1: LOOP
         IF (startTermID <= endTermID) THEN
             CALL insertOrFindTerm(
-                4, 9,
+                3, 8,
                 str,
                 startTermID
             );
@@ -90,25 +89,26 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL insertOrFindTerm(4, 9, "Subcategories", 0);
-CALL insertPredicates("Subcategories", 1, 19);
-CALL insertOrFindTerm(4, 9, "Instances", 0);
-CALL insertPredicates("Instances", 1, 13);
+CALL insertOrFindTerm(3, NULL, "Subcategories", 0);
+CALL insertPredicates("Subcategories", 6, 12);
+CALL insertPredicates("Subcategories", 22, 29);
 
 -- rate some statements.
 
 
-CALL inputOrChangeRating(4, 29, 12, "FF", "00");
-CALL inputOrChangeRating(4, 29, 13, "F0", "00");
-CALL inputOrChangeRating(4, 29, 14, "A1", "00");
-CALL inputOrChangeRating(4, 29, 15, "A0", "00");
+CALL inputOrChangeRating(3, 35, 22, CONV("FFFF", 16, 10), "00");
+CALL inputOrChangeRating(3, 35, 23, CONV("F030", 16, 10), "00");
+CALL inputOrChangeRating(3, 35, 24, CONV("A130", 16, 10), "00");
+CALL inputOrChangeRating(3, 35, 25, CONV("A000", 16, 10), "00");
+CALL inputOrChangeRating(3, 35, 21, CONV("0103", 16, 10), "00");
 
-CALL inputOrChangeRating(4, 37, 14, "E1", "00");
-CALL inputOrChangeRating(4, 37, 15, "E0", "00");
-CALL inputOrChangeRating(4, 37, 16, "E0", "00");
-CALL inputOrChangeRating(4, 37, 20, "F0", "00");
+CALL inputOrChangeRating(3, 43, 24, CONV("E100", 16, 10), "00");
+CALL inputOrChangeRating(3, 43, 25, CONV("E000", 16, 10), "00");
+CALL inputOrChangeRating(3, 43, 26, CONV("E000", 16, 10), "00");
+CALL inputOrChangeRating(3, 43, 21, CONV("0001", 16, 10), "00");
+CALL inputOrChangeRating(3, 43, 30, CONV("F000", 16, 10), "00");
 
-CALL inputOrChangeRating(4, 56, 20, "F0", "00");
+CALL inputOrChangeRating(3, 42, 30, CONV("F000", 16, 10), "00");
 
 
 

@@ -24,26 +24,22 @@ DELIMITER //
 CREATE PROCEDURE selectInputSet (
     IN userID BIGINT UNSIGNED,
     IN predID BIGINT UNSIGNED,
-    IN ratingRangeLoHex VARCHAR(510),
-    IN ratingRangeHiHex VARCHAR(510),
+    IN ratingRangeLo SMALLINT UNSIGNED,
+    IN ratingRangeHi SMALLINT UNSIGNED,
     IN maxNum INT UNSIGNED,
     IN numOffset INT UNSIGNED,
     IN isAscOrder BOOL
 )
 BEGIN
-    DECLARE ratingRangeLo, ratingRangeHi VARBINARY(255);
-    SET ratingRangeLo = CONV(ratingRangeLoHex, 16, 10);
-    SET ratingRangeHi = CONV(ratingRangeHiHex, 16, 10);
-
     SELECT
-        CONV(rat_val, 10, 16) AS ratVal,
+        rat_val AS ratVal,
         subj_id AS subjID
     FROM SemanticInputs
     WHERE (
         user_id = userID AND
         pred_id = predID AND
-        (ratingRangeLo IS NULL OR rat_val >= ratingRangeLo) AND
-        (ratingRangeHi IS NULL OR rat_val <= ratingRangeHi)
+        (ratingRangeLo = 0 OR rat_val >= ratingRangeLo) AND
+        (ratingRangeHi = 0 OR rat_val <= ratingRangeHi)
     )
     ORDER BY
         CASE WHEN isAscOrder THEN rat_val END ASC,
@@ -63,7 +59,7 @@ CREATE PROCEDURE selectRating (
     IN subjID BIGINT UNSIGNED
 )
 BEGIN
-    SELECT CONV(rat_val, 10, 16) AS ratVal
+    SELECT rat_val AS ratVal
     FROM SemanticInputs
     WHERE (
         user_id = userID AND
@@ -89,7 +85,7 @@ BEGIN
     SELECT
         user_id AS userID,
         pred_id AS predID,
-        CONV(rat_val, 10, 16) AS ratVal,
+        rat_val AS ratVal,
         subj_id AS subjID,
         changed_at AS changedAt
     FROM RecentInputs
@@ -98,46 +94,6 @@ BEGIN
     LIMIT maxNum;
 END //
 DELIMITER ;
-
-
-
--- DELIMITER //
--- CREATE PROCEDURE selectRecordedInputs (
---     IN userID BIGINT UNSIGNED,
---     IN predID BIGINT UNSIGNED,
---     IN subjID BIGINT UNSIGNED,
---     IN maxNum INT UNSIGNED,
---     IN numOffset INT UNSIGNED
--- )
--- BEGIN
---     IF (subjID = 0) THEN
---         SELECT
---             subj_id AS subjID,
---             changed_at AS changedAt,
---             CONV(rat_val, 10, 16) AS ratVal
---         FROM RecordedInputs
---         WHERE (
---             user_id = userID AND
---             pred_id = predID
---         )
---         ORDER BY subj_id DESC, changed_at DESC
---         LIMIT numOffset, maxNum;
---     ELSE
---         SELECT
---             subjID AS subjID,
---             changed_at AS changedAt,
---             CONV(rat_val, 10, 16) AS ratVal
---         FROM RecordedInputs
---         WHERE (
---             user_id = userID AND
---             pred_id = predID AND
---             subj_id = subjID
---         )
---         ORDER BY changed_at DESC
---         LIMIT numOffset, maxNum;
---     END IF;
--- END //
--- DELIMITER ;
 
 
 
@@ -159,8 +115,6 @@ END //
 DELIMITER ;
 
 
-
-
 DELIMITER //
 CREATE PROCEDURE selectTermID (
     IN cxtID BIGINT UNSIGNED,
@@ -179,8 +133,8 @@ BEGIN
     FROM Terms
     WHERE (
         context_id <=> cxtID AND
-        def_str = defStr AND
-        def_term_id <=> defTermID
+        def_term_id <=> defTermID AND
+        def_str = defStr
     );
 END //
 DELIMITER ;
