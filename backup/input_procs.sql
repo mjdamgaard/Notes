@@ -71,10 +71,7 @@ BEGIN
 
     -- TODO: Change this to update PrivateRecentInputs instead, make a
     -- scheduled event to move private recent inputs into (the public)
-    -- RecentInputs --- and update SemanticInputs only then! ---
-    -- and at some point also make an event to record
-    -- recent inputs into RecordedInputs when there is long enough time
-    -- between the last last recent input before that.
+    -- RecentInputs, and update SemanticInputs only then.
     SET live_after = NULL; -- (not implemented yet)
     INSERT INTO RecentInputs (
         user_id,
@@ -94,8 +91,8 @@ END //
 DELIMITER ;
 -- TODO: When moving the ratings from PrivateRecentInputs to the public ones
 -- also implement an automatic procedure to rate a "this user has rated this
--- statement" relation with user 1 (where the rating then matches the user's
--- rating)..
+-- statement" relation with a special bot (where the rating then matches the
+-- user's rating)..
 
 
 
@@ -104,8 +101,7 @@ DELIMITER //
 CREATE PROCEDURE insertOrFindTerm (
     IN userID BIGINT UNSIGNED,
     IN cxtID BIGINT UNSIGNED,
-    IN defStr VARCHAR(255),
-    IN defTermID BIGINT UNSIGNED
+    IN defStr VARCHAR(255)
 )
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
@@ -114,15 +110,11 @@ BEGIN
     IF (cxtID = 0) THEN
         SET cxtID = NULL;
     END IF;
-    IF (defTermID = 0) THEN
-        SET defTermID = NULL;
-    END IF;
 
     SELECT id INTO outID
     FROM Terms
     WHERE (
         context_id <=> cxtID AND
-        def_term_id <=> defTermID AND
         def_str = defStr
     );
     IF (outID IS NOT NULL) THEN
@@ -132,18 +124,13 @@ BEGIN
         NOT EXISTS (SELECT id FROM Terms WHERE id = cxtID)
     ) THEN
         SET exitCode = 2; -- cxtID is not the ID of an existing Term.
-    ELSEIF (0 < cxtID AND cxtID <= 5) THEN
+    ELSEIF (0 < cxtID AND cxtID <= 6) THEN
         SET exitCode = 3; -- cxtID is not permitted for this procedure.
-    ELSEIF (
-        defTermID IS NOT NULL AND
-        NOT EXISTS (SELECT id FROM Terms WHERE id = defTermID)
-    ) THEN
-        SET exitCode = 4; -- defTermID is not the ID of an existing Term.
     END IF;
 
     IF (exitCode IS NULL) THEN
-        INSERT INTO Terms (context_id, def_str, def_term_id)
-        VALUES (cxtID, defStr, defTermID);
+        INSERT INTO Terms (context_id, def_str)
+        VALUES (cxtID, defStr);
         SELECT LAST_INSERT_ID() INTO outID;
         INSERT INTO PrivateCreators (term_id, user_id)
         VALUES (outID, userID);
@@ -166,8 +153,8 @@ CREATE PROCEDURE private_insertUser (
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
 
-    INSERT INTO Terms (context_id, def_str, def_term_id)
-    VALUES (2, username, NULL);
+    INSERT INTO Terms (context_id, def_str)
+    VALUES (2, username);
     SELECT LAST_INSERT_ID() INTO outID;
     INSERT INTO Users (id, username)
     VALUES (outID, username);
@@ -187,8 +174,8 @@ CREATE PROCEDURE insertText (
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
 
-    INSERT INTO Terms (context_id, def_str, def_term_id)
-    VALUES (4, metaStr, NULL);
+    INSERT INTO Terms (context_id, def_str)
+    VALUES (4, metaStr);
     SELECT LAST_INSERT_ID() INTO outID;
     INSERT INTO Texts (id, str)
     VALUES (outID, textStr);
@@ -208,8 +195,8 @@ CREATE PROCEDURE insertBinary (
 BEGIN
     DECLARE outID BIGINT UNSIGNED;
 
-    INSERT INTO Terms (context_id, def_str, def_term_id)
-    VALUES (5, metaStr, NULL);
+    INSERT INTO Terms (context_id, def_str)
+    VALUES (5, metaStr);
     SELECT LAST_INSERT_ID() INTO outID;
     INSERT INTO Binaries (id, bin)
     VALUES (outID, bin);

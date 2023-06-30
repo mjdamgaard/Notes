@@ -60,7 +60,7 @@ CREATE TABLE PrivateRecentInputs (
     subj_id BIGINT UNSIGNED NOT NULL,
 
     live_after TIME
-    -- TODO: Make a recurring scheduled event that decrements to days of this
+    -- TODO: Make a recurring scheduled event that decrements the days of this
     -- time, and one that continously moves the private RIs to the public table
     -- when the time is up (and when the day part of the time is at 0).
 );
@@ -99,9 +99,8 @@ CREATE TABLE Indexes (
     -- predicate.
     pred_id BIGINT UNSIGNED NOT NULL,
 
-    /* The "input set" */
-    -- given some constants for the above four columns, the input sets contains
-    -- pairs of rating values and the IDs of the predicate subjects.
+    -- rat_val is changed for the subject's def_str in Indexes, when comparing
+    -- to SemanticInputs.
     subj_def_str VARCHAR(255) NOT NULL,
     subj_id BIGINT UNSIGNED NOT NULL,
 
@@ -126,30 +125,34 @@ CREATE TABLE Terms (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     -- id of the context which tells how the subsequent columns are to be
-    -- interpreted.
+    -- interpreted. (Null implies the default context of the SDB, and terms
+    -- with null as their context will use "Terms", id = 6, as a substitute for
+    -- their context. Note that context IDs of 1--6 are not allowed.)
     context_id BIGINT UNSIGNED,
 
-    -- the defining term (nullable), which can define the term more than
-    -- just the context and the def_str does (useful for specifying instances of
-    -- very broad classes of objects, such as texts, images, comments, and so
-    -- on, where it is hard to specify the objects using contexts alone).
-    -- Oh, and more importantly, the specifying entities are used to make
-    -- predicates from relation--object pairs, which is of course a central
-    -- usage in a semantic system: implementing relations.
-    def_term_id BIGINT UNSIGNED,
-    -- defining string of the term.
+    -- defining string of the term. This can be a lexical item, understood in
+    -- the context of the term with id = context_id. Or it can be a list of
+    -- term IDs, separated by commas, whose interpretation will then typically
+    -- be given by a "Template context", see initial_inserts.sql for how these
+    -- "Template contexts" work. Predicate terms, which are an important part
+    -- of this system, will also often be formed this way, namely where at
+    -- least one ID in the list represent a relation, and where one ID
+    -- represents the object. This is how we are able to implement semantic
+    -- relations; via compound predicates made from such "Template contexts."
+    -- Again, see initial_inserts.sql for how this works.
     def_str VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
 
-    UNIQUE INDEX (context_id, def_term_id, def_str)
+    UNIQUE INDEX (context_id, def_str)
 );
 
-INSERT INTO Terms (context_id, def_str, def_term_id, id)
+INSERT INTO Terms (context_id, def_str, id)
 VALUES
-    (NULL, "{Data} and users of the SDB", NULL, 1),
-    (1, "Users", NULL, 2),
-    (2, "admin_1", NULL, 3),
-    (1, "Texts", NULL, 4),
-    (1, "Binaries", NULL, 5);
+    (NULL, "{Data} and users of the SDB", 1),
+    (1, "Users", 2),
+    (2, "admin_1", 3),
+    (1, "Texts", 4),
+    (1, "Binaries", 5),
+    (NULL, "Terms", 6);
 
 
 
@@ -197,20 +200,7 @@ CREATE TABLE Binaries (
 
 
 
--- CREATE TABLE SemanticContexts (
---     -- context ID.
---     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
---     -- type = "c".
---
---     -- parent context.
---     parent_context_id BIGINT UNSIGNED NOT NULL,
---     -- ...
---     def_str VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
---
---     def_entity_t CHAR(1) NOT NULL, -- generally the same as parent's.
---
---     UNIQUE INDEX (parent_context_id, def_str)
--- );
+
 
 
 
@@ -222,5 +212,5 @@ CREATE TABLE PrivateCreators (
 );
 -- (These should generally be deleted quite quickly, and instead a special bot
 -- should rate which Term is created by which user, if and only if the given
--- user has declared that they are the creater themselves (via rating the same
+-- user has declared that they are the creater themselves (by rating the same
 -- predicate before the bot).)
