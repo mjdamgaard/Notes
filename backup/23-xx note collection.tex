@@ -1694,9 +1694,14 @@ At some point we could make use a predicate to determine what (requests) should 
 
 (13:36) Let me by the way mention that I now intend to go away from using non-Predicates for pred\_ids again (which means that I should probably go back to the ``Instances'' relation, and maybe split the ``Applies to''/``Instances'' tab up into two again.\,.).\,. (13:39)
 
+(19:08) I've had the delightful idea to actually change context\_id to context\_str instead, simply.\,:)
 
+(21:24) I had second thoughts but I actually think I will let context\_id $\to$ context\_str.
+\ldots\ (22:56) Or maybe not.\,.
 
+(01.07.23, 11:26) I think I will keep context\_id and just disallow inserts of Terms with Contexts who themselves has Contexts: no more than one ancestor Context, the parent. At some point we might change this, but I don't see why we would need to.
 
+(03.07.23, 18:47) Oh, something else that  think I've forgotten to mention, is that I intend to try to implement a small version of my ``variable documents,'' or whatever I used to call them, which were central to my ``wiki idea,'' pretty soon after having finished the first prototype. I'm then thinking of implementing a kind of ``semantic field'' for text section, where users can upload and uprate small article section in some markup language (possible Markdown, if not HTML). And to this markup language I'm then gonna add a syntax to denote ``variable subsections,'' such that the user, instead of writing the actual subsection/paragraph, instead just states what predicate to query to get the subsection/paragraph. And in a further implementation of this system, it should also be possible for users to adjust extra predicates about the article section, for instance by saying that a ``detailed'' text is preferred by the user (in the given moment), or perhaps the opposite: that a ``brief and concise'' text is preferred. And then the point is that (at some point) the application will then not only query for the best section template matching this extra predicate (if not several extra predicates) but will also then use the same added predicates when choosing what ``variable'' subsections/paragraph to query in order to fill out the section template. If this idea can be implemented sooner rather than later, it will be very useful in showing the users the possibilities of my ``wiki idea'' (that I have often referred to it as before). (18:58)
 
 
 
