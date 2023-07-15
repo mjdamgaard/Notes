@@ -1706,6 +1706,13 @@ At some point we could make use a predicate to determine what (requests) should 
 
 (15.07.23, 12:36) I'm actually now playing with the idea of adding types back to the system, perhaps the types: Predicate, Category, Context, Object.\,. .\,.\,Hm, and I could perhaps also refer to Contexts more as Templates, if I want to use ASCII characters for type flags as I used to.\,. .\,.\,Hm, but should I then also have the types: Users, Texts and Binaries?\,.\,. .\,.\,Hm, maybe Contexts shouldn't actually be considered Terms.\,. .\,.\,The reason I'm thinking about this now is that I'm also considering making new tabs, something like: ``As an Object,'' ``As a category,'' ``As a predicate,'' ``As a context''.\,. .\,.\,Hm, but yeah, maybe I should add types instead, but then do it as a sort of prefix to the Context, and then indeed not have Contexts as being Terms.\,. (12:47) .\,.\,And let me indeed just use the characters `p,' `c,' `o,' `u,' `t,' `b,' if I do this.\,. .\,.\,But let me think a bit more on it before I commit to restructuring the SDB.\,. (12:51) \ldots (13:11) Okay, I actually think it is the right thing to do.\,. So let me get to it.\,.
 
+(14:16) Hm, maybe Indexes should just be introduced as Objects.\,. I'm considering adding Statements to the list, though.\,. .\,.\,Hm, then again, perhaps no to both.\,. .\,.\,(14:25) Hm, now I'm instead considering just adding `Aggregation algorithms' to the previous list --- which also includes Indexes at this point in time.\,. .\,.\,Yes, so the types will probably be: ``Categories'',  ``Predicates'', ``Objects'',  ``Indexes'',  ``Users'',  ``Texts'',  ``Binaries'',  ``Aggregation algorithms (Bots).'' (14:32)
+
+%Hm, I just pushed accidentally (the "I'm thinking of ..." commit) by clicking the wrong button in my editor (using Atom). I didn't know that it could do that, and now I'm wondering how on earth it does that; how does it have/know my/a token for pushing changes..? ..Oh, well.. (15:11)
+
+(15:28) Hm, shouldn't I actually start calling Terms Entities instead now?\,.\,. .\,.\,I think so.\,. .\,.\,(15:32) Hm no, that doesn't work when Templates aren't Terms, but shouldn't I actually make Templates (Contexts) a part of Terms/Entities once again?\,.\,. .\,.\,Yeah, I should.\,. .\,.\,And I guess I will use `x' for the text type once again, then.\,. .\,.\,And `m' for Templates, I guess.\,. \ldots (15:45) Hm, let me stick to calling them Terms, right.\,.\,? .\,.\,Hm.\,. .\,.\,Yeah, I still like Terms.\,. (15:49) .\,.\,Or.\,. Hm no, maybe Entities \emph{is} actually better.\,. .\,.\,Yeah, it actually is.\,. (15:51)
+%Puh, at omdøbe alle "terms" til "entities" er en del arbejde, så lad mig lige tygge på det engang.. Ville også have det fint med en pause.. (15:57)
+
 
 
 
