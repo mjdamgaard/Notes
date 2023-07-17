@@ -3,10 +3,10 @@
 -- DROP TABLE SemanticInputs;
 -- DROP TABLE PrivateRecentInputs;
 -- DROP TABLE RecentInputs;
--- DROP TABLE Indexes;
+-- DROP TABLE EntityIndexKeys;
 --
--- /* Terms */
--- DROP TABLE Terms;
+-- /* Entities */
+-- DROP TABLE Entities;
 --
 -- /* Data */
 -- DROP TABLE Users;
@@ -20,31 +20,43 @@
 
 
 
-/* Statements that the users (or bots) give as input to the semantic network.
- * A central feature of this semantic system is that all such statements come
- * with a numerical value which represents the degree to which the user deems
- * that the statement is correct (like when answering a survey).
+/* Semantic inputs are the statements that the users (or aggregation bots) give
+ * as input to the semantic network. A central feature of this semantic system
+ * is that all such statements come with a numerical value which represents the
+ * degree to which the user deems that the statement is correct (like when
+ * answering a survey).
+ * The statements in this system are aways formed from a category entity and a
+ * instance entity. The user thus states that the latter is an instance of the
+ * given category. The rating then tells how important/useful the user deems
+ * the instance to be in that category.
+ * Note that all predicates can be reformulated as categories. For instance,
+ * the predicate "is a scary movie" can be reformulated as the category "Scary
+ * movies."
  **/
 CREATE TABLE SemanticInputs (
-    -- user (or bot) who states the statement.
+    -- User (or bot) who states the statement.
     user_id BIGINT UNSIGNED NOT NULL,
-    -- predicate.
-    pred_id BIGINT UNSIGNED NOT NULL,
+    -- Category of the statement.
+    cat_id BIGINT UNSIGNED NOT NULL,
 
-    /* The "input set" */
-    -- given some constants for the above four columns, the input sets contains
-    -- pairs of rating values and the IDs of the predicate subjects.
+    /* The input set */
+    -- Given some constants for the above two columns, the "input sets" contain
+    -- pairs of rating values and the IDs of the category instances.
     rat_val SMALLINT UNSIGNED NOT NULL,
-    subj_id BIGINT UNSIGNED NOT NULL,
+    inst_id BIGINT UNSIGNED NOT NULL,
+
+    -- Resulting semantic input: "User #<user_id> states that entity #<inst_id>
+    -- is an instance of category #<cat_id> with importantance/usefulness given
+    -- on a scale from 0 to 10 (with 5 being neutral) by <rat_val> / 6553.5."
 
     PRIMARY KEY (
         user_id,
-        pred_id,
+        cat_id,
         rat_val,
-        subj_id
+        inst_id
     ),
 
-    UNIQUE INDEX (user_id, pred_id, subj_id)
+    UNIQUE INDEX (user_id, cat_id, inst_id)
 );
 -- TODO: Compress this table and its sec. index, as well as some other tables
 -- and sec. indexes below. (But compression is a must for this table.)
@@ -54,10 +66,9 @@ CREATE TABLE PrivateRecentInputs (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     user_id BIGINT UNSIGNED NOT NULL,
-    pred_id BIGINT UNSIGNED NOT NULL,
-    -- new rating value.
-    rat_val SMALLINT UNSIGNED,
-    subj_id BIGINT UNSIGNED NOT NULL,
+    cat_id BIGINT UNSIGNED NOT NULL,
+    rat_val SMALLINT UNSIGNED, -- new rating value:
+    inst_id BIGINT UNSIGNED NOT NULL,
 
     live_after TIME
     -- TODO: Make a recurring scheduled event that decrements the days of this
@@ -68,18 +79,17 @@ CREATE TABLE RecentInputs (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     user_id BIGINT UNSIGNED NOT NULL,
-    pred_id BIGINT UNSIGNED NOT NULL,
-    -- new rating value.
-    rat_val SMALLINT UNSIGNED,
-    subj_id BIGINT UNSIGNED NOT NULL,
+    cat_id BIGINT UNSIGNED NOT NULL,
+    rat_val SMALLINT UNSIGNED, -- new rating value.
+    inst_id BIGINT UNSIGNED NOT NULL,
 
     changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- CREATE TABLE RecordedInputs (
 --     user_id BIGINT UNSIGNED NOT NULL,
---     pred_id BIGINT UNSIGNED NOT NULL,
+--     cat_id BIGINT UNSIGNED NOT NULL,
 --     -- recorded rating value.
---     subj_id BIGINT UNSIGNED NOT NULL,
+--     inst_id BIGINT UNSIGNED NOT NULL,
 --
 --     changed_at DATETIME,
 --
@@ -87,79 +97,85 @@ CREATE TABLE RecentInputs (
 --
 --     PRIMARY KEY (
 --         user_id,
---         pred_id,
---         subj_id,
+--         cat_id,
+--         inst_id,
 --         changed_at
 --     )
 -- );
 
-CREATE TABLE Indexes (
-    -- user (or bot) who states the statement.
+CREATE TABLE EntityIndexKeys (
+    -- User (or bot) who governs the index.
     user_id BIGINT UNSIGNED NOT NULL,
-    -- predicate.
-    pred_id BIGINT UNSIGNED NOT NULL,
+    -- Index entity which defines the restrictions on the entity keys.
+    idx_id BIGINT UNSIGNED NOT NULL,
 
-    -- rat_val is changed for the subject's def_str in Indexes, when comparing
-    -- to SemanticInputs.
-    subj_def_str VARCHAR(255) NOT NULL,
-    subj_id BIGINT UNSIGNED NOT NULL,
+    /* The entity index */
+    -- Given some constants for the above two columns, the "entity indexes"
+    -- contain the "entity keys," which are each just the secondary index of an
+    -- entity.
+    ent_type CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+    ent_tmpl_id BIGINT UNSIGNED,
+    ent_def_str VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
 
     PRIMARY KEY (
         user_id,
-        pred_id,
-        subj_def_str,
-        subj_id
-    ),
-
-    UNIQUE INDEX (user_id, pred_id, subj_id)
+        idx_id,
+        ent_type,
+        ent_tmpl_id,
+        ent_def_str
+    )
 );
+-- (Also needs compressing.)
 
 
 
 
-
-
-
-CREATE TABLE Terms (
-    -- term ID.
+CREATE TABLE Entities (
+    -- Entity ID.
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-    -- id of the context which tells how the subsequent columns are to be
-    -- interpreted. (Null implies the default context of the SDB, and terms
-    -- with null as their context will use "Terms", id = 1, as a substitute for
-    -- their context. Note that context IDs of 1--5 are not allowed.)
-    context_id BIGINT UNSIGNED,
+    -- Type of the entity. This can for instance be: Type, Category, Template,
+    -- Index, User, Text data, Binary data, Aggregation bot, as well as any
+    -- user-submitted type.
+    type_id BIGINT UNSIGNED NOT NULL,
 
-    -- defining string of the term. This can be a lexical item, understood in
-    -- the context of the term with id = context_id. Or it can be a list of
-    -- term IDs, separated by commas, whose interpretation will then typically
-    -- be given by a "Template context", see initial_inserts.sql for how these
-    -- "Template contexts" work. Predicate terms, which are an important part
-    -- of this system, will also often be formed this way, namely where at
-    -- least one ID in the list represent a relation, and where one ID
-    -- represents the object. This is how we are able to implement semantic
-    -- relations; via compound predicates made from such "Template contexts."
-    -- Again, see initial_inserts.sql for how this works.
+    -- ID of the template which defines how the defining string is to be
+    -- interpreted. If the template ID is null, the defining string is just
+    -- interpreted as is.
+    tmpl_id BIGINT UNSIGNED,
+
+    -- Defining string of the entity. This can be a lexical item, understood in
+    -- the context of the type alone if tmpl_id is null. If the tmpl_id is not
+    -- null, the def_str can be a series of inputs separated by '|' of either
+    -- IDs of the form "#<number>" (e.g. "#100") or any other string (e.g.
+    -- "Physics"). These inputs is then plugged into the placeholders of the
+    -- template in order of appearence and the resulting string is then
+    -- interpreted in the context of the type to yield the definition of the
+    -- entity.
     def_str VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
 
-    UNIQUE INDEX (context_id, def_str)
+    UNIQUE INDEX (type_id, tmpl_id, def_str)
 );
 
-INSERT INTO Terms (context_id, def_str, id)
+INSERT INTO Entities (type_id, tmpl_id, def_str, id)
 VALUES
-    (NULL, "Terms", 1),
-    (NULL, "{Users} of the SDB", 2),
-    (2, "admin_1", 3),
-    (NULL, "{Texts} of the SDB", 4),
-    (NULL, "{Binaries} of the SDB", 5);
+    (1, NULL, "Type", 1), -- The type of this "Type" entity is itself.
+    (1, NULL, "Category", 2), -- This is then "Category" type entity and so on.
+    (1, NULL, "Template", 3),
+    (1, NULL, "Index", 4),
+    (1, NULL, "User", 5),
+    (1, NULL, "Aggregation bot", 6),
+    (1, NULL, "Text data", 7),
+    (1, NULL, "Binary data", 8),
+    (5, NULL, "admin_1", 9);
 
 
 
 CREATE TABLE Users (
-    -- user ID.
+    -- User ID.
     id BIGINT UNSIGNED PRIMARY KEY,
 
-    username VARCHAR(50) UNIQUE,
+    username VARCHAR(50) UNIQUE, -- TODO: Consider adding more restrictions.
 
     public_keys_for_authentication TEXT,
     -- (In order for third parties to be able to copy the database and then
@@ -177,23 +193,23 @@ CREATE TABLE Users (
 );
 
 INSERT INTO Users (username, id)
-VALUES ("admin_1", 3);
+VALUES ("admin_1", 9);
 
 
 
 CREATE TABLE Texts (
-    /* text ID */
+    /* Text ID */
     id BIGINT UNSIGNED PRIMARY KEY,
 
-    /* data */
+    /* Data */
     str TEXT NOT NULL
 );
 
 CREATE TABLE Binaries (
-    /* binary string ID */
+    /* Binary string ID */
     id BIGINT UNSIGNED PRIMARY KEY,
 
-    /* data */
+    /* Data */
     bin LONGBLOB NOT NULL
 );
 
@@ -204,12 +220,12 @@ CREATE TABLE Binaries (
 
 
 CREATE TABLE PrivateCreators (
-    term_id BIGINT UNSIGNED PRIMARY KEY,
+    ent_id BIGINT UNSIGNED PRIMARY KEY,
 
     user_id BIGINT UNSIGNED NOT NULL,
     INDEX (user_id)
 );
 -- (These should generally be deleted quite quickly, and instead a special bot
--- should rate which Term is created by which user, if and only if the given
+-- should rate which entity is created by which user, if and only if the given
 -- user has declared that they are the creater themselves (by rating the same
 -- predicate before the bot).)

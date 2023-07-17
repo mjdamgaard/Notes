@@ -1713,6 +1713,24 @@ At some point we could make use a predicate to determine what (requests) should 
 (15:28) Hm, shouldn't I actually start calling Terms Entities instead now?\,.\,. .\,.\,I think so.\,. .\,.\,(15:32) Hm no, that doesn't work when Templates aren't Terms, but shouldn't I actually make Templates (Contexts) a part of Terms/Entities once again?\,.\,. .\,.\,Yeah, I should.\,. .\,.\,And I guess I will use `x' for the text type once again, then.\,. .\,.\,And `m' for Templates, I guess.\,. \ldots (15:45) Hm, let me stick to calling them Terms, right.\,.\,? .\,.\,Hm.\,. .\,.\,Yeah, I still like Terms.\,. (15:49) .\,.\,Or.\,. Hm no, maybe Entities \emph{is} actually better.\,. .\,.\,Yeah, it actually is.\,. (15:51)
 %Puh, at omdøbe alle "terms" til "entities" er en del arbejde, så lad mig lige tygge på det engang.. Ville også have det fint med en pause.. (15:57)
 
+(16.07.23, 16:32) I have thought a lot today, after having successfully changed the backend and frontend, and now I'm actually considering letting types also be given by an entity, just like the templates (i.e.\ a Type entity (with the type of Type)).\,. Hm.\,. .\,.\,Let me explain, by the way, that the idea is that Types can then be used more than Templates for defining e.g.\ the Column tabs and such, and they can also always be cached because they are not intended to be very many. .\,. .\,.\,Hm, but more than 128, though, probably.\,. .\,.\,(16:45) Hm, I actually really like this idea.\,. It also makes us able to have different types of properties that ``know'' themselves the rough amount of elements that are usually attached to them.\,. oh, and perhaps also even the ratingLo value.\,. .\,.\,Hm.\,. (16:49) \ldots (17:00) No, I'm really not sure; I  could also just do it all with Templates.\,. \ldots Yeah, maybe I should just let types be part of the syntax for the templates after all.\,. (17:02)
+
+(18:10) Okay, I think I finally know what to do. I will gather the Term types into just one type: Term (which includes Predicates, Categories and Objects). The Term type will then be the only type using templates, which I will now rename as `classes.' Classes then consist of a class name and a template, which are separated by a `$|$' in their defining string. Some important class names are then `Predicate' and `Category.' Furthermore, I will also add caching back to DBRequestManager.query() and then just make sure that all class queries are cached in this prototype of the application (disregarding that this might be redundant due to the browser's cache).
+
+(19:33) I have been thinking about the fact (I think) that I ought to actually use sets/categories more, including for properties. And now I just had the thought: Well, why not keep the types as they are now, with Predicates and Categories apart from Terms --- and actually \emph{not} refer to the former two as Terms --- and then make it so that SemanticInputs can take either Predicates \emph{or} Categories for their pred\_id field. Interesting idea.\,!\,.\,. .\,.\,Yes, this is it. This is what I'll do.\,.\,! (19:39)
+
+.\,.\,(19:47) Hm, now I'm even playing with the thought of dropping predicates.\,. .\,.\,Oh, which is actually just similar to back when I wanted all relations and predicates to be formed from noun phrases.\,.
+
+.\,.\,My current names for things makes it hard to use CHAR(1)s, so let me actually just use TIYINT type codes instead.\,.
+
+(17.07.23) I'm actually indeed going to remove predicates and use only categories instead.\,.
+
+(11:19) I'm actually gonna stick to calling it templates. And then I'm gonna remove that whole thing about ``Add field'' to the submissions, as well as appending extra properties at the end of templates. Instead the standard syntax for templates should be ``$<$class name$>$: $<$rest of the template introducing the fields/properties of the class$>$''. The point is to then only use the class name, when defining how Columns or Elements etc.\ should be set up/rendered. So when a user needs an additional field in order to fully define an entity, they can just use a different template that has the same class name, but adds another field (or more) to the rest of the template. And there we go.\,:) (11:27)
+
+(11:53) Oh wait. It will actually be better then to have the class as a separate column.\,. although it will take an extra byte for non-Terms.\,. Hm, but it seems to be better still.\,.
+\ldots Then again, if all other def items (or most, anyway) are gotten from IDs in the def sting\ldots 
+
+\ldots (12:19) Ah, but then I should just let types be given by an entity like I mentioned yesterday, right?\,. .\,.\,Yeah, I guess.\,. 
 
 
 
