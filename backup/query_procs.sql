@@ -17,6 +17,8 @@ SELECT "Query procedures";
 --
 -- DROP PROCEDURE private_selectCreator;
 -- DROP PROCEDURE private_selectCreations;
+--
+-- DROP PROCEDURE selectAggregate;
 
 
 
@@ -100,7 +102,7 @@ CREATE PROCEDURE selectEntity (
 BEGIN
     SELECT
         type_id AS typeID,
-        tmpl_id AS tmplID,
+        cxt_id AS cxtID,
         def_str AS defStr
     FROM Entities
     WHERE id = entID;
@@ -111,19 +113,19 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE selectEntityID (
     IN typeID BIGINT UNSIGNED,
-    IN tmplID BIGINT UNSIGNED,
+    IN cxtID BIGINT UNSIGNED,
     IN defStr VARCHAR(255)
 )
 BEGIN
-    IF (tmplID = 0) THEN
-        SET tmplID = NULL;
+    IF (cxtID = 0) THEN
+        SET cxtID = NULL;
     END IF;
 
     SELECT id AS entID
     FROM Entities
     WHERE (
         type_id = typeID AND
-        tmpl_id <=> tmplID AND
+        cxt_id <=> cxtID AND
         def_str = defStr
     );
 END //
@@ -220,7 +222,7 @@ CREATE PROCEDURE private_selectCreator (
 )
 BEGIN
     SELECT user_id AS userID
-    FROM PrivateCreators
+    FROM Private_Creators
     WHERE ent_id = entID;
 END //
 DELIMITER ;
@@ -235,11 +237,28 @@ CREATE PROCEDURE private_selectCreations (
 )
 BEGIN
     SELECT ent_id AS entID
-    FROM PrivateCreators
+    FROM Private_Creators
     WHERE user_id = userID
     ORDER BY
         CASE WHEN isAscOrder THEN ent_id END ASC,
         CASE WHEN NOT isAscOrder THEN ent_id END DESC
     LIMIT numOffset, maxNum;
+END //
+DELIMITER ;
+
+
+
+DELIMITER //
+CREATE PROCEDURE selectAggregate (
+    IN defID BIGINT UNSIGNED,
+    IN objID BIGINT UNSIGNED
+)
+BEGIN
+    SELECT data AS data
+    FROM Aggregates
+    WHERE (
+        def_id = defID AND
+        obj_id = objID
+    );
 END //
 DELIMITER ;
