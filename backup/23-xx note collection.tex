@@ -1759,6 +1759,136 @@ At some point we could make use a predicate to determine what (requests) should 
 
 %(15:40) Hm, det er åbenbart i dag, hvis man skal nyde dette solskinsvejr, for i morgen bliver det vist (kraftig) regn igen...
 
+%(29.07.23, 9:46) Hm, der er så også lige det, at man jo gerne vil sigte mod en distribueret database, og så kunne en RecentInputs/RecordedInputs tabel måske også være gavnlig...
+
+%(30.07.23, 10:32) In the bath here in the morning (I slept until 10 for some reason), I...
+(30.07.23, 10:33) I have just realized that because the inst\_id column of SemanticInputs will likely contain two or more leading bytes that are zero-filled, if the last byte of the SMALLINT rat\_val is zero-filled, it should just get compressed along with the zero-filled bytes of the inst\_id, at least most of the time, I think. I still want users to be able to make precise ratings in some cases, for example because I still want my idea about rating entities on a list by moving them around implemented at some point, but when they are just rating via a rating bar, I the app should just round off so that the last byte is zero.
+
+%(12:10) Har af en eller anden mærkelig grund brug for en lille pause og en gåtur (må bare tage paraply med, for jeg synes allerede det trækker op til regn). ..(12:16) Nå, never mind, nu står det allerede ned i stænger. ... (13:51) Nu pause og gåtur! (Solen skinner ligenu.)
+
+%(31.07.23, 11:57) Mit internet er nede, så det besværliggør arbejdet med front-ended (navnligt med at teste det). Derfor har jeg bare besluttet mig for i stedet.. hold da op, sikke det regner nu..!.. ..(12:01) i stedet at skrive på READMEs'ne i stedet. Efter en smule tænketid er jeg så gået i gang med at skrive et nyt draft, hvor jeg faktisk endda omskriver introduktionen. Så det er jeg i gang med, og nu søgte jeg så lge på, hvad man kalder en "instans af en semantisk ontologi," hvis man skal være præcis og altså ikke kalde det en ontologi. En "semantisk model?" Det søgte jeg på, og nu har jeg så lige fundet en wikipedia side om "Semantic data model (SDM)".. Så ja, nu er jeg da lidt spændt på at læse om, hvad det går ud på, og hvor meget det mon ligner mit... (12:05) ..Ah, det er vist bare en "model" ligesom UML er en "model".. I think.. (12:08) ..Ja, pyh ha.. (12:10) 
+
+%(13:38) Jeg har skrevet det her indtil videre:
+	%## Introduction to the project
+	%
+	%openSDB is an open source Semantic Database (SDB).
+	%By 'semantic' we refer to the fact that entities in the database can be linked
+	%via (user-provided) relations that can carry any meaning, just as in the case
+	%of the [Semantic Web](https://www.wikipedia.org/wiki/Semantic_Web).
+	%
+	%In fact, this project seeks to revitalize the idea of the Semantic Web, but
+	%with a different approach than the conventional one. Instead of trying to
+	%extend the World Wide Web itself, this project instead aims to launch an open
+	%source [Web 2.0](https://www.wikipedia.org/wiki/Web_2.0) site that utilizes
+	%semantic data structures, not just as part of its data processing, but where
+	%the users are actively engaged in building these structures.
+	%
+	%The point of this is to make it way easier for the average user of the web to
+	%take part in building semantic data structures than it is in the conventional
+	%Semantic Web, where contributing to the data structure requires users to
+	%write special [RDF triples](https://www.wikipedia.org/wiki/Semantic_triple).
+	%These are fairly complicated HTML entities that web developers then have to
+	%add as metadata to their web pages. So not only does the conventional approach
+	%require its users to have specialized knowledge in RDF triples, it also
+	%requires them to have access to editing web pages!
+	%It is thus not particularly hard to see why the Semantic Web never really took
+	%off with this approach: It never managed to become very accessible for users
+	%in terms of participating actively in it.
+	%
+	%openSDB first and foremost seeks to do exactly that: make the Semantic Web[^1]
+	%much more accessible to all users of the web.
+	%Its approach is to instead start out as a Web 2.0 site, running on top of a
+	%Semantic Database (SDB), and try to make an interface for this database
+	%(in the form of a web application) that is very easy and intuitive to use.
+	%
+	%[^1]: Although a more appropriate term in our case might be 'Semantic
+	%Net(work),' since our approach do not directly extend the World Wide Web
+	%itself.
+	%
+	%The danger of this approach, if not dealt with appropriately, is that, as one
+	%might point out, it risks exchanging more accessibility for more centralization
+	%as well, since a Web 2.0 site might have ownership over its source code, and it
+	%might also be unwilling to share its data structures (the non-sensitive parts).
+	%This centralization would very much be in contradiction with the original
+	%visions of the Semantic Web.
+	%
+	%However, openSDB seeks to prevent such centralization first of all being
+	%completely open source, second, by allowing any other parties to copy all its
+	%non-sensitive data, and third, by committing itself to working towards a
+	%distributed and decentralized database. This means that other parties will be
+	%able to back up the application and the database, and to host their own version
+	%of the system at any point. openSDB encourages other such hosts and wants to
+	%work together with them forming a distributed database.[^2]
+	%
+	%[^2]: This will likely include implementing processes to remap entity IDs such
+	%that database nodes (in the distributed database) can keep their respective
+	%data structures in sync with other nodes.
+	%
+	%Thus if openSDB at any point does something that is against the interests of
+	%its users, the unsatisfied part of the userbase can then immediately just
+	%start up its own copy of the site from a backup.
+	%
+	%
+	%## The massive advantage of making the Semantic Web more accessibly.
+	%
+	%If openSDB succeeds in making a sizable Web 2.0 site where the users can easily
+	%participate in building the semantic structures, it will ...
+%Jeg tror, jeg vil holde en lille pause nu (og tænke lidt over, hvad jeg videre skal skrive..)...
+
+%(16:03) Har skrevet lidt mere:
+	%## Not just facts, opinions as well!
+	%
+	%One of the prospects of the Semantic Web is to be able to easily be able to
+	%search for specific facts on the internet, such as "who was the successor of
+	%Julius Caesar?" or "what is the air-speed velocity of an unladen swallow?"
+	%
+	%If openSDB succeeds in making a sizable Web 2.0 site where the users can easily
+	%participate in building a semantic structure, it will first of all mean that
+	%more such facts can be recorded. There are in principle an infinite amount of
+	%fact about our world, and we cannot record them all, but the more users a
+	%semantic system has, the more facts can be submitted and validated by this
+	%userbase.
+	%
+	%However, conventional search engines, such as Google's, are already quite good
+	%for finding out facts, and it will take a while before a semantic network
+	%could start to compete with those. And although AI is still quite unreliable
+	%at this point in time, it is not unreasonable to think such technology will
+	%make it even easier to search (reliably) for facts in the near future.
+	%
+	%But the vision of openSDB actually extends the vision of the Semantic Web to
+	%include not only searching for facts, but to search for *opinions* as well,
+	%and especially the averaged opinions of the userbase, or a particular parts of
+	%it.
+	%
+	%This opens up a myriad of new possibilities and use cases. *...*
+	%
+	%*...*
+	%
+	%Extending the visions of the Semantic Web to include opinions instead of just
+	%facts obviously does not make much sense if the userbase is limited to people
+	%with special access to edit web pages, and with special knowledge of how to
+	%write RDF triples, because then you would only get the opinions of those people.
+	%
+	%So in order to achieve this, we have to first do what openSDB seeks to do and
+	%make a semantic system that is accessible to all and easy to use.
+%
+
+%(01.08.23, 15:48) Jeg har ikke fået lavet meget andet i dag end dispositionsarbejde: Jeg føler mig mærkeligt flad, når jeg prøver at skrive..:\ Nå, jeg vil prøve at give det endnu et skud nu, for nu synes jeg efterhånden (til gengæld), at jeg har fået godt styr på disp'en.. ..Og hvis det ikke går, så må jeg jo bare prøve at få kodet lidt (nok bare i blinde, hvorfor ikke..).. ...(16:20) Ej, jeg kan bare slet ikke tage mig sammen.. Det er mærkeligt, for jeg synes, jeg har sovet godt i nat, men det føles nu ikke sådan..
+
+%(02.08.23, 16:51) Har holdt en slags pause fra kl. tolv i dag til nu. Vil prøve at se, om jeg kan få skrevet lidt mere i dag. (Internettet er btw ikke kommet tilbage endnu.)
+
+%(04.08.23, 13:56) Jeg er lidt ked af det i dag, så det er ikke sikkert, at jeg når at få skrevet så meget...
+
+%(00:07) Holy shit, jeg fik lige den vildeste idé (måske)..: Hvad hvis man begynder at bruge AI til at modtage tale inputs og.. Okay, ved ikke, om det er en vild idé, men jeg må jo tænke over den.. Men ja: modtage taleinputs og så bruge det til at konstruere semantisk input ud fra dette.. Jo! det er en vild ting: Det er en vild fremtidsudsigt. .. ..Hm, måske, ja.. ..Tja, joh, ja.. ..Det biver måske svært at gøre ordentligt anonymt, men hvis man kan det, så kunne man måse virekligt øge flux-(*)kvaliteten af bruger dataen... (00:13) ..
+%(05.08.23, 11:51) Ja, hvis det kan gøres på en god anonym måde, så kunne dette blive ret revulotionerende på et tidspunkt, for det kunne betyde et meget højere indflux a semantisk data til det system, der nu end kommer til at stå for at bearbejde den data (forhåbentligt det nye semantiske web, som jeg jo prøver at sætte gang i).
+
+
+
+
+
+
+
+
 
 
 
