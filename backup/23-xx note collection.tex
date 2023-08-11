@@ -1882,6 +1882,103 @@ At some point we could make use a predicate to determine what (requests) should 
 %(00:07) Holy shit, jeg fik lige den vildeste idé (måske)..: Hvad hvis man begynder at bruge AI til at modtage tale inputs og.. Okay, ved ikke, om det er en vild idé, men jeg må jo tænke over den.. Men ja: modtage taleinputs og så bruge det til at konstruere semantisk input ud fra dette.. Jo! det er en vild ting: Det er en vild fremtidsudsigt. .. ..Hm, måske, ja.. ..Tja, joh, ja.. ..Det biver måske svært at gøre ordentligt anonymt, men hvis man kan det, så kunne man måse virekligt øge flux-(*)kvaliteten af bruger dataen... (00:13) ..
 %(05.08.23, 11:51) Ja, hvis det kan gøres på en god anonym måde, så kunne dette blive ret revulotionerende på et tidspunkt, for det kunne betyde et meget højere indflux a semantisk data til det system, der nu end kommer til at stå for at bearbejde den data (forhåbentligt det nye semantiske web, som jeg jo prøver at sætte gang i).
 
+%(06.08.23, 10:29) Jeg ved ikke hvorfor, men jeg er ikke særligt oplagt på at genoptage kodningen igen her til formiddag (har først lige sat mig, btw).. Jeg tror lige jeg tager det stille og roligt og prøver at summe lidt over, hvor jeg står først.. ... (11:26) Ah, jeg ved hvilken secton, jeg bør tilføje til README'en.:)...
+
+%(16:22) Efter at jeg fik skrevet den sektion har jeg nu ikke lavet så meget: kun ændret contact_info.md og debugged SubmissionFields.js (outID -> entID).. Jeg tror bare, at i dag bliver en fridag i høj grad (på når den sektion, jeg fik skrevet der), og så går jeg bare ordentligt i gang med det sidste kodearbejde (som jeg har tilbage før jeg kan gøre beta-versionen/prototypen live (hvor lang tid det end vil tage mig i sig selv)) fra i morgen af.
+
+%(08.08.23, 20:43) Non-related: I've just seen a video and read a bit about the Stein's paradox, but it seems quite weird. I think I might understand it, though: My question is: Is it true that if two people, "you" and "I", let's say, play a game where a point is sampled in 3D space from a 3-dimensional gaussian, either with a new random true mean value each round or with the same, that shouldn't matter (right?), and I continously pick the normal estimator as my guess and you continuously pick the Stein estimator. If the game is this: if I get closer to the true mean with my guess, then I win a bit of money from you, and you you get closer, you win a bit of money from me, then will I not with most likelihood have taken all your money at the end of the day, if we keep on playing? You will go home without money, but you will not be sad because you know that you had the "best" estimator.;) Is that not what would happen? And if I understand the thing correctly, to be fair, \emph{if} we instead played a game where the money owed in each round would be proportional to the differnce in the square of distance of our guesses to the true value, then you would win at the end of the day, right? Maybe I'm wrong, but that's how I'm currently understanding this "paradox" at the moment (and I don't care to investigate it further). (20:53) ..(20:59) It does still seem somewhat paradoxical/weird if "you" would win the second game, but I cannot beleive that "you" would win the first, absolutely not.
+
+%(09.08.23, 10:35) Jeg er en lille smule syg i dag. Jeg havde tænkt mig at gå i gang med at få de rigtige SetCombiners i gang den individuelle bruger. Og nu tænker jeg så også lige lidt over, om jeg mon skal fjerne CSS-delen fra min ContentLoader klasse, om ikke andet måske midlertidigt..?
+
+%(12:43) Jeg får en lidt mærkelig fejl nu, hvor setArr = [undefined, undefined, ...] i PrioritySetCombiner for min nye SimpleCategorySetGenerator.. Tror lige jeg holder en lille pause før, jeg går videre.. ...Okay, det er ikke en mærkelig fejl: Jeg har bare aldrig debugged mine SetCombiners, på nær at RatingMaxSetCombiner har virket fint tilsyneladende.. (13:30) ..Åh, jeg havde bare glemt et "return val;" i en map()-funtion..
+
+%(10.08.23, 12:36) Jeg har lige skrevet første felt (forklaringen) til min AKA Startup Growth-ansøgning (lige akkurat 995 anslag). Jeg føler mig forresten slet ikke syg i dag, allerede. Snotter en lille smule og nyser lidt stadig, men den tunge følelse (af at være fuld af snot i hovedet) er der ikke. Elsker virkeligt (7, 9, 13), at min krop generelt (næsten altid) er så hurtig til at komme sig over forkølelser.:)
+
+%(19:31) About Stein's paradox, "I" would also win the second game, obviously.. I'm wondering if this is perhaps something to do with these mathematicians integrating x before they integrate \theta, and that this particular order of integration means that they get the wrong answer.. But let me actually look more into, exactly what the theorem is saying (and why it doesn't conflict with my game examples, which it can't..)... ..Oh, and let me just mention: Integrating over x before \theta might create an artificial assumpton that \theta is always "small" compared to (the norm of) the x's in the space, which therefore might make bias that the Stein estimator adds give a better result: because there is an artificial bias introduced in the calculations as well. This is just a thought that I just had (and I've only just started thinking about this topic again (since last) a few minutes ago); I need to look more into the subject to see if it actually could make sense. (19:39) ..(19:44) Hm, it seems that the theorem actually exactly does state essentially that "you" would win the second game of my examples.. ..(19:46) Hm, and maybe I actually could believe that that might be true (and that the mathematicians are technically right (which would also be a crazy sensation if they weren't, of course)).. ..Yeah, 'cause although it still seems somewhat paradoxical to me that "you" win the second game, the idea that I just mentioned cannot change the outcome of the calculation: It would be okay to integrate over x first in that calculation (I'm pretty sure..).. (19:50) ..No, wait! No, it wouldn't! Not if \theta changes for each game, which is much more realistic if the game is supposed to mimic what empirical scientists (including data scientists) have to deal with. (19:52) ..And actually in any case, the first of my two games would also be what an empirical scientist would have to go for in terms of estimators: A scientist should go for an estimator, that is likely to beat other estimators in terms of which ones is likely to be closest. ..Well, unless there is a reason why you want to square the distance, but typically the "failure" a scientist makes would be measured linearily in terms of how far the guess is away from the true value, not quadratically. ..Although of course there might exist cases, where it is better to measure the failure quadratically, but it should by no means be considered a go-to standard for general cases.. (19:58) ..Oh, wow..! I actually kinda believe that I'm right about that thing about the mistake of integrating over x before \theta (and not the other way araound)..!! (20:02) Because if the calculation is true, it tells that "you" win the second game of my two examples for a any constant \theta. But it does not tell us (I'm pretty sure) that "you" would win for a randomly sampled \theta.. Hm, although that is of course not really possible, namely to sample a \theta uniformly from all of \mathbb{R}^3, and now that I think about this fact (since I was just about to mention it parenthetically only), I can see why it might actually make sense to integrate over x first after all... (20:06) ..Hm, or maybe not.. (20:07) ..Well, the fact that the order might matter \emph{would} be a very important critisism of the estimator, and might even show why frequentists (although I must admit that this reading has made me realize that I do not fully understand what the term means exactly) are just someone who tries to escape reality, but only ends up reaching wrong and confusing results in doing so.. ..Of course, since it seems that I do not fully kow what the term actually refers to, there might be okay interpretations of frequentism, but I do feel like I have a bone to pick with a lot of frequentist: You can't just close your eyes and ears to the fact that not knowing the universal prior for things matters in some instances, and that you therefore have to actively consider this fact and if it matters for your dataset (or if you have enough data that prior does not matter (which is exactly what a frequentist might miss! (unless I misunderstand the term completely)))! And the fact that I know have stumbled upon this result, where it seems that frequentists are actively using a biased estimator, when it gives them worse results in reality.. well, let me not go that far yet: I don't know any of this. I just know that I really can't see why "you" would win the second game, if we allow ourselves to look at the space of all \theta's (i.e. the "true mean") at once (and play the game at all points in \theta space at once.. well or in a grid, let's say, such that this set of points is countable.. sampling just one x for each of these \theta's).. (20:22)
+%(21:08) Anyway, I think that (some) mathematicians are probably already aware of this, even if some data scientists are indeed creating an unecessary bais in their statistics (which it sounded like from one comment I read on the YouTube video that made me aware of the paradox..), so I don't think I will try to look more into it at this point..
+%(21:37) Oh, wait! I couldn't help just thinking a bit more about it, and maybe I am wrong..!.. ..Hm, or maybe not, but it might be the case that the calculation if we integrate first over \theta by integrating over a ball and then letting R go to infinity actually gives "you" an advantage, since it might be the case that "you" win more than "you" lose on average by letting "your" guesses be biased, namely since "your" bias is strongest.. hm, when the sample is on the other side of the true mean.. hm.. ..(It's still all very fishy no matter what; the fact that the order of integration matters means that we are not telling ourselves the full story...) ..Hm, 'cause couldn't you, even if the just mentioned calculation would indeed still favor "you," couldn't you just make a third calculation, where you integrate over all of \theta space first, and then move on to integrate over x, and not (x - \theta)! but just x, integrated as a ball with increasing R (so an improper integral) from the origo of \theta-space, and then the calculation would favor "me," right..? To explain this further, we are thus looking at the contributions to all thetas in the infinite grid at once, and then we start aggregating the winnings and losses for all games where x lies within a certain R from origo, and when you then let this ball grow to complete the calculation, "I" would remain the "winner" of the game as R (integrating over x, not (x - \theata)) goes to infinity. Right?.. (21:56) ..(21:59) Oh, or maybe this would just get us the same result as when intgrating over (x - \theata) first?.. Anyway, I'm to tired to think more about it, and I probably won't return to the problem any time soon either ('casue it wouldn't really matter much to me, even if I \emph{am} on to something (I mean, it would matter to me in the sense that it could be quite cool to have found that kind of thing out by myself this quickly, but it wouldn't matter a bit to my current life and goals..)).. ..Oh wait, integrating over x, not (x - \theata), is actually a completely unreasonable thing to do, so it doesn't matter anyway. (22:07) ..Okay, I can feel that I am actually kind of curious to know more about the paradox, so I might actually think more about it "any time soon" after all, if/when I get some free time like now where I don't feel like it makes sense to think about my actual work more for the day.. (22:11)
+%*(11.08.23, 16:58) As I said, I won't invest any energy into this subject for now, unless I'm sure that I'm done for the day anyway, but let me just mention now, that it could perhaps be very interesting to see what happens if we regularize ('cause I'm assuming that the integral in the calculation is improper one) the integral by introducing a gaussian probability function for \theta when we play the game, and then letting the variance of that gaussian tend to \infty. ..Hm, but maybe that would still give the conventional result.. Oh well, I will not think more about this now. (17:04) ..(17:18) Yeah, one will probably still get the conventional result, so maybe that result is just simply.. right...
+%*(18:57) Okay, I can feel that I won't get anymore done today, so I've just thought a bit more about it, and it's actually quite clear and simple. The problem \emph{is} that these frequentists integrate over all x for a given contant \theta, instead of integrating over all \theta for a given x, which is much more natural given that the theory is supposed to answar, what should we guess that \theta is if we are a scientist who has just measured a given x. And when you integrate over theta for a fixed x, you see that "you" would lose more money on average in both games, also the second one. Of course integrating over an unnormalizable distribution might seem a bit weird, but that's the nature of the question; you cannot close your eyes and ears to the fact that the scientist, who has just measured x, \emph{has} to now consider how to guess at a \theta over the space of all \mathbb{R}^3. But if we decide that we are only interested to know what happens in the boundary where the \theta prior tends to a uniform distribution, then the only reasonable thing to do is to regularize the integral by taking a normalizable distribution for \theta and let it tend towards a uniform distrubution, either by having a ball where R \to \infty, or by having a Gaussian where the variance tends to infinity. And if you do that, "I" will win the second game (as well as the first) of my two examples above. The best estimator will be the more intuitive one, not Stein's. But I'm actually quite sure that mathematicians are aware of this, but I don't know why they would insist on spouting confusing and misleading theories, actually leading real data scientists (or so it seems from some comment I read *(where I person said that they used Stein's estimator very frequently when modeling, or something to that effect..)) to introduce a wrong bias into there analysis! In real life! Tsk tsk tsk.. ..:) (19:09)
+%..(19:13) (I didn't watch the YouTube video to the end, btw, only as far as the 2D example. But I did read a comment saying something like: Paradoxes like these is why I prefer a Bayesean approach, which makes me think that the video perhaps talked about the fact that the approaches are different (like the wikipedia article about the subject says)..)
+%...(19:35) Oh wow, its actually quite interesting, I don't think a Monte Carlo simulation would tell you the truth either, 'cause if you sampled from very large but bounded set of \theta's, the difference of the two estimators would just be very small on average. And in this sense, we can perhaps actually think of Stein's estimator "exploiting" the fact that the \theta-space and the x space will (typically) be set to the same (having the same dimensions).. Hm.. ..Yeah, and you can't really do anything else when you Monte Carlo, so that's probably it..!.. Stein's estimator probably "exploits" the fact that its difference from the intuitive one gets smaller the smaller the chance is that we land on the edge of the space, where the contributions that makes Stein's estimator win come from (as I see it..)..!..:D (19:42)
+
+
+
+%% Startup Growth ansøgning:
+%
+%%(Beskrivelse af din/jeres startup. F.eks. produkter/ydelser, kunder/marked, det unikke ved forretningsidéen – hvilke behov dækker det og/eller problem løser det.)
+%
+%Startuppen udvikler og vedligeholder en Web 2.0-hjemmeside bygget over en 'Semantisk Database,' som er en yderst fleksibel form for database, der bl.a. gør det muligt for brugerne at uploade meget alsidigt og nuanceret data om, hvad de mener om de forskellige entiteter/ressourcer på siden.
+%
+%Denne nuancerede data gør, at søge- og feed-algoritmer i princippet kan gøres langt bedre end, hvad der ellers normalt er muligt, hvilket gør at siden muligvis kan udkonkurrere andre Web 2.0-sider!
+%
+%Samtidigt har systemet ikke det samme behov for at prøve at trække så meget data ud af brugerne som muligt, men behøver kun det data, som aktivt og frivilligt gives fra brugerne. Systemet kan derved også anses for mere etisk.
+%
+%At brugerdataen gives aktivt og frivilligt af brugerne (som kan være fuldt anonyme), gør at denne data kan gøres offentligt tilgængelig.
+%
+%"Kunderne," foruden brugerne, vil derfor være sponsorer i form a virksomheder, der gerne vil have adgang til al denne nuancerede data.
+%
+%
+%
+%%(Hvordan er konkurrencesituationen?)
+%
+%Idéen er helt ny, og der er ikke nogen eksisterende konkurrenter, der prøver at gøre det samme.
+%
+%Dog skal hjemmesiden selvfølgelig konkurrere med eksisterende Web 2.0-sider i form af at kunne tiltrække brugere, det er klart.
+%
+%
+%
+%%(Hvad er planerne for vækst i løbet af det næste år?)
+%
+%Dette afhænger meget af, hvor mange sponsorer og hvor store sponsorater, vi kan tiltrække.
+%
+%Investeringsomkostningerne er dog ret små sammenlignet med, hvilken gevinst det vil være for sponsorerende virksomheder, hvis de via projektet kan opnå gratis adgang til en masse brugerdata om deres produkter og servicer, og at de dermed ikke længere skal betale i dyre domme for denne data.
+%
+%Dermed er det ikke utænkeligt at startuppen kan tiltrække store nok sponsorater til, at vi kan blive en hel håndfuld af ansatte, der arbejder på at videreudvikle, vedligeholde og gøre reklame for hjemmesiden.
+%
+%Og da startuppen har et internationalt potentiale, så kan vi muligvis udvikle os til en endnu større virksomhed på sigt.
+%
+%
+%
+%%(Hvad forventer du/I at få ud af at deltage i Startup Growth?)
+%
+%Nu har jeg arbejdet i lang tid selvstændigt på projektet, så på alle mulige måder vil det blive godt at få andre øjne på det. Og særligt vil det være godt at få fagkyndige øjne, der kan hjælpe mig med alle de ting, som jeg ikke selv har særligt meget forstand på endnu.
+%
+%Dette handler om praktiske ting såsom at få opstartet selve virksomheden, og også særligt ting såsom hvordan jeg kommer i kontakt med eventuelle sponsorer og får "solgt" min idé til dem.
+%
+%Jeg tror, der er rigtigt mange ting, I kan hjælpe mig med, og jeg tror virkeligt, at jeg har brug for denne hjælp.
+%
+%
+%
+%%(Beskriv kort dig selv eller dit team.)
+%
+%Indtil videre er jeg kun ene mand på projektet, men jeg håber på at kunne tiltrække flere, der kunne være interesserede i at være med i det!
+%
+%Jeg er en engageret ung mand med en stor passion for videnskab og teknologi, og en stor lyst til at prøve at gøre verden et bedre sted. 
+%
+%Jeg er uddannet først i fysik, med specialisering i teoretisk kvantefysik, og har sidenhen uddannet mig i datalogi også.
+%
+%I årene efter min datalogiuddannelse har jeg bl.a. arbejdet på et stort hængeparti fra fysik, samt en hel masse andre projekter, hvilke tilsammen så har ledt mig imod dette projekt og denne drøm om at vække den gamle vision om det 'Semantiske Web' til live igen, hvilket nemlig er, hvad jeg mener at kunne gøre med projektet (og mere til).
+%
+%
+%
+%%(Beskriv hvorfor du/I skal have en plads hos Startup Growth)
+%
+%Først og fremmest bør jeg få en plads på Startup Growth, fordi min startup muligvis har et kæmpe stort, internationalt potentiale, hvis bare jeg kan få det kørt godt i gang.
+%
+%Derudover er det også bare et kanonspændende projekt i det hele taget: Tænk hvis det kan gå hen og ligefrem udkonkurrere gængse Web 2.0-sider, og dermed ændre fundamentalt på, hvordan vi bruger webbet!
+%
+%Og jeg har i den grad brug for skub for at komme godt i gang med den næste fase om at lancere projektet, og det håber jeg meget, at I har lyst til at give mig!
+
+
+
+%(17:39) I actually think that I will leave the "sorting menu" for later, perhaps after I have made the prototype live. And my plan is then just to make some room for IDs in Entities after the last insert of initial_inserts, which I can then use if I need more fundamental inserts, that should preferably be part of initial_inserts. ..And if all goes wrong, then I can just change initial inserts and not care at all about if I create any gabs.. ..Yeah, I should be able to do so..
+
+
+
+
+
+
 
 
 
