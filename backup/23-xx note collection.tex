@@ -63,7 +63,7 @@ Note collection from 10.01.23--???.
 
 \ 
 
-\lipsum[1]
+%\lipsum[1]
 
 
 \chapter{Web ideas}
@@ -2335,6 +2335,9 @@ doesn't ruin it.\,.
 (15:30) I think that I might have an elegant solution to showing.\,. Well, to showing $\mathrm{Dom}(A^*)\subset\mathrm{Dom}(A)$ at once (after having shown that $\mathrm{Dom}(A)$ is dense and that $A$ is symmetric)! I've written shortly about this solution out in the source code comments.
 
 (15:43) Yes, I really think it works.\,.\,!! The argument is that, first of all, all of $A^+\phi_n$ that is not canceled by a legal $A^-\phi_{n+2}$ can be exploited to let $\braket{\phi |A\psi}$ grow. Let us then factor out the finite part of the tail that is canceled by an illegal part of $\phi_{n+2}$ and first of all note that the part of its image in the $n-1$-layer is finite as well. Then we again ask, how much can we exploit of the out-factored part, and again we see that is must for the most part have its productions canceled på a legal $\phi_{n+4}$. We can continue such factorizations indefinitely to obtain a set of vectors that are all in Dom($A$) plus something else in principle. But that part will vanish at every level (point-wisely), when subtract the sum of this set of vectors, so we are left with nothing.\,. (15:53) .\,.\,By.\,. Riesz' theorem, we should then see that all these vectors have a finite image.\,. And we should also see that their sum has a finite image, right.\,.\,? .\,.\,Uhm.\,. .\,.\,Oh, they are all orthogonal, by the way, which is quite nice!\,.\,. (16:01) .\,.\,Hm, or maybe not.\,. (16:06) .\,.\,Well okay, we can argue, I'm sure, that they have finite images when we factor them out.\,. .\,.\,Yeah.\,. So by the nature of this out-factoring argument, we'll now have a sequence of finite, Dom($A$)-like vectors with finite images under $A$ (as I tend to say), which makes them part of Dom($A$), exactly. .\,.\,And what about their combined image, then?\,.\,. (16:13) .\,.\,Can we use that we know that there exist that $\chi$.\,.\,? .\,.\,(16:18) Ah, we know that the sum of these vector formulas will converge at each level! .\,.\,Yeah, each level of the combined image will only have contributions from a finite number of $L^2$-functions! (16:20) .\,.\,That will make each level an $L^2$-function, which then must be equal to $\chi_n$ of a finite ($L^2$) vector $\chi$. And therefore the sum of all the vectors' formulas must be an $L^2$-function itself (equal to that $\chi$). !! (16:23) (And this therefore shows that $\phi\in\mathrm{Dom}(A)$.)
+
+%(25.09.23, 10:20) Jeg kom i tanke om, da jeg lagde mig i seng, at mit argument om at \hat A er symmetrisk på domænet ikke helt holdt, men i sengen i nat kom jeg så frem til, at det stadig holder med mit nuværende domæne, for \braket{\psi_n | \hat A^- \psi_{n+1}} kan kun blive ved med at holdes stor (for voksende n), hvis man breder \psi_{n+1} mere og mere ud, men så får man også et større og større billede pga. den første betingele for Dom(\hat A). Og her kan man altså mere specifikt argumetere ved at sige, at der bliver en begrænsing på \braket{\psi_n | \hat A^- \psi_{n+1}}, hvis \psi_{n+1} ikke må overstige en vis norm. (10:25)
+
 
 
 
