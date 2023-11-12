@@ -1,1 +1,0 @@
-# On the Lorentz covariance of the proto-theory of QED.
