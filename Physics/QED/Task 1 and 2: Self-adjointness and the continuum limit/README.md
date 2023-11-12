@@ -1,1 +1,0 @@
-# Self-adjointness and the continuum limit
