@@ -24,7 +24,7 @@ One should then be able to argue that the $\varepsilon$-almost eigenstates of th
 
 Task 3 and 4 deals with showing the Lorentz covariance of the theory, which is not quite as important for me now that I have realized,
 that the theory that I derived in my 2022 paper is equivalent to the conventional theory. (I thought the conventional theory did not contain a Coulomb potential.)
-But they would still be nice to complete at some point. In my qed.tex document, which can currently be found in my backup folder, I believe I have worked out how to
+But they would still be nice to complete at some point. In my `qed.tex` document, which can currently be found in my backup folder, I believe I have worked out how to
 solve these Tasks. (Task 4 is very easy but Task 3, on the other hand, is quite complicated (at least unless my cutoff for Task 2 can also help here...).)
 But I will probably not resume this work in the near future myself, at least not before the other tasks are already dealt with.
 
@@ -36,6 +36,6 @@ I do, however, also want to get back and work on my 'Semantic Database' project,
 in the past two months (from mid september to mid november). But the moment I receive some responses on the self-adjointness paper, I will commit myself
 to start working on this next paper as well.
 
-(All my ideas here are also described (poorly, of course) in my working notes found in qed.tex, but I do not really expect anyone to read those.)
+(All my ideas here are also described (poorly, of course) in my working notes found in `qed.tex` and `23-xx note collection.tex`, but I do not really expect anyone to read those.)
 
 Feel free to email me if you have any questions about my work.
