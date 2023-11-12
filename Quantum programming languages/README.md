@@ -2,9 +2,9 @@
 
 I might have come up with a good name for this high-level quantum programming language now.
 
-I think I will call it: Hiq.
+I think I will call it: Hiq (pronounced 'hic').
 
-Here, 'Hi' stands for high-level and 'q' stands for quantum (programming language).
+Here, 'Hi' stands for high-level and 'q' stands for quantum programming language.
 
 My bachelor's thesis in computer science (see the PDF) details it. 
 
