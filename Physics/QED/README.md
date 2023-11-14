@@ -22,7 +22,7 @@ and divided by the same function of all the incoming momenta squared.
 One should then be able to argue that the $\varepsilon$-almost eigenstates of this cut-off Hamiltonian should converge to those of the original one
 (provided that the latter is shown to be self-adjoint). And this should solve Task 2, making us able to derive the path integral formulation of the theory.
 
-Task 3 and 4 deals with showing the Lorentz covariance of the theory, which is not quite as important for me now that I have realized,
+Task 3 and 4 deals with showing the Lorentz covariance of the theory, which is not quite as important for me now that I have realized
 that the theory that I derived in my 2022 paper is equivalent to the conventional theory. (I thought the conventional theory did not contain a Coulomb potential.)
 But they would still be nice to complete at some point. In my qed.tex document, which can currently be found in my backup folder, I believe I have worked out how to
 solve these Tasks. (Task 4 is very easy but Task 3, on the other hand, is quite complicated (at least unless my cutoff for Task 2 can also help here...).)
@@ -33,8 +33,9 @@ that I have just (in the moment of writing) submitted. I should elaborate some m
 own paper, which I will start working on in the near future. (And I also intend to eleborate on my solution for Task 2 in this paper.)
 
 I do, however, also want to get back and work on my 'Semantic Database' project, which I have obviously neglected while writing my self-adjointness paper
-in the past two months (from mid september to mid november). But the moment I receive some responses on the self-adjointness paper, I will commit myself
-to start working on this next paper as well.
+in the past two months (from mid september to mid november). So I will probably focus on that project for a little while.
+But I do certainly look forward to coming back and working more on this again, especially on Task 5: Not only is it increadibly exciting theoretically, but the way I see it,
+there is even a chance that it could lead to slightly altered predictions! (Becasue it might tell us that we need to cut away all pair productions.) 
 
 (All my ideas here are also described (poorly, of course) in my working notes found in qed.tex and 23-xx note collection.tex, but I do not really expect anyone to read those.)
 
