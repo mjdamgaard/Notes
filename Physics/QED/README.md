@@ -21,6 +21,7 @@ is multiplied by an exponential decreasing function of the sum of all the outgoi
 and divided by the same function of all the incoming momenta squared.
 One should then be able to argue that the $\varepsilon$-almost eigenstates of this cut-off Hamiltonian should converge to those of the original one
 (provided that the latter is shown to be self-adjoint). And this should solve Task 2, making us able to derive the path integral formulation of the theory.
+*\[(23.11.23) No, that cutoff does not work after all, so I still need to solve this task.:\\\]
 
 Task 3 and 4 deals with showing the Lorentz covariance of the theory, which is not quite as important for me now that I have realized
 that the theory that I derived in my 2022 paper is equivalent to the conventional theory. (I thought the conventional theory did not contain a Coulomb potential.)
