@@ -31,7 +31,7 @@ But I will probably not resume this work in the near future myself, at least not
 Now, Task 5 is were the really interesting stuff lies: Not only are its potential prospects increadibly exciting on a pure theoretical level, but the way I see it,
 there is even a chance that it could lead to slightly altered experimental predictions! (Becasue it might tell us that we need to cut away all pair productions.)
 I included a small note on how to solve this problem in Appendix C of the self-adjointness paper. I should elaborate some more on this idea, and in fact,
-I have just started working on a new paper doing exactly this.
+I have just (d. 23.11.23 in the moment of editing) started working on a new paper doing exactly this.
 
 
 <!-- I will, however, also want to get back and work on my 'Semantic Database' project, which I have obviously neglected while writing my self-adjointness paper
