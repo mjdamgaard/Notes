@@ -18,13 +18,17 @@ So completing Task 1 might be feasable.
 
 I thought that I had found a solution for Task 2, but that turned out not to be the case. So this task is still open.
 The task is to show that all the $\varepsilon$-almost eigenstates of the discretized Hamiltonian converge into those of the continuous one
-(given that these Hamiltonians have already been shown to be self-adjoint). 
+(given that these Hamiltonians have already been shown to be self-adjoint).
+<!--
 *\[I have just (d. 24.11.23) realized that the only reason that we would want to put an ultraviolet cutoff on the momenta for the operator
 is if we want to derive the path integral from Section 4 in my QED paper, which is only something that we want to do, if we want to argue
 the the operator is Lorentz-covariant! But since I no longer feel the need to do this very strongly, I will thus not need an ultraviolet
 cutoff for this task! And without that, the task becomes really easy (which is not hard to see).
 So consider this task as being in the same category as Task 3 and 4, i.e. of tasks that are only needed if one wants to complete the arguement
 introduced in my QED paper that the operator is Lorentz-covariant (if one is not satisfied with the existing arguments of physics literature)!\]
+*\[Oh no, I forgot that we need the ultraviolet cutoff in order for the constant energy coming from
+$\hat d^\dagger \hat d \to \hat d^\dagger \hat d - 1$ to be finite!\]
+-->
 
 <!--
 Let me just mention here that if one could show that all $\varepsilon$-almost eigenstates decreases faster than a certain polynomial
