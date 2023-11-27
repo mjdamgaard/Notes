@@ -16,6 +16,12 @@ I have just (d. 12.11.23 in the moment of writing) submitted a paper on the self
 And the hope is that this result can be extended to the full Dirac Hamiltonian (and a wide range of other opertors).
 So completing Task 1 might be feasable.
 
+I think I have a solution for Task 2 now (d. 27.11.23 in the moment of editing). I think one can make a cutoff first on the set of final states
+that the operator has transitions to, essentially turning all matrix element to 0 who has a final states with too large momenta in them.
+And then afterwards, I believe you are then free to make an ultraviolet cutoff on $\mathbf{k}$ for all transitions (where this cutoff can be much
+larger than the first momentum cutoff), thus obtaining a bounded operator, whose $\varepsilon$-almost eigenvectors converge to those of the
+original operator when you lift the cutoffs (gradually).
+<!--
 I thought that I had found a solution for Task 2, but that turned out not to be the case. So this task is still open.
 The task is to show that all the $\varepsilon$-almost eigenstates of the discretized Hamiltonian converge into those of the continuous one
 (given that these Hamiltonians have already been shown to be self-adjoint).
@@ -34,6 +40,7 @@ a $\psi + \phi$ that does not have an infinite free energy, where $\phi$'s norm 
 *\[Okay, I think we still need to solve this Task 2, since we need to argue that the Hamiltonian retains its Lorentz-covariance after the
 Dirac sea reinterpretation. Luckily, however, I think I have just found a solution. The idea is to first make a cutoff for all final states,
 and then afterwards make an ultraviolet cutoff on $k$. I think this works. :) \]
+-->
 
 <!--
 Let me just mention here that if one could show that all $\varepsilon$-almost eigenstates decreases faster than a certain polynomial
