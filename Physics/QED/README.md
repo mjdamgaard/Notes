@@ -17,6 +17,8 @@ And the hope is that this result can be extended to the full Dirac Hamiltonian (
 So completing Task 1 might be feasable.
 
 
+I think I have a way to solve Task 2 now (d. 27.11.23 in the moment of editing). I will write about it here sometime soon.
+<!--
 I thought that I had found a solution for Task 2, but that turned out not to be the case. So this task is still open.
 The task is to show that all the $\varepsilon$-almost eigenstates of the discretized Hamiltonian converge into those of the continuous one
 (given that these Hamiltonians have already been shown to be self-adjoint).
@@ -36,6 +38,7 @@ a $\psi + \phi$ that does not have an infinite free energy, where $\phi$'s norm 
 Dirac sea reinterpretation. Luckily, however, I think I have just found a solution. The idea is to first make a cutoff for all final states,
 and then afterwards make an ultraviolet cutoff on $k$. I think this works. ... Never mind! I ruined the symmetry again! x) ..But I might have just
 had another breakthrough regarding this task, though...\]
+-->
 
 <!--
 Let me just mention here that if one could show that all $\varepsilon$-almost eigenstates decreases faster than a certain polynomial
