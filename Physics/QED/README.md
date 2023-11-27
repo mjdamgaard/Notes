@@ -31,6 +31,9 @@ $\hat d^\dagger \hat d \to \hat d^\dagger \hat d - 1$ to be finite!
 *\[I have just (d. 25.11.23) realized that the free energy might be infinite for the $\varepsilon$-almost eigenstates,
 so it is not quite so simple after all... ...Oh, never mind: For any $\psi \in$ Dom($\hat H$) with an infinite free energy, we can just find
 a $\psi + \phi$ that does not have an infinite free energy, where $\phi$'s norm can be much smaller than $\varepsilon$.\]
+*\[Okay, I think we still need to solve this Task 2, since we need to argue that the Hamiltonian retains its Lorentz-covariance after the
+Dirac sea reinterpretation. Luckily, however, I think I have just found a solution. The idea is to first make a cutoff for all final states,
+and then afterwards make an ultraviolet cutoff on $k$. I think this works. :) \]
 
 <!--
 Let me just mention here that if one could show that all $\varepsilon$-almost eigenstates decreases faster than a certain polynomial
