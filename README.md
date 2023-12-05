@@ -8,8 +8,16 @@ E-mail: fxn318@alumni.ku.dk
 
 ## Links
 
+
+
+### Links to my self-adjointness paper
+
+On arXiv: [https://arxiv.org/abs/2311.12870](https://arxiv.org/abs/2311.12870)
+
+On ResearchGate: [https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction](https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction)
+
 ### Links to my QED paper
 
 On viXra: [https://vixra.org/abs/2210.0044](https://vixra.org/abs/2210.0044)
 
-On ResearchGate: [https://www.researchgate.net/publication/364307345_A_Lorentz-covariant...](https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction)
+On ResearchGate: [https://www.researchgate.net/publication/364307345_An_alternative_derivation_of_the_Hamiltonian_of_quantum_electrodynamics](https://www.researchgate.net/publication/364307345_An_alternative_derivation_of_the_Hamiltonian_of_quantum_electrodynamics)
