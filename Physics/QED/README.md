@@ -36,8 +36,10 @@ there is even a chance that it could lead to slightly altered experimental predi
 I included a small note on how to solve this problem in Appendix C of the self-adjointness paper.
 
 I have just (d. 23.11.23 in the moment of editing) submitted a paper to arXiv about my solution to Task 5!
-
+<!--
 And now I will finally start looking more into whether my proposed Hamiltonian of QED will really lead to different path integrals, as I think it might!
+*\[No, I've just decided to postpone this work a bit---probably at least until my new paper is out---and work on other stuff instead.\]
+-->
 
 
 <!--
