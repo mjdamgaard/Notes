@@ -36,9 +36,13 @@ there is even a chance that it could lead to slightly altered experimental predi
 I included a small note on how to solve this problem in Appendix C of the self-adjointness paper.
 
 I have just (d. 23.11.23 in the moment of editing) submitted a paper to arXiv about my solution to Task 5!
+
 <!--
 And now I will finally start looking more into whether my proposed Hamiltonian of QED will really lead to different path integrals, as I think it might!
-*\[No, I've just decided to postpone this work a bit---probably at least until my new paper is out---and work on other stuff instead.\]
+
+(d. 13.12.23) I brushed a bit up on QFT, and of course my discovery here will very likely lead to different experimental predictions. By the way, what a great
+coincidence that some researchers are actually building and preparing for an experiemnt right now to measure the vacuum! Maybe they will end up confirming my
+theory/theoretical result here, who knows?!..
 -->
 
 
