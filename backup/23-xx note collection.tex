@@ -2004,7 +2004,7 @@ I also just thought about the browser extension, and whether you could actually 
 
 .\,.\,I feel so lost for words, but yeah.\,. It's just funny.\,. (19:45) (that this always happens.)
 
-(23.08.23, 10:04) Okay, React does actually seem to server-side (which explains the neat syntax), so it's not exactly the same.\,. \ldots (10:54) No, it can also render client-side.\,.
+(23.08.23, 10:04) Okay, React does actually seem to be server-side (which explains the neat syntax), so it's not exactly the same.\,. \ldots (10:54) No, it can also render client-side.\,.
 
 
 (24.08.23) As I've written in a todo in ContentLoader.js, I will refactor the front-end code as React instead. And this ought to just be the next thing that I'll do. Then afterwards I can resume the next tasks such as making the SetDisplays sortable and start laying the groundwork in order to build the browser extension (that can search the SDB for the URL that the user has visited), etc. (10:47)
@@ -2572,6 +2572,37 @@ And I don't leave this period of work (a month now of working as much as I could
 instead. But this then limits $\phi$ in the SA argument, as I've just realized. But luckily, I just had the realization, that my argument using that $\chi_n$ is either non-negative or non-positive everywhere might actually very well be generalizable after all. In fact, I'm pretty sure that it is. For you can just redefine $E_n$ such that it only includes a volume where the phase of the coupling factor, call it $\alpha(\mathbf{k})$, is almost constant. And then you just make sure that the deviation from this constant decreases exponentially (or more) as $n$ increases, and Bob's your uncle. So I \emph{will} therefore just use my argument, that uses that $\chi_n$ is either non-negative or non-positive everywhere, as was the plan beforehand. (12:20)
 
 (16:54) Oh no, you don't even need to make the deviation decrease, actually. You can just define an $E_n$ that spans a solid angle where $\alpha(\mathbf{k})$ does not vary too much, and then you can just make sure that the deviation to both sides (of the phase factor that you're going for) cancel each other, pretty much.
+
+
+
+
+
+
+\section{Perpetual motion machines and GR}
+
+(18.12.23, 10:08) For some reason, I just thought a bit about the 2nd law and all that, and last night in bed, I recalled an old idea of mine about letting two objects exchange heat (``vekselvirke'' in Danish) via heat radiation where one object is high up enough that it experiences a time dilation due to GR. I just looked at my notes from '17 this morning and recalled that if we filter out all radiation except some which has an angle that it close to the radial vector (between the heavy object, e.g.\ a planet, and the outer object, and also the inner object, since we can assume that they are in line), then the light beams should not be distorted to 1st order (only to higher orders) of the beam angle. And I have several times before calculated that the Planck curve when red/blue-shifted does not turn into a new Planck curve, as the amplitudes are wrong. When distant galaxies are red-shifted, the beams are also expanded in the transverse directions on velocity vector, which means that the Planck curves \emph{does} turn into other Planck curves. But without that transverse distortion, this does not happen, and as I said, I don't believe that the light will be distorted this way between two object like I have described here (one could be on the ground and the other could be on a theoretically high and solid tower on one of the poles of the planet (or the planet could have zero rotation)).
+
+Now, I have abandoned thinking about perpetual motion machines (PMMs) in the past, since one can quite easily (it seems) argue from quantum mechanics that they cannot exist: For any quantum mechanical system that we might enclose in a large (perhaps extremely so) container, then having a PMM that, say, sorts the gas molecules of a giant box into one partition of that box, without changing the temperature (as a PMM of the 2nd kind would be able to), would lead to a contradiction: Even if we take a many-world interpretation of QM, if the box is large enough, this situation will always result in us having less entropy than what we started with, giving that the box was an ensemble (in thermodynamic equilibrium) to begin with. So PMMs an QM does not mix! (And maybe one can make a similar argument for classical physics as well, but I'm not sure that it is quite as easy (for how do you really define the combinations of possible states in a meaningful way to achieve this, even if you simulate the system via a discretization?\,.).)
+
+But of course, we don't know for sure that GR can be made into a quantum mechanical theory. And, I've just realized, if we consider a mixed theory where we have QM on a curved space-time, then I don't know that you can necessarily use the same arguments.
+
+This was also my conclusion back then, except that I maybe didn't think about the last part here about QM on a curved space-time maybe does not lead to a situation, where you can describe the system in terms of energy eigenstates.
+
+.\,.\,Of course, the 2nd law is one of the most---I would personally even say \emph{the} most---fundamental symmetries of nature, since it only relies on very light assumptions, namely that the laws of physics can be reverted so that time can run backwards (and with the second law, it does not matter that the physical laws might be time-dependent, as opposed to the 1st law (of energy conservation); as long as you can just reverse the time-dependence of those laws). In other words, as long as information about the universe isn't destroyed, then you have the 2nd law. But QM does give a potential for information destruction if we look at the standard interpretation where measurements causes wave function collapses.\,. Now, this normally does not ruin/hinder the 2nd law, as per the argument that I just gave. But when we include GR.\,. Who says that the combination of GR and QM could not lead to irreversible physics in a way where the 2nd law becomes broken?\,.\,. (10:49)
+
+When I abandoned PMMs, I probably did so partly because I believed (and probably still believe) in a theory of everything that is quantum mechanical. And even though I'm sure that I also considered the potential for GR not.\,. Wait a minute, now I just recall that I actually kind of believed back then (and maybe I actually do still, come to think of it) that the union between QM and GR would include a true, physical measurement process where states with enough decoherence would undergo a wave function collapse such that only of of those states goes forward in time from there. So why did I abandon these thoughts?\,.\,. Maybe just because I had better and more interesting things to do at the time (.\,.\,reinventing QED\ldots), but whatever.\,.
+
+Now I'm actually a little bit excited about this topic once again. .\,.\,It would unfortunately probably take a while for us to confirm experimentally that this kind of PMM that i described above (with the two objects, etc.) \emph{might} have a potential (never mind experiments to \emph{confirm} it). Oh, and of course, I might also simply have overlooked something or be wrong in my calculations. But imagine if we could someday make an experiment that would conf.\,. or rather which would \emph{suggest} that such PMMs might be possible.\,.\,! (Oh, and I should mention, that the PMM part then comes from shifting between filtering out different parts of the spectrum, such that the two objects will reach different temperature differences when they are in equilibrium, given the current filter (and the point is that this temperature difference is dependent on the filter).)
+It would then give us some very important clues about how we can expect QM and GR to mix, and more precisely it will give of some clues about how they probably does \emph{not} mix. (11:04)
+
+%(11:05) Let me also just mention a thouhgt out here in the source comments: Imagine if the mix between QM and GR would be non-linear. Then we could in theory (at least until some other aspects of that theory is discovered which might ruin this) make QM--GR computers that can effectively just kill all computations which does not yield an interesting result, and then P would be equal to NP. Now, that kind of computer would probably be enormously difficult to make, and would not be worth the effort. And to begin with, I really don't believe that we will find non-linearity. But it is an interesting and funny the thought, still. And given how much people are excited by things like warp drives and tacheons, etc., I'm sure a lot of people would find these thoughts interesting as well. (11:11)
+
+
+
+
+
+
+
 
 
 
