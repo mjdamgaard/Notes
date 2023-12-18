@@ -38,6 +38,16 @@ I included a small note on how to solve this problem in Appendix C of the self-a
 I have just (d. 23.11.23 in the moment of editing) submitted a paper to arXiv about my solution to Task 5!
 
 <!--
+(18.12.23) In my updated vacuum paper that I submitted this saturday, there is an assumption about the existence of a sequence of eigenvectors that converges to a
+generalized eigenvecor of H_{vac}''', \ket{\phi}. In terms of showing this, if one can simply show that there are generalized eigenvectors whose formula is continous
+with respect to the momentum vectors (at least somewhere!), then one can make a simple proof from there considering the \epsilon-almost eigenstates of both H_{vac}'''
+and H_{vac}''. At least, I am pretty sure that this is so. And in terms of proving the first part, I mean, that must be so, at least *somewhere*...
+
+And even if my arguments here does not hold, I know that there is existing technology for showing the existence of an eigenstate (I have gethered this from reading
+F. Hiroshima), so I'm not worried at all that this will turn out to be a hard task; I really don't think it will.
+-->
+
+<!--
 And now I will finally start looking more into whether my proposed Hamiltonian of QED will really lead to different path integrals, as I think it might!
 
 (d. 13.12.23) I brushed a bit up on QFT, and of course my discovery here will very likely lead to different experimental predictions. By the way, what a great
