@@ -16,6 +16,11 @@ On arXiv: [https://arxiv.org/abs/2311.12870](https://arxiv.org/abs/2311.12870)
 
 On ResearchGate: [https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction](https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction)
 
+#### Link to shorter and (much) simpler version of the paper!
+
+On ResearchGate: [https://www.researchgate.net/publication/377688981_Shorter_and_simpler_version_of_the_paper_Self-adjointness_of_a_simplified_Dirac_interaction_operator_without_any_cutoffs](https://www.researchgate.net/publication/377688981_Shorter_and_simpler_version_of_the_paper_Self-adjointness_of_a_simplified_Dirac_interaction_operator_without_any_cutoffs)
+
+
 ### Links to my QED paper
 
 On viXra: [https://vixra.org/abs/2210.0044](https://vixra.org/abs/2210.0044)
