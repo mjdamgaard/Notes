@@ -2731,10 +2731,21 @@ Does this not mean that I actually have a correction to conventional QED after a
 (04.02.24, 16.36) Ah no, I think not. I don't think that there is an error there after all. The key is that one get that delta function *(at the top of p.\ 355) in time, which means that the full Coulomb interaction comes from having instantaneous photon exchanges between any two given fermions.
 
 
+\section{More about my $H_{QED}$ versus the conventional one}
+
+(20.02.24) I just had an interesting thought. What happens with the Coulomb interaction pair production in the conventional theory?(!\,.\,.) (9:53) .\,.\,Hm, surely it is also there somehow.\,. (I'm talking about the diagrams, if you use the `real' photon propagator rather than the (Lorentz-covariant) Feynman one, where one particle comes in and three particles goes out.) .\,.
+
+\ldots (10:24) Hm, I'm sure it is the same.\,. .\,.\,i.e.\ that the two different version of the path integrals (with the Feynman or the ``real'' (this name sounds presumptuous, but I don't know what else to call it) propagator) gives the same outcome in the end (even if the individual diagrams are completely different; but when you sum them together, it probably gives the same).\,. .\,.\,But it could be interesting to see that calculation/proof.\,. .\,.(Oh, of course there could be something about divergences, where my version for instance might converge and the other not. But I'd even bet that if one can be handled, the other can as well.\,.)
+
+
+
+
+
 
 
 \section{Decoupled vacuum}
 
+*[(16.02.24)]
 I'm actually intending of writing a second (supplementary) paper on how the vacuum decouples from the physical states. And I just went for good walk where I got a possibly very good new idea. This idea is to make the discetization such that the parameter space of $\mathbf{H}_\mathrm{vac}$ is descretized with one $\delta k$, and then the full $\mathbf{H}$ is discretized by having one more momentum parameter that is discretized with another $\delta k$, call it $\delta k_2$, and call the first one $\delta k_1$. The grand idea is then to send $\delta k_2$ to zero first, before sending $\delta k_1$ to zero! I actually think that we then might not even need $\hat H_{\mathrm{vac}}'''$ to approach a self-adjoint limit after all..!!.. (16.02.24, 14:08) .\,.\,This is really fantastic if it holds.\,.\,!\,.\,.
 
 (15:35) Ah, but maybe there is a problem in the fact that $\mathbf{H}_\mathrm{vac}$ is only meaningful after the Dirac sea reinterpretation (DSR), and that this special discretization probably cannot be done before the DSR.\,. .\,.\,(15:42) Hm, but as long as the (anti-)commutation relations are preserved\ldots
@@ -2746,7 +2757,11 @@ I'm actually intending of writing a second (supplementary) paper on how the vacu
 \ldots (17:28) Åh, nu har jeg det måske, lad mig se.\,. .\,.\,Yes.\,. The idea is to simply discretize the formula of $\hat H$ first, and then discretize the ladder operators afterwards, but irrespective of the formula discretization: The discretization of the ladder (creation and annihilation) operators will have a $\delta k$ that can be send to 0 while keeping the formula discretization (which can also be done with another $\delta k$ (call it $\delta k_1$)) constant. I think this solves my trouble.\,. (17:37) .\,.\,(Oh, and it would btw be easy to update my first vacuum paper with this solution.\,.) .\,.\,Hm, but I'm pretty sure I've been over this idea before, namely when I worked on the first paper, so.\,. hopefully I just overlooked its potential and went away from it for some unjustified reason back then.\,. (17:45)
 
 
+%\ 
 
+(21.02.24, 9:03) I believe I have it now. So the first step is to discretize the formulas (rounding everywhere to the nearest point in the $\mathbb{K}$ lattice), which then allows us to rewrite in terms of the discretized ladder operators for free. The UV cutoff is by the way a part of the starting condition. I will then do the Dirac sea reinterpretation (DSR) and refer to an appendix where I show that the Lorentz covariance is preserved. This is done by Dyson expansion (treating all of $\hat H'$ as interaction terms), which is possible since $\hat H'$ is bounded. (And I'll derive this expansion in the appendix, using a similar procedure as the standard oe for deriving the path integral formulation in physics literature). I will then argue that $\hat S(\Lambda, a)$ can be resolved in terms of ladder operators (creation--annihilation operators, rather). Then I can argue that if the circuit (i.e.\ $\hat S(...) \hat U(t') \hat S^{-1}(...) \hat T(a) \hat U(t)^{-1}$, where $\hat T(a)$ is a translation) works before the DSR, when $\delta k_1, \delta k_2 \to 0$, then it must also work for the DSR case, only where you then define $\hat S$ by simply flipping the daggers on the $\hat b_2$'s as well. So far so good. Then.\,. Oh, and let me mention that yesterday, I got worried about the $\sqrt{n}$ or $\sqrt{n-1}$-factors for the ladder operators (because I very recently heard a professor worry about them), but of course, these doesn't matter unless we're in a cavity: If we are in an unbounded volume of space, then two photons will never transition to the same mode (of course). So the UV cutoff is enough to ensure that the operator is bounded.
+
+Now, the last piece of the puzzle is about that $\phi$ state: How nice it would be if that was an actual eigenstate. And this morning, before getting out of bed, I finally finished solving this part. The solution is to simply use the Pauli exclusion principle.(!) This means that for the vacuum, when there are no `physical particles,' there are a \emph{finite} number of states that span the space of all states that can be reached (from the bare vacuum, i.e.). (Recall that we also have the initial UV cutoff.) So therefore, the system is governed by an operator that works an the same way as some Hermitian matrix, which is exactly what we hoped for! So this system will have a finite, yet spanning set of \emph{actual} eigenvectors. And then the rest is just to use this to go through a similar process as i my first vacuum paper, only where I don't argue via $\Delta - d/2$, or whatever, this time, but instead try to do this calculation more directly and explicitly. (9:33, 21.02.24)
 
 
 
