@@ -2731,7 +2731,7 @@ Does this not mean that I actually have a correction to conventional QED after a
 (04.02.24, 16.36) Ah no, I think not. I don't think that there is an error there after all. The key is that one get that delta function *(at the top of p.\ 355) in time, which means that the full Coulomb interaction comes from having instantaneous photon exchanges between any two given fermions.
 
 
-\section{More about my $H_{QED}$ versus the conventional one}
+\section[More about my H\_{QED} versus the conventional one]{More about my $H_{QED}$ versus the conventional one}
 
 (20.02.24) I just had an interesting thought. What happens with the Coulomb interaction pair production in the conventional theory?(!\,.\,.) (9:53) .\,.\,Hm, surely it is also there somehow.\,. (I'm talking about the diagrams, if you use the `real' photon propagator rather than the (Lorentz-covariant) Feynman one, where one particle comes in and three particles goes out.) .\,.
 
@@ -2762,6 +2762,32 @@ I'm actually intending of writing a second (supplementary) paper on how the vacu
 (21.02.24, 9:03) I believe I have it now. So the first step is to discretize the formulas (rounding everywhere to the nearest point in the $\mathbb{K}$ lattice), which then allows us to rewrite in terms of the discretized ladder operators for free. The UV cutoff is by the way a part of the starting condition. I will then do the Dirac sea reinterpretation (DSR) and refer to an appendix where I show that the Lorentz covariance is preserved. This is done by Dyson expansion (treating all of $\hat H'$ as interaction terms), which is possible since $\hat H'$ is bounded. (And I'll derive this expansion in the appendix, using a similar procedure as the standard oe for deriving the path integral formulation in physics literature). I will then argue that $\hat S(\Lambda, a)$ can be resolved in terms of ladder operators (creation--annihilation operators, rather). Then I can argue that if the circuit (i.e.\ $\hat S(...) \hat U(t') \hat S^{-1}(...) \hat T(a) \hat U(t)^{-1}$, where $\hat T(a)$ is a translation) works before the DSR, when $\delta k_1, \delta k_2 \to 0$, then it must also work for the DSR case, only where you then define $\hat S$ by simply flipping the daggers on the $\hat b_2$'s as well. So far so good. Then.\,. Oh, and let me mention that yesterday, I got worried about the $\sqrt{n}$ or $\sqrt{n-1}$-factors for the ladder operators (because I very recently heard a professor worry about them), but of course, these doesn't matter unless we're in a cavity: If we are in an unbounded volume of space, then two photons will never transition to the same mode (of course). So the UV cutoff is enough to ensure that the operator is bounded.
 
 Now, the last piece of the puzzle is about that $\phi$ state: How nice it would be if that was an actual eigenstate. And this morning, before getting out of bed, I finally finished solving this part. The solution is to simply use the Pauli exclusion principle.(!) This means that for the vacuum, when there are no `physical particles,' there are a \emph{finite} number of states that span the space of all states that can be reached (from the bare vacuum, i.e.). (Recall that we also have the initial UV cutoff.) So therefore, the system is governed by an operator that works an the same way as some Hermitian matrix, which is exactly what we hoped for! So this system will have a finite, yet spanning set of \emph{actual} eigenvectors. And then the rest is just to use this to go through a similar process as i my first vacuum paper, only where I don't argue via $\Delta - d/2$, or whatever, this time, but instead try to do this calculation more directly and explicitly. (9:33, 21.02.24)
+
+(17:50) Hm, I have made a mistake; I don't think my double discretization technique works after all. And I probably don't get around needing $\delta k^{3/2}\hat H_\mathrm{I, vac}''$ to have a self-adjoint continuum limit.\,. .\,.\,Luckily it's bounded and symmetric.\,.
+.\,.\,Hm, or maybe my double discretization is actually a good idea after all, let me think.\,. (17:57) .\,.\,(17:59) Hm, I just thought of a funky Fock-like Hilbert space, where there's ``almost only the $\mathbf{p}$ parameters''.\,.
+.\,.\,Hm, this is actually really nice; I think I'm on to something good.\,. Now, what about that $\mathbb{K}_1$ discretization?\,.\,. .\,.\,Yeah well, that should then exactly make $\hat H_\mathrm{I, vac}'''$ discrete, right?\,.\,. .\,.\,Yeah, I think so.\,.\,!\,.\,.
+
+(21:31) Hm no, it's more complicated.\,. .\,.\,Yeah, my double discretization (or `$\mathbb{K}_1$ discretization) probably doesn't work after all.\,. (21:32)
+
+(21:50) Ah. One must be able to show a uniform upper bound (times $\delta k^{2/3}$) for the `interaction terms' for all possible $\phi$ states at once. And then I actually don't need (I think) anything other than to have either that $\hat H_\mathrm{I, vac}''$ has true eigenvectors or that $\hat H_\mathrm{I, vac}'''$ is self-adjoint.\,.
+
+
+(22.02.24, 10:07) Oh no, there's a thing I've overlooked until now.\,! Maybe the $\varepsilon$-almost eigenstates of the $\hat H_\mathrm{vac}'''$ operator (for this toy theory and/or for QED) approach non-normalizable states when $\varepsilon\to 0$ in a way where the norms of the $\psi_n$'s takes a longer and longer time to decrease. So maybe the expectation value of the particle number operator grows to infinity when $\varepsilon\to 0$.\,.\,:(\,.\,. 
+\ldots Well, that does make sense.\,. I'm glad I've realized this; I feel like I understand the situation better now.\,. (10:21)
+
+(10:27) Okay, so now the only way seems to show some upper bound (times $\delta k^{2/3}$) for the `interaction terms,' as I mentioned that I thought (well, believed, but now I'm not completely sure) was possible yesterday.
+.\,.\,Wait, and this isn't just trivial when the operator is bounded?\,.\,.
+%
+%By the way, let me mention here in the comments, that I thought about the fact that my infrared cutoff for the last sections of my SA paper i actually redundant. So I thought about whether I should correct it, but then I realized that I probably also knew that back when I introduced it, and that it probably is still actually simpler to keep it in, at least as long as I don't know whatever theorem in literature tells us that \hat A^- is bounded when given a(n) UV cutoff only.
+%
+\ldots Hm, 'cause $\hat H_\mathrm{phys}''$ is still bounded, right?\,.\,. (10:41) .\,.\,(i.e.\ for the DSR case.\,.)
+
+\ldots (11:31) Oh wait, maybe my double discretization is still the key!.\,. Let me see.\,. .\,.\,Yes, I believe so!\,.\,. (11:32)
+
+
+
+
+
 
 
 
