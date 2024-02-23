@@ -2799,8 +2799,24 @@ Now, the last piece of the puzzle is about that $\phi$ state: How nice it would 
 .\,.\,Or wait, is that necessary?\,.\,. (13:52) .\,.\,Oh, maybe it isn't!\,.\,. (13:53)
 .\,.\,Yeah, I think I'm good! The contributions from the interaction terms in the Trotter--Lie expansion will go as $\Delta t \delta k^{3/2}$, and since $\Delta t$ is allowed to go as $\delta k^{3/2}$ (due to what can be shown from the Baker--Campbell--Hausdorff formula), they can thus effectively go as $\Delta t^2$. And since there is only $1/\Delta t$ of them, their combined contribution should vanish when $\delta k \to 0$. But let me just think about exactly how the whole argument should be constructed, then.\,. (14:01)
 %...(14:11) Nå, det er for godt vejr til at sidde og tænke over dette indenfor, når jeg kan gå ud a tænke over det i stedet.. Så lad mig lige overveje det lidt mere her foran skærmen, og så går jeg ud.. ..(Det handler om, hvordan jeg lige når fra Baker--Campbell--Hausdorff-formularen til at få Trotter--Lie-ekspansionen over på $\prod ((1 - i \hat H_{vac}''\Delta t) (1 - i\hat H_{phys}''\Delta t)) + O(\Delta t / \delta k^{3/2})$-formen..) ..Hm, nå, lad mig gå ud og tænke..
+%..(14:19) Hov, det \emph{er} jo faktisk, så simpelt, som det kan være: Når jeg omskriver e^{-iA\Delta t}e^{-iB\Delta t} til (1 - iA\Delta t)(1 - iB\Delta t), så får jeg kun en fejl på.. hm, på O(\Delta t^2( \|A\| + \|B\|)).. ..Ah, men kunne jeg ikke undgå at omdanne e^{-iB\Delta t} til (1 - iB\Delta t), hvis vi siger at B er \hat H_{vac}''?.. (14:23) ..Jo! (14:24) For e^{-iB\Delta t} kan jo skrives som en.. ja, en Taylor-udvidelse (af en exponentielfunktion), or så kan man her bruge, at \hat A_{\psi}^\dagger ikke har nogen komposanter i sig, hvor impulserne summer til 0!.. (14:26) Okay, jeg tror, det kommer til at virke. Lad mig gå en tur (solen er godt nok gået lidt v.. næ, når man taler om den...)... (14:27)
 
+\ldots\ (17:15) As I wrote out in the source code comments, we should actually just keep $\exp(-i\hat H_{vac}'' \Delta t)$ as is in the expansion, instead of rewriting it as $(1 - i\hat H_{vac}'' \Delta t)$. So I'll only rewrite $\exp(-i\hat H_{phys}'' \Delta t)$ that way.
 
+\ldots (18:04) Hm, it will be easiest if I remove all final states from $\hat H_{phys}''$ that has three or more momentum vectors sum to zero, before the Trotter--Lie expansion (since this modified $\hat H_{phys}''$ will approximate the original $\hat H_{phys}''$ arbitrarily well when $\delta k \to 0$).
+
+(18:07) Okay, so I show some upper bounds on $\hat H_{vac}''$, $\hat H_{phys}''$, and $\hat H_{vac}'' + \hat H_{phys}''$ *(and of course $[\hat H_{vac}'', \hat H_{phys}'']$). Then I use the BCH formula to show that
+
+\begin{equation}
+	\exp(-i (H_{vac}'' + \hat H_{phys}'') t) \approx
+		\prod (\exp(-i\hat H_{vac}'' \Delta t) \exp(-i\hat H_{phys}''\Delta t)),
+\end{equation}
+where $\Delta t$ is allowed to decrease only as some constant times $\delta k^{3/2}$ for the approximation to become better and better when $\delta k \to 0$. Then I also rewrite $\exp(-i\hat H_{phys}''\Delta t)$ to $(1 - i\hat H_{phys}''\Delta t)$. .\,.\,Oh, and before that I also modify $\hat H_{phys}''$ like I just talked about. .\,.\,Then (or beforehand) I show (or have shown) the upper bound for the `interaction terms'.\,. Hm, and then I'm almost through, but let me think for a minute.\,. (18:15)
+
+\ldots (18:43) Oh, maybe one just modify $\hat H_{phys}''$ like that. I'll look into that.\,.
+
+\ldots (19:07) Oh, I've maybe made a mistake when I used that $\hat H_{vac}''$ commuted with $\hat A_{\psi}^\dagger$. It probably doesn't. And that's probably the root of the thing that I thought seemed fishy about my result.\,.\,:)\,.\,.
+.\,.\,(19:14) Yeah, that might indeed by the key to why I need the $\phi(t)$ state to have a well-behaved fermion density (or at least the majority of it) \emph{throughout} the whole line of $\exp(-i\hat H_{vac}'' \Delta t) \exp(-i\hat H_{phys}''\Delta t)$-operations, which is what my intuition also tells me that I need.\,:) The only downside to these news is of course, that it might not be too easy to argue all this, but oh well\ldots\ (19:17)
 
 
 
