@@ -2785,6 +2785,22 @@ Now, the last piece of the puzzle is about that $\phi$ state: How nice it would 
 \ldots (11:31) Oh wait, maybe my double discretization is still the key!.\,. Let me see.\,. .\,.\,Yes, I believe so!\,.\,. (11:32)
 
 
+(23.02.24, 12:23) Okay, I think I have it.\,! I think I'm saved by the Baker--Campbell--Hausdorff formula! .\,.\,It's a bit complicated, but I'm pretty sure that one can show, with my double discretization procedure, that if you let $\phi$ be the eigenvector of $\lim_{\delta k_2 \to 0} \delta k_2^{3/2} \hat H_\mathrm{phys}''$, then $\exp(-i\hat H''t) \phi$ will have a fermion density that only grows as $\delta k_2^{-3/2}$, not $\delta k_2^{-3}$.\,! So that means that $\ket{\chi} \neq 0$. .\,.\,Which is \emph{so} much work just to show \emph{that}.\,.\,!\,\ldots\ (12:31)
+
+.\,.\,Oh, and I \emph{do} believe that one can show an upper bound for the `interaction terms,' uniformly for all eigenstates $\phi$ for any given $\delta k_2$, and where this bound goes as $\delta k_2^{3/2}$, or something nice like that.\,. (12:35)
+
+\ldots (12:46) Hm, but maybe I can do it without the double discretization (turning $\delta k_2$ back to $\delta k$).\,. \ldots Or can I.\,.\,? .\,.\,Maybe not.\,. (13:00)
+\ldots (13:12) Oh wait, let's see, you could still turn $\exp(H_{vac}'' + \hat H_{phys}'')$ into $\prod (\exp(-i\hat H_{vac}'' \Delta t) \exp(-i\hat H_{phys}''\Delta t)) + O(\Delta t / \delta k_2^{3/2})$.\,.
+.\,.\,Hm, or $\prod ((1 - i \hat H_{vac}''\Delta t) (1 - i\hat H_{phys}''\Delta t)) + O(\Delta t / \delta k^{3/2})$.\,.
+.\,.\,(13:22) Ah, so if you simply start out with a well-behaved fermion density, then your vector will end up in as a sum of two vectors, $\chi_1  + \chi_2$, where $\chi_2$ goes to 0 and becomes arbitrarily small (norm-wise) compared to $\chi_1$ when $\delta k \to 0$, and, importantly, where $\chi_1$ has a well-behaved fermion density as well!\,. (13:25)
+.\,.\,Hm, and what exactly can I do with this?\,.\,. (13:28) .\,.\,Hm, I guess the point is to be able to extract $\exp(-i \hat H_{phys} t) \psi$ afterwards.\,. (13:30)
+.\,.\,Hm, maybe I should focus on the expression of the RHS of Eq.\ (29) in my 2023 vacuum paper, v1.\,. (13:36) .\,.\,Hov, der er forresten lige et $\Psi$, der skal rettes til et $\Phi$.\,.
+.\,.\,Hm, if only the interaction terms decreased more rapidly than $O(\delta k^{3/2})$.\,.
+.\,.\,Or wait, is that necessary?\,.\,. (13:52) .\,.\,Oh, maybe it isn't!\,.\,. (13:53)
+.\,.\,Yeah, I think I'm good! The contributions from the interaction terms in the Trotter--Lie expansion will go as $\Delta t \delta k^{3/2}$, and since $\Delta t$ is allowed to go as $\delta k^{3/2}$ (due to what can be shown from the Baker--Campbell--Hausdorff formula), they can thus effectively go as $\Delta t^2$. And since there is only $1/\Delta t$ of them, their combined contribution should vanish when $\delta k \to 0$. But let me just think about exactly how the whole argument should be constructed, then.\,. (14:01)
+%...(14:11) Nå, det er for godt vejr til at sidde og tænke over dette indenfor, når jeg kan gå ud a tænke over det i stedet.. Så lad mig lige overveje det lidt mere her foran skærmen, og så går jeg ud.. ..(Det handler om, hvordan jeg lige når fra Baker--Campbell--Hausdorff-formularen til at få Trotter--Lie-ekspansionen over på $\prod ((1 - i \hat H_{vac}''\Delta t) (1 - i\hat H_{phys}''\Delta t)) + O(\Delta t / \delta k^{3/2})$-formen..) ..Hm, nå, lad mig gå ud og tænke..
+
+
 
 
 
