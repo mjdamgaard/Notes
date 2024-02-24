@@ -2785,7 +2785,7 @@ Now, the last piece of the puzzle is about that $\phi$ state: How nice it would 
 \ldots (11:31) Oh wait, maybe my double discretization is still the key!.\,. Let me see.\,. .\,.\,Yes, I believe so!\,.\,. (11:32)
 
 
-(23.02.24, 12:23) Okay, I think I have it.\,! I think I'm saved by the Baker--Campbell--Hausdorff formula! .\,.\,It's a bit complicated, but I'm pretty sure that one can show, with my double discretization procedure, that if you let $\phi$ be the eigenvector of $\lim_{\delta k_2 \to 0} \delta k_2^{3/2} \hat H_\mathrm{phys}''$, then $\exp(-i\hat H''t) \phi$ will have a fermion density that only grows as $\delta k_2^{-3/2}$, not $\delta k_2^{-3}$.\,! So that means that $\ket{\chi} \neq 0$. .\,.\,Which is \emph{so} much work just to show \emph{that}.\,.\,!\,\ldots\ (12:31)
+(23.02.24, 12:23) Okay, I think I have it.\,! I think I'm saved by the Baker--Campbell--Hausdorff formula! .\,.\,It's a bit complicated, but I'm pretty sure that one can show, with my double discretization procedure, that if you let $\phi$ be the eigenvector of $\lim_{\delta k_2 \to 0} \delta k_2^{3/2} \hat H_\mathrm{vac}''$, then $\exp(-i\hat H''t) \phi$ will have a fermion density that only grows as $\delta k_2^{-3/2}$, not $\delta k_2^{-3}$.\,! So that means that $\ket{\chi} \neq 0$. .\,.\,Which is \emph{so} much work just to show \emph{that}.\,.\,!\,\ldots\ (12:31)
 
 .\,.\,Oh, and I \emph{do} believe that one can show an upper bound for the `interaction terms,' uniformly for all eigenstates $\phi$ for any given $\delta k_2$, and where this bound goes as $\delta k_2^{3/2}$, or something nice like that.\,. (12:35)
 
@@ -2822,8 +2822,12 @@ where $\Delta t$ is allowed to decrease only as some constant times $\delta k^{3
 
 (24.02.24, 10:46) Okay, the bound on both the interaction terms, i.e.\ of $\hat H_{vac}''$ interacting (via annihilation) with the physical state and of the physical and vacuum states interacting via $\hat H_{phys}''$, will depend on the particle number of the vacuum state, as I see it. But from my expansion, you can assign a bound on the amplitude for each particle number for the vacuum state, and that should get us through.\,:)
 
+\ldots (11:08) Oh wait, the bounds on $\hat H_{phys}''$ and $\hat H_{vac}''$ might also depend on the particle number, might they not.\,. Let me see.\,. .\,.\,Yeah, of course.\,. .\,.\,Oh, but maybe I don't need the BCH formula after all; maybe my argument works for arbitrarily small $\Delta t$ for the expansion.\,. (11:12) .\,.\,Well, I still need to rewrite $\exp(-i\hat H_{vac}'' \Delta t) \to (1 - i\hat H_{vac}'' \Delta t)$, and similarly with $\hat H_{phys}''$, but maybe\ldots\ (11:14)
 
+(11:59) I think I forgot to square before summing!\,.\,.\,!\,! When I calculated how big the discrepancy of $\hat H_{vac}'' \phi$ and $E_\phi \phi$ was, I think I forgot to square the amplitudes before summing them! So now it seems to me (I have to go over it a bit more, though) that $\phi$ (i.e.\ an eigenvector of $\lim_{\delta k_2 \to 0} \delta k_2^{3/2} \hat H_\mathrm{vac}''$, where I'm back to using the double discretization) will be an $\varepsilon$-almost eigenvector of $\hat H_\mathrm{vac}''$ where $\varepsilon$ will go as $O(\delta k^3)$ (or maybe $O(\delta k^{3/2})$.\,.)! But let me go over it some more to be sure\ldots\ (12:06) 
 
+.\,.\,(12:08) And if this is true, then I can just go back to the simple argument of my 2024 vacuum, v1, paper, just where I now also have the double discretization, and where I also take more care with the $\hat H_\mathrm{vac}''$ (annihilation) interaction terms.
+%..(12:12) I feel like taking a walk and do the calculations of whether I'm right about this there. So let me do that...
 
 
 
