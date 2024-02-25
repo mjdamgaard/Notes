@@ -2851,6 +2851,18 @@ where $\Delta t$ is allowed to decrease only as some constant times $\delta k^{3
 
 Okay, so how exactly to complete the argument with this nice thing in mind.\,.\,? .\,.\,Well, I should be able to just use the Taylor series directly, and then show that the `interaction terms' (both kinds) will become insignificant when $\delta k \to 0$, namely if we start out with $\phi = \ket{\,}$. .\,.\,Yeah.\,. (13:42)
 
+\ldots\ (16:04) I was (more) right about my initial thought that the error starts to become small when the upper bound is comparable to $m$, not $m!$. But I've figured out what to do instead. For fixed photon number bound, there is an upper bound that depends on the fermion number (maxing out when all possible fermion states are occupied in the $\mathbb{K}_2$ lattice). And this upper bound should be proportional to the fermion number (times some function that depends on the \emph{fixed} photon number as well). And if that is the case, then we'll get a $O(b^m m!)$ bound for $\hat H^m$, canceling the $m!$ in the denominator to yield a series that goes as $b^m$. The point is then to simply divide $\exp(-i \hat H'' T)$ up into $\exp(-i \hat H'' t)\cdots \exp(-i \hat H'' t)$, where each $t$ is small enough that.\,. well, that the $t^m b^m$ series becomes convergent. .\,.\,And so far, so good, then how to complete the argument exactly from there?\,.\,. (16:14)
+.\,.\,Oh wait, it's just $O(b^1 m!)$.\,. .\,.\,Hm, which somehow makes it a bit worse.\,. .\,.\,Yeah.\,.
+\ldots But maybe that idea of looking at a small $t$ (or $\Delta t$) is worth diving more into, still.\,. .\,.\, Hm, well, it doesn't change the problem, but maybe it can still give me a good angle on it.\,. (16:47)
+
+(17:00) Oh no, it is $O(t^m b^m m!)$ indeed.\,. Hm.\,. .\,.\,Right, so we can make the $t^m b^m$ series convergent.\,.
+
+(18:49) Åh!\,.\,. Fik lige en muligvis rigtig god (i hvert fald interessant) idé!\,.\,. *(I just got a very interesting idea.) The idea is to do a different discretization for the different $(\hat a + \hat a^\dagger) \hat b^\dagger_{s'} \hat b_s$ terms, i.e.\ for different values of $s, s'$.\,! .\,.\,Wow, I'm really excited to look more into this idea.\,.\,!\,.\,. (18:53) .\,.\,(And I felt really stuck before that.)
+
+.\,.\,(My first, and current, thought is that I can use it to make $\hat H''$ equivalent to a matrix after all on the subset of states reachable from the bare vacuum, i.e.\ for a constant $\delta k_1$ (so with my double discretization as well).)
+
+
+
 
 
 
