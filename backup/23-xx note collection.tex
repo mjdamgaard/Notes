@@ -2067,6 +2067,37 @@ And this means that it will be quite easy to figure out which script-etc.\ creat
 
 
 
+\section{New context templates}
+
+(04.03.24) I think I might change the template syntax, such that the full title is written first, followed by the shortened title, where some numbered placeholders are used to refer back to the template placeholders, in order of appearance. And then I'll do something else about the capitalization problem. I will recommend uncapitalized titles as standard. And the application should then capitalize on its own. However, when the first letter should not be capitalized, I will introduce a syntax (I'm thinking something like \texttt{\_} %, \texttt{\_\{...\}},
+and
+\texttt{\textasciicircum}, %and \texttt{\textasciicircum\{...\}},
+escaped by \texttt{\_\_} and \texttt{\textasciicircum\textasciicircum}) to change which letter are and which are not capitalized during capitalization.
+
+By the way, if it at some point becomes obsolete with the shortened titles, opting to only use up-rated shortening schemes instead, then one can just start identifying the old templates with shorten-title instructions with the equivalent ones without those shorten-title instructions at the end of the template. (18:33)
+
+(10:35, 05.03.24) No, I will instead just make it so that some codes can be added to the template, after yet another (probably `|'-)separator, after the short-title template. These codes can then for instance say `don't capitalize (if not capital by default) the first letter of the full title,' `don't capitalize the first letter of the short title,' capitalize all letters of the first word of the full title,' etc. (And again, if this becomes obsolete, the contexts can then just be identified with their simpler versions without these codes, joining their IDs as one.)
+
+
+
+\section{p-models/-ontologies}
+
+I haven't written too much about my p-model idea, despite how important I think it is. But in very simple terms, it is about linking statements in terms of how correlated their truths are: `If one statement turns out to be true, what is the likelihood, that the other is then true?' So I should make sure to work on adding this when I (or hopefully `I' will be a `we') start to work on the discussion parts of the comment sections. (10:44, 05.03.24)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \chapter{Economic ideas}
 
@@ -2946,7 +2977,12 @@ then we're pretty golden already, since this provides us with a Lorentz-covarian
 
 (17:04) Hm, there is also the free energy of the antiparticles, which has the divergence as well (in terms of a constant energy at each step, which however goes to infinity in the continuum limit). So how does one deal with that.\,.\,? .\,.\,Hm, that means that we do still need to discretize as intermediary steps for the DSR.\,. The argument then follows the.\,. wait, no, this does mean that the `interaction terms' are once again not completely vanishing, but are only vanishing when $\delta k$ is sent towards 0.\,. (17:10)
 \ldots (17:36) Okay, so we'll just need to also assume that $\hat H''$ (discretized and DSR'ed) in the countable basis approximates $\hat H'''$ (continuous and DSR'ed) arbitrarily well. Then $\phi$ can be an $\varepsilon$-almost vector of $\hat H'''$ and $\hat H''$ at the same time. Therefore we then go to $\hat H''$ and investigate its action on $\hat A_{\psi}^\dagger \hat A_{\phi}^\dagger \ket{}$. .\,.\,And if we let $\psi$ be an almost eigenvector of $\hat H_\mathrm{phys}'''$ and/or $\hat H_\mathrm{phys}''$, we see that, because the same $\delta \mathbf{p} \to \mathbf 0$ argument still applies for $\phi$, the interaction terms can be shown to tend towards 0 when $\delta k$.\,. Hm, or $\delta \mathbf{p}$.\,. Let me think.\,. (17:44)
-.\,.\,Oh, maybe there's a problem here, namely if $\phi$ indeed needs to be an almost eigenvector of $\hat H_\mathrm{phys}'''$ and $\hat H_\mathrm{phys}''$ at the same time: Then we can't just let $\delta \mathbf{p} \to \mathbf 0$ without also letting $\delta k \to 0$ at the same time, right?\,.\,. (17:47) .\,.\,Or can we.\,.(?) .\,.\,Hm, but wait, does it really matter that $\delta k$ also needs to go to 0 (before $\delta \mathbf p$).\,.\,? (17:52) .\,.\,All that matters is the particle number converges nicely (this is imprecisely put but I know what I mean.\,.) when $\delta k, \delta \mathbf p \to 0$, right?\,.\,. (17:55) .\,.\,Yeah, I think so.\,.\,:)
+.\,.\,Oh, maybe there's a problem here, namely if $\phi$ indeed needs to be an almost eigenvector of $\hat H_\mathrm{phys}'''$ and $\hat H_\mathrm{phys}''$ at the same time: Then we can't just let $\delta \mathbf{p} \to \mathbf 0$ without also letting $\delta k \to 0$ at the same time, right?\,.\,. (17:47) .\,.\,Or can we.\,.(?) .\,.\,Hm, but wait, does it really matter that $\delta k$ also needs to go to 0 (before $\delta \mathbf p$).\,.\,? (17:52) .\,.\,All that matters is the particle number converges nicely (this is imprecisely put but I know what I mean.\,.) when $\delta k, \delta \mathbf p \to 0$, right?\,.\,. (17:55) .\,.\,Yeah, I think so.\,.\,:) .\,.\,Yes!\,:) (18:00)
+
+(04.03.24, 14:55) For the $\delta \mathbf p \to 0$ argument, I'll actually use the axiom of choice to construct a $\phi \in \mathbf{H}_{DSR}$, where $\varepsilon$ is non-increasing (perhaps even sharply decreasing) for smaller and smaller $\delta \mathbf p$ volumes around $\mathbf 0$. (And one also uses the completeness of $\mathbf{H}$ in this argument.)
+
+(05.03.24, 10:26) The thing about using the axiom of choice does not work. However, as I realized laying awake (for a few hours) this night, I don't need $\phi$'s combined momentum to be 0 for the argument to work. We can just pick out a $\mathbf p$ ($\mathbf P$) from anywhere (close to 0 or even away from it). We just need for $\phi$ to be finite almost everywhere on the hyperplane that we pick (of constant combined momentum), and also have that the contribution to $\varepsilon$ on that hyperplane is $\geq \varepsilon$. 
+
 
 
 
