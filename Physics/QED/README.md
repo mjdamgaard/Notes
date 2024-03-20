@@ -27,7 +27,7 @@ w.r.t. both photon number and momentum, then it seems that it be easy to show. B
 
 Task 3 and 4 deals with showing the Lorentz covariance of the theory, which is not quite as important for me now that I have realized
 that the theory that I derived in my 2022 paper is equivalent to the conventional theory. (I thought the conventional theory did not contain a Coulomb potential.)
-But they would still be nice to complete at some point. In my qed.tex document, which can currently be found in my backup folder, I believe I have worked out how to
+But they would still be nice to complete at some point. In my 'qed.tex' document, which can currently be found in my backup folder, I believe I have worked out how to
 solve these Tasks. (Task 4 is very easy but Task 3, on the other hand, is quite complicated.)
 But I will probably not resume this work in the near future myself, at least not before the other tasks are already dealt with.
 
@@ -63,7 +63,13 @@ But I do certainly look forward to coming back and working more on this again, e
 there is even a chance that it could lead to slightly altered predictions! (Becasue it might tell us that we need to cut away all pair productions.)
 
 
-(All my ideas here are also described (poorly, of course) in my working notes found in qed.tex and 23-xx note collection.tex, but I do not really expect anyone to read those.)
+(All my ideas here are also described (poorly, of course) in my working notes found in 'qed.tex' and '23-xx note collection.tex', but I do not really expect anyone to read those.)
 -->
+
+(20.03.24) I have found some problems with my vacuum paper, and now I actually have more hopes for a different idea, where one does the Dirac sea reinterpretation
+via a countable basis. This idea is described in '23-xx note collection.tex' found in the 'backup' folder. I will also make some corrections to my vacuum paper on arXiv
+at some point, but since no one reads it currently anyway, and since I'm quite exhausted now from working a lot on this problem, I might very well delay this update
+for a while.
+
 
 Feel free to email me if you have any questions about my work.
