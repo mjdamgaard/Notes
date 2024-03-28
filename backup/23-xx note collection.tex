@@ -2205,6 +2205,21 @@ be needed anyway, I think, if searching is otherwise complicated by having capit
 
 .\,.\,For the `\#$n$' substitutions (and here we of course keep the `\#'), I also think that this should be rendered as a link, actually.\,. well, maybe.\,. .\,.\,Hm, ooh, or maybe it could just be an inserted bookmark, or what to call it, as a prefix to the substitute, where this prefix is then a link to the (`\$', $code$) object, where $code$ is what $n$ (which is a code ID) points to.\,.\,:)\,.\,. (17:16) .\,.\,Yeah, a little, unimposing, possibly raised (like a superscript, but in front of the thing.\,. a ``pre-superscript''.\,.) symbol with a link to the (`\$', $n$) object (or I could write `the (0, $n$) object' here, equivalently).\,:) (17:19)
 
+(20:08) I think I will actually use that idea of adding a trailing code for capital letters. And this can also be used for things like URLs as well, that should be fine.\,:)
+
+(28.03.24, 10:47) I should also let users type the.\,. Oh, let me start by saying, I think I will call it the `object string' rather than `object code.' And to continue the last thought, I should also let users type the object string into the placeholder syntax between the square brackets as well. But in order to not have two objects with different strings leading to the exact same HTML, I think I will automatically convert to the object string ID.\,. Hm, or let me call it the `string ID' for short, and maybe I'll then also simply call the table Strings.\,. .\,.\,Yeah. .\,.\,I will automatically convert to the string ID for any placeholder. So users can write e.g.\ `@movie[The Lord of the Rings],' but it will be converted to `@$n$[$m$],' where $n,m$ are the two string IDs. (10:55)
+
+.\,.\,Hm, sorta unrelated note: Let me also prohibit some characters like newline and tabular (if I don't do this already.\,.). These can then always be included at a later time if need be.\,.
+
+(12:05) Okay, I also have to consider the option of making an Objects table to allow for object keys of just a single ID rather than two.\,. .\,.\,No, that just makes things more complicated, I think.\,. (12:07)
+
+.\,.\,(12:09) Oh, I just realized, the `\#123' syntax also needs an stop delimiter. So let me just use the syntax `@[123]' instead for direct string substitutions. .\,.\,Hm, and this could be different from `@0[123]', could it not?\,.\,. .\,.\,Hm, I'm not sure, 'cause users could also use.\,. single quote delimiters, hm, except that the string could start or end with such quotation marks.\,. .\,.\,Sure, let there be a difference: One is rendered with just that pre-superscript I wrote about above, and the other (`@0[123]') is rendered as a clickable link. (12:15)
+
+.\,.\,(12:19) Hm, it might actually be quite nice if an object could have a whole sequence of types, each one being more specific than the last, i.e. One could probably define a fundamental template (format string) for this, as I've probably thought before, but let me see.\,. .\,.\,Yeah, that's it. So how should that go?\,.\,. (12:22) .\,.\,(12:22) Hm, how about a comma separated list, simply? .\,.\,Yeah, so the template would simply be `$<$type$>$, $<$type$>$'.\,. .\,.\,And then you ought to keep choosing the last of these placeholders, if you want to make long type sequences. In other words, you would always chose a non-template-instance type for the first input in the template (format string). .\,.\,That sounds good, and then I just have to ``tutor'' the users that this is how to do it.\,. Well, or giving/setting examples could actually also be good enough, but I \emph{should} also include it in the tutorial. (12:29) .\,.\,I'm happy with this idea---I've had so many happy ideas lately, and this is yet another one (even though it is a simple one, but it means a lot knowing/realizing that this can be done).\,:) 
+
+
+
+
 
 
 
