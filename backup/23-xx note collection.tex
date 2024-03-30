@@ -2287,6 +2287,12 @@ How ambiguous should we allow entity definitions to be?\,. Well, it depend: For 
 
 .\,.\,(17:20) Hm, this might make me put templates completely out of commission again.\,. .\,.\,Yeah, 'cause the whole point is, that this allows us to be much more relaxed about the specifications (i.e.\ `subtitles'/`appendices'), and just write some that is `sufficient enough' in the beginning. This is because dealing with duplicates will now be something that can be implemented *(much more easily and) not long after the network takes off, I believe.\,. (17:24)
 
+.\,.\,(17:29) Oh, but the `ent\_spec\_id' column would then have to be next to `ent\_def\_id', i.e.\ not being part of the PK, and that would expand the data. So I need to then instead make a new table, where these `specified entities' can get their own ID.\,. (This also means that the entity references will not grow (really) after all.\,.) .\,.\,Well, I guess this is what I must do, then.\,. (17:33) .\,.\,Hm, so a typed/semantic entity's definition is then either a `string/simple entity' or a `specified entity'.\,. .\,.\,Something like that.\,. (17:35)
+
+.\,.\,(17:37) Okay, so this change is actually a must, now that I've thought about it. Since all it does is to put a clearer line between the buzzword/keyword part of an entity's name and its specifying part, which then makes it much easier to deal with duplicates, once we get to that point (and therefore means that we can be much more relaxed, luckily). (17:39)
+
+.\,.\,In fact, maybe we can even be \emph{so} relaxed that we'll rarely need the specification part in the beginning of the website/network.\,.\,!\,.\,. (17:44) .\,.\,Hm, it seems like it.\,. .\,.\,Oh, and the thing about notifying the users if they have rated an entity which now either gets further specified (by creating or changing the specification), we shouldn't even really need that: We can just expect that the users in general talked about the same thing, nemely the thing that the entity is now being further specified as. (17:49)
+
 
 
 
