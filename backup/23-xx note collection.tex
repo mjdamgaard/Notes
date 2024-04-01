@@ -2337,6 +2337,15 @@ I'm thinking of changing the system again. I think types are a bit too much trou
 
 .\,.\,Oh wait, going back to `::', we shouldn't even need to tell/program anything special to/for the bots, then.\,. So why not just let the users take care of defining tags that are semantically precise enough to also include the `as a' clause if necessary for the semantics?\,.\,. (14:45) \ldots (15:12) Never mind, it does make sense to tell/program the bots to filter these tags. And I actually also think I like using this special, brief syntax for `as a/an' clauses (and I think the users will find it useful as well). (15:13)
 
+\ldots\ (18:16) I think I will embrace syntax like `::' even more, also letting property tags by constructed via syntax, especially. I'm thinking of using `-$>$' for property, and then perhaps also using `:' potentially after a property to denote that we are only interested in instances of the type coming after the `:'. This is much like `::', but not completely, since `::' also changes (specifies) the semantics of the tag, whereas `:' is purely there for practical reasons, namely to instruct the bots to filter the property tag.\,. (18:20) .\,.\,The first part of a property tag, before the `-$>$', should be a link/reference, but maybe the other parts shouldn't.\,. (18:21) .\,.\,Oh, and non-property type tags can also use the `:' syntax, namely if the type *(before the `:') is a subset of the type that comes after the `:'.\,. .\,.\,By the way, let me mention that that `::' syntax \emph{does} work a lot like in Haskell, namely if you thing of the tags as a kind of class (in programming terms).\,. (18:24) .\,.\,Oh, and I also might use `;' instead of `:', then, for the specified titles.\,.
+
+.\,.\,Some of this can then be translated when rendered, if the user wants it, which might especially be a good idea in the beginning. However, the verbatim string should also be visible. When submitting entities, there should also be special forms to submit these kinds, where the user can then also see the verbatim string, and can also choose to write it verbatim. (18:31)
+
+.\,.\,Let me also point out something else: `has good acting::movie' is not as good as `good acting::movie': Always try to make the tags as simple and easily searchable as possible. (18:33)
+
+.\,.\,(18:41) Hm, I guess the other parts of the property tags should also be references/links as well.\,.
+.\,.\,Hm, and then when you type in a property entity `verbatim,' it should actually \emph{not} be verbatim, not completely, as one should still be able to type in `@' and then continue to type in a link, where one chooses from some of the suggested entities, if any, and then when hitting enter, the link is inserted into the text field at/before the cursor position, replacing the `@' as well, seemingly.\,. (18:48)
+
 
 
 
