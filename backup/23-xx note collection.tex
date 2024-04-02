@@ -2356,6 +2356,18 @@ I have by the way considering using `=$>$' rather than `fits' (in reverse, if yo
 
 And lastly, as I thought about in the bath this.\,. midday, when it comes to the specified titles---first of all, I will keep these, since I think that it is nice to be able to have this expandable subtitle. And in terms of dealing with duplicates, the users then simply up-rates a property tag `$<$entity$>$::$<$type$>$-$>$better duplicate,' first of all. The `$<$type$>$' part here is important, since you obviously don't want to move all votes/rates for the entity---for instance you don't want to move the rates for `$<$entity$>$::$<$type$>$-$>$better duplicate.' Now, when this tag has a high enough rating, and with enough users having voted. The app can indeed just notify all users who has rated $<$entity$>$ with tags where $<$entity$>$ (which could be `WWII' for example) was specified as a (`::') $<$type$>$ (e.g.\ `war'). And the notification can simply be `will you let you rates be automatically transferred to the `better duplicate' entity after the userbase has voted and decided (with enough margin, and enough votes) on which entity is the best replacement.' .\,.\,Oh, maybe the property tag should be.\,. hm, not a property tag, and be something like `needs specification/changing::$<$type$>$'.\,. Hm, but that's not completely right, since the semantics is understood with the entity being `as a' SDB entity, so what to do instead.\,.\,? .\,.\,Hm, could be simply: `needs specification/changing::SDB entity'.\,. .\,.\,Hm, and then the rate transfer should then simply concern all custom types at once, i.e.\ for all tags with an `::$<$type$>$' in them, where the type is not `SDB entity'.\,. .\,.\,Hm, that could work. So all in all, let us not be too worried about having underspecified entities in the early days of the SDB, nor about using consistent ways of specifying entities of various types, since this can all be mended without too much trouble later on.\,:) (13:23)
 
+(14:09) I should also mention, references are ended by either `.', `@' (or `\#' for concatenated strings) or by the end of string. If a reference is succeeded by `@' (or `\#') or end-of-string, the dot should always be omitted. *(No.\,. (15:13))
+
+(14:16) Hm, I'm now considering whether to just require that the syntax matches the `order of importance' as we might call it.\,. .\,.\,Or I could remap it in the specifying format.\,. .\,.\,(14:22) Or require that the syntax matches the order of importance.\,. .\,.\,Hm, I think so.\,. And then I will just use `$<$$>$' instead of `\%$n$'.\,. .\,.\,No, I'll use `\%e', where `e' stand for `entity.' (14:25) .\,.\,And the specifying format then gets to use `\%$n$' still, which makes to possible for it to explain it using a different order.
+
+(14:40) Hm, but in regards to the `\%e::\%e-$>$\%e' syntax, maybe this order of importance (selecting the type before the property) is just as good as when selecting the property before the type.\,.
+
+(15:12) Hm, maybe it's easier if references just always end in `.'. Yeah, I think it is.\,.
+.\,.\,But maybe we can omit the `@' for format inputs.\,. .\,.\,Except that.\,. Oh no, the type is defined by the format, so yeah, we could do that. (15:15)
+
+(16:03) Oh, I should probably use another delimiter for the formats rather than `$|$', since I'm using that for the capitalization--accent code as well.\,.
+.\,.\,(16:06) Hm, but I could also go back to just using `$|$' as well for the subtitle/appendix/specification, and then there will just be two `$|$'s.\,. .\,.\,I think that might be better, and it also fits nicely with the format specification also being a specification, and one where it could also be nice if it were expandable. Yeah, so I think I'll do that.\,:) (16:09)
+
 
 
 
