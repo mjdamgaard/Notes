@@ -2423,6 +2423,12 @@ Ah, I really think that I'm landing/have landed now on something good.\,:) It's 
 
 (17:05) And remember: It's (much) easier to go from an intuitive system over to a more efficient one, based on the first, rather than the other way around.\,:) So with that in mind, don't worry too much about efficiency of the early version.\,:) (Talking to myself.) Not that I \emph{think} that I will change the system---I actually don't---but it's still a comforting thing to remind oneself of.
 
+(18:28) Hm, it almost seems that the entity references won't be necessary, and maybe not used much. But I'm not sure if I dare remove them.\,. .\,.\,(18:30) Hm, that would maybe be in order to actually prevent users from using them, forcing them to use the templates instead, which is probably best. For instance, it might be tempting to define a relational tag on one's own by writing it intuitively, but it might be much better to reformulate it as a property-of-entity tag, and thus use the property template (format) instead.\,. (18:33) .\,.\,And I can always add it later on.\,. at least if I still keep `@' as a special character for the whole string, not just the beginning of it (where it can represent the beginning of a format closure).\,. So I'll basically keep room for these inline entity references, but having them as `not implemented yet,' essentially, except without a clear promise that they will be implemented.\,. Hm, on the other hand, it would be nice only having to escape special characters at the beginning of a string, wouldn't it?.\,. Hm, but maybe not enough that I want to throw away the possibility to implement and include inline entity references (links).\,. (18:37) .\,.\,Oh, and `$|$' is also a special character throughout anyway.\,.
+
+(19:03) I have until now forgotten about formats over entities with specifications, but I guess we can just escape `$|$' (once) in the format.\,. Wait, does this even make sense; the specification will just be exactly that of the template, after the placeholders have been substituted (but the cap.--accent code it interpreted before said substitution).\,. Hm.\,. .\,.\,Yeah, that's it, so I have already implemented formats where the specification is part of the format; it always is. (19:07)
+
+.\,.\,(19:08) Let me repeat: I'm very happy with all these new changes (as a whole). It's for instance so nice that e.g.\ `movie' as both a `type' and a `tag' (formerly known as a `category') can share the same `subcategories' tab.\,:) And there's so many other nice things about these changes.\,:)
+
 
 
 
