@@ -2542,6 +2542,19 @@ When it comes to the trailing link code, I then have to be careful with the synt
 \ldots (12:49) Oh, but there's also the option now of including template closures, i.e.\ entities of the form `@$n$.$m$\ldots', like I had before.\,. .\,.\,Hm, and maybe it would make sense to have properties be singular nouns again, with specifications that specifies how the are interpreted when appearing in a `$<$property$>$ of $<$entity$>$' clause.\,. (12:54) .\,.\,Yeah, but let me take a walk and think about it\ldots\ 
 .\,.\,(12:57) Hm, I think I will go back to doing all that\ldots
 
+\ldots\ Let me disallow numbers for placeholder labels, and then use the `\%$n$', $n=1,\ldots, 9$, and `\%[$n$]', $n\in \mathbb{N}$, syntaxes for back-referencing placeholders.\,. Maybe.\,. (15:38) *(And I might allow references as labels.\,.)
+
+.\,.\,(15:48) Hm, maybe I will go back to a convention of capitalizing things where the `short title' is understood more as a title, rather than as a predicate. So basically almost all nouns, except something like `good acting,' where there's an implicit `has' before this title.\,.
+
+.\,.\,Hm, about the labels, maybe I will also go back to how I parsed the labels from the specification instead.
+
+.\,.\,I should by the way start calling it the `full definition' rather than the `full title'.\,. (16:00)
+
+.\,.\,But yeah, maybe I shouldn't convert the `\%$n$' (and `\%[$n$]') back-references. They can just be stored that way.\,. Sure.\,. (16:04) .\,.\,Ah, I should give each link in an EntityTitle a className with the number $n$ contained in it, such that I can simply render to backreferences as numbers, perhaps like `($n$)', and when hovering over `($n$)', or the original reference further back in the full definition, then both (or rather all) these links with the same className (containing $n$) will get underlined!\,:) (16:08) .\,.\,Nice.\,.\,!
+
+\ldots Hm, should I just capitalize everything, even adjectives and verbs?\,.\,. (16:38)
+\ldots I'm a bit torn, but I might indeed do that: capitalize all entity titles.\,. (17:22)
+
 
 
 
