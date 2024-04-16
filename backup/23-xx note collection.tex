@@ -2599,6 +2599,31 @@ So for instance, if we suddenly want to remove templates again and substitute th
 
 
 
+(16.04.24, 10:02) I have various things to write about and think more about. And now I just re-realized an idea, which I think I've had before. the idea is that users might want to be able to up-rate all the things/point about a certain thing that make this thing good. And also, under another tab, the things/points that make it bad. These are then up-rated according to importance, I think, and there might thus be a separate rating for how much they affect the `goodness' of the thing. But maybe it can also be done with one rating. Let me think some more.\,. \ldots Maybe the users could add and uprate these points as texts, and then for each text, there could be a property of relevant ratings.\,. And what to call these texts?\,.\,. .\,.\,`Points of praise,' maybe, and then the opposite could be `points of constructive criticism'.\,. .\,.\,Yeah, and I would wants these tabs anyway for thing-entities.\,. .\,.\,So these `points of praise/criticism'-type entities could then have a property, and tab, of `related ratings$|$ for a @[point of praise/criticism], i.e.\ ratings about the thing(s) that the @n1 points out'.\,. (10:34)
+\ldots And maybe we don't need the importance rating: maybe the praises/criticisms need only be rated according to the `goodness'/`badness' that they cause.\,. (10:49) .\,.\,(10:55) Hm, maybe a way to do it would be to first have two tabs, one for praise and one for (constructive) criticism, and then rate these properties just for the goodness/badness they cause. Then the next step could be to also introduce a third, mixed tab where all points of praise/critique are rated according to importance rather then `goodness/badness that they cause,' but where the `goodness/badness that they cause' rating can also be fetched and shown for each element in this entity list. (10:58) And what the user community then decides to do / invents from there is up to them.\,:) .\,.
+.\,.\,Hm, but I guess all these praise/criticism entities might as well get the supertype `tag' as well.\,. (11:02) .\,.\,No, 'cause the statement is really: `point of praise $x$ causes the entity $y$ to be good'.\,. Hm.\,. (11:04) .\,.\,Hm, which \emph{could} be reformulated as: `(is) good because of point $x$'.\,. (11:05) .\,.\,Hm, that's actually not a bad idea, i.e.\ to use such praise/criticism tag template, and it would also gives a good way to make the praises/criticisms ordered after importance in their respective tabs after all.\,. Hm, nice (it seems).\,. (11:08) .\,.\,Yeah, this is for sure what we ought to do.\,:) (11:09)
+
+.\,.\,Hm, I think this little piece of technology will actually be so important for the app (thinking about the early browser extension especially).\,.\,:) (11:14)
+
+%(11:32) Øv. Det er virkelig en flot bygning, der står i flammer nu.:(
+
+(15:05) I ought to continue this subject in the next section as well, but I'm thinking that thing-entities should have a `points of praise' tab, a `point of constructive criticism' tab, a comment tab (for the normal positive engagement that you tend to see), a corrections tab, and a discussions tab. About discussions.\,. Oh no, I should write those points below.\,. .\,.\,I think that this system will provide a very good user experience of being able to review and discuss what makes various things good and bad, as well as other things. And especially if a make a bot that continuously calculates `user groups' via ML (dealing with correlations), such that the first users can immediately start to be grouped with the users that are most like them.
+
+(15:13) I also have something else that I want to point out, concerning the monetary aspect of the idea. Since this system will very soon start to become a very important way for users to review products/services, media, and more, there will be a giant interest from companies to boost the visibility of their products etc. Now, commercials and biased search results are generally not something that users want. However, if the users can see how much this helps the community monetarily, they might still be willing to accept (as preferences/settings) that the sponsoring companies' products etc.\ have their visibility boosted. For if it is seen by the individual user as an alternative to donating money themselves, it they might very well be on board with that after all. This creates a giant vector for getting monetary towards the contributing `users' (including all open source programmers and inventors, of course). (15:20) The other vectors that I had in mind, i.e.\ attracting sponsors based on increased brand recognition for them, and because it supports a pool of user data about their products, these are still there. But they are probably not nearly as big as allowing companies to get their products boosted in terms of visibility (except for users who has turned this off, perhaps because they are donors themselves). So there we are, a potentially \emph{giant} source of income/funding for the project.\,.\,:) (15:23)
+
+(15:37) I/we should also consider allowing tags where the semantics can depend on the user, i.e.\ such that the tag can.\,. Well, the statement, rather. Okay, maybe not, but I should think some more about this, still.\,.
+\ldots (16:22) It could be done with a `tag that I, the rating user, would put on myself' tag (i.e.\ a tag for tags, where the rating tells you how much the user thinks that they fit the given user tag).\,. .\,.\,Or we could say: `predicate that fits me, the rating user'.\,.
+
+.\,.\,Let me also mention: As part of the early app, the users should also already be able to up-rate statements as good ones for determining what type of user the ones that rates these statements are.\,. Hm, we could by the way also do the thing from the last paragraph with rating-user-referencing statements instead, uprated for the tag `True'.\,. Nah, the other idea is better. But it is worth considering this possible redundancy, i.e.\ if we utilize a `true$|$ statement' tag.\,. (16:32) .\,.\,Ah, well, if users just always up-rate tag--instance pairs, when they uprate these `good-for-type-determining statements,' they can just uprate a (`true', $<$text-based statement$>$) pair. (16:39)
+.\,.\,(There should then of course be a bot that finds correlation vectors looking at only these statements (with a high enough `good for user-type-determining' score).)
+
+
+
+
+
+
+
+
 
 
 \section{Structured discussions}
@@ -2620,6 +2645,23 @@ Of course the participants can cheat and give dishonest probability assignments,
 Now, the great thing is that from here, it's basically all math. Of course, you have to take into account that users can be dishonest, and you also have to settle on conventions for how to use the actual-prior and the post-prior probability assignments by the participants (i.e.\ settle on some weighted mean of these two things), and have t figure out what to do with users who change their probability assignments to much. But after all this, the resulting probability for the statement of the discussion can be obtained mathematically. Oh, and you of course also have to factor in user trust values to begin with. Luckily this does not need to be done in a centralized way. Some users will assign different trust levels to different user groups, which might change the result of the discussion. And that can then just be calculated for their settings particularly, and other users with different trust settings will be able to see a different result (and will also be able to see the results for all the other (popular) user trust settings). (10:03)
 
 (12:20) Oh, I must mention the ``just math'' \emph{can} be quite complicated, though, if there are correlations for the data sources.\,. But still, this process could still greatly improve our decision making.\,:) .\,.\,And online discourse in general, for sure.\,. .\,.\,:)
+
+
+(15:24, 16.04.24) About the correlation statements, while this in principle could be the only tabs for a statement (as part of a discussion), this would be way to complicated (especially to understand). So the main tabs should still be `arguments for this' and `arguments against this'.\,.
+
+\ldots Maybe I didn't (get to) mention the idea to make it a `correlated statements/propositions' instead, but that's what I've been thinking---besides the fact that it should not take the place of the more natural `arguments for this' and `arguments against this' tab.\,.
+
+(16:52) There's also the fact that for big enough discussions, the correlation between various statements can also be obtained (to some level of precision, not far worse than if the users were to rate this correlations manually) from analyzing the correlations in the predictions of the users (of the probability of each of the proposition in the group of what's been deemed as `correlated statements').\,. .\,.\,(I know that not a lot of what I've been writing here this afternoon will make a lot of sense when reading it: These notes are quite brainstormy.\,.)
+
+(17:06) Oh, I just had a perhaps very good idea about always choosing an antecedent when making a \emph{probabilistic statement}, i.e.\ a statement/proposition that is meant to be rated in terms of probability by the users. And then sometimes, the antecedent can just be `(only) what we know overall about the subjects, without including any facts/details specific to this case' and other times it can be, well, also that, first of all, \emph{and} also another statement/proposition on top, which means that the user then rates the probability of the given consequent statement when it is assumed (without knowing anything else), that the added antecedent is true. (17:11) .\,.\,And thus the users can rate the correlation of two statements/propositions.\,. .\,.\,This is a.\,. \emph{very} good idea.\,. (17:15)
+
+
+
+
+
+
+
+
 
 
 
