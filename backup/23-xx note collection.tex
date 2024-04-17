@@ -2657,6 +2657,8 @@ So for instance, if we suddenly want to remove templates again and substitute th
 
 \ldots (20:28) Hm, I think I will change it, i.e.\ such that we fundamentally have tag--instance statements as well as owner--property--value statements. I'll then make two tables for this, and for the factual/defining properties, we can just use.\,. .\,.\,Hm, never mind, all properties are entities, and can therefore always be documented at some point. And since the def is still always supposed to contain an initial title (written before the `$|$' still, actually), this means that we can bootstrap the whole thing, whithout having to define the `title' property of the `title' entity via itself, for instance. (20:34) .\,.\,So that might be the only new changes: Two types of fundamental statements instead of only the tag--instance one, and no longer with a convention that an entity's definition has to be completely defining: Any entity can be further defined `semantically' via its properties. (20:36) .\,.\,(Oh, and I will also cut a bit in the def syntax: Back-references will for instance no longer be needed.\,.)
 
+.\,.\,Hm, I could perhaps also make.\,. .\,.\,Hm, I don't know.\,. .\,.\,Uh, maybe I could go back to an old thing of having a special, fundamental kind of template for property tags, and then always unpack these as the owner--property pair before storing in SemanticInputs, i.e.\ meaning that the tags of this special type cannot be used directly in SemanticInputs.\,. Hm.\,. .\,.\,Oh, or I could also just implement special database procs (query and input procs) where the owner--property pair is used instead of the tag, even though SemanticInputs then still only allows for tags.\,! That could be an idea!\,.\,. (20:49) .\,.\,Great.\,.
+
 
 
 
