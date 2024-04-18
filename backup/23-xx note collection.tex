@@ -2678,6 +2678,24 @@ prop2:something$|$\ldots', oh wait, or I might actually make it standard to use 
 
 .\,.\,So maybe I should keep the definition syntax the same as it is now, even with the back-references, as long as I just either write them out or insert a `($n$)' after the original, referenced link.\,. (10:13) .\,.\,And then we'll just say that these definitions, including the (short) title, are not as set in stone, but if users uprate replacements for them highly enough, the app will show these replacements to the users (depending on their preferences) instead. (10:19)
 
+(11:22) Maybe, I will remove the `@n[1-9]' back-references, but not the `\%[1-9]' back-reference placeholders for the templates, which are then just replaced with the given entity reference (like `@123.') instead.
+
+(11:55) Hm, or maybe I actually will just use the property tag template, like I have done, instead of defining a special syntax for property tags.\,.
+
+(12:00) Hm, maybe it would be a god idea to make a sharper line between tag entities and non-tag entities.\,. .\,.\,Hm, this made me consider introducing fundamental types again, but where these then are \emph{not} meant for the custom types.\,. Hm, or will it work with this high level of ambiguity.\,.\,?\,.\,.
+.\,.\,It could also just be a leading character of the definition.\,. .\,.\,Perhaps followed by an initial `$|$' for clarity.\,. (12:06) .\,.\,Hm, 'cause it also doesn't make sense to use non-tag entities, like `LotR' or `WWII' as tags anyway, as it's way better to use more clearly defined properties instead. .\,.\,I should not make a separate `type' type (fundamental type/super-type), though, as this should just be a subtype of the `tag' (super-)type.\,. (12:10) .\,.\,`fundamental type' is better than `supertype'.\,. .\,.\,(12:14) Let me just make it a separate CHAR field/column in the Entities table, which are then just also a part of the secondary key. I will not implement typed tags and/or instance lists, so SemanticInputs need not be changed. But I can make a restriction of not allowing semantic inputs where the tag is not of the `tag' type. .\,.\,For e.g.\ 'user' or `text' entities, their defs will then just be an integer alone; no other surrounding syntax needed.\,. (12:18) .\,.\,I will also let `property' be a fundamental type, then.\,. (12:20) .\,.\,(12:25) Maybe I will call the standard/regular entities for (exactly) `regular entities,' and use the character `r' internally to denote this fundamental type.\,. .\,.\,Well, maybe `standard' is actually more fitting.\,. Sure.\,. .\,.\,(And then I'll just use `s' instead---which can also be thought of as standing for just `something').\,.
+
+\ldots Hm, do I want a fundamental statement type?\,.\,. (12:44)
+
+.\,.\,(12:45) Oh wait, if templates have to be able to.\,. determine the fundamental type.\,. well, I guess that could just be done with an initial character of the template.\,.
+.\,.\,Hm, but why go to all this trouble of making it a separate field/column, when it might just as well simply be the first character, always, of the def.\,. .\,.\,Yeah, let me go back to just having the def as the, well, the full \emph{definition} of the entity.\,. (12:49) .\,.\,And let me just still keep the `$|$' as the mandatory second character for clarity's/visibility's sake.\,. (12:53) .\,.\,No, make it a `.' instead.\,. (12:54) .\,.\,Hm, or a `/', actually.\,. (12:56) .\,.\,Hm, but/and couldn't we just use single characters for the fundamental (reserved) types, but then also allow custom types.\,.\,? .\,.\,(13:01) Yes, I think this is a very good idea. It's a very good thing to have the overall type defined first of all in the definition (for better understanding). And since we won't really be searching for entities via their definitions, but via uprated index keys instead, we shouldn't worry about having something coming before the (short) title.\,. So yeah, let's probably do this. We could even also use `:' instead, but then allow for several types, separated by `/'s, such as in e.g.\ `Tag/Type:Entity'.\,. (13:05)
+
+.\,.\,Okay, let me drop using `$|$' to cut out the title from the full definition. Let me then instead write whole sentences for the `specification,' with capitalization, of course, and I think I might then go back to using only lowercase for tags in general.\,. Hm.\,. .\,.\,Yeah, lowercase in general for tags, types, and properties, and all such meta-entities, except of course for proper nouns, and then for the `standard' (/`regular') entities, we might actually choose to capitalize as a standard, I'm not sure.\,. (13:18)
+
+.\,.\,I'll probably just write `tag:' instead of `tag/type:' for all types.\,. .\,.\,And let me just separate the type declaration from the title with a `$|$' instead of a `:'. (13:22)
+
+.\,.\,Great.\,.
+
 
 
 
