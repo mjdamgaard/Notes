@@ -2705,6 +2705,15 @@ prop2:something$|$\ldots', oh wait, or I might actually make it standard to use 
 (16:54) Hm, now that we don't need the definitions to be searchable, I might think about doing something else for the concatenated strings.\,. Maybe I'll even.\,. Hm, maybe I'll even just add a TEXT to entities.\,. .\,.\,Hm, I wonder if it could make sense to just make a manual check on the TEXT column, then, in order to prevent duplicates.\,. .\,.\,(17:00) But then again, one could just make a standard `documentation'/`full specification' after the specification part of the definition, and then require that this is always a text entity.\,. .\,.\,Hm, one could by the way uses hashes instead of BIGINTs for text IDs, if one really wanted to not have any duplicates.\,. .\,.\,Hm, that might not actually be a completely bad idea, as it also has the added effect of making texts and binaries searchable.\,.\,!\,.\,. (17:06) .\,.\,And I could make an input proc that just inserts/finds the given specification text automatically, as part of inserting the entity.\,:)\,.\,. (17:09)
 
 .\,.\,(And of course, for the Indexes, I can still use the same concatenated strings as I had in mind before (those that are fully searchable).) Hm, this might actually not be a bad idea, about the hashes.\,. Hm, but I can probably make it even better, let's see.\,.
+.\,.\,Hm, or maybe no; maybe the full specification / full definition / documentation / specification should just always be a text entity, which are then referenced by its hash (that serves as its primary key).\,. (Note that all texts also has a BIGINT ID as well, which comes when the `@t$<$\emph{hash}$>$' entity is created as part of inserting the text.) .\,.\,Hm, which means that one can actually also just use that ID for the def, instead of using the hash directly.\,.
+
+.\,.\,Hm.\,. Oh, I can still bootstrap the first few entities, simply by adjusting the specification ID afterwards to the correct text entity ID.\,. (17:26)
+
+(17:40) The Texts and Binaries tables can store their hashes, but I might do as https://
+dev.mysql.com/doc/refman/8.0/en/optimize-blob.html
+says and also do manual comparisons on top of that. And I can then also just use BIGINT UNSIGNED AUTO\_INCRE-MENT for the primary keys / IDs of these tables.\,.
+
+(17:48) And let me just repeat, the specification/documentation, as well as the title and the type declaration, are never set in stone. They should preferable be pretty precise and well-formed, but they can always be ``replaced'' by the users, namely by them uprating replacements highly enough (in which case the app, depending on the individual user's preferences, can fetch and render those instead of the original ones). .\,.\,(And the types in the type declaration is not even meant to be an exhaustive list to begin with, not at all. The users are instead expected to uprate any other types `semantically' for the given entity---and might also at some point in the future be able to downrate the ones from the declaration, although this might also be achieved instead by uprating a replacement for the type declaration.\,.) (17:53)
 
 
 
