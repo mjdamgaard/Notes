@@ -2696,6 +2696,16 @@ prop2:something$|$\ldots', oh wait, or I might actually make it standard to use 
 
 .\,.\,Great.\,.
 
+\ldots\ (15:42) I will just use a list of integers for the type declarations (and bootstrap the types of the `tag' and `type' entities). I think I will separate them with `/' since this is actually how I intend them to be rendered, which means that I will also propose always having it so that each new type in such lists is always a subtype of the last one. Then when users create new entities, I \emph{will} make it so that these types are uprated by the user automatically. But I will also make the app cut corners and always add the types from the type declaration to the list of types, as well as any potential additional ones which are uprated highly enough as types for the entity. (15:46) .\,.\,Oh, and I \emph{will} thus use `tag/type' as the declared type for my types. And never mind about the reserved letters again, as we'll just use the IDs, as said. (15:47)
+
+.\,.\,By the way, `questions' should also by a standard tab for the `standard' entities, which should then of course lead to (the `question' property of) `answers' as well.\,. (15:49)
+
+(16:43) Hm, now that templates all have `4$|$' in front, we can just make `\%' a special character only for these, and not for any other entity. We can also treat only this first `$|$' as a special character for the templates, and just render all the rest of the template verbatim.\,. well, except for constant references.
+
+(16:54) Hm, now that we don't need the definitions to be searchable, I might think about doing something else for the concatenated strings.\,. Maybe I'll even.\,. Hm, maybe I'll even just add a TEXT to entities.\,. .\,.\,Hm, I wonder if it could make sense to just make a manual check on the TEXT column, then, in order to prevent duplicates.\,. .\,.\,(17:00) But then again, one could just make a standard `documentation'/`full specification' after the specification part of the definition, and then require that this is always a text entity.\,. .\,.\,Hm, one could by the way uses hashes instead of BIGINTs for text IDs, if one really wanted to not have any duplicates.\,. .\,.\,Hm, that might not actually be a completely bad idea, as it also has the added effect of making texts and binaries searchable.\,.\,!\,.\,. (17:06) .\,.\,And I could make an input proc that just inserts/finds the given specification text automatically, as part of inserting the entity.\,:)\,.\,. (17:09)
+
+.\,.\,(And of course, for the Indexes, I can still use the same concatenated strings as I had in mind before (those that are fully searchable).) Hm, this might actually not be a bad idea, about the hashes.\,. Hm, but I can probably make it even better, let's see.\,.
+
 
 
 
