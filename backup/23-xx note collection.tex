@@ -2659,6 +2659,25 @@ So for instance, if we suddenly want to remove templates again and substitute th
 
 .\,.\,Hm, I could perhaps also make.\,. .\,.\,Hm, I don't know.\,. .\,.\,Uh, maybe I could go back to an old thing of having a special, fundamental kind of template for property tags, and then always unpack these as the owner--property pair before storing in SemanticInputs, i.e.\ meaning that the tags of this special type cannot be used directly in SemanticInputs.\,. Hm.\,. .\,.\,Oh, or I could also just implement special database procs (query and input procs) where the owner--property pair is used instead of the tag, even though SemanticInputs then still only allows for tags.\,! That could be an idea!\,.\,. (20:49) .\,.\,Great.\,.
 
+.\,.\,I should also keep the idea of using List entities sometimes instead of rating a whole list of factual properties one element at a time.\,.
+
+\ldots (21:15) Instead of making a property tag template, let us just use a special syntax for it instead, and why not `@$<$\emph{owner ID}$>$\texttt{->}@$<$\emph{property (name) ID}$>$'?\,. .\,.\,e.g.\ like `\texttt{@123->@124}'. .\,.\,Or just `\texttt{@123->124}'.\,. (21:21) .\,.\,Or `\texttt{@123>124}'.\,. \,.\,Or `\texttt{@123/124}', alternatively.\,.
+
+(18.04.24, 8:32) The syntax for the definition could be like `short title$|$type:type,tag$|$
+prop2:something$|$\ldots', oh wait, or I might actually make it standard to use IDs (integers) for the property values, and then use quotation marks when wanting to type the thing in directly.\,. .\,.\,Oh, never mind, it should always just be IDs.\,. (8:38) .\,.\,Hm, and maybe it should also be IDs before the colon?\,.\,. .\,.\,But that would mean that e.g.\ the `type' entity cannot be specified further (or any other of the early entities) in their definition.\,. .\,.\,Hm, so let me actually allow non-ID words, both for properties and for values.\,. Hm, or maybe the parts of this $|$-(vbar-)separated list should just be free, but if any of the parts conform to the `123:124,125,\ldots' syntax, it means that the app knows to automatically uprate these properties as well for the created entity.\,. (8:44) .\,.\,Hm, or let us just make it `@123.:@124.,@125.,\ldots' instead.\,. .\,.\,And let us actually not prioritize implementing this functionality; users can just go to the newly created entity and uprate, first types for it, and subsequently other properties.\,. .\,.\,I should also store the year and month that the entity is created, since this allows the users to interpret the definitions according to the conventions of the given time.\,. (8:51) .\,.\,But yeah, let us start with a convention of writing definitions like `short title$|$type: type, tag$|$prop2: something$|$\ldots' .\,.\,Hm, without the spaces.\,. .\,.\,So: `short title$|$type:type,tag$|$prop2:something$|$\ldots'.\,. .\,.\,And one is then more than free to insert entity references (like `@123.') anywhere here instead of any word.
+
+.\,.\,In terms of list entities, these could be implemented with a syntax like `@123,124,125, \ldots', which would then be rendered as an unordered list (and you could even also implement ordered lists, perhaps by using `;' as the separator instead). But let us actually not implement this for the early app, and instead just uprate each element individually for any one-to-many property.\,. (8:59)
+
+.\,.\,Hm, maybe documentations can also be context-dependent.\,. This would then allow for the same ambiguity that I talked about liking when I removed the the type field/column for Entities.\,. (9:36)
+
+.\,.\,Hm, maybe this is more complicated, than what I had before: Maybe the definition should just be sufficiently defining on its own for the Entities.\,. .\,.\,Hm, it's hard to say.\,. .\,.\,Hm, but I can just still parse the short title from the def always in the early app. That would make it a lot easier, yes. Let me say that.\,. (9:46) .\,.\,And let me also keep the same syntax where there's only one (expected) `$|$' (at most), and where the definition without the `$|$' is then interpreted as the full definition.\,.
+
+\ldots Oh, we could actually just make a list (instance list) query proc where the secondary key, i.e.\ the def, is given instead of the ID. This allows this to be used for other tag templates as well, not just the property tag template.\,:) (10:06)
+
+.\,.\,I will still make the special syntax for the property tags, rather than defining a template like I used to; that idea is really good, I think.\,:)
+
+.\,.\,So maybe I should keep the definition syntax the same as it is now, even with the back-references, as long as I just either write them out or insert a `($n$)' after the original, referenced link.\,. (10:13) .\,.\,And then we'll just say that these definitions, including the (short) title, are not as set in stone, but if users uprate replacements for them highly enough, the app will show these replacements to the users (depending on their preferences) instead. (10:19)
+
 
 
 
