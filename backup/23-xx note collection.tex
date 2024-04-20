@@ -2782,6 +2782,35 @@ says and also do manual comparisons on top of that. And I can then also just use
 
 .\,.\,Well, maybe it doesn't need to be a convention after all: Maybe we should just leave that up to the users. But I \emph{will} use such simple (without any `other properties document'/`prop doc') entities for the basic properties such as `short title,' `title,' `description,' etc. 'Cause how else do we bootstrap the semantics?\,.\,:) (19:13)
 
+(20:35) Oh, if I use JSON exactly, then the IDs also have to be wrapped in quotation marks for the property values as well.\,. .\,.\,('Cause otherwise JS interprets it as 32-bit integers.)
+
+(20.04.24, 9:15) Let me just not care about repeated texts for text entities (and likewise for binaries), at least for the early versions of the system.\,.
+
+.\,.\,(9:19) I think `standard entities' is more clear than `semantic entities'.\,.
+
+(9:36) Hm, to make the fundamental type part of the entity key or not to make the fundamental type part of the entity key.\,. .\,.\,(9:39) Hm, and/or to make the data key public or not.\,. .\,.\,About the former, I really don't want to add even a single byte more to SemanticInputs.\,.
+
+.\,.\,Oh, I guess if we just make an overloaded Entities table, that would beat all (I think) of the other options I had in mind, at least in terms of efficiency.\,. And I could of course even overload some of the columns to make it.\,. well, slightly more efficient, but I guess not.\,. (9:47)
+.\,.\,Oh, this might not work with the unique/secondary indexes.\,.
+.\,.\,Hm, if I made the fun\_id in the FunctionalEntityData table into a string instead, and possible combined it with the input\_list, it could work.\,. .\,.\,Hm, but no need to combine it.\,. .\,.\,Hm, but I will lose too much clarity with this, so no, maybe I should keep the data tables separate.\,. (9:56)
+
+.\,.\,Hm, but then again, what if I simply went back to the def I had before.\,.\,? .\,.\,But instead of an initial type, we just write an initial \emph{fundamental} type (which is \emph{not} the same, as two entities with different fundamental types can have the exact same types in principle---they can even refer to the same thing and thus be duplicates!\,.) in the front, and only continue with the.\,. \emph{semantic} types if `s' is the character.\,. (10:01) .\,.\,Hm, let me maybe call the `fundamental types' `meta types' instead, to make this (important) distinction more clear.\,.
+.\,.\,Hm, but this doesn't work for the text or binary types, so no.\,.
+
+.\,.\,Okay, so I'll keep doing what I'm doing now (having a global Entities table with just a (meta) type\_char and a data\_key, which is a foreign key to one of the `data tables').\,. (10:08)
+
+(11:51) Hm, I just added a user\_type column to UsersAndBotData, i.e.\ a CHAR of either `u' or `b', but now I'm thinking, why don't we just use std entities for bots?\,.\,. Hm, and this makes me think.\,. Nah, let's still use the user ID, not the user `data key' in SemanticInputs.\,. .\,.\,(11:57) Hm, and let's keep bots as a user type, since.\,. Ah.\,. Yes, since it's good to have the bot data be controlled by the SDB, not the users. But I could divide them up into two tables now. I'll probably du that.\,. .\,.\,So I guess I'll use `a' for (aggregation) bots like I used to.\,.
+
+(12:41) Oh, maybe the short title should be a constant, unlike any of the other properties.\,. Hm, or else I do need to include `word entities'\ldots
+
+\ldots\ (14:21) Okay, I will indeed introduce the `word entities,' but I think I'll call then `vocabulary entities' instead. And these are supposed to be used for basic, defining/factual properties. For it doesn't make sense to insist of using a property-typed entity for this: We already know that it's a property when it appears as a property name.
+
+Now, I \emph{could} then remove type\_list and sh(ort)\_title from the std entities table, but I might actually keep the short title, as it allows this initial/original short title to be served up after one query request instead of two. And I don't think it's necessary (and it would also be hard) for the functional entities, since functions are generally likely to be cached by the browser most of the time anyway. .\,.\,:)\,.\,. (14:27) .\,.\,(14:30) Ooh, and then we could also say that the short title is only replaced by something else, not if anything is simply rated higher as the short title, but if this is the case \emph{and} the rating value also exceeds some threshold.\,!\,:) (14:32) .\,.\,Great.\,.
+
+Let me also mention that vocabulary entities are not really meant to be further defined (by their properties): There interpretation should be based on the word/title alone. (And if this title is abstract and/or ambiguous, then the semantics of the entity is simply \emph{supposed} to be equally ambiguous.) (14:35) .\,.\,This is not to say that users \emph{can't} add explanatory properties, as well as any other properties of course, but they are only \emph{meant} to add explanatory properties at most, not \emph{defining} ones. .\,.\,This is opposed to the standard entities and the functional entities whose semantics does not have to be nearly as constant (note that the semantics of the vocabulary entities is thus meant to be almost constant, only perhaps changing if the underlying natural language changes) as the vocabulary entities. Users are thus free to specify standard and functional entities further at any point \emph{after} they have been defined, by uprating different properties for them (although the original definition is still kept, and is supposed to always be honored as much as possible, i.e.\ such that specifying a std or functional entity is okay, but changing it is not okay, really).
+
+.\,.\,Okay.\,:) (14:42) .\,.\,Oh, and maybe I should lose the `short,' and instead just use a convention of specifying it \emph{when} we're talking about a full title, and let it be implicitly understood that `title' normally simply refers to the thing that the entity is commonly called. Okay.\,:) (14:45)
+
 
 
 
