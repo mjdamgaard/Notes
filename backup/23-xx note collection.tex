@@ -2811,6 +2811,10 @@ Let me also mention that vocabulary entities are not really meant to be further 
 
 .\,.\,Okay.\,:) (14:42) .\,.\,Oh, and maybe I should lose the `short,' and instead just use a convention of specifying it \emph{when} we're talking about a full title, and let it be implicitly understood that `title' normally simply refers to the thing that the entity is commonly called. Okay.\,:) (14:45)
 
+(14:50) Hm, I'm considering simply joining StandardEntities and VocabularyEntities, saying that the former is equal to the latter when doc\_id = 0, but maybe not.\,. .\,.\,'Cause the app is not supposed to query at all for a title replacement for vocabulary entities.\,. Hm.\,. (14:53)
+.\,.\,But you could also just say that it's not supposed to do so when doc\_id = 0.\,. .\,.\,Hm, I think that it might be a good thing to separate the two things more clearly. For again, vocabulary entities are not supposed to be specified (only explained at most).\,. (14:56)
+.\,.\,Hm, and maybe you can also say that vocabulary entities are meant to generally be interpreted as the words themselves, not the thing that they are referring to, unless they are used in relations (commonly property relations, where they are thus used either as.\,. Hm.\,.).\,. Hm, should we then use vocab entities as property values---I guess we have to.\,. Hm.\,. .\,.\,Oh no, we maybe don't \emph{have} to.\,. (15:03) .\,.\,Hm, but maybe vocabulary entities just should generally refer to the thing, rather than the word itself, and when you want to define word entities, you could make them std entities.\,. maybe.\,. Hm.\,. (15:06) .\,.\,Hm, I guess so.\,. .\,.\,(15:09) Oh, how about simply removing VocabularyEntities again, and just make it a convention not to.\,. Yeah, maybe we should generally not specify entities beyond their original definition, but keep them.\,. deliberately vague/ambiguous.\,. Hm, I don't know.\,. (15:11) .\,.\,Yes, actually, I think so. If an entity can refer to a range of things, we keep it that way: General things are kept general (abstract things are kept abstract). Okay, so do I remove the vocab entities.\,. I guess so.\,. .\,.\,Yes.\,. (15:14) 
+
 
 
 
