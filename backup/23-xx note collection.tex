@@ -2837,6 +2837,24 @@ Let me also mention that vocabulary entities are not really meant to be further 
 
 (15:51) Hm, I need to think about if I shouldn't make initial\_inserts af PHP program instead, and where I can insert defined entities via JSON files (and not have to deal with CONCAT()'enated strings.\,.). And now I'm also considering whether I shouldn't just add another meta type for `property tags' to serve as nice starting-off point.\,. .\,.\,(15:56) Hm, I think I \emph{will} make this additional meta type as a help, indeed.\,. .\,.\,I guess, let me take a thinking walk to think about all these things, I feel like I need it\ldots\ (15:57)
 
+\ldots\ (17:43) Yes, I will make that extra mate type. It means that the semantics doesn't have to bootstrap itself, but instead I just have a fundamental semantics of how the various meta types are interpreted, and then all other semantics can be derived from that.
+
+(17:49) And I'll definitely implement initial\_inserts in JS instead. I'm thinking of making a function that takes a JSON object in the form of an array of plain objects, and then it should insertOrFind each entities in this array. Eah object will then denote it's own meta type, and will also have a key field, apart from the other fields that the given meta type needs. Also never mind about letting the prop doc / def hold the title also. It shouldn't. So a (property-)defined entity will thus have the JSON-object properties `key' (nullable), `metaType', `title', and `def', where `def' is then supposed to be a plain object itself. I will then make the insert function (in JS) return a Promise which resolves to an object with all the `key's of the JSON object, where the value for each key is then the outID (regardless of whether this was found or inserted).\,:) This means that I can then define the initial inserts in JS modules, and make then export and import these promises to each other, which can then be used for new inserts (orFinds).\,:)
+
+Also, I think I will let the AncillaryBotData tables use the bot\_name, which I will make unique, rather than the bot\_id, since this will allow the bot events/procedures to work independently of what ID the bot is given as an entity.\,:) (18:00)
+
+.\,.\,Oh, and let's of course just hand the JS insert (orFind) function an actual JS object (i.e.\ an array) rather than a JSON string. (18:01)
+
+For inputting ratings, I will probably do something a bit similar (less complicated); that should be easy enough.\,. (18:03)
+
+.\,.\,Great, I'll look forward to implementing all this tomorrow.\,:) .\,.\,And I might get started this evening.\,.
+
+.\,.\,(18:11) Oh, and I didn't say, each objects to be inserted from an array should also be able to use the keys from a previous object. Oh, and I guess you also just hand an ID index object to the function as extra input, if is has to use some previous keys from an earlier call. (Or whatever way will work when I use Promises.\,.) And the way to reference a key should just be with a `@abc123.' syntax, or more precisely /@[a-zA-Z][\textbackslash w\_]$*$\textbackslash ./.
+
+.\,.\,(18:19) Hm, for functional entities, let me just add a.\,. nullable text entity.\,. no, maybe I should just use a syntax where the last input can use a different separator than a comma, and if it does, it means that this last entity (a text entity, unless I'll also allow simple entities for this) will then be concatenated as a string to the input list. This allows arbitrary number of inputs, which might not be very useful, but it's nice to know that it's possible, I think. .\,.\,Yes. (18:23)
+
+.\,.\,Let us just say text entities only for the functional input tails.\,. (18:28) .\,.\,Oh, and to help remapping (and make it possible), we should actually format the list in the text entity differently, making it a list of entity references, like `@123.,@124.,@125.', such that these will be automatically substituted under an ID remapping. (18:31)
+
 
 
 
