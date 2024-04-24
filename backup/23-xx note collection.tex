@@ -2914,6 +2914,19 @@ Like the `text' and `binary' entities (if I keep the latter.\,.), there should o
 
 .\,.\,I by the way think that I will simply let uprateProperties() always query the database for the property text, then upload. So I don't need to pass those strings along with the outID/entID for the callbacks, as I otherwise talked about. (11:41)
 
+(12:00) Note that the actual HTTP header content type should NEVER be anything other than just text/plaintext or octetstream (or whatever it's called) when we let verification be up to the frontend. *[(19:02) Well, for images and videos to work, we have to set the content-type header, which means that the backend \emph{should} verify the binaries of these formats.]
+
+(15:06) The ``text/plaintexts'' are nt so plain after all, since we convert entity references to links. So I should find another name.\,. Hm, and why not just `text'?\,. .\,.\,Well, I'll think about it.
+
+(15:35) I had a good idea when I was out walking earlier about how to implement the property document findOrInsert(). The idea is to just make a call to findOrInsert() for all properties and property values at once from the beginning, and then just give each individual callback an index as well. I will then also record an array of all the delimiters that there should be in the final prop doc. And when each callback resolves, they add their entID to another array, together with the index. Then this latter array is finally sorted (once it is checked to be of full length) such that the index values match the index in the outer array. And finally all the IDs are then braided together with the delimiter array, given us the final property document.
+
+(19:34) I just considered adding another unique index for SemanticInputs with rat\_val and then user\_id at last, instead of having the statement---user rater bot, but no. It's better to use bots here, since we want to be able to filter users out.
+
+(19:39) Another kind of meta type(s) that we maybe \emph{do} want to implement at some point might be images etc.\ from external sources. These can then be shown by the app as the images themselves (instead of an URL), even though they are stored in the database as URLs.
+
+(20:07) I think I might actually remove the InstListHeader (and therefore also not implement the ListGeneratorColumns) for the early version of the app. And then I will just implement one global menu where users can choose their queryUsers and adjust the weights of these. Then there should also just be an infinity weight, which can be given to oneself, as well as potentially any factual bots such as the statement--user rater bot. (20:10) .\,.\,This means that users won't be able to combine two (or more) tags in a combined search for the first version of the app, but maybe that's okay.\,. .\,.\,Hm, or else I can just make a new kind of search column specifically to combine tags, how about that?\,.\,:) I think this is what I will do.\,. (20:12)
+
+
 
 
 
