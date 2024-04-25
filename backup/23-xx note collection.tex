@@ -2926,6 +2926,26 @@ Like the `text' and `binary' entities (if I keep the latter.\,.), there should o
 
 (20:07) I think I might actually remove the InstListHeader (and therefore also not implement the ListGeneratorColumns) for the early version of the app. And then I will just implement one global menu where users can choose their queryUsers and adjust the weights of these. Then there should also just be an infinity weight, which can be given to oneself, as well as potentially any factual bots such as the statement--user rater bot. (20:10) .\,.\,This means that users won't be able to combine two (or more) tags in a combined search for the first version of the app, but maybe that's okay.\,. .\,.\,Hm, or else I can just make a new kind of search column specifically to combine tags, how about that?\,.\,:) I think this is what I will do.\,. (20:12)
 
+(20:47) Ah, and then I will just put a link to the search column above the InstListDisplay when this is relevant, instead of having it as a part of the InstListDisplay.\,.
+
+(25.04.24, 8:05) If the backend is not generally verifying the `intended formats,' then there's really no point in having them. They can just be semantic properties instead. Hm, but does this mean that property documents should be implemented via the property-defined or the formal entities?\,.\,.
+
+But let me also continue on the meta types, 'cause I don't think that we will need the `image from external source' metatype(s) either. These can also just be implemented as property-defined or formal entities instead.\,.
+
+.\,.\,Yeah, all these file type types should really be implemented via formal entities.\,.
+
+.\,.\,Maybe `datatype' is a better name than `metatype'.\,. .\,.\,Ah, `data type,' rather.
+
+.\,.\,Hm, is it worth considering making just the property document data type, just so that we don't have to rely on defining functions to get the semantics going?\,.\,. (8:26)
+
+(8:34) The solution might be to simply not save the property document as a text entity, but as a text field for the property-defined entities, and simply add a data\_hash column to that table as well. I can then also make the php InputValidator verify the prop doc format.\,.
+
+(8:49) Oh, I should also mention: The backend can still get to verify certain formats, such as image formats. Then the frontend just supplies the desired content type header as an input to the request. We can then add a table with VerifiedFormats to the SDB, containing the ID of the text or binary as well as any verified formats. If the correct format, matching the desired content type (`MIME type'), then the query succeeds and the control server gets to add the given content type header to its output back to the client.
+
+(9:11) Hm, `associative entity' could also be a fine name for the property-defined entities, but then I have to rotate the symbols (since `a' clashes with `aggregation bot').\,. .\,.\,(Let me think about this.\,.)
+
+(9:22) Oh wait, I did have a reason for wanting them to be their own entities, the property documents.\,. .\,.\,Hm, so do I just define it as another entity data type.\,.\,? .\,.\,It seems like the right thing to do.\,. (9:30) .\,.\,Oh, now I really get name collisions for the data type chars.\,. .\,.\,Well, if we just refer to aggregation bots as native bots instead---which is perhaps also better, and use `d' for `property documents,' then it still works out (without having being too confusing).\,. 
+
 
 
 
