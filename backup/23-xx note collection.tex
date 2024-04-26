@@ -2956,6 +2956,34 @@ But let me also continue on the meta types, 'cause I don't think that we will ne
 
 (14:02) I will also make a query proc for formal entities where the list text is provided directly instead of the list ID, i.e.\ such that the step of querying for the list ID can be skipped.
 
+(17:26) I just had the idea that instead of reintroducing a link to the InstListGenerator (column) above (or as part of) the InstListDisplay, we could instead just add a menu where you can see all the active InstListGenerators, and click them to go to their column. That way we never need to clutter the app which InstListGenerator links, and we can comfortably design the app without these links (so with no InstListHeaders anywhere, or anything like it).\,:)
+
+(26.04.24, 9:59) Maybe the prop docs should actually just always have one ID to the right of the colon, either with an `s' in front or not.\,. .\,.\,And then I just.\,. hm.\,. use the spread operator for the lists.\,. Hm.\,. .\,.\,Hm, no, maybe not.\,. .\,.\,(10:12) Yeah, maybe I should do that, actually. I think so.\,.
+
+(10:52) Hm, is it a bit overkill with the lists, especially for the functions, which then requires hashing of the listText, and also requires four SELECTs. I could also go back to input\_list just being a varchar(255).\,. .\,.\,Hm, or I could implement lists via varchar(255)'s.\,. \ldots (11:09) Hm, I have to input the listText rather than the hash: Let MySQL do the hashing.\,.
+.\,.\,Okay, running \texttt{SELECT REPEAT(SHA2(REPEAT('a', 65535), 224), 1000000) > "0";}
+takes about 0.05 seconds.\,. .\,.\,Hm, weird, but anyway, I don't think I ought to be concerned---the four SELECTs are probably much more costly, then.\,.
+.\,.\,(11:31) So I'll probably keep the current implementation and API (I have just corrected selectFormEntityIDFromText() to take a TEXT instead) as it is for now.\,. .\,.\,But my legs are itching for a walk, and I have several things to think about, so let me take that walk now\ldots
+
+.\,.\,(11:39) I should make a virtual `concatenated list' data type instead of the current ``spread'' (virtual) data type\ldots
+
+\ldots\ (13:24) I went on a good, energetic walk and had several good ideas.
+
+First of all, I realized that the MySQL statements above only does one hash, of course, and then concatenates it with itself 1000000 times. But I also had the ideas that I will actually store the input text inline in the FormalEntityData table, iff it is less than or equal to 255 bytes in length. And selectEntityInfo() for formal entities should also return the textStart of the input listText, just like for some of the other entity data types.
+
+I think I will let `:' $\to$ `=' for single-valued properties in the prop docs, and let `:s' $\to$ `:' for the many-valued properties.
+
+I also thought some more about the `data' for the discussions, which I might call `evidence' instead. I will write about those ideas in the (`Structured discussions') section below.
+
+And before I talk about some ideas for the tags and reviews (praises and criticisms), let me also mention the last idea of my walk, which was to let rating bars consist of to input fields with a shared value, namely a start slider (with some margins to the side, by the way, so that you can easily select 10.0 and 0.0 (which is an earlier idea of mine)) and then also a `type=``number'' step=``0.1''' input field, where you can press the plus and minus buttons to increase the number by one decimal at a time. (13:34)
+
+Then we get to the ideas about tags and reviews. .\,.\,Well, it's really only one particular idea, apart from also just the small comment that the difference between using tags and reviews for uprating important qualities of an entity is that tags are generally meant to be generally applicable, whereas reviews are free to discuss thing that are specific to the entity in question, and are thus free to specify the entity as well, instead of just using a pronoun for it.
+
+Okay, and the idea is this: I've already talked about having both the actual tag rating for each tag (or review point), and then also have an expandable menu with a rating of how much the fact that the entity has the given value means for its overall `goodness.' I think I will also add my old idea of `wish ratings' to this menu. And I've thought about calling it something else: `A+ expectancy,' which when explained more precisely means that `given that the entity in question had been such that it deserved a A+ grade for how it did in terms of the tag(/review point) in question, what would that rating be expected as?' Okay this sounds a bt complicated, but I think I can explain it better. It's just like: `if the creators of the entity (the movie, the product, etc.) where to redo/remake it in a way to try to get an A+ score in relation to the given tag/review point, what would be the rating value that they should try to achieve as their A+ goal?' Hm, I think that was a little better, and we can probably make it even better.\,. (13:46) .\,.\,Now this expandable menu of additional ratings, which includes two so far, might even also include a third one (such that there are four ratings in total when you count the tag itself as well), which is `how much it would boost the entity's `goodness' if the entity scored close to the `A+ expectancy' score instead of its actual tag score. This seems like a lot of things, but this is all important user data.\,!\,:) (13:49)
+
+\ldots (14:08) I really think that this could make such a useful app, and I hope that a lot of users would even want to join simply by learning about these possibilities, and even before the network has fully taken off. So this is why I will try to give it my all with working on the new prototype for this app in the coming time, after all.\,.\,:)
+
+
 
 
 
@@ -2999,6 +3027,11 @@ correlations or anything like that, so maybe `importance' is simply enough.\,. (
 .\,.\,Hm, so that could actually be a quite simple discussion system, outside of the ``data'' tab. Then there would just be the summarizing comments tab, and the sub-discussions tab, which are mainly just rated according to importance---oh, and also how likely the users deem the statement of the given sub-discussion (each `discussion' entity is formulated as a statement (text-based, not tag--instance pairs)) to be true, of course.\,. (10.21) .\,.\,But this probability is only meant to.\,. or wait, could this be part of the ``data'' tab as well, or.\,.\,? \ldots (10:48) Ah, we could just use the same probability tag template for this rating, and then \emph{if} the given statement is also uprated as part of the ``data'' statements, then the rating automatically applies there as well.
 
 (11:11) There should also either be a tab with comments about what the `background knowledge' is, or this should otherwise at least then be considered an important part of the job of the summary comments.
+
+
+(13:50, 26.04.24) I'm thinking of calling the ``data'' `evidence' instead. And instead of rating all the correlations between each `piece of evidence' (which means four ratings for each pair among the group (since correlation are rated according to `if stmt 1 is true/false, what is the chance of stmt 2,' which is already two separate ratings, plus two more where stmt 1 and 2 are exchanged)), each statement should only have their correlation rated with respect to the main statement of the given discussion (which might be a sub-discussion, however). Then their should also be an attached, more loosely structured, discussion among the users of how the pieces of evidence might be correlated among each other. And then by taking the latter discussion into account, as well as all the individual correlations, and the prior likelihoods (i.e.\ the rated chances of the main statement being true or false given that one does not know/take into account any of the `evidence'), the user are then supposed to give a resulting rating of how likely they believe that the main statement is to be true (and they have to do this by being obviously informed by the numbers; the only reason for.\,.) Oh wait, no! Instead of rating the main statement as the `result' of the discussion (even though a discussion can always be reopened if new evidence appears---or background knowledge changes.\,.), the `result' should instead simply be a correlation rating for the \emph{combined} pieces of evidence (i.e.\ when what I called `stmt 2' before consists of the conjunction of all pieces of evidence being true there). (14:02)
+
+So in other words, the users should only rate the correlations for each piece of evidence individually with respect to the main statement of the discussion, and then also---after having discussed the possibilities for the pieces of evidence being correlated between each other---the correlation for the combined evidence with respect to the main statement. (14:05) .\,.\,(And from there, the likelihoods of the main statement being true or false can be obtained mathematically, i.e.\ for each user individually *(i.e.\ in terms of that user's underlying beliefs).)
 
 
 
