@@ -3021,7 +3021,9 @@ So there we have it. This will be be the main part of the early app: Go and cont
 
 .\,.\,But I have to also go back and think some more about the URLs.\,. .\,.\,(11:17) Ah, but the texts \emph{have} to have the `might refer to' tab as their main tab as well, 'cause what is a text worth without a context?\,.\,!\,:) .\,.\,So there we are.\,.\,\textasciicircum\textasciicircum\ (11:18)
 
+(11:47) On this note, let me continue in a new section, below the `Structured discussions' one.\,.
 
+*Oh, I also wanted to mention that open source contributors should also upload their code contributions as entities, such that users can also (greatly) up-rate these contributors' esteem. And in relation to that, I also ought to make a menu at an early stage, where users can select different CSS styles (themes) for the site. Their selected style/theme can just be saved in a cookie, why not.\,. And then a bit later on, their could also be another menu to select between different application react components, i.e.\ such that users get to change the website up completely to the structure that suits them best (out of the list of okay'ed components and themes). (13:21)
 
 
 
@@ -3070,6 +3072,18 @@ correlations or anything like that, so maybe `importance' is simply enough.\,. (
 (13:50, 26.04.24) I'm thinking of calling the ``data'' `evidence' instead. And instead of rating all the correlations between each `piece of evidence' (which means four ratings for each pair among the group (since correlation are rated according to `if stmt 1 is true/false, what is the chance of stmt 2,' which is already two separate ratings, plus two more where stmt 1 and 2 are exchanged)), each statement should only have their correlation rated with respect to the main statement of the given discussion (which might be a sub-discussion, however). Then their should also be an attached, more loosely structured, discussion among the users of how the pieces of evidence might be correlated among each other. And then by taking the latter discussion into account, as well as all the individual correlations, and the prior likelihoods (i.e.\ the rated chances of the main statement being true or false given that one does not know/take into account any of the `evidence'), the user are then supposed to give a resulting rating of how likely they believe that the main statement is to be true (and they have to do this by being obviously informed by the numbers; the only reason for.\,.) Oh wait, no! Instead of rating the main statement as the `result' of the discussion (even though a discussion can always be reopened if new evidence appears---or background knowledge changes.\,.), the `result' should instead simply be a correlation rating for the \emph{combined} pieces of evidence (i.e.\ when what I called `stmt 2' before consists of the conjunction of all pieces of evidence being true there). (14:02)
 
 So in other words, the users should only rate the correlations for each piece of evidence individually with respect to the main statement of the discussion, and then also---after having discussed the possibilities for the pieces of evidence being correlated between each other---the correlation for the combined evidence with respect to the main statement. (14:05) .\,.\,(And from there, the likelihoods of the main statement being true or false can be obtained mathematically, i.e.\ for each user individually *(i.e.\ in terms of that user's underlying beliefs).)
+
+
+
+
+\section{Continued new thoughts}
+
+(11:49, 28.04.24) I'm kinda considering adding a `statement' entity data type.\,. .\,.\,I could just choose `m' as the data type char, why not.\,. .\,.\,Hm, it could reduce the size of RecordedInputs slightly, as a small additional benefit.\,. .\,.\,Hm, let me just do it. I'm pretty sure, it's worth it.\,.
+
+Hm, I guess we ought to remove the secondary index for SemanticInputs and just use RecordedInputs instead ad simply take the most recent rating.\,. oh wait, no, that's not possible unless we change the.\,. Nah, it's not possible: I should keep the secondary index for SemanticInputs.\,.
+
+Hm, let me use the deleteRat bool for RecordedInputs instead of the nullable rat\_val, since this opens up for the potential of deleting user ratings, without deleting the knowledge that the users did upload a rating at that point.\,:)
+.\,.\,Hm, should I actually just use the SMALLINT encoding, then?\,.\,. (12:20) .\,.\,I think I will.\,.
 
 
 
