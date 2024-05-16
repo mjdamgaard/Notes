@@ -71,5 +71,7 @@ via a countable basis. This idea is described in '23-xx note collection.tex' fou
 at some point, but since no one reads it currently anyway, and since I'm quite exhausted now from working a lot on this problem, I might very well delay this update
 for a while.
 
+(16.05.24) No, I now (think I) know how to make the argument from my vacuum paper work! And what's more, it might also give us a solution to Task 2! So I think we can therefore get through the whole thing, potentially (i.e. all the tasks), with this new idea! I've described it in '23-xx note collection.tex' found in the 'backup' folder. I'm going on a vacation now (to Norway), and when I get back, I will update (and correct) my vacuum paper!
+
 
 Feel free to email me if you have any questions about my work.
