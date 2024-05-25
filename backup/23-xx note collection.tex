@@ -4362,6 +4362,15 @@ I have also just realized that for the $\sum_{n=2,4,\ldots} \alpha_n (\hat H_{\k
 
 (25.05.24, 16:41) It just occurred to me, out on an afternoon walk just now, that the fact that $\ket{\phi_{\delta k}}$ approaches $\ket{\,}$ for $\Lambda \to \infty$ means that the convention of looking at scattering matrices where one starts out and ends with the bare vacuum will actually be \emph{validated} by my discovery.\,.\,! .\,.\,And since the energy of $\ket{\phi_{\delta k}}$ also approaches 0 like $\delta k^3$, we might not even need to remove the vacuum-perturbing terms, even just for the sake of renormalization. This is of course somewhat unfortunate for me: It would be much cooler if my result could help the theory in practice, i.e.\ calculation-wise.\,. But oh well, it's still also definitely a good thing, in a lot of ways, that the conventional way is validated. And it still shows that we at least need to put an end to the bad habit of explaining results from QFT via the vacuum fluctuations, even when these do not actually appear directly in the calculations of the given results. (16:49)
 
+(19:35) Okay, I was wrong about $\ket{\phi_{\delta k}} \to \ket{\,}$, which would be great on its own if not for the fact that I might also very well be wrong about $\|\phi_{\delta k}\| < \infty$. .\,.\,(which is bad, of course.)
+
+(19:51) This is potentially quite bad: It might even set me all the way back to a point where I might think that my countable-basis idea might be as good a bet as this original remove-vacuum-perturbing-terms idea. But now I just had another interesting idea, though.\,. What about coherent wave states?\,.\,. .\,.\,More specifically, is there a chance that we might be able to trade the stableness of $\ket{\phi}$ for a cyclic stableness instead, and make it work still?\,.\,. (19:55)
+
+\ldots I should also consider a $\ket{\phi} = \sum_{n}\alpha_n (\hat A^+)^n \ket{\,}$ solution (where the eigenvalue then does not, perhaps, need to be 0), rather than the $\ket{\phi} = \sum_{n=0, 2, 4, \ldots} \alpha_n (\hat A^+)^n \ket{\,}$ solution (that isn't normalizable, it seems).\,. (20:09) .\,.\,(20:14) Oh, wouldn't that actually work if we add a factor of $1/2$ to the recursive formula of $\alpha_n$ (or $\xi_n$) exactly?\,.\,. .\,.\,No, not quite like that.\,. (20:18) .\,.\,But maybe there could be a solution to this.\,. Hm.\,. Although it does seem unlikely, since we essentially have system of.\,. .\,.\,Oh.\,. .\,.\,Hm, some interesting thoughts.\,. %(Typical; the moment I seem to hit a wall.. (7, 9, 13)..) (20:21)
+.\,.\,(20:25) Oh, but since they behave like bosons, we would expect a kind of $\hat H = \hat X$ *($\propto \hat A^- + \hat A^+$) behavior, which \emph{would} mean virtual eigenvectors with infinite particle numbers, I think.\,.
+
+.\,.\,Yeah, I am essentially solving the $(\hat a + \hat a^\dagger) \ket{\phi} = E \ket{\phi}$ problem, which we know has no true eigenvector solution. So I should instead look into how the particle number distributions goes when $\ket{\phi}$ is taken to be a small step function (or Gaussian) with width going towards 0.\,. (20:34)
+
 
 
 
