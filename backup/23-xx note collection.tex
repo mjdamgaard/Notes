@@ -4371,6 +4371,13 @@ I have also just realized that for the $\sum_{n=2,4,\ldots} \alpha_n (\hat H_{\k
 
 .\,.\,Yeah, I am essentially solving the $(\hat a + \hat a^\dagger) \ket{\phi} = E \ket{\phi}$ problem, which we know has no true eigenvector solution. So I should instead look into how the particle number distributions goes when $\ket{\phi}$ is taken to be a small step function (or Gaussian) with width going towards 0.\,. (20:34)
 
+(26.05.24, 12:02) Oh, maybe I got it now.\,.(!!) My idea is to look at, not an almost eigenvector of the Hamiltonian, but at the ``ground state'' if we treat $\hat A^-$ and $\hat A^+$ as.\,. as the ladder operators (timed a factor $\braket{\,|\hat A^-\hat A^+|\,}^{1/2}$) of a SHO.\,. Hm, and this ``ground state'' would just be the bare vacuum. So we start out in the bare vacuum, expecting to not end in that state as the final state. And then we analyze how many particles are excited over the time $\delta k^{-3/2}t$ by analyzing $\exp(-i (\hat A^- + \hat A^+) \delta k^{-3/2}t)$.\,. Oh, but I actually don't know that this will work, I just realized. Okay, let me think some more. And maybe it's not a good idea to not have the same final state, but I'll see\ldots\ .\,.\,Yeah, no, this might not work.\,. Well, I need to think\ldots\ .\,.\,Hm, no, I feel like I've done this calculation before.\,. (I have, and I \emph{think} I remember that the outcome wasn't in my favor.\,.)
+
+.\,.\,Hm, but wait, Stirling's approximation gives me that
+
+$\ln[\delta k^{-3m/2}]/\ln[m!] \approx\ln[\delta k^{-3/2}] m / (m \ln m - m) = \ln[\delta k^{-3/2}] / (\ln m - 1)$, which suggests that $m$, the particle number can go like $\delta k^{-3/2}$.\,. .\,.\,And looking at $\ln[\delta k^{-3m/2}/\ln(m!)]$, we get the same suggestion.\,. (12:27) .\,.\,That sounds like a very good sign, doesn't it.\,.\,!\,.\,.\,?
+.\,.\,Yeah, looking up at my earlier notes above (2--3 pages down from the beginning of the `Decoupled vacuum' section), this was exactly what I was trying to show back then! So maybe if I can just complete this analysis, I might get exactly what I need!\,.\,. And the fact that this solution will show that the bare vacuum state actually evolves quite dramatically in the $\delta k^{-3/3}t$ time span (but not dramatically enough that it prevents the decoupling (hopefully)) just makes it all the more exciting!\,.\,. (12:35)
+
 
 
 
