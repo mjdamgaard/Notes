@@ -4392,6 +4392,16 @@ $\ln[\delta k^{-3m/2}]/\ln[m!] \approx\ln[\delta k^{-3/2}] m / (m \ln m - m) = \
 
 %(15:45) Jeg forstår det ikke helt, jeg må næsten have overset noget.. Hvordan kan jeg have overset det her i februar(-marts)?.. Og kan det virkelig være rigtigt.. ..Hm, jeg husker godt nok, at jeg ikke mente, at jeg kunne putte et n_{max} cutoff på, \emph{før} jeg havde vist dette $n \sim \delta k^{-3/2 (+ \varepsilon)}$ forhold, så måske var det det, der forhindrede mig i at se det / bruge det.. ..Det var det nok.. ..Men jeg behøver rigtigt nok ikke at vise dette forhold først, for man kan bare nøjes med at vise, at det gælder for $\hat H_{QED}$ (final), og så kan man bare overføre det samme cutoff på \hat H'', og derpå argumentere ved at bruge, at når dette n_{max} cutoff bliver stort nok, så vil vakuum-partiklernes interaktion of interferæns forsvinde---når også \delta k \to 0---og derfor kan man altså fjerne de vakuum-perturberende termer. .. (15:55) ..Og ja, det holder jo, det her: Bare erstat \hat A^\dagger med \hat A + \hat A^\dagger i den nuværende lign. (37) (v2_47.tex), og så kan man jo argumentere på helt samme måde, som jeg havde tænkt mig derfra. (Og jeg ved lige hvordan, jeg skal argumentere; det fandt jeg frem til på min gåtur her lidt tidligere: Jeg viser bare et øvre bånd, når n/e er stort nok til at brøken bliver lig 1/2.) (15:59)
 
+%(19:43) Jeg skal jo lave $\hat A_\psi^\dagger \hat A_\chi^\dagger$-sektionen om, da \phi ikke længere vil være en almost-egenvektor. Og her kan jeg så i stedet bare bruge BCH-formlen, hvor jeg så bare skal vise, at kommutatoren forsvinder når \delta k \to 0.
+
+(28.05.24, 10:19) Øv! When $\delta k$ decreases, I also have to increase $n_{max}$ by at least $\delta k^{-3/2}$. But this makes the operator norm go like $\delta k^{-3/2}$ as well! So I was not lost back in February--March: I still have this problem of showing that the particle number only grows as $\delta k^{-3/2}$.\,.\,! (and that we can thus indeed allow $n_{max}$ to grow as $\delta k^{-3/2}$.) (10:23)
+
+%.\,.\,(10:25) Hm, but maybe it's possible after all.\,. .\,.\,Hm, no, that might not work.\,.
+
+(10:34) Yeah, and this was exactly why I recalled that this prospect of having $n!$ in the denominator out-compete the numerator didn't work out back then. .\,.\,Back to the drawing board.\,.
+
+.\,.\,Wait, isn't $\|(\hat A^\dagger)^n\| = n \|\hat A^\dagger\|^n$, or something like that? (10:41) .\,.\,If so, then it could work.\,.\,!\,.\,. .\,.\,Yeah, it must be, right.\,.\,?\,! (10:43) .\,.\,I'm pretty sure that I found it to go like $\|(\hat A^\dagger)^n\| \sim n! \|\hat A^\dagger\|^n$ back then, but maybe this was a mistake (that then completely threw me off an otherwise easy track).\,. (10:45) .\,.\,(10:51) Oh, it's probably right that $\|(\hat A^\dagger)^n\| \sim n! \|\hat A^\dagger\|^n$, isn't it?\,.\,. .\,.\,I mean $\|(\hat A^\dagger)^n \ket{\,}\| \sim n! \|\hat A^\dagger \ket{\,}\|^n$, of course, and yeah, it is.\,. (10:53) .\,.\,Wait no, it's $\sqrt{n!}$.\,. (10:54) .\,.\,Yes, it is, and that could do it! This is the small thing (it seems to be.\,.) that I have missed back then, that makes it all work.\,.\,!\,!\,.\,. (10:58)
+
 
 
 
