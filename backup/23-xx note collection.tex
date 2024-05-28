@@ -4402,6 +4402,23 @@ $\ln[\delta k^{-3m/2}]/\ln[m!] \approx\ln[\delta k^{-3/2}] m / (m \ln m - m) = \
 
 .\,.\,Wait, isn't $\|(\hat A^\dagger)^n\| = n \|\hat A^\dagger\|^n$, or something like that? (10:41) .\,.\,If so, then it could work.\,.\,!\,.\,. .\,.\,Yeah, it must be, right.\,.\,?\,! (10:43) .\,.\,I'm pretty sure that I found it to go like $\|(\hat A^\dagger)^n\| \sim n! \|\hat A^\dagger\|^n$ back then, but maybe this was a mistake (that then completely threw me off an otherwise easy track).\,. (10:45) .\,.\,(10:51) Oh, it's probably right that $\|(\hat A^\dagger)^n\| \sim n! \|\hat A^\dagger\|^n$, isn't it?\,.\,. .\,.\,I mean $\|(\hat A^\dagger)^n \ket{\,}\| \sim n! \|\hat A^\dagger \ket{\,}\|^n$, of course, and yeah, it is.\,. (10:53) .\,.\,Wait no, it's $\sqrt{n!}$.\,. (10:54) .\,.\,Yes, it is, and that could do it! This is the small thing (it seems to be.\,.) that I have missed back then, that makes it all work.\,.\,!\,!\,.\,. (10:58)
 
+%(11:20) Then I actually do have to keep (and finish) the 'bosonic statistics' section, 'cause it's very important that we get \sqrt{n!} and not, say, \sqrt{(2n)!}.
+
+(12:06) Oh, but I'm now worried about $\braket{\,| (\hat A + \hat A^\dagger)^n |\,}$ being more than $\sim n! \braket{\,| \hat A + \hat A^\dagger |\,}$.\,. .\,.\,Hm, I can probably solve that, but it just might not be completely easy.\,. (12:09) .\,.\,Okay, and I'm not completely sure that it's solvable, even.\,. (It's actually $\braket{\,| (\hat A + \hat A^\dagger)^{2n} |\,}$ that I need to consider.\,.(!)) .\,.\,Yeah, that seems problematic.\,. (12:15) .\,.\,Hm, can't I use that normal-ordering logic, that I was going to use before?\,.\,. (12:19) .\,.\,Oh, I think so, yes.\,. (12:20)
+
+(12:39) Oh, maybe I can also still use the BCH formula directly, even though we have $O(\tau^2 \delta k^3) \approx O(1)$ instead of $O(\delta k^3)$.\,.\,!\,.\,. .\,.\,Hm, how to show that $\exp[\hat A \tau + \hat A^\dagger \tau + O(\tau^\varepsilon)] \approx \exp(\hat A \tau + \hat A^\dagger \tau)$.\,.\,? (12:45) .\,.\,One \emph{could} use the ``Taylor expansion''.\,. .\,.\,Well, or rather $\exp[\hat A \tau + \hat A^\dagger \tau + O(\tau^\varepsilon)] \approx \exp(\hat A \tau + \hat A^\dagger \tau) \exp(O(\tau^\varepsilon))$, I guess.\,. Oh, and that definitely calls for the BCH formula, then.\,. (12:50) .\,.\,Hm, I'm afraid that doesn't work, so I might be wrong about that conjecture. So back to thinking about normal-ordering, I guess.\,. .\,.\,Nah, there must also be a way here, but perhaps not with BCH; perhaps using eigenvector (and almost eigenvector) logic instead.\,. Not sure if it's better than the normal-ordering argument strategy, though.\,. (12:56) .\,.\,Nah, I think the normal-ordering argument strategy is better.\,.
+
+%(13:03) Hm, maybe one could define an altered \hat A, call it maybe \hat A', for which $[\hat A', \hat A^\dagger] = \braket{...}$ exactly (without the O(\delta k^3)). That might be neat..
+
+(13:21) Hm, maybe the eigenvector argument is actually the best strategy.\,.
+
+%(13:52) Okay, it's actually not such an easy problem to figure out, 'cause it's a bit different from the usual kind of stuff: I'm not trying to show that the "perturbation" (\hat A \to \hat A') is vanishing, nor simply that it is bounded, but that it can be given an $n_{max} \sim \delta k^{-3/2}$ cutoff.. ..Hm, unless I could show that exp(\hat A + \hat A^\dagger) = exp(\hat A' + \hat A^\dagger) exp(\hat A - \hat A') + something vanishing.. (13:56) ..Well, that does follow from the BCH formula, but what about when \tau is included?.. (13:59) ..Ah, but.. Ah! ..It's okay to get \sim \delta k^{-3/2} factors of exp(O(1)) in an expansion.. I should think.. Hm.. (14:03)
+
+(14:09) Oh, wait, maybe I \emph{can} just consider $\| (\hat A + \hat A^\dagger)^n \tau^n/n! \ket{\,} \|^2 = \tau^{2n} \braket{\,|(\hat A + \hat A^\dagger)^{2n}|\,}$
+$/ (n!)^2$ after all.\,. .\,.\,Yes!\,.\,. (14:17) 'Cause I'll get $n! \times 1$ plus $(n-1)! \times \binom{n}{1}$ (or something like it) plus etc.\,!\,.\,. .\,.\,So that should still give $\sim n!$.\,:) .\,.\,(14:29) Hm, it's not quite that easy, I think.\,. .\,.\,Oh, there are only $2^{2n}$ terms in total! I don't know why I thought there would be more.\,x) (14:34) .\,.\,Okay, so it's actually easy enough to show that $\| (\hat A + \hat A^\dagger)^n \tau^n/n! \ket{\,} \|^2 \leq (2\tau)^{2n} \braket{\,|\hat A + \hat A^\dagger|\,}^{2n} / n! + O(\tau^{2n} \delta k^3)$.\,. .\,.\,No, we need to show it to be $O(\tau^{2n} \delta k^3)/n!$ instead, or something to that effect.\,. (14:41)
+
+(15:07) We'll just use that $\| (\hat A + \hat A^\dagger)^n \tau^n/n! \ket{\,} \|^2 \leq (2\tau)^{2n} \braket{\,|\hat A + \hat A^\dagger|\,}^{2n} (1 + O(\delta k^3))/ n!$.
+
 
 
 
