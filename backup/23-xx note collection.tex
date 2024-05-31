@@ -4495,9 +4495,20 @@ If we consider the chance of picking out a component at random from $(\hat A^\da
 
 .\,.\,Okay, the number of components of $(\hat A^\dagger)^n \ket{\,}$ where none of the particles occupy the same state is given by.\,. .\,.\,by $\binom{N}{n}$, where $N \equiv n_{max}(\delta k)$. (16:10) .\,.\,Okay, so we are interested in $\binom{N}{n}/N^n$.\,. .\,.\,Hm, Stirling's gives us that this is $\approx (N/n)^n / 2N^n = n^{-n}/ 2$.\,. (16:15) .\,.\,And $\approx \sqrt{N/n} n^{-n}/2$ if we want to be a bit more precise.\,. (16:16) %..Omg, I'm typing \emph{so} slow..
 .\,.\,Hm, that's a very small fraction; it almost seems hard to believe, let's see.\,. (16:18) .\,.\,Oh never mind, with the $\sqrt{N/n}$ in front, it makes sense.\,. .\,.\,Wait, it's the other way around.\,. .\,.\,No.\,. .\,.\,Ah, but it should have been $\approx \sqrt{N/n} e^{-N+n} n^{-n}/2$. .\,.\,Which does make sense, finally.\,. .\,.\,No.\,x) It's $\binom{N}{n}/N^n \approx \sqrt{N/n} e^{-N+n} n^{-n} N^{N-n}/2$. (16:27) .\,.\,And again I'm wrong. It should be $\binom{N}{n}/N^n \approx $\ldots\ well, actually, never mind, that doesn't help.\,. (16:31) .\,.\,(It should have been $n!$ instead of the $2$ in the denominator.) .\,.\,(And $(N-n)!$ instead of $n!$, of course.) But yeah, what should I do.\,.\,? .\,.\,No, let me actually look at the Stirling approximation to it:
-$\binom{N}{n}/N^n \approx \sqrt{N/(2\pi (N-n)n)} e^{-N+(N-n)+n} N^{N-n} n^{-n} (N-n)^{-N+n} = \sqrt{N/(2\pi (N-n)n)} n^{-n} (N/(N-n))^{N-n}$.\,. .\,.\,Yeah, I don't see this helping me much.\,. (16:43) .\,.\,Except that you can see that if $n = a N$, for some fixed $a < 1$, then it really decreases fast!\,.\,.\,:)\,.\,. (16:47)
+$\binom{N}{n}/N^n \approx \sqrt{N/(2\pi (N-n)n)} e^{-N+(N-n)+n} N^{N-n} n^{-n} (N-n)^{-N+n} = \sqrt{N/(2\pi (N-n)n)} n^{-n} (N/(N-n))^{N-n}$.\,. .\,.\,Yeah, I don't see this helping me much.\,. (16:43) .\,.\,Except that you can see that if $n = a N$, for some fixed $a < 1$, then it really decreases fast!\,.\,.\,:)\,.\,. (16:47) *(Well okay, that's not so easy to see, so never mind; it requires more thought.. (16:54))
 
 .\,.\,Okay, let me just reiterate: This \emph{is} really exciting.\,. (16:49)
+
+(16:57) Wait. $\binom{N}{n} \leq N^n/n!$.\,! So $\binom{N}{n}/N^n \leq 1/n!$.\,. .\,.\,Hm, that can't be right.\,. (17:00) .\,.\,Oh, I guess we shouldn't divide by $n!$; I think we should just look at $N!/(N-n)!/N^n$.\,. (17:01) .\,.\,Yes.\,. .\,.\,Hm, Stirling's then gives us $\approx \sqrt{N/(N-n)} N^{N-n} (N-n)^{-(N-n)}$, which equals
+$\sqrt{N/(N-n)} (N/(N-n))^{N-n}$.\,. .\,.\,Hm, $= (N/(N-n))^{N-n+1/2}$, but that can't be right.\,. (17:08) .\,.\,Or rather $e^{-N+(N-n)} (N/(N-n))^{N-n+1/2} = e^{-n} (N/(N-n))^{N-n+1/2}$, but still.\,. .\,.\,Hm, maybe.\,.
+
+.\,.\,Hm, if $n = a N$ and $1-a = e^{-1}$, then we get $e^{-aN} e^{e^{-1}N + 1/2} = e^{-(1-e^{-1})N} e^{e^{-1}N + 1/2} = \sqrt{e} e^{-(1 - 2e^{-1})N}$.\,. .\,.\,which decreases exponentially (since $e^{-1} \approx 0.368$).\,.
+
+.\,.\,Hm, and $1-a = e^{-f(N)}$ gives us $e^{-(1-e^{-f(N)})N} e^{f(N)e^{-f(N)}N + f(N)/2}$.\,. (17:27) .\,.\,$= e^{f(N)/2} e^{-(1 - (1 + f(N))e^{-f(N)})N}$.\,.
+
+.\,.\,Trying.\,. .\,.$f(N) = \ln ((N+c)/N)$, we get $e^{f(N)/2} e^{-(1 - (1 + f(N))e^{-f(N)})N}$ 
+
+\noindent$= \sqrt{(N+c)/N} e^{-(1 - (1 + \ln ((N+c)/N)) ((N/(N+c))))N}$.\,. .\,.\,I need to begin an equation environment for that, but let me take a break first.\,. (17:40)
 
 
 
