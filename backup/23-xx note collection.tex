@@ -4695,6 +4695,30 @@ But there is also something not so great. At the end of my walk, I realized some
 
 .\,.\,But this realization still makes me believe a tad more in the possibility that there are `vacuum bosons' whose amplitudes converges when the cutoffs are lifted, and when $\delta k \to 0$. (15:37) .\,.\,(Or just converging vacuum solutions in general; they don't necessarily have to be divisible into those almost-bosonic states.\,.)
 
+(15:48) Oh, if the amplitudes of the ground states increases by $\delta k^{-3/2}$, then this could definitely mean that we get to add three factors of $\delta k^{3/2}$ for the three annihilated particles after all.\,!\,.\,. .\,.\,And that would then definitely get us to where we want to be (if I can also show approximate (or complete) orthogonality).\,. (15:51)
+
+(15:54) Wait a minute, wouldn't this actually also increase the number of excited states, perhaps (somewhat counterintuitively)?\,.\,. .\,.\,No, it would decrease the number of particles.\,. (16:01)
+
+(17:04) Okay, I actually do get that $E \sim \delta k^{3/2}$, and that the ground state amplitude for $\phi_\mathbf{p}$ therefore goes as $\sim 1$, i.e.\ it converges. (And the amplitude of the excited states of course still goes as $\delta k^{3/2}$, otherwise we would need further normalization.) (17:07)
+
+(17:14) I guess we then need to compare
+\begin{equation}
+\begin{aligned}
+	\sum_{m=0}^{N} \binom{N}{m} \frac{N!}{(N-m)!} (\delta k^{-3/2})^m \propto
+		\binom{N}{m}^2 m! N^{m/2}
+\end{aligned}
+\end{equation}
+and
+\begin{equation}
+\begin{aligned}
+	\sum_{m=0}^{N-3} \binom{N-3}{m} \frac{(N-3)!}{(N-3-m)!} (\delta k^{-3/2})^m \propto
+		\binom{N-3}{m}^2 m! N^{m/2}.
+\end{aligned}
+\end{equation}
+.\,.\,Which should give us the same $\approx N^6/(N-m)^6$ fraction, but where $m$ might be different around where the expression have their maxima, and thus where they have their significant contributions from.\,.
+.\,.\,Hm, its maximum should be at $m = (N-m)^2 \sqrt{N}$, I guess.\,. .\,.\,And this time, let us just guess that $m \approx N - N^{1/4}$, then. Nice.\,. (17:29) .\,.\,And this then gives us a fraction of $\approx N^6/(N-m)^6 \approx N^6/N^{6/4} = N^{9/2}$, rather than $N^3$.\,.\,!\,.\,. .\,.\,Hm, but it's unfortunately not as great as we would have wanted it to be.\,. (17:33) .\,.\,Oh wait, we are calculating the norm squared, so it should be $(\delta k^{-3})^m$ instead in the formulas above!\,.\,. .\,.\,So $m = (N-m)^2 N$, which gives us $m \approx N - 1$, as you would expect.\,. Wait no, I would actually expect closer to a half of the oscillators to be excited on average, so what am I doing wrong?\,.\,. (17:40) .\,.\,Hm, something.\,.
+
+
 
 
 
