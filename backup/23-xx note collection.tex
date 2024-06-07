@@ -4624,6 +4624,64 @@ We should that the probability of finding a particle at $\mathbf{p}$ goes as $N^
 
 %(21:57) Oh, I actually \emph{do} think there is a chance that both these things can be true, and that this could indeed gives us the rapidly vanishing \varepsilon that we are looking for. 7, 9, 13. I think I'm right about the fact that annihilation of an antiarticle should cause more terms (I kinda must be..), and in terms of the first thing, that should also be true if I'm right about the norm of the excited states going as \delta k^{3} rather than \delta k^{3/2}. 'Cause everytime I've added a factor of \delta k^{3/2} from annihilating a particle (since that is the amplitude when you consider \phi_{\mathbf{k}} in isolation), I should really add a factor of \delta k^{3} instead. How great if al this turns out to be true..!.. (22:03)
 
+%(22:39) Yeah, I think both of these things are indeed true, which might very well give us a rapidly vanishing $\varepsilon$! 7, 9, 13!
+
+(22:40) I think I've been making some mistakes, and that we actually will get a rapidly vanishing $\varepsilon$! See the comments above this paragraph in the source file. .\,.\,I'm not sure yet, but I'll look more into it tomorrow.\,! (22:43)
+
+(07.06.24, 9:27) Okay, we choose three particles out of the $N$ possible. And for the one we annihilate, we \emph{can} choose the antiparticle as well, but we can also leave the sum there. Then we choose an antiparticle from another of the three triplets to annihilate, and for the last triplet, we can then choose only one $\mathbf{k}$ for the annihilated photon. Let's just pick both antiparticles such that all nine particles are now fixed for each contribution, giving us $N^5$ contribution in total. The total number of terms for each of the contributions, when we pick states from all the other oscillators (one for each non-anti-particle) will then be $\sim (N-3)!/$.\,. Wait no, this is assuming that they are all excited, but I also need to include the ground states.\,. (9:39) .\,.\,So we should sum over all cases for how many excited states there are, I guess.\,. (9:40)
+.\,.\,
+%\begin{equation}
+%\begin{aligned}
+%	\sum_{m=0}^{N-3}..
+%\end{aligned}
+%\end{equation}
+
+.\,.\,Oh, I just realized that we also need to deal with the fact that the photons can positively interfere.\,. (9:44) .\,.\,This is going to be so complicated, unless we can approximate our way out of it.\,. .\,.\,Well, or maybe not: Maybe we can just count the number of photons ad add a factor for how much positive interference we get.\,. (9:47) .\,.\,Okay, we'll see about that, but the total number of terms are.\,. .\,.\,Let's calculate it for $\|\phi\|^2$ first.\,.\,:
+\begin{equation}
+\begin{aligned}
+	\sum_{m=0}^{N} \binom{N}{m} (N-m)! =
+		\frac{N!(N-m)!}{m!(N-m)!}
+	=
+		\frac{N!}{m!}.
+\end{aligned}
+\end{equation}
+Okay, that doesn't look too bad. And for our contribution to the error vector just described.\,.\,:
+\begin{equation}
+\begin{aligned}
+	\sum_{m=0}^{N-3} \binom{N-3}{m} (N-3-m)! =
+		\frac{(N-3)!}{m!}.
+\end{aligned}
+\end{equation}
+.\,.\,Oh, I was doing it wrong. It's
+\begin{equation}
+\begin{aligned}
+	\sum_{m=0}^{N} \binom{N}{m} \frac{N!}{(N-m)!} =
+		\binom{N}{m}^2 m!
+\end{aligned}
+\end{equation}
+for $\|\phi\|^2$, and
+\begin{equation}
+\begin{aligned}
+	\sum_{m=0}^{N-3} \binom{N-3}{m} \frac{(N-3)!}{(N-3-m)!} =
+		\binom{N-3}{m}^2 m!
+\end{aligned}
+\end{equation}
+for our contribution.\,. (10:05) .\,.\,Hm, it looks complicated, but I think we can approximate most of the $m$-contributions to these expressions away.\,. (10:11) .\,.\,Nah, we can't.\,. (10:13) .\,.\,Unless.\,. (10:13) .\,.\,(10:18) Hm, it's maximum is at.\,. .\,.\,Hm, $m = (N-m)^2$ for the first expression, which gives us $m^2 - (2N+1)m + N^2 = 0$.\,. (10:21) .\,.\,This gives us a maximum at $m = (2N+1)/2 > N$.\,. Hm, would you look at that.\,. (10:24) .\,.\,That can't be right.\,. .\,.\,Oh, I need to \emph{solve} the equation.\,x) (10:26) .\,.\,So $(2N+1)/2 \pm \sqrt{(2N+1)^2 - 4N^2}/2$.\,. .\,.\,$=(2N+1)/2 \pm \sqrt{4N + 1}/2 \approx N - N = 0$.\,. Yeah, that.\,. Well, that looks right for $m = (N-m)^2$, but it doesn't make sense that we get most contributions when there are almost exclusively ground states in play, so I must have made a mistake.\,. (10:34) .\,.\,Oh wait, $m$ was the number of ground states. Then it makes sense.\,. (10:42) \ldots (10:53) Hm, and now I get a little bit stuck.\,.
+
+.\,.\,Hm, but I can maybe compare the two expressions.\,. .\,.\,Ah yeah, 'cause for each $m \leq N-3$, we have $\binom{N}{m}^2 m!/\binom{N-3}{m}^2 m! = N!(N-3-m)!/(N-3)!(N-m)!$.\,. (11:02)
+.\,.\,$\approx N^3/(N-m)^3$.\,. .\,.\,Hm, this is unfortunately roughly equal to 1 when $m$ is small compared to $N$, which it is on the $m$-axis around where the contributions to the sum are greatest, for large enough $N$, that is. So we should actually, if I'm correct here, expect that the two expressions are asymptotically equal, I guess, which would not be great news.\,. (11:10) .\,.\,Oh, $N^6/(N-m)^6$, rather, but that gives the same issue.\,. .\,.\,Wait! $(2N+1 - \sqrt{4N + 1})/2$ is not at all $\approx N - N$. It's approximately $N - \sqrt{N} \sim N$. Hm.\,. (11:15) .\,.\,Ah, and that obviously makes more sense for $m = (N-m)^2$, duh'.\,. .\,.\,So $N^6/(N-m)^6$ becomes $\approx N^6/N^3 = N^3$ on that area.\,!\,:) Great.\,.\,!\,.\,. (11:19)
+
+.\,.\,(11:21) Ooh, and about the photons, we only have one less in the mix after the annihilation, and \emph{from} the annihilation we also get a factor that grows as the square root of the occupation number!\,.\,. (11:22) .\,.\,Yeah, annihilating a photon should only make the norm increase, oh, but I guess that's also what we don't want to happen.\,. .\,.\,Oh wait, we shouldn't need to consider the photon occupation number when we count them all as distinct photons to begin with (I think)!\,.\,. (11:27) .\,.\,Yes, never mind about that!\,\texttt{:D}\ (11:28)
+
+.\,.\,So if we go back, we should thus have $N^5$ contributions whose norm squared goes.\,. wait.\,. (11:33) .\,.\,Ah yes, whose norm square goes as $(\delta k^{3})^2 N^{-3} \propto N^{-5}$.\,. Hm, I don't like that, but let me think about that extra antiparticle in the mix again.\,. .\,.\,Hm, shouldn't I also get the three $\delta k^{3/2}$-factors from the oscillator solution, or is that double counting?\,.\,. (11:39) .\,.\,Hm, in my second expression above, I'm counting how many states there are \emph{given} that the five (plus one, plus three) momenta are fixed, and that the three particles have just been annihilated.\,. .\,.\,So I ought to count those factors as well for sure, right?\,.\,. (11:46) .\,.\,Hm, I'm not sure. Let me think for a bit.\,. (11:48)
+
+(11:58) I guess I do need to consider photon interference for $\|\phi\|^2$, but I'm not sure.\,. .\,.\,Yeah, probably.\,.
+
+.\,.\,Okay, but I think I \emph{should} count the factors of $\delta k^{3/2}$ on top of the earlier result, which would then give us $N^5$ contributions of norm squared $\sim N^{-1}N^{-3}N^{-3} = N^{-7}$.\,! (12:01)
+
+.\,.\,And then there's just the photon interference to consider, and not least the question of how orthogonal the contributions are, and then also the smaller matter of proving the $N^{-3}$ factor, i.e.\ completing and bolstering my calculations here above.\,. Let's start with the orthogonality.\,. (12:04) .\,.\,Wait no, I need to conclude about these $\delta k^{3/2}$-factors first.\,. .\,.\,Oh, now I think that I shouldn't include them, as that would be counting them double. Hm.\,. (12:08) .\,.\,Yeah, no, unfortunately.\,. I think it's just $\sim N^{-1}N^{-3} = N^{-4}$.\,. (12:11) .\,.\,No, $\sim N^{-2}N^{-3} = N^{-5}$, sorry, but still. (12:12) .\,.\,Yeah.\,. .\,.\,And if we don't fix the extra antiparticle, it just becomes $N^4$ contributions of norm squared $N^4$ instead, by the way.\,. (12:16)
+
+.\,.\,So I guess I should shift my focus and try to argue the amplitudes always vanish when $\Lambda \to \infty$ instead.\,. (12:19)
 
 
 
