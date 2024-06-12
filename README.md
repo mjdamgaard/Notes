@@ -14,7 +14,7 @@ E-mail: fxn318@alumni.ku.dk
 
 On arXiv: [https://arxiv.org/abs/2311.12870](https://arxiv.org/abs/2311.12870)
 
-On ResearchGate: [https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction](https://www.researchgate.net/publication/364307345_A_Lorentz-covariant_Hamiltonian_for_quantum_electrodynamics_with_a_new_fundamental_interaction)
+On ResearchGate: [https://www.researchgate.net/publication/375836356_Self-adjointness_of_a_simplified_Dirac_interaction_operator_without_any_cutoffs](https://www.researchgate.net/publication/375836356_Self-adjointness_of_a_simplified_Dirac_interaction_operator_without_any_cutoffs)
 
 #### Link to shorter and (much) simpler version of the paper!
 
