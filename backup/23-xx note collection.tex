@@ -3183,6 +3183,7 @@ Then speaking of the potential to use a blockchain to mint the tokens on, this m
 % 4) A browser extension where you can immediately see ratings, relevant links and sources, and reviews/comments/discussions for the things that you browse on any other part of the external web, potentially.
 % 5) A SRC-like creator--user coop where contributors are paid more, and where users get to pay more efficiently to the coop/company/SRC rather than watching long and boring ads which then amounts to almost no money per minute watched for the company. Also where the data, the algorithms, and the source code then becomes a shared thing, at least over time, rather than going to some greedy cooperation, and one that then has an incentive to be closed source. No: the SRC can be open source, pretty much, as long as the content itself just has somewhat restricted access, probably.
 
+%(06.07.24, 17:18) I could also add a 6th point here about having a semantically structured internet, over things and their relations to each other, also including facts and discussions, not least. ..This makes it easier to find things, and it brings all people interested in a specific thing to the same place: You don't have to search for info and discussions about the same thing all over the internet; you can just search for it in one place. (17:23)
 
 
 
@@ -3249,6 +3250,211 @@ So that's it really, except I guess I should also think a little bit about the d
 %..Okay, I'll fix my vacuum paper first, hopefully with some renewed energy, new that I'm finally more confident about the time that comes after, and then I will make a quick whitepaper about this PoW short-selling attack. (14:44) ...(15:07) Okay, I think I can't help working on the blockchain paper first..
 
 (16:56) The coin that the attackers short can actually also be.\,. well, `triple-spent,' in a way, although one might say 2½-spent. For if the borrowed money can be paid back at any time, as per the contract, then the attackers can do it just before the attack is finalized, where the coin value will likely have dropped. They may then get the earnings from the shorting thereby, but when the attack subsequently finalizes, the attackers will then essentially even rob the coin back again from those they borrowed it from originally. .\,.Of course, if this is somehow against the law, they can also just pay it back afterwards. But yeah, if the contract doesn't guard against it, the shorting attackers should thus even end up with the coin as well. This coin might then not be very valuable at that point, of course. But it doesn't hurt them to have it, especially since the value of the coin might rise again at some point in the future after the drop caused (with all likelihood) by the attack. (17:04)
+
+(21.06.24, 12:02) Okay, the problem is that it of course costs something to short an asset.\,. Well, unless the lender can sell their contract for what they are owed, in principle, I guess.\,. But even so, this would not sell as well as the real deal, I'm sure, so we get a cost no matter what it seems.\,. So I'm not so confident that the attack vector is a true threat in practice right now.\,. I'll think a bit more, though.\,.
+
+.\,.\,On another note (and about something different), there are some disadvantages to a conventional PoS blockchain compared to what can potentially be achieved if you make a blockchain that depends directly on a principle of `never treating a fork that has clearly been a part of a 51 \% attack as valid.' In particular, the fact that the coin-wealthy users get to mint even more coin for themselves is something that we could do without. (12:10) *[Oh, I guess everyone gets to mint coin equal to their share, so never mind. Maybe PoS chains are fine as they are.\,.]
+
+(12:13) Oh, about the attack vector, when you control the attacking fork, which you do throughout the attack, then you could also buy and sell coin in the middle of it, and then only include the transactions where you buy the coin, as well as some transactions that sends that coin to another wallet (so that the selling transactions becomes invalid afterwards, should someone try to post them to the blockchain). So you could in principle make infinite replays at once this way.\,.
+
+(13:51) In theory, shorting could be made very cheap.\,. But I also just had an idea about insuring your coin in a rival cryptocurrency. The idea is that big stakeholders in the rival (possibly PoS) blockchain will be happy to do this since it's a win--win for them: Either they simply get the fee if the attack fails, and if it succeeds, they lose some of their holdings in exchange for some coin that's now of very low value, but they might very well cover this loss by the fact that people will then want to abandon the PoW chain, which might very well drive the value of this rival PoS cryptocurrency up. (13:57) So that's pretty interesting.\,.
+
+
+%(23.06.24, 13:35) Disposition notes copied from the blockchain paper document:
+%"
+%Disposition:
+%- Shorting attacks on PoS chains has been proposed in the past. The authors point out so and so. Here we will argue that a shorting attack is also a risk for PoW chains, and potentially a more severe one.
+%
+%- A 51\% attack is where so and so. In theory, an attacker could buy up enough mining equipment to gain control over more than 50\% of the hashing power/rate(?) and start builing a private fork of the blckchain that they are able grow at a slightly larger rate than the public fork. [...] Unlimited replays [...] *(by buying and seeling coin on the public fork, while only keeping incoming transactions on the private fork, whle replacing the outgoing transactions with different ones, thus making these transactions invalid once the private fork is made public.)
+%
+%- But a deterrent is that this might drop the value of the coin completely after the attack. However, if the attackers are able to create short positions for the cryptocurrency, they can in theory compensate for these losses in a way where they always win money as long as the value of the coin doesn't magically go up immediately after the attack when the new fork is revealed.
+%(Such a giant short would require a lot of money, but it is theoritecally possible (for some actors).)
+%(This is known as a Goldfinger attack.)
+%*- ..Calculation of how much/when the attackers win. [...]
+%- There already exist ways in which to short cryptocurrency. However, attackers will likely not rely on these ways to short the coin as they will likely want to remain anonymous to prevent legal prosecution. However-however, to overcome this obstacle attackers might implement their short positions via smart contracts in a different blockchain, whose value is not tied to the victim blockchain. Since this attack vector applies to PoW blockchains specifically, the attackers can choose a PoS chain such as Etherium to implement the short position smart contracts
+%
+%- *(Appendix, maybe:) The short position smart contracts can be implemented such that Alice deposits a number of PoSCoin as collateral *(equal to $a$ times the sum of PoWCoin involved) and promises to pay a number of PoWCoin to a PoWCoin wallet that Bob owns within the end of the time period. *(Bobs PoWCoin wallet has to be unused.) Bob then irreversibly transfers PoSCoin to a PoSCoin wallet that Alice owns equal to the current market value of the owed PoWCoin, plus a small compensation. Both parties also lock some additional PoSCoin to the contract to help settle it at the end. When the time period ends, Alice can then either choose to pay the collateral sum of PoSCoin, if the value of PoWCoin has risen by more than a factor of $a$, or they can claim that the owed PoWcoin has been paid to Bob's W-wallet.
+%- (The settlement:) If this is not true, Bob can then challange this claim. Alice then has to reference and sign off on a recent block of the PoW chain. Bob can then either claim that this block is not a recent block of the PoWCoin blockchain, or that the blockchain does not include a sufficient payment to his W-wallet. In the first case, Bob then has to provide a recent block of the actual PoW blockchain (and so on..) [...]
+%- The contract can also even be made such that Bob is able to sell what he is owed on to others. This can be done by creating a token on the PoSCoin blockchain as part of the contract. Instead of Bob choosing a W-wallet immediately, whoever holds the token when the time period ends gets to choose the W-wallet instead. Alice is then given a reasonable period of time to transfer the owed PoWCoins to that wallet, and by the end of that period, the two parties can then settle the contract in the same way as before.
+%- With such smart contracts, the attackers, as well as anyone else, will be completely free to create short positions for any cryptocurrency, and even while remaining anonymous, thus making the danger of Goldfinger attacks more real.
+%
+%- Public 51\% attacks: In a different version of this attack, the attackers does not try to gain control over more than 50\% of the mining capablities themselves, but try to openly buy and persuade miners to work on their fork of the blockchain, rather than the 'honest fork.' In this version, the 'honest fork' will start out as longer than the 'attacking fork,' and the attackers' goal then to openly buy miners to help overtake the honest chain..
+%They can do this either buy manually paying the miners for each block mined for the attacking fork, or they can set up smart contracts on a rival PoS blockchain that rewards the miners automatically for each block that they mine (for a period of time). Since the attackers control the rewards, they are free to also make restrictions on what transactions are added to the attacking fork, just like they would in the 'secret 51\% attack.' 
+%- Now, this kind of attack is theoretically preventable, since the amount of shorted PoWCoin generally be lower than than the total amount of PoWCoin, meaning that there will be more combined stake in the PoWCoin retaining its value than the combined stake in its value dropping. Therefore, the stakeholders of the PoWCoin should in theory be able to counteract the attackers by out-spending them, offering even more money for the miners to continue working on the 'honest fork,' at a sufficient rate such that the 'attacking fork' will not overtake it. However, in pratice some PoWCoin owners might be tempted not to pay a portion of their PoWCoin to help it retain its value, and instead just to try to sell their PoWCoins as fast as possible, before others do the same and the market value of the PoWCoin starts dropping. The attackers might thus hope this will trigger an avalanche of sales of the PoWCoin, dropping its value considerably. And since the value PoSCoin that the miners are rewarded for working on the attacking fork are not tied to the value of the PoWCoin, the defenders of the honest chain will then get less money to pay the miners to get on the right track again, making the situation even more dire. The attackers can then hope that this will cause snowball effect that drops the value of the PoWChain enough that the attack is sure to go through, as the defenders will be unable to counter the offers of the attackers. And upon a successful attack, the PoWCoin is unlikely to retain its value, at least not until a soft fork or a hard fork is made that can guard the PoWCoin against future attacks. And the attackers can therefore cash in on their short positions.
+%- This demonstrates that there is a real danger for Goldfinger attacks happening in a not too far away future. And to make matters even worse, we have not even discussed yet that the miners of the PoWCoin might also short the PoWCoin, either before or during the attack. Of course, few people would be willing to lend out PoWCoin \emph{while} the attack is happening---except for people who owns short positions already, and who wants to give the miners incentives to work on the attacking fork.
+%And truly the miners are the ones who have the absolute most to gain by taking part in shorting the PoWCoin. For if an attack breaks out, they will not only be able to aquire some of the rewards from the attackers (which may or may not include themselves), but they will also at the same time be able to require some of the money that the PoWCoin defenders tries to counteract the attackers with. So even if an attack is not successful, they will still have amassed a great amount of money from the PoWCoin defenders. And if the PoWCoin somehow retains it value after all this, they will therefore only be all the more likely to short the PoWCoin and hope for another similar attack in the future.
+%- The fact that the miners can secretly pay a part in the attack will thus make it less likely for the PoWCoin to retain its value after an attack, even if the 51\% attack itself fails. For the PoWCoin defenders will then have lost a portion of their assets, and will nonetheless still not disuaded future potential attackers thereby. So in reality, the attackers might be able to drop the value of the PoWCoin regardless, even if the 51\% attack fails.
+%
+%- How to mitigate these kinds of attack: The best and simplest thing that a PoW blockchain community can do to mitigate such attacks is to agree to a soft fork of the blockchain, peferably before any short positions are created, which adds an amendment to the PoW blockchain: The valid fork of the blockchain at any given time is the longest one that has \emph{not} been part of 51\% attack, meaning that it has neither been hidden from the public in a considerably time while some section (of considerably lenght) of it was constructed, nor has any section of it been constructed while a considerably longer fork was known to the public at the time.
+%- The way to implement this soft fork is to give each node of the network an option for the owners of the node to maually mark any given fork as invalid on account of the above amendment. The node then has to automatically reject all forks that biulds on top of the given fork in the future.
+%The community then has to take steps to ensure that the amendment is up for as little interpretation as possible, and that the community is on the same page in regards to the amendment, in order to prevent unintended hard forks to occur, if different part of the community (and in particular the node owners) disagrees on whether some fork is invalid or not. On might say that this leads to the blockchain being less decentralized, since the node owners now seems to have some interpretive power over what forks are valid or not. However, at the end of the day, the buyers of the PoWCoin are the ones who ultimately decide what forks are invalid or not. If the choose to buy coin from a fork that has been deemed invalid by some of the node owners, that then makes the fork valid in the end. And if they choose not to buy coin from a fork that some node owners has deemed valid, that makes the fork invalid in the end.
+%"
+
+%(24.06.24, 9:06) Jeg har det virkelig godt i dag..:)
+
+(25.06.24, 10:43) I've been of several minds about it, but I think I will actually not write the blockchain attack paper at this point. The thing that puts it over the edge is that I can see that the price of Etherium has historically been tied to Bitcoin. So even though it could make sense for sure, it's not certain that the Etherium stakeholders will be convinced that a drop in trust in PoW chains will lead to an increase in the value of Etherium (PoS). People in general could of course still short e.g.\ Bitcoin anyway, in a Goldfinger attack, but still, I don't know that it's worth it for me to write that paper.\,. Hm.\,. .\,.\,I do have a good point, though: If we assume that the Bitcoin community will not make the mitigating update that selects `honest forks' rather than any fork that has been part of a 51\% attack, and which therefore marks a fork as `final' when it's by far the longest one known in public, well then the Goldfinger attack can be fruitful for the attackers. This means that such an update/strategy is necessary for the PoW blockchain. But then this of course calls into question whether the whole PoW concept makes sense. For why pay the bill of so much mining as a community, when the blockchain, with the mitigating update, could easily work with a much smaller hash rate (and still prevent 51\% attacks)?\,. That doesn't really make much sense to do.
+
+I also thought of a version of the attack this morning where the fork that the attackers control also simply implements the mitigating update itself. This should be possible (since Etherium is Turing complete, etc.). And then the community doesn't really have the same clear reason to declare the attack fork invalid after the attack, as this fork itself, if the miners just keep using the same software as distributed by the attackers, will guard against future attacks.
+
+But still, I'm not convinced that a paper with these arguments will.\,. Hm.\,. (11:01) .\,.\,Maybe I should just sit on it for now.\,. (11:05)
+
+(26.06.24, 10:23) Okay, just because the ratio of how cool people think Bitcoin is versus Etherium has been pretty stable in the past, it doesn't mean that their isn't a battle here. So Etherium stakeholders could have an interest for sure in exposing Bitcoin as ultimately relying on community decisions to stop 51\% attacks. Now, a lot of such stakeholders might be stakeholders in both cryptocurrencies. But even if just a tenth of them are not, perhaps because the want to join in this exposure and then switches to only investing in Etherium, they still have plenty of money combined for a 51\% attack. They even ought to have enough to do it several times such that more and more miners join in the bribery each time, which would then likely lower the bitcoin value and raise the ether value each time. So there we are, Etherium can in principle bully and own the Bitcoin blockchain, despite being much smaller, and that should really gt people around to not relying on PoW blockchains anymore.\,.
+
+So that should be the thesis instead: Goldfinger attack by a rival blockchain.\,. Now I just have to find out what the disposition should be. (10:32)
+
+(12:19) I just got an idea which seems to drive the whole point home: The PoS stakeholders can make (collective) smart contracts where they collectively reward mined bitcoin (or whatever PoW coin) with ether (or whatever PoS coin). So they don't reward just any old bitcoin; they only trade with ones mined on the attacking fork.
+
+And you can even do it so that it's not just the mined bitcoin themselves that gets rewards, but where the helping miners can submit (a hash tree of) their work, and then this work also gets a little bit of reward (but not as much as when the miners succeed, for otherwise they won't have an incentive to build the chain longer and longer). This helps ensure that mining pool participants have an interest in joining in on the attack(/exposure).
+
+.\,.\,Oh, and one makes sure that the rewards are given a while after the attack, such that the miners have to sell trade bitcoin on the at that point longest fork (if the `honest fork' has somehow become larger). So the miners of the attack don't have to sell the mined bitcoin, rather the just have to prove that the mined a coin to collect their reward (or prove that the worked on the attacking fork, if the want to collect their reward for that, where they then of course have to have uploaded a hash tree of their work to the Etherium blockchain at the time just after the given block was mined). (12:39)
+
+.\,.\,The only downside is that it's all a bit complicated, but I should be able to explain it.\,.
+
+%..Hm, I have to then first explain it in terms of economics / game theory, just using general contracts. And then I can write about the potential for implementing the contracts via smart contracts. ..And the overall 'rival blockchain Goldfinger attack should be pretty easy to explain, right?.. (12:52) ..I think so.. So maybe it won't be a long whitepaper..
+
+%(16:11) Okay, never mind 'unlimited replays' (I don't think it's an advantage after all), which makes the disposition (structure) easier.. ..It should be pretty simple to explain, until we get to the mining reward contracts, and then the smart contract implementation of this..
+%...But I should mention the 'divide and conquer' strategy then instead..
+
+%(27.06.24, 9:11) I had the idea this morning that the attack funders don't have to direct the whole attack. They can instead just make sure that the miners are plenty incentivized to make the attacks. And by rewarding the attackers with future options to trade bitcoin for ether, they make sure that the have incentive to try to make the value of Bitcoin drop as well. They can also give out bounties for almost attacks, where only a fraction of the hash rate is converted to an attacking fork. They can then make bounties for e.g. 5 \% of the hash rate, 10 \%, 20 \%, 40 \%, 60 \%, 80 \%, and of course >100 \% *(well, >50 \% of the \emph{total} hash rate). They measure this coverted hash rate by having a sidechain that continuously keeps track of the newest block that is considered 'resolved' by the Bitcoin traders (6 blocks deep, or whatever). The reward-seeking miners can then upload their alternative forks to this sidechain. By considering the time of the upload, etc., the rewarders and the reward seekers can then settle if the sufficient hash rate was indeed required to upload the given alternative fork at the given time. Oh, and I should mention, part of the rewards should always be future options (to trade bitcoin for ether), since each bounty achieved is likely to make the bitcoin owners more and more insecure (and wanting to invest in the rival blockchain instead, which seems to be able to take over in the future (unless the Bitcoin cummunity switches to something like PoS as well)).
+
+%I then don't need at all to hypothesize about "unlimited"/several replays or 'divide and conquer,' since the miners are now likely to use the latest mined block for their attack instead of an old one in this version of the 'rival Goldfinger attack.' (9:27)
+
+
+%More (newer) disposition notes copied from the crypto attack paper document:
+%"
+%Disposition 1:
+%- The Goldfinger attack is a known serurity risk for Proof-of-Work (PoW) blockchains, where attackers carry out a 51\% attack deliberately to cause the value of the related cryptocurrency to drop. Among the possible motivations for such an attack is that the attackers might seek an investment gain. This possibility has, however, not... for instance by short-selling a large amount of cryptocurrency before the attack. In this paper, we call to attention the danger of a special kind of Goldfinger attack where the funders of the attack are stakeholders in a rival blockchain.
+%- Introduction: See so and so for blockchain. A 51\% is when so and so (see e.g. so and so). ..But so and so would make the value drop.. A Goldfinger attack is where the attackers have something to gain when the value drops. Authors so and so lists 3 possible motivations.. As an example of an investment gain, short selling is put forward. But as the authors note, it would be difficult for the attackers to get such large short positions in practice. ..Rival blockchain instead.
+%Costs and benefits for the attackers: The cost of a 51\% attack on Bitcoin is very low compared to the market value of Etherium. It's so and so..
+%Bribing the miners via smart contracts: ..The funders lock a portion of their ether in a sidechain. Participants of the side chain then frequently upload and sign off on the latest public blocks of the Bitcoin blockchain to that sidechain, with timestamps. The miners who seeks to be rewarded for an adversarial fork can then upload the last block in that fork, either to the sidechain, the mainchain, or to the Bitcoin blockchain.. Hm, maybe I should explain the more simple reward for >50 \% hash rate first.. Here the sidechain can simply note when there is a reorg of a large enough length to trigger a bounty. Hm, I guess it could be done on the mainchain as well, so what is more efficient?.. ..Well, it actually doens't matter: I don't need to mention the concept of a sidechain, as it is not really relevant to the point. The point is just that participants can lock a portion of their ether to a smart contract, where.. Oh well, maybe it is actually nice to explain it as a sidechain.. ..Yeah, it should be a sidechain.
+%(13:08) Ah, I can mention the two options: Either the attacking miners try to keep their fork a secret, or they attack from behind, in public. The latter option is more costly, since you start from behind, but it requires less organization.
+%(15:40) So hot.. Let's say that all parties have to upload proof (hashes) to the mainchain. ...Hm, the funders can upload it to the sidechain.. ...I think I've got it..
+%(28.06.24, 9:00) I didn't quite, but now I think I do..
+
+%Disposition 2 (outline):
+%- Goldfinger attacks. It's hard to take large enough short positions.
+%- Rival Goldfinger attack.
+%- Costs and potential gain.
+%- Bribing the miners with options contracts. (Options implemented as smart contracts.)
+%- Automatic rewarding of the miners via smart contracts.
+%- Intermediary goals. (Spiral where more and more shift their assets to the rival blockchain.)
+%- Mitigation: The Bitcoin community should plan ahead and figure out how to ensure that the blockchain forks back to the original fork. This requires a break with the underlying philosophy of PoW where every man is for himself, and requires community planning and actiaon. Simply saying that 'we'll figure it out when we get there is not enough.' Once the attack is successful, this will cause deep uncertainty, and investors would want to move their assets to rival blockchains, and prefarably ahead of the curve such that they might gain from this movement. As this might cause the value to drop rapidly, the remaining 'honest miners' might also halt their mining, which means that the adverserial miners could get absolutely free rein on the blockchain, free to cause DoS for the blockchain as long as they like. (<-This should be part of a Ramifications section before this ne instead.) If the Bitcoin community wants to prevent this, they have to update their consensus algorithm in a way such that 51\% attack forks can be identified from the 'honest fork' and declared invalid by a majority of trusted forks. However, in a decentralized system, nodes are only 'trusted' until they are bribed with options from a rival blockchain. Unless their trust depends on the stake they have in the blockchain. Ideally, Bitcoin therefore ought to update their consensus algrithm and start using the PoS concept as well. Etherium has shown that this is possible, and viable.
+%"
+
+
+%(12:59, 29.06.24) Some very early drafting of the first couple of sections of the paper:
+%"
+%\section{Introduction}
+%
+%%In a Proof-of-Work (PoW) blockchain\footnote{See. e.g.\ cite for details of...}, miners compete to solve mathematical puzzles in order to win the privilege of adding a new block to the blockchain, by which they also gain some cryptocurrency. When a new block is added, the puzzle is changed, and the miners will then start working on that
+%%The game is then constructed in such a way that as long as a majority of the miners 
+%
+%The most severe attack that a Proof-of-Work (PoW) blockchain\footnote{See. e.g.\ cite for details of...} might face is the so-called 51\,\% attack\footnote{See e.g.\ cite.}. In this attack, a group of cooperating miners controlling more than 50\,\% of the total hash rate of the blockchain changes strategy from the conventional one, and either stops broadcasting their work to other miners, or deliberately start working on a fork of the blockchain other than the longest one.
+%This allows the attackers to change the recent part of the ledger, which means that they can potentially steal a considerable amount of cryptocurrency, and one that far surpasses the amount that they would have mined through the conventional strategy. (Rewrite and elaborate)**
+%
+%So why do miners of PoW blockchains not always seek to do this attack in reality, if they can make a greater amount of cryptocurrency this way rather than by following the conventional rules? The answer to this lies in the fact that a successful 51\,\% attack would likely cause the value of the given cryptocurrency to drop completely. So while the miners might indeed end up with a greater amount of cryptocurrency than they would have had if they had followed the rules, when trading that for ... they might end up with less..
+%
+%However, as Kroll, Davey, and Felten cite points out, attackers might have other motivations to cause the value of the cryptocurrency to drop. They might be state actors who ... They might be activists ... Or they might be investors who seek investment gain from the drop.., for instance by taking large short positions in the cryptocurrency. Kroll, Davey, and Felten cite names this kind of attack a Goldfinger\footnote{The attack is named after the James Bond villain, who in the film plans to ruin the gold backing of U.S.\ currency in order to undermine it.} attack.
+%
+%%(15:54, 28.06.24) Åh, hvorfor er her så varmt..! Det er kun 22 grader udenfor, og jeg har lidt vind ind ad vinduet, men her er så varmt.. ..Der er endda rimeligt mange skyer.. ...Så, nu kom der noget mere vind..
+%
+%..These authors points out that it is unrealistic for anyone to take such large short positions. However, there might be other ways..
+%
+%%(29.06.24, 10:44) Jeg tror jeg vil prøve en skrivestrategi, hvor jeg bare fylder på og fylder på, altså hvor jeg bare tillader mig at skrive rigtig lange og mange paragrafer, og tillader mig at gentage mig selv mange gange (jeg skal i øvrigt også gentage mig selv i den endelige artikel: Lidt gentagelse er godt, især for skimmelæsere (som mig, rigtig ofte)). ..(Og så skriver jeg altså bare det hele om og skærer ned efterfølgende.) ...Tja, måske dette er en god idé, måske ikke (måske skriver jeg bare dispositionsnoter så på ny), så jeg ser lige på det..
+%
+%Kroll, Davey, and Felten cite points out that it is unrealistic for anyone to take such large short positions. And this might indeed be the case. However, there are other ways that someone could gain an investment gain from a cryptocurrency crashing. And one particular way might be a rival blockchain..
+%
+%
+%\section{Rival Goldfinger attack}
+%
+%The two largest blockchains today, in the moment of writing, are Bitcoin and Ethereum. Bitcoin is a PoW blockchain, while Ethereum has become a Proof-of-Stake blockchain(**) as of [...].
+%
+%When investing in cryptocurrencies, investors have to consider two things: What will the general interest in cryptocurrencies be in the near future, and what will the interest in each specific blockchain be. Some investors might choose to invest broadly, eliminating the risk associated with changes in the relative values of the cryptocurrencies, but others might invest in only some, and hope that these increase in value compared to others.
+%
+%If for instance Bitcoin's PoW consensus algorithm is shown to have security risks, this might make investors migrate to Ethereum instead and put their assets there. Since Ethereum has a PoS consensus algorithm, is does not necessarily have the same issues, and trust in Ethereum might therefore be maintained, while the trust in Bitcoin drops.
+%
+%And this is how investors might gain from a Goldfinger attack on Bitcoin: If they are stakeholders in the Ethereum blockchain.
+%
+%
+%The market capitalization of Ethereum is roughly 400--500 billion USD in the moment of writing according to BitInfoCharts\footnote{See cite for Bitcoin and Ethereum statestics roughly at the moment of writing, and see cite for present statistics.}, whereas the market capitalization of Bitcoin is roughly 1.2 trillion USD. So if Ethereum were to grow to even just the same popularity as Bitcoin, such that the two cryptocurrencies split the total market capitalization evenly, this would mean an increase of roughly 375 billion USD for Ethereum, making roughly double in price.
+%
+%In comparison, the daily rewards for the Bitcoin miners are around 27 million USD, which means that 375 billion USD could in principle pay for a 51\,\% attack lasting as long as roughly 14.000 days, which is around 38 years.
+%
+%It goes without saying that a 38-year-long Denial-of-Service (DoS) is more than enough to obliterate the value of Bitcoin if the blockchain sticks to its PoW consensus algorithm.
+%
+%
+%\section{Bribing miners through options contracts}
+%"
+
+%(13:27):
+%"
+%One way for Ethereum stakeholders to bribe the Bitcoin miners into a 51\,\% attack could be to offer them options contracts to trade ether (which is the cryptocurrency of the Ethereum blockchain)** for bitcoin (which is the cryptocurrency of the Bitcoin blockchain)** at a price which is only favorable to the miners if the value of bitcoin were to drop in the meantime. (So a price that is a little higher than the present ETH/BTC price.)*
+%
+%This strategy has the benefit of not really costing the Ethereum stakeholders anything much, apart from it costs them to set up the contracts. If the bitcoin value does not drop, the miners will not use their options. And if it does drop, the Ethereum stakeholders will lose some of their ether, but if they only sign contracts for parts of their ether, and hold on to the rest, their total assets will have increased in value still.
+%
+%So by handing out such options contracts to the Bitcoin miners, the Ethereum stakeholders can share some of their investment gains if the BTC value drops, and thus hope that the miners will act selfishly and initiate a 51\,\% attack on Bitcoin.
+%
+%
+%\section{Options contracts implemented as smart contracts}
+%
+%Some blockchains afford their users the ability to make what is known as smart contracts, where the terms of the contracts are encoded in a scripting language, which then executes automatically on the blockchain when some conditions are met to trigger the contract. Ethereum is one such blockchain, whose scripting language is Turing-complete, and therefore gives a lot of possibilities.. See e.g.\ cite for an overview of how smart contracts work..
+%"
+
+%(15:07):
+%"
+%In order to implement an options contract for trading ether for bitcoin as a smart contract on the Ethereum blockchain is to be able to prove that you have transferred bitcoin to a wallet.
+%
+%Let us say that Alice want to give/sell an options contract to Bob for trading $x$ ETH for $y$ BTC at a time period between $t_1$ and $t_2$. The smart contract can then go as follows.
+%\begin{enumerate}
+%\item Alice locks $x+s$ ETH to a smart contract on the Ethereum blockchain, where the $s$ ETH is an amount that is used to settle the contract.
+%
+%\item Alice also declares a Bitcoin wallet where Bob is supposed to send the $y$ BTC if he wants to make the trade. This wallet has to be unused.
+%
+%\item The contract should also declare a hash of some old block in the Bitcoin blockchain, which can be used as a reference point for later, if Alice want to contest Bob's claim.
+%
+%\item At any point in time before $t_2$, Bob can then choose to transfer $y$ BTC to Alice's wallet. And when $t_1 \leq t \leq t_2$, Bob can then trigger the options contract on the Ethereum blockchain.
+%
+%\item If Bob triggers the contract, he then has to supply a hash of a recent block in the longest fork of the Bitcoin blockchain, as well as a number stating the length of that fork. He also have to lock $s$ ETH on the Ethereum blockchain which he risks losing if Alice can successfully contest his claim.
+%
+%\item Alice now gets a contest period to respond. If she does not wish to contest that Bob has transferred the $y$ BTC to her wallet, she can simply wait out the period, at the end of which the $x$ ETH locked to the contract is transferred to Bob. The additional $s$ ETH that Alice has locked is then unlocked, and the same applies for Bob. \label{option_point_contest_begin}
+%
+%\item If Alice chooses to contest Bob's claim, she can first of all do so by contesting the fact that $y$ BTC has been transferred to Alice's wallet on the blockchain that Bob has referenced. She can also choose to contest the validity of the referenced fork, including the declared length of it. Or she can contest the fact that Bob has referenced a recent block of the longest fork of the blockchain.
+%
+%\item If she does the latter, she then has to supply a recent block of another fork that is considerably longer, as well as a number stating its length. If this length is not long enough compared to the length that Bob declared for his fork, Alice loses the contest. Otherwise, the process goes back to Point \ref{option_point_contest_begin}, but with the roles almost reversed such that Bob now gets to contest Alice's referenced fork, either in terms of its validity, or in terms of her claim that the $y$ BTC has \emph{not} been transferred to her wallet.
+%
+%\item If Alice instead contests either the validity of Bob's fork, or the fact that $y$ BTC has been transferred to her wallet on it, Bob now has to reference the block took place.\,. Hm, it does get a little more complicated all in all than I thought.\,.
+%\end{enumerate}
+%"
+
+%(30.06.24, 12:07):
+%"
+%\item If Alice instead contests either the validity of Bob's fork, or the fact that $y$ BTC has been transferred to her wallet on it, Bob now has to reference the block took place.\,. Hm, it does get a little more complicated all in all than I thought.\,. .\,.\,Hm, I guess Bob could state the relevant balances in his snapshot reference, but then all balances should be correctly stated at the start of the contract (when referencing the old block), so that doesn't really work so well either.\,. %(15:13)
+%\ldots\ Luckily, blocks are only valid if the transactions are valid, which means that they cannot transfer BTC from wallets that doesn't have the funds.
+%
+%\end{enumerate}
+%
+%%(30.06.24, 11:35) I know how to make it work (by the way, Alice should be the first to declare/propose the longest fork, I think) now. And it's not hard to explain, it can be done in about 10 point like I have here above, I think. But a problem is that if the mining halts completely for the fork, then Alice could in principle bully her way out of the contract, if we are not careful, by keep mining on a private fork, and only showing the results once in a while when the contest requires it. It probably wouldn't be viable for Alice to do, I think, but it makes it a complicated mess; irritating that we have to consider all that. And here's the thing: For the more advanced version where the Alices pay the attacking miners directly, as rewards for creating an attacking fork, we might not have the same problem at all.. ..Here the rewards are simply given out to the miners, and.. And the miners then just have to trade exactly the mined.. bitcoin in the options, no wait.. ..Oh yeah, sure. Since getting Bitcoin to hard.. no, soft fork.. Hm, is getting Bitcoin to soft fork away from.. yeah, it is: It is a goal to force a soft fork away from the attacking fork. And in that case.. Hm, well, in that case we don't even need options contracts, do we?.. The attackers just need to provide Proof-of-Attacking-Work.. Hm.. ..Sure, and then the sidechain of funders can just continously sign off on what bounties/rewards they will finance, and thus how much they'll pay for how much attack-work.. (11:49) ..Or rather, they get the opportunity change their rewards at frequent intervals. ..And they get to change the starting block for the desired attack as well at frequent intervals, and each time they do, they also set the deadline for when that work must be turned in.
+%%..Oh, let me by the way note that my idea for recognizing an attacking fork from an honest one is simply to say the e.g. 10 \% or so of each block in (the recent part of) the attacking fork has to be unused / left blank. Since the honest miners will always try to fill out the entire block as much as possible with transactions, this would never happen on the honest fork (it might happen that a one or a few blocks would be like that, but not several blocks in a row). (11:56) ..So that's how the attackers provide Proof-of-Attacking-Work..
+%%..And as part of the attacking block, the attackers can also simply provide data that declares the Ethereum wallet that the want the ether to be sent to. Then this is done automatically when they provide the PoAW to get their rewards.
+%%Okay, so let me indeed just forget about the options and talk about this possibility instead, as this is much easier, and also a smarter strategy for the attacking parties.. (12:06)
+%"
+
+%(12:08) Also:
+%"
+%And as another comparison, the reward per block is roughly 200,000 USD. It is currently common practice to wait six blocks before considering a transaction finalized. So in order to fund a 51\,\% attack that is long enough to allow for replay attacks, it only cost around 1--2 million USD, which is only 0.0004\,\% of the 375 billion USD that the Ethereum stakeholders would stand to gain in this scenario.
+%
+%So if Ethereum stakeholders believe that undermining the competition could increase their assets' worth even slightly, they have more than enough funds to finance such a Goldfinger attack.
+%"
+
+(30.06.24, 12:22) In some disposition notes somewhere, I almost make it sound like PoS is the only (potentially) viable option for a blockchain, and this is true in a sense, but only if we require that the valid fork is always recognized automatically by the network of full notes. In reality, any blockchain that allows its community to hard fork the blockchain by declaring forks invalid that embodies a ledger which hasn't been public throughout whole of its creation (save for small (and insignificant) time periods in the process of making new blocks) is a viable option. As long as the community is of one mind of when attacking fork should be declared invalid, and how to hard/soft-fork to another blockchain that contains all the transactions that has been freely available to the public, then.. Well, no system is completely safe, but as long that there are a vigilant community and enough transparency to quickly notice when/if previously trusted arbiters of what the state of the ledger is, then the digital currency can work. But of course, PoS is a nice concept that help ensure that the arbiters of what the state of the ledger is won't try to cheat the community---especially if the community is also still vigilant on top of the PoS-reliance. (12:33)
+
+
+(13.07.24, 14:13) I have had some thoughts in the past about `Proof-of-Public-History,' or what else I have called it. Now I think it's all even more simple than that: I will instead just propose a change to Ethereum such that the stakeholders can distribute their voting power amoung some validators, free of choice. So in practice, this becomes much like a blockchain based on ``trusted authorities,'' expect that it is completely up to each stakeholder who (i.e.\ what third party) to vote for---and they can each distribute their vote to more than one party, as mentioned. And on top of this system, there should just be the fail-safe mechanism that I mention in my paper, that I'm about to publicize, which is just that any stakeholder can alert some fishy goings on, and when an alert is called, block finalization is delayed, and the stakeholders are called upon to revote for the recent (not yet completely finalized due to the alert) blocks and/or to redistribute their voting power (potentially away from whatever party caused the alert). Calling a false alert, without any good reason \emph{might} also be sanctioned. But that's something to look into.
+
+%*(14.07.24, 15:31) Actually, I didn't end up keeping that part in the now publicized paper. It was: "[...] But this vulnerability is rather easy to mitigate, either by encouraging or requiring more stakeholders to stake their Ether, or by setting up a fail-safe mechanism where the idle stakeholders can quickly join the voting process and call for a revote regarding the recent, problematic blocks."
+
+So this will be my suggestion for a future blockchain, and I hope the Ethereum community might find the idea valuable and want to implement it at some point (it sounds like a good idea to me). (14:24)
+
 
 
 
@@ -3338,6 +3544,12 @@ Another practical point is that, if one were to start an e-democracy party today
 By the way, the organization behind the e-democracy party that makes the apps for it could actually potentially be a private company, which means that when (\emph{when};)) the e-democracy party concept takes off and spreads to other countries, these parties might then buy the same digital solutions. I thought this worth mentioning, even though I would of course prefer open source way more (or at least an SRC, which could then very well be exactly the one that I have written about in Section \ref{SRC_instead_of_open_data} above). (11:18)
 
 (17:05) It should also be noted that the elected/hired leaders should continuously write rapports about what they are doing, who they are meeting and why, what agreements they make (unless this is somehow classified (although in a true democracy, one would want to limit classified stuff as much as (reasonably) possible, I'd say)), and also not least about how they intend to carry out the various demands from the members (i.e.\ the questions that are voted on).
+
+(12:35, 30.06.24) I can also add that, if it were up to me to start such a party, I would also even go as far as recording and streaming the majority of the hired leaders' work day, each day. Only meetings with people outside of the party can sometimes be allowed not to be streamed and recorded, if those people really want that. But as time goes on, it might even be regarded as less and less acceptable to insist on a private meeting with the hired party leaders, the way I personally imagine it.\,. (12:39)
+
+%(19.33, 06.07.24) I should also add, if I haven't yet, that people should be able to divide and distribute their voting power out to several other people (for instance people you know personally---which would be the absolute easiest way to vote, espacially for people who don't really use the internet *or follow politics).
+
+%(13.07.24, 14:08) Let me just highlight an important difference between an e/direct-democracy party and a normal party like the ones we have in Denmark: In a normal party, you try to select leaders based on thier opinions (and qualities), and then let it be up to them to make the decisions, whereas in an e-democracy party, the leaders are hired to not to follow their own opinions, but those of the members (and can be fired/reprimanded more easily/frequently).
 
 
 
@@ -4958,6 +5170,85 @@ About the Lorentz covariance argument, the Lorentz circuit argument should be pr
 
 
 
+(28.06.24, 17:24) Oh, maybe my `utilizing several particles' idea actually doesn't work. For when you get more emitting particles.\,. well, let's say we have $n$. Then you have $n$ emissions that are canceled from absorptions from $n^2/2$ areas (the division by 2 is not important here, but it will be in a moment). But each emission only has $n$ areas (at the $m+2$ level, if you will) that contributes to canceling it. So the amplitude over those $n^2/2$ areas can only by divided by $n$, given an amplitude squared over each area of $1/n^2$ (disregarding the factors of $1/\braket{\,|\hat A^- \hat A^+|\,}$ for now (squared for the amplitude squared)). So when we sum this, we get something going as $1/n^2 \times n^2/2 = 1/2$, which means that increasing $n$ (i.e.\ `utilizing several particles') won't help.
+
+However, this factor of $1/2$ might just be our savior. For if it happens that each level ($m+2i$, $i=1,2,\ldots$) of the tail has an amplitude squared that is $1/2$ of the previous level, then we still get something that is convergent. (Note also that this trick doesn't work for the vacuum.\,. wait a minute: It doesn't?\,.\,.) Hm.\,. Something, or rather some things, to think about.\,. (17:39) .\,.\,(17:46) I guess it ought to work, and I guess that I also expected it.\,. wait, no.\,. .\,.\,Ah, I intended to use the `physical interactions' for the cancellations, as I recall. Okay, but maybe there is no need, for maybe that $1/2$ factor might work, and might also apply for the perturbed vacuum without the `physical interactions' as well.\,. (17:49)
+
+\ldots (18:01) So I'm thinking $\ket{\phi} = \sum_{n=0, 2, 4, \ldots} (-\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n} (\hat A^+)^n \ket{\,}$.\,. Then we have
+\begin{equation}
+\begin{aligned}
+	&(\hat A^+ + \hat A^-) \ket{\phi} = 
+	\\&\quad\quad\quad
+		\sum_{n=0, 2, \ldots} \pm \big((\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n} (\hat A^+)^{n+1} - (\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n-2} \hat A^- (\hat A^+)^{n+2}\big) \ket{\,}.\,.
+%	\\&\quad\quad\quad=
+%		\sum \pm \big((\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n} (\hat A^+)^{n+1}  - (\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n-2} \hat A^- (\hat A^+)^{n+2}\big) \ket{\,}
+\end{aligned}
+\end{equation}
+Oh, I mean $\ket{\phi} = \sum_{n=0, 2, 4, \ldots} (-\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n/2} (\hat A^+)^n \ket{\,}$. Then we have
+\begin{equation}
+\begin{aligned}
+	&(\hat A^+ + \hat A^-) \ket{\phi} = 
+	\\&\quad\quad\quad
+		\sum_{n=0, 2, \ldots} \pm \big((\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n/2} (\hat A^+)^{n+1} - (\sqrt{2} \braket{\,|\hat A^- \hat A^+|\,})^{-n/2-1} \hat A^- (\hat A^+)^{n+2}\big) \ket{\,}.
+\end{aligned}
+\end{equation}
+And since $\hat A^- (\hat A^+)^{n+2} \ket{\,} = \sqrt{2}$.\,. no.\,. $\hat A^- (\hat A^+)^{n+2} \ket{\,} \approx \sqrt{n+2} \braket{\,|\hat A^- \hat A^+|\,} (\hat A^+)^{n+1} \ket{\,}$, so we want something like.\,. .\,.\,$\ket{\phi} = \sum_{n=0, 2, 4, \ldots} (n!)^{-1/2} (-\braket{\,|\hat A^- \hat A^+|\,})^{-n/2} (\hat A^+)^n \ket{\,}$.\,. .\,.\,No, $\ket{\phi} = \sum_{n=0, 2, 4, \ldots} (\prod_{m=0, 2, 4, n} m)^{-1/2} (-\braket{\,|\hat A^- \hat A^+|\,})^{-n/2} (\hat A^+)^n \ket{\,}$, which then grows with a factor of $-(n+2)^{-1/2} (\braket{\,|\hat A^- \hat A^+|\,})^{-1}$ when we go from $n$ to $n+2$. This then cancels the factor from $\hat A^- (\hat A^+)^{n+2} \ket{\,} \approx \sqrt{n+2} \braket{\,|\hat A^- \hat A^+|\,} (\hat A^+)^{n+1} \ket{\,}$, and there we go. .\,.\,Now, what is the norm squared of this?\,.\,. .\,.\,Hm, I think goes like $\sim n^0$ (as a constant), so the series is divergent.\,. .\,.\,Ah no, it's worse than that. Okay, so that was without thinking of the `physical interactions.' What about if we think about those?\,.\,.
+
+.\,.\,The difference is, I think, that the `physical' emissions don't have bosonic statistics, as the vacuum emissions do (approximately), which means that the emissions might not interfere at the $n+1$ level, but the can at the $n+2$ level.\,. I hope so.\,. (18:49)
+
+\ldots\ (20:17) Okay, I do indeed think that that $1/n^2 \times n^2/2 = 1/2$ logic can save me. The point is that each local area of the $m+2$ state can contribute to canceling two different emissions to the $m+1$ level at once. It will probably not be easy to prove rigorously, though, so I look forward to finding somebody to work together on that; I don't intend to try to do it alone. But yeah, I'm really glad that got these thoughts and ideas this evening *(and late afternoon).\,:) (20:20)
+
+%(29.06.24, 10:06) Nu kan jeg ikke lade være med at gå og bekymre mig over, om denne strategi nu også virker, og hvor svært det bliver at vise. Men jeg må nok bare prøve at skyde tankerne væk og så sige, at det må vi bare finde ud af til den tid.. Hm.. ..Ah, vent, der er jo også det med at de tidligere emissioner fra underliggende niveauer også kan hjælpe..
+
+(29.06.24, 10:15) Hm, there is also the fact the the emissions from the lower levels ($m-i$) can be absorbed as well and help in the cancellation.\,. .\,.\,So we can essentially hope that $\hat A^-$ will work something like $\hat A^- (\hat A^+)^{n+2} \ket{\,} \approx \sqrt{n+2} \braket{\,|\hat A^- \hat A^+|\,} (\hat A^+)^{n+1} \ket{\,}$ for the `physical' emissions, while $\hat A^+ (\hat A^+)^{n} \ket{\,}$ does not have the full bosonic positive interference and therefore does \emph{not} go like $\sqrt{n+1}$.\,. (10:21) .\,.\,Oh, I should replace $\ket{\,}$ here with some $\ket{\psi_m}$ state, by the way.\,.
+
+.\,.\,Hm, this idea was my original idea behind the `$E$ with constant radii' idea, by the way; it just doesn't work for the perturbed vacuum (in my old way of treating the vacuum (not the current one, where I use a constant (countable) basis for the vacuum-perturbing interactions, and only them)).\,.
+
+.\,.\,Hm, it does kinda make sense, indeed, that $\|(\hat A^+)^{n} \ket{\psi_m}\|^2$ should just go something roughly like $(\braket{\psi_m|\hat A^- \hat A^+|\psi_m})^{n}$ instead of $n (\braket{\psi_m|\hat A^- \hat A^+|\psi_m})^{n}$. So yeah, maybe this works.\,.\,:) (10:37)
+
+%(10:40) Okay, great..! I'm very excited about this. And now I can go back to working on my crypto paper.:)
+
+(18:10) Oh, maybe there's a flaw in the part of the underlying idea where I have to show that the almost eigenstates of the non-cutoff operator are also almost eigenstates, when cut-off themselves, of the cut-off operator. Just finding a domain for the cut-off operator is not enough. This domain also needs to work when we lift the cutoffs completely. And I'm not completely sure that the `$E$ with constant radii (or rather radi\emph{us})' domain works for the non-cutoff operator. For we need both the vector of the operator itself to converge, as well as its image. So that `$\ket{\psi} = \sum_{n=0, 2, 4, \ldots} \alpha_n (\hat A^+)^n \ket{\psi_m}$' approach doesn't really work as is, it seems.\,. (18:17)
+
+(18:37) Hm, so it could be that one needs some kind of Nelson renormalization instead, after all.\,.
+
+(19:22) Oh, maybe I've got it.\,. .\,.\,Instead of trying to show that almost eigenvectors of of the full operator can be approximated by ones of the cut-off operator, I should probably instead try to show the opposite.\,. .\,.\,And maybe this can allow us not to put that strict radius limitation on $E$.\,.\,!\,.\,. .\,.\,Oh, this sounds \emph{so} interesting.\,. (19:30)
+
+(19:55) Hm, I'm not sure it works, though.\,. .\,.\,Oh, maybe there could be a way to make it work.\,. But it requires some thinking.\,. (20:00) .\,.\,Hm, because we now recognize the level (i.e.\ recognize what $2i$ is in $m+2i$) from the shape of the (level-specific) vectors themselves, we could make the radius of $E_{m+1}$ independent on $m$, as well as on the momenta.\,. .\,.\,And then if this is so, what happens if we choose this radius to be equal to the given cutoff, i.e.\ of the given cut-off operator that we are trying to ``approximate'' (``approximating the cut-off operator with the full one, so to speak)?\,.\,. .\,.\,Then we are on to something at the $m+1$ level, since we would then seem to be able to cancel most of the emissions that falls outside of this radius, at this level at least.\,. (20:09) .\,.\,And we then of course ought to put the tail at the $m+2$ level inside the same radius as well.\,. .\,.\,And now we are inside of $F$ (or $T$, if you will), so can't we just cancel everything else (mostly), and with a very small tail from there? (20:13) .\,.\,Wow, %(wauw)
+this sounds great.\,.\,!\,.\,. (20:15)
+
+.\,.\,This sounds really amazing.\,.\,!\,.\,. (20:17)
+
+(23:10, 30.06.24) No, it actually doesn't make sense. So never mind, I guess, except that I should still think some more about it.\,.
+
+(23:27) Hm, but maybe the solution could be to choose an $F$ (or $T$) such that.\,. .\,.\,for all $m+1$-level emission vectors where the emitted particle(s) has momentum/momenta less than or equal to $k_{cutoff}$ (considering only the UV divergence (an disregarding the IR one) here just for simplicity), $E_{m+2i}$, $i=1,2,\ldots$, has a radius of $k_{cutoff}$, but then for $m+1$-level emission vectors that reach beyond $k_{cutoff}$, the radius of the $E$ sets can then get much greater (growing very rapidly). Okay, let me think about this.\,.
+
+.\,.\,Oh, but I can't let the domain of the non-cut-off operator depend on the cutoff; that ruins the whole point.\,. (23:40)
+
+(00:17) Wait, I know I have thought about this before, but couldn't a separate cutoff on the fermion momenta, that is allowed to grow much slower than the cutoff for the bosons, do the trick.\,.\,? \ldots No. (00:55)
+
+(01.07.24, 10:29) Hm, I actually don't even think that having an $E$ with a radius equal to the maximal momentum would actually work in the first place.\,. Maybe the problem needs some Nelson renormalization instead.\,. I really like my domain solution (from my SA paper, etc.), but despite it's beauty, maybe it's not what we really need, mathematically.\,. I don't know.\,.
+
+%(11:21) Jeg bør ikke hænge mig mere i fysikken her, i virkeligheden. Og det er da i det mindste rart, at jeg lige nåede at opdage det her, antaget at der kommer til at ske ting, når jeg udgiver min crypto-artikel. Men det kunne være rart lige at finde et pejlemærke, eller i det hele taget lige overveje, hvad planerne er med hele dette fysik-matematik-projekt, efter at jeg har fået rettet min vakuum-artikel..
+
+\ldots\ (13:03) I took a walk thinking about physics instead of working on the crypto paper, and I'm glad I did. First of all, I was wrong (I think) when I wrote about `$E$ with a radius equal to the maximal momentum' not helping. It would, but I don't see how that would be possible to find/show, on the other hand. So maybe a Nelson renormalization would be our hope. But then I also thought, well, maybe a cut-off version of the Hamiltonian just doesn't approximate the dynamics of the non-cut-off one. Maybe the cutoff will always introduce artifacts. Now, my own way of approaching the Lorentz covariance problem sorta requires a cutoff, and a discretization. But that's \emph{my} approach. And I haven't been interested in reading other approaches yet (for when I thought that my approach lead to a different Hamiltonian, I wouldn't believe the conventional approach anyway, and since then I also just haven't quite had the motivation for it). But maybe there is a way to argue Lorentz covariance directly from the path integrals. This then got me thinking about a particle-number-dependent cutoff. I'm sure that such a cutoff would yield a Hamiltonian that approximates the non-cut-off one. And while such a Hamiltonian would not be bounded, it would still have all vectors with a bound on the particle number as part of its domain. And that should mean that we can still develop the path integrals from a Trotter expansion.
+
+So far so good. And my thought is then that once you have this path integral, with a particle-number-dependent cutoff, then there might be a way to argue the Lorentz covariance just from that. This is kinda like my thoughts above about why it might make good sense that we can remove the pre-vacuum-perturbing terms from the pre-DSR'ed Hamiltonian. More precisely, it might be the case that if we consider the same local interaction density for the path integrals in one inertial system, then it will cause the same transitions between the free-energy eigenstates as in another (any other) inertial system. In fact, if you consider the path integrals in positions space (somehow), then it certainly does make a lot of sense, since of you look at the transitions of just a local volume of space-time, then these should be that same as in any other inertial frame, since you can jst turn up the interaction in that particular volume (one would think). And yeah, maybe all this can be shown mathematically somehow. Oh, and I suspect that this particle-number-dependent cutoff will also transform into a similar cutoff in other inertial frames. So this could be a way to show Lorentz covariance, who knows. (13:21)
+
+Okay, this must be enough for this time around. I will of course fix my vacuum paper, and then the plan is to wait and see if someone is interested (maybe someone who contacts me) in working together on continuing this project. But I must admit, if someone is interested in working with me on my Web 3.0, Semantic Network project, then that definitely takes priority. (13:24)
+
+\ldots (13:48) I just had I thought. If you can develop the path integrals---and from a Trotter expansion---doesn't it go without saying that you can then subsequently make a particle number cutoff on this path integral? .\,.\,(13:51) Woah.\,.
+
+(14:26) Hm, I just had an additional thought: If you choose $F$ (or `$T$') such that pair-production interactions are used to cancel emissions, then.\,. .\,.\,(14:30) Oh, maybe you could also just make the cutoff fermion-momentum-dep.\,. wait.\,. .\,.\,How about a particle-number and fermion-momentum-dependent cutoff?\,.\,. .\,.\,I mean fermion-number-dependent.\,. .\,.\,Oh wait, the fermion number is constant when we reverse-DSR.\,. .\,.\,Ah, but we could make an $F$ ($T$) where the fermion momentum keeps increasing, and where the any eigenstate must at some point obey $F$ more and more, which means that a fermion-momentum-dependent cutoff should approximate the non-cut-off Hamiltonian, I think. And if that is true, then maybe my approach to the Lorentz covariance problem could still work, where one just ends up with a pre-DSR'ed Hamiltonian (if we go backwards (compared to e.g.\ my 2022 (QED) paper)) where one has fermions on top of a discretized $A^\mu$ field, where the interaction with that (classical) field then is allowed to depend on the fermion momenta (i.e.\ with a fermion-momentum-dependent cutoff). That's certainly an idea. I'm glad that I have a few roads open now for continuing (and perhaps completing) the project, it seems. (14:47)
+
+.\,.\,Well, you can't make sure that the `fermion momentum keeps increasing,' but still.\,. (14:51) .\,.\,Still, I think there's a possibility it could work.\,.
+
+.\,.\,Anyway, it's nice to have some roads open. And at the end of the day, if we can just show that my proposed (in my near-future version of my vacuum paper) $\hat H_\mathrm{QED}$ is self-adjoint on some domain (non-cut-off), even with those vacuum-perturbing terms in a constant (countable) basis, and thus that these vacuum-perturbing terms can be removed from this $\hat H_\mathrm{QED}$, then even if the argument that $\hat H_\mathrm{QED}$ retains its Lorentz covariance isn't fully mathematically rigorous, it should still catch the attention of (most of) the rest of the physics community, I'd say. (15:00)
+
+(15:24) (We could, by the way, also toy with the idea of making the DSR before the field modes are quantized as photons, which could then potentially allow us to make a fermion-number-dependent cutoff if needed. So there's also that little potential road, it seems---even though I have mostly stayed clear of that path in the past for some reason.\,.)
+
+
+
 
 
 
@@ -5005,6 +5296,8 @@ I think I might actually try to contact some engineers about this idea.\,. .\,.\
 
 
 %(16:50, 20.06.24) I had another idea, by the way, yesterday or foreyesterday, which is to great big lakes on the poles, far enough inland as to not spill out, and far enough away from the pole to melt in the summer. The idea is that the melting salt water (the salt will stay in the ice as crystal when it is frozen) will then take up heat (as a buffer) and cool its suroundings in the summer. A great idea if not for the fact that it would probably take too much water to really be feasible, I suspect. So I'll just keep it here in the source comments for now, I guess..
+
+(11:14, 26.06.24) I've had an idea about creating saltwater lakes on the icecaps of the poles to create a temperature buffer and prevent ice from melting and flowing out into the ocean in the summer (by having the frozen saltwater lakes melt first and making sure that the water doesn't run out from them). I've just kept the idea in the source comments so far, but I thought some more about it yesterday, and I think it could in principle be possible. I think the amount of saltwater needed is comparable to.\,. Oh wait, no. It's a lot more than that. Okay, so maybe it would be more costly than I just thought. Oh well, it was an interesting idea, still.\,.
 
 
 
