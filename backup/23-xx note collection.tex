@@ -3200,6 +3200,34 @@ By the way, let me just reiterate the point about using NFTs for the ``obligatio
 
 
 
+\ 
+
+(12.08.24) Let me just highlight these notes from the source comments:
+
+\noindent``\%(20.06.24, 10:30) Some selling points:
+
+\noindent\% 1) Multiple and varied predicates for rating to better be able to express oneself, to get a better overview of any given thing, and also to be able to search more specifically on what you want.
+
+\noindent\% 2) Look at reviews of things and rate them for how they fit your opinions, then get your parameters for how you lie in the ML parameter space, and use it to in the future be able to see the reviews---and ratings---from the user groups that you fit the most first. Also, be able to view what various groups (segments) of users think of a given thing/topic, and get an overview of how the views differs between the various groups.
+
+\noindent\% 3) When you look up facts and explanations, don't just get the "top ones" first, as with e.g. Google, but get a rating (possible from various groups) of \emph{how much} the fact is believed to be true, or how good the explanation is thought to be. Also immediately be able to see all the sources, as well as the arguments and counterarguments for the facts, and not least also how much each individual argument/counterargument is believed to be true/valid by the community. The arguments etc. are then all ranked in terms of how relevant/important they are for the given fact/statement, and apart from this ranking, you then of course also see the rating of how believed those arguments/counterarguments/sources are.
+
+\noindent\% 4) A browser extension where you can immediately see ratings, relevant links and sources, and reviews/comments/discussions for the things that you browse on any other part of the external web, potentially.
+
+\noindent\% 5) A SRC-like creator--user coop where contributors are paid more, and where users get to pay more efficiently to the coop/company/SRC rather than watching long and boring ads which then amounts to almost no money per minute watched for the company. Also where the data, the algorithms, and the source code then becomes a shared thing, at least over time, rather than going to some greedy cooperation, and one that then has an incentive to be closed source. No: the SRC can be open source, pretty much, as long as the content itself just has somewhat restricted access, probably.
+
+\noindent\%(06.07.24, 17:18) I could also add a 6th point here about having a semantically structured internet, over things and their relations to each other, also including facts and discussions, not least. ..This makes it easier to find things, and it brings all people interested in a specific thing to the same place: You don't have to search for info and discussions about the same thing all over the internet; you can just search for it in one place. (17:23)''
+
+\ 
+
+(15:16 12.08.24) I think I will start working on the Semantic Network Project again every other day, between job searching. And I just had a delightful thought: Wouldn't it be both fun and nice to implement the AppColumns such that they are fully defined by `property documents' (or another object ML)?\,. (I by the way think that I will depart from the idea of showing several columns at once on computer screens (that are wide enough), and just always show one at the time, maybe showing gray/transparent versions of the neighboring columns to the side, if there is room, which the users can then click on to center and activate.)
+
+And then already from there, I could then start designing things ``as a user'' (while of course also developing the possibilities for custom-designing columns further in the process).\,.\,:)
+
+.\,.\,The users should then be able to give the modules and HTML elements classes, and should then also be able to upload (and up-rate) CSS documents (which are sanitized). Uploaded HTML is of course also sanitized. And I'll just make this sanitization very strict at the beginning, allowing only for pretty basic HTML and CSS. .\,.\,Modules should also be defined as semantic objects, such that they appear as such in the column mark-up property documents. (15:39) .\,.\,Data can be passed to the newly opened columns when clicking a link, i.e.\ similarly to REACT properties.
+
+(16:03) Hm, the property documents should actually also have an explicit spread operator such that they can be saved more compactly by inheriting from an existing property document.\,.
+.\,.\,(16:13) Hm, should I even add a nullable parent object to AssocEntityData?\,.\,. .\,.\,Yeah.\,. (16:14)
 
 
 
@@ -3631,7 +3659,7 @@ So that is the idea, and I actually think that it's quite awesome. 'Cause even t
 
 These robots will then not just be useful for construction, but can be useful for everything, even down to cleaning. Every apartment complex (or `house complex'.\,.) might have there own scaffolding robotics at the ready (or might share with neighbor complexes). So cleaning might be taken care of by robot scaffolding (in general of the more delicate variety). And it doesn't stop there. Parties might be prepared for and cleaned up after very easily be robot scaffolding, and even larger things like festivals. So even a small town might do a great variety of festivals and parties each week, in principle, when so much of the physical work is automated. And when it comes to planning (and I've wanted to mention this), plans for parties, festivals, etc.\ can be shared among towns/cities---and shared across the world. So once you've planned out the.\,.
 
-Oh, let me actually first talk about the fact that when programming a specific construction---and something similar can apply for other types of jobs---the user of the digital tool first of all simply draws up what they want as the final product (or in terms of cleaning e.g., where and what they want to be cleaned). The program then tries to came of with a plan for how the robot scaffolding does this task, with all the various subprocesses. And the creator might then, and this is probably especially useful in the beginning, try to help the program plan the actions, if the human have an idea of a better plan of how to achieve the goal. And here's the great thing: Once a plan is saved, it can be reused (and further modified, by the way) by other from that point on.\,:)
+Oh, let me actually first talk about the fact that when programming a specific construc-tion---and something similar can apply for other types of jobs---the user of the digital tool first of all simply draws up what they want as the final product (or in terms of cleaning e.g., where and what they want to be cleaned). The program then tries to came of with a plan for how the robot scaffolding does this task, with all the various subprocesses. And the creator might then, and this is probably especially useful in the beginning, try to help the program plan the actions, if the human have an idea of a better plan of how to achieve the goal. And here's the great thing: Once a plan is saved, it can be reused (and further modified, by the way) by other from that point on.\,:)
 
 So if we go back to the paragraph before, people can share their party and festival, etc., plans across the world, so that other might try the same kind of things. How great would that be: A bunch of varied festivals all year around in your own local area, if you want.\,:)
 
@@ -5351,7 +5379,7 @@ In terms of the Lorentz covariance, the argument about the local operator densit
 
 I really should read about this conventional way at some point, if/when I continue this project again, after this last todo of correcting my vacuum paper. Of course, I hope that someone with skill and knowledge on that topic would want to work together with me at that time. But otherwise *(and regardless, I guess), yeah, I should read some more up on that topic at some point. But I think I will promise myself not to do any more physics for at least a year, unless somebody contacts me about it.\,. (15:08)
 
-(13:03, 16.07.24) I'm starting to believe more and more in these `particle-number-dependent cutoff' domains. In fact, now I actually have a hard time believing that domains with particle-number-independent cutoffs could work, and thus also that a Nelson renormalization could work. I'm even puzzled that it could work for the Hamiltonian in Nelson's own paper. So let me think about that, I guess.\,.
+(13:03, 16.07.24) I'm starting to believe more and more in these `particle-number-depen-dent cutoff' domains. In fact, now I actually have a hard time believing that domains with particle-number-independent cutoffs could work, and thus also that a Nelson renormalization could work. I'm even puzzled that it could work for the Hamiltonian in Nelson's own paper. So let me think about that, I guess.\,.
 
 *(13:41) Oh never mind: When you have a free energy like $\mathbf{p}^2$, then you can just use that to cancel the emissions (and you do not \emph{need} the absorption transitions to do this). :) Okay, so the Nelson renormalization does make sense, just not when you need absorption transitions for canceling the emissions (of whatever almost eigenstate of $\hat H$ that you are considering (with and without the cutoff)). (13:44)
 
