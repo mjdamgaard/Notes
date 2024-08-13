@@ -3218,7 +3218,12 @@ By the way, let me just reiterate the point about using NFTs for the ``obligatio
 
 \noindent\%(06.07.24, 17:18) I could also add a 6th point here about having a semantically structured internet, over things and their relations to each other, also including facts and discussions, not least. ..This makes it easier to find things, and it brings all people interested in a specific thing to the same place: You don't have to search for info and discussions about the same thing all over the internet; you can just search for it in one place. (17:23)''
 
-\ 
+
+
+
+
+
+\section{*Continuation of the project}
 
 (15:16 12.08.24) I think I will start working on the Semantic Network Project again every other day, between job searching. And I just had a delightful thought: Wouldn't it be both fun and nice to implement the AppColumns such that they are fully defined by `property documents' (or another object ML)?\,. (I by the way think that I will depart from the idea of showing several columns at once on computer screens (that are wide enough), and just always show one at the time, maybe showing gray/transparent versions of the neighboring columns to the side, if there is room, which the users can then click on to center and activate.)
 
@@ -3229,6 +3234,21 @@ And then already from there, I could then start designing things ``as a user'' (
 (16:03) Hm, the property documents should actually also have an explicit spread operator such that they can be saved more compactly by inheriting from an existing property document.\,.
 .\,.\,(16:13) Hm, should I even add a nullable parent object to AssocEntityData?\,.\,. .\,.\,Yeah.\,. (16:14)
 
+(20:43) Hm, I'm thinking about collecting a lot of my data types (formerly: ``metatypes'') into one, and that might actually especially be possible if I make the standard entities have inheritance, which I intend to.\,. .\,.\,Ooh, and even better: I could implement formal entities and such via \emph{classes}, which then has the searchable properties as input to a ``constructor''.\,. (20:49)
+
+%\ldots (21:04) Hm, how about `EntityClasses' (which are also entities, in principle), together with the standard entities, which can perhaps (or perhaps not) be divided into formal and normal object entities.\,. and then how about this: What if simple entities just had their title as their ID/primary key in the database?\,.\,. \ldots\ (22:37) Nå nej, I can't do that.\,.
+
+%(13.08.24, 9:46) Okay, jeg er lidt spændt på at komme i gang med dette project igen, og på hvilke ændringer jeg skal lave---og jeg tror det er en god idé at have et friskt hoved til de ændringer, så jeg udskyder altså lige jobsøgning (som jeg tænker at gøre hver anden dag, om formiddag--middagen, mindst) med én dag, og lover mig selv at jeg tager ordentligt fat med det i morgen.
+
+(13.08.24, 9:54) It made good sense to just introduce as many `entity datatypes' as one wants, since it ensures that it all works well. However, it is also a little bit involved, and now I've come to think that there might be a simpler way. This is essentially going back to what I tried before with the type--context--defStr entities, i.e.\ making some one-size-fits-all data structure, but this time around I think I can do it better.\,. .\,.\,(10:00) I'm thinking that each object is defined via a prop doc, which I will btw rename to perhaps `struct,' which can have placeholders for searchable ID's (used to implement e.g.\ propTags and formal entities), as well as at least one placeholder in case the entity is defined by some stand-alone text or blob.\,. (10:03) .\,.\,Oh, and we have inheritance such that an entity can copy another entity's properties.\,. .\,.\,And then for the propDocs/structs, these \emph{shouldn't} consist of only numbers, but can use strings/simple entities directly via their secondary key, i.e.\ the string itself.\,. (10:10) .\,.\,Hm, do we even need simple entities, then?\,.\,. .\,.\,No, I don't think so.\,.\,:) (10:12) .\,.\,That's pretty rad.\,.
+
+.\,.\,When you make e.g.\ a tag, you just make it inherit from a tag (class) entity, and then you write the string. Easy. Okay, this \emph{is} pretty awesome.\,.
+
+.\,.\,I think I will use JS syntax for these structs (plain objects), thus wrapping string properties.\,. hm.\,. .\,.\,Yeah, maybe I will do that, and maybe I'll even use JSON.\,. .\,.\,Yeah, JSON is a very good option, actually.\,. (10:25) .\,.\,It would be nice if we could use numbers for IDs, well and we can in principle for small numbers, but for larger ones there also needs to be special string syntax for this, along with the data placeholders and searchable ID placeholders.\,.
+
+.\,.\,Ooh, for Users and Bots why don't we just make a bot that rates who the actual (active) Users and Bots are, but let it be unrestricted for users to create their own (fake) User and Bot entities.\,!\,:) (10:32)
+
+.\,.\,(10:37) I thought about whether searchable entities should get their own table/view/index only of them, but then I recalled that we also need the other entities (i.e.\ with their own struct-defined properties (not defined by the separate searchable IDs column(s))) to be unique. So I should just make it all as \emph{one} Entities table.\,:) .\,.\,This table should have the columns: parent, searchable IDs (might be split up) (nullable), hash of own struct (nullable), hash of data (text/blob) (nullable), as well as the columns containing the actual struct and the actual data, if any. Apart from these latter columns, there should be a UNIQUE INDEX on all these columns in that order.\,. (10:44) Okay, let me get to it.\,.
 
 
 
