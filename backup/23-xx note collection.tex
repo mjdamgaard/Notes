@@ -3250,6 +3250,8 @@ And then already from there, I could then start designing things ``as a user'' (
 
 .\,.\,(10:37) I thought about whether searchable entities should get their own table/view/index only of them, but then I recalled that we also need the other entities (i.e.\ with their own struct-defined properties (not defined by the separate searchable IDs column(s))) to be unique. So I should just make it all as \emph{one} Entities table.\,:) .\,.\,This table should have the columns: parent, searchable IDs (might be split up) (nullable), hash of own struct (nullable), hash of data (text/blob) (nullable), as well as the columns containing the actual struct and the actual data, if any. Apart from these latter columns, there should be a UNIQUE INDEX on all these columns in that order.\,. (10:44) Okay, let me get to it.\,.
 
+(11:32) Oh, I also have to think about how to differentiate between one-to-many properties and list-valued properties.\,. .\,.\,How about just wrapping the array like this: `\{set: my\_array\}'? And then I can use a similar syntax for other things, such as e.g.\ overwriting or adding property values of/to the parent. (11:37)
+
 
 
 
