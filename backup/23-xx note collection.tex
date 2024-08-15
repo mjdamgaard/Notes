@@ -3252,6 +3252,28 @@ And then already from there, I could then start designing things ``as a user'' (
 
 (11:32) Oh, I also have to think about how to differentiate between one-to-many properties and list-valued properties.\,. .\,.\,How about just wrapping the array like this: `\{set: my\_array\}'? And then I can use a similar syntax for other things, such as e.g.\ overwriting or adding property values of/to the parent. (11:37)
 
+(16:28) With this new way, I can't make restricted data types the same way, but that's fine. We can just either let the browser sanitize, and/or create bots that rates if some data is sanitized (i.e.\ has a given format) or not.
+
+I think I ought to be minimalistic with the class entities. For instance, I will just let the User class be `\{type:``user'', username:``\%1''\}', and the simple tag class be `\{type:``tag'', title:``\%1''\}'.\,! This is instead of trying to be specific in order to prevent future confusion. No! It's better to make simple definition, and when future ambiguity arises, then it is just up for the newer classes to be more specific as to not be confused with the regular old ones.\,!\,:) (16:33)
+
+(16:41) Oh, I don't get that nice automatic rating of all the properties.\,. Oh no, never mind, I can still create propTags automatically and rate them.\,. *Well, what about string-valued properties?\,.\,. (16:59)
+
+(16:44) Hm, instead of the `\{set: my\_array\}' syntax, I could perhaps also use a double array for ordered lists.\,. .\,.\,Or use a `\{list: my\_array\}' syntax for that matter, but yeah, I think the normal interpretation of an array as a property value should be the one-to-many property interpretation. .\,.\,Let me indeed use the double array syntax, as it makes very good sense: If there are several arrays in the outer array, then there are just several lists that are true as values for the given property. (16:53)
+
+.\,.\,``Well, what about string-valued properties?\,.\,.'' .\,.\,Oh, I'll just use a `\{title:``\%1''\}' class, why not?\,. (17:01) .\,.\,And then you are just not supposed to use the IDs of such ``simple entities'' in the prop structs; just use the title directly instead. (17:04)
+
+%(14.08.24, 13:52) Hm, der er lige det ved det, at nu JSON-encoder jeg JSON (når det sendes til klienten).. ..Men gør det noget, rigtigt?..
+%... (15:44) Jeg tror jeg vil lade spec_input være en '|'-spareret streng, og så vil jeg bare indføre en obj type i control-laget, som så skal encodes til JSON før det sendes videre til databasen, og som skal parses tilbage, før det igen encodes lige inden det hele sendes til klienten. ...(15:56) Nej, jeg kommer vist ikke uden om JSON-encoded JSON sådan heller.. ..Tjo, for input skal jeg jo ikke JSON-encode, så der går det fint. Og for query, der kan jeg bare indsætte parsing før den sidste encoding..
+
+(15.08.24, 9:44) I'm thinking of implementing basically an ML (via entity propStructs) for making boilerplate REACT modules. This should just include some basic HTML (and choice of custom CSS classes, which can then be styled by other uploaded CSS entities), as well as ML for what props the module has and which of its child modules receive what props, as well as what contexts the module initializes, and what contexts it uses. All this is then transformed to an actual REACT module that does exactly these things. And whenever a module gets a prop or a context, the module then.\,. hm.\,. (9:50) .\,.\,Nah, that should be implemented via code anyway, i.e.\ that the module then ``uses'' both the prop and the setProp(). And this also means that the ML doesn't have to declare when a module \emph{uses} a context; it is just free to do this whenever (along with any global variables). It only has to state when a module initializes a new context. (9:52) .\,.\,Oh, but the setProp() is also always handed along together with a prop (despite if the module uses it or not). Well, I think so.\,. Or should the ML just also declare that?\,.\,. (9:54) .\,.\,Nah, just hand it along always, why not?\,. (9:56) .\,.\,Yeah, at least as the default behavior (unless otherwise specified, perhaps in a future version).
+
+%(16:41) Hm, do I insert lists with all elements substituted for IDs, or do I keep the simple entities as strings?.. ... (18:22) Yeah, I \emph{will} just insert only the IDs (for lists, not for sets).
+%(20:06) Hm, it doesn't.. often.. make sense to uprate lists, so I might not insert them automatically by default. Also, I'm almost thinking that maybe there's a possibility that the set/list interpretation could just depend on context.. But anyway, let me think.. ...(20:26) No the thing is, when you have a list of something, which is not just a set, then it is typically part of some other whole---I guess unless we are talking constant InstanceLists and such.. Hm.. ...(20:43) Oh, because only the outer array is interpreted as a list, it works fine: We don't need double '[[]]' for each nested list in a multidimensional array/list.
+%..Okay, I think I shouldn't upload (or uprate) lists automatically.. ..Hm, and I also shouldn't upload the values inside lists automatically, then.. Okay..
+
+
+
+
 
 
 
