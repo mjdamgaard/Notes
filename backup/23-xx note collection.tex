@@ -3100,6 +3100,8 @@ So there are two ratings that determines the order: the `correlation' rating, an
 
 .\,.\,(20:28) Ah, we should just use the `importance' rating on top of the `correlation rating' after all, which can then both help by removing the statements that depend on the parent statement, and also aid in removing some of the sub-statements that are correlated with more `important' ones.\,:) (20:31)
 
+.\,.\,And the `importance rating' could by the way just actually be the `relevant sub-statements' (or whatever we call them) tab. (20:33)
+
 
 
 
@@ -3300,11 +3302,27 @@ I think I ought to be minimalistic with the class entities. For instance, I will
 %(16:41) Hm, do I insert lists with all elements substituted for IDs, or do I keep the simple entities as strings?.. ... (18:22) Yeah, I \emph{will} just insert only the IDs (for lists, not for sets).
 %(20:06) Hm, it doesn't.. often.. make sense to uprate lists, so I might not insert them automatically by default. Also, I'm almost thinking that maybe there's a possibility that the set/list interpretation could just depend on context.. But anyway, let me think.. ...(20:26) No the thing is, when you have a list of something, which is not just a set, then it is typically part of some other whole---I guess unless we are talking constant InstanceLists and such.. Hm.. ...(20:43) Oh, because only the outer array is interpreted as a list, it works fine: We don't need double '[[]]' for each nested list in a multidimensional array/list.
 %..Okay, I think I shouldn't upload (or uprate) lists automatically.. ..Hm, and I also shouldn't upload the values inside lists automatically, then.. Okay..
+%*(17.08.24, 9:11) I actually will insert the first lists, i.e. at "depth" 1. But I will not insert or uprate any properties for these lists.
 
 %(16.08.24, 11:04) Okay, I actually \emph{need} to remake my prototype and get it up and working before I seek professional work (maybe a part-time job could work, but I don't think it's worth searching for..). 1) Then I can show it to whoever, which is something that I very much want, and 2) I can show it in the job interviews. ..And I probably have money enough for a few months more. *Maybe I'll search for a part-time job first.. (16:02)
 
 (16.08.24, 13:32) Hm, what do I do about texts containing entity (ID) references?\,.\,. .\,.\,Well, I just make it a convention that '@' is a special character in texts, used to refer to entities, and perhaps even other links.\,. Hm, or maybe we should use some other mark-up, perhaps MD.\,. (13:42) .\,.\,Or a subset of HTML.\,. .\,.\,Yeah, in the long run, inserting URLs (including entity references) via some ML is a better option. (13:44)
 
+*I have to still use the same `@$<$entID$>$' syntax from before, and indeed make `@' a special character. Then at a later point, we can always just add MD or HTML on top of this syntax. (12:03, 17.08.24)
+
+(17.08.24, 11:56) I knew that my new SDB structure was in a lot of ways pretty close to my `type, cxt, defStr' one, but I have just realized that this means that I can reuse very much of my current prototype. So it won't be too much work to get back to where I were. The EntityTitle should then just be parsed from the full propStruct, first looking for a title, and if none is found, looking for the type instead, and just call it `$<$type$>$ \#$<$entID$>$.' .\,.\,And fot the submission fields, I will also just do something similar as before. I could at some point add a submission field that uses the EntityInserter in all its glory, and with a field to provide a entKeyIDStore as well, and where a new entKeyIDStore is then output after a successful submission. But that can wait, \emph{if} I do it at all.
+
+Once I've gotten to where I were with my prototype, I should at some point do the following changes: I should make the interface use only 1 column as standard, and make the whole scroll experience better, and make it work on mobile. I should also replace the Info tab with a tab that show `sections' instead, which are entities that include their own section header, as well as content. I should also make it so that the tabs are looked up for the given type of the entity. When an entity has more than one type (just looking in the full propStruct alone for now, not in types that are up-rated later on), I will make the first line of tabs be a list of types, such that when you click a type, you see the tabs relevant for that type (and these are on the other hand up-rated ``semantically'').
+
+I should also at some point make that thing about being able to mark-up whole REACT modules, give the elements classes, and not least upload and use custom CSS. But that can all wait a little bit.
+
+So this means all means that it won't be long before I can get a new prototype up and running again. (And I will actually make a new website running it (with a new domain name).) And becasue I don't think that this will take long, it also means that I feel like I can start my search for professional work already now, like I had planned.\,:) (12:14)
+
+And once the prototype is up, I can just make it better from there one step at a time.\,:)
+
+.\,.\,Oh, didn't I want to just uprate stuff like `relevant tabs' for the parent class instead of for the types now?\,.\,. .\,.\,Well, maybe nah; maybe types is still the thing to use there.\,. (12:19)
+
+%(12:55) Hm, I want to be able to substitute entKeys \emph{within} a value string, but I guess I should use '[]' then for entKeys.. ..Hm, this is not a completely easy fix, let's see.. ..(13:00) Ah, I could use "" instead of [] and then JSON.stringify the string.. ..Yeah, and just remember that stringified strings start and end with ".. ..Yeah..
 
 
 
