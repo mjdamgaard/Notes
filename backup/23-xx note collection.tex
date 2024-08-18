@@ -3116,6 +3116,14 @@ So compared to Kialo, my system gives a much better opportunity to actually prop
 
 (16:42) Oh, I guess we should also for each sub-statement have a whole discussion page/tab for how that specific statement matters to the parent statement, rather than this just being an unspoken thing that each user has to decide on their own. So before you give the correlation rating (i.e.\ saying how many points the parent's rating grows for each point in the sub-statement (ignoring all its correlated sibling statements)), you might want to first look at the discussion page/tab about reasons why and how the given sub-statement impacts the parent statement. (16:46) .\,.\,(For some sub-statements, the correlation/impact is more clear, however, and users may not need to visit said discussion page/tab for these.) .\,.\,Note that this gives a little more room for some more abstract sub-statements, but it's still best to find as concrete ones as possible, where figuring out the correlation shouldn't require reading though much discussion (on said page/tab) first for the individual user. (16:50)
 
+(17:53) Oh, the cost in this example can also be a rating on its own, i.e.\ where the rating denotes the cost rather than denoting a likelihood of a statement. This option could also work a lot of the times, i.e.\ when a statement has a parameter like that to it.
+
+(19:39) The mentioned discussion page/tab from the last paragraph before the previous one can just be the statement that is automatically generated from the correlation property tag.
+
+Another point: I think that it \emph{is} best to try as much as possible to make the list of the most important sub-statements be as independent(/uncorrelated) on each other as possible.
+
+And a third point: Its also an important part of the system that the discussions aren't completely top down. Each sub-statement can also be seen as an independent discussion, and it can serve as a sub-statement for several parent statements. And it's also very important that a discussion graph is free to undergo a lot of changes, namely as users change up the various `important sub-statement' lists, substituting statements other ones in order to heighten precision, remove/reduce correlations, and of course also just to change less-important statements for more `important' (useful) ones. (19:47)
+
 
 
 
@@ -3342,6 +3350,8 @@ And once the prototype is up, I can just make it better from there one step at a
 (10:42, 18.08.24) I should also make tabs be defined from entities as one of the first things on the to-do list. But I'll just make it in a bit simple way at first, and thus not make that whole HTML-with-modules mark-up language the first time around. But note that the tab header should then be decided by this entity (as well as the relevant InstanceList and its props).
 
 \ldots I think I will try to take the relevant tabs directly from that instance list, and then just try to make an expandable tab list, maybe one that expands downwards.
+
+%(18:17) Hm, det bliver ret grimt hvis jeg har "" i entKeys, når disse er indkapslede.. nå nej, EntityInserter tager jo objekter, ikke JSON, så vi får ikke "" omkring f.eks. property keys, osv. Okay..
 
 
 
