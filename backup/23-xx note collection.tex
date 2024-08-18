@@ -3104,6 +3104,10 @@ So there are two ratings that determines the order: the `correlation' rating, an
 
 (17:03, 17.08.24) By the way, on an unrelated note, the same kind of principle as the `correlated sub-statements' could also be used to filter e.g.\ correlated/overlapping subcategories (including semantic duplicates) in the subcategory tab of a category.
 
+(20:18) The Bayesian calculation is still relevant, by the way, for factual statements. But this can just be a part of how the users are expected to rate the correlation score, i.e.\ from thinking about likelihood of the parent statement being true when the sub-statement is so, versus when the sub-statement is false.\,:)
+
+(18.08.24, 10:35) In some cases it might actually be good to see several sub-arguments/ statements, even if they are much correlated. So I think it's better to just go by `importance,' and then have a expandable menu for each sub-argument/statement which also shows the same topmost important sub-statements, with the one in question subtracted, and where these are just ordered according to correlation with the sub-statement in question, and of course where this rating is shown.
+
 
 
 
@@ -3281,7 +3285,7 @@ And then already from there, I could then start designing things ``as a user'' (
 
 .\,.\,Ooh, for Users and Bots why don't we just make a bot that rates who the actual (active) Users and Bots are, but let it be unrestricted for users to create their own (fake) User and Bot entities.\,!\,:) (10:32)
 
-.\,.\,(10:37) I thought about whether searchable entities should get their own table/view/index only of them, but then I recalled that we also need the other entities (i.e.\ with their own struct-defined properties (not defined by the separate searchable IDs column(s))) to be unique. So I should just make it all as \emph{one} Entities table.\,:) .\,.\,This table should have the columns: parent, searchable IDs (might be split up) (nullable), hash of own struct (nullable), hash of data (text/blob) (nullable), as well as the columns containing the actual struct and the actual data, if any. Apart from these latter columns, there should be a UNIQUE INDEX on all these columns in that order.\,. (10:44) Okay, let me get to it.\,.
+.\,.\,(10:37) I thought about whether searchable entities should get their own table/view/ index only of them, but then I recalled that we also need the other entities (i.e.\ with their own struct-defined properties (not defined by the separate searchable IDs column(s))) to be unique. So I should just make it all as \emph{one} Entities table.\,:) .\,.\,This table should have the columns: parent, searchable IDs (might be split up) (nullable), hash of own struct (nullable), hash of data (text/blob) (nullable), as well as the columns containing the actual struct and the actual data, if any. Apart from these latter columns, there should be a UNIQUE INDEX on all these columns in that order.\,. (10:44) Okay, let me get to it.\,.
 
 (11:32) Oh, I also have to think about how to differentiate between one-to-many properties and list-valued properties.\,. .\,.\,How about just wrapping the array like this: `\{set: my\_array\}'? And then I can use a similar syntax for other things, such as e.g.\ overwriting or adding property values of/to the parent. (11:37)
 
@@ -3326,6 +3330,10 @@ And once the prototype is up, I can just make it better from there one step at a
 .\,.\,Oh, didn't I want to just uprate stuff like `relevant tabs' for the parent class instead of for the types now?\,.\,. .\,.\,Well, maybe nah; maybe types is still the thing to use there.\,. (12:19)
 
 %(12:55) Hm, I want to be able to substitute entKeys \emph{within} a value string, but I guess I should use '[]' then for entKeys.. ..Hm, this is not a completely easy fix, let's see.. ..(13:00) Ah, I could use "" instead of [] and then JSON.stringify the string.. ..Yeah, and just remember that stringified strings start and end with ".. ..Yeah.. ... (16:10) I'll just use JSON string syntax for all entKeys.
+
+(10:42, 18.08.24) I should also make tabs be defined from entities as one of the first things on the to-do list. But I'll just make it in a bit simple way at first, and thus not make that whole HTML-with-modules mark-up language the first time around. But note that the tab header should then be decided by this entity (as well as the relevant InstanceList and its props).
+
+\ldots I think I will try to take the relevant tabs directly from that instance list, and then just try to make an expandable tab list, maybe one that expands downwards.
 
 
 
