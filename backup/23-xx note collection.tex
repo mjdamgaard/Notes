@@ -3388,6 +3388,8 @@ Hm, should the specs of the standard entities then actually just be the values? 
 
 %.\,.\,So a lot like my old way, only where the type entities now defines the ``context''/template (and also with the whole data\_input field and data placeholders).\,. (14:00)
 
+(15:21) Oh, we still need to know if the parent is a type or a supertype of the entity.\,. .\,.\,Of course unless type entities just define their supertypes in a `supertype' property.\,. (15:23) .\,.\,Hm, but then the entDataArr (and the recursive proc) doesn't work.\,. (15:24) .\,.\,Oh, maybe I don't want types to have (super)typeIDs or specs, but want them to always only be defined by one propStruct, which then means that a type is then just \emph{supposed} to include the same properties as exists in all its supertypes (both the constant and the variable ones). I guess that might be it.\,. (15:29) 
+
 
 
 
