@@ -3485,6 +3485,25 @@ Then for the EntityTitles, the placeholder substitutions are then wrapped in a s
 
 (15:37) Wait, we could actually even make it CSS whether to show the placeholder (i.e.\ from the given EntityPage context) or show an extended title. In fact, we \emph{should} do this! For then EntityTitle just needs to print out it all (down to some maxRecLevel), and then CSS can do the rest from there.\,! (15:39)
 
+(15:45) Below the header title of an EntityPage, we can also show a list of the (first-level) substitutes, each preceded by `$<$name$>$: ', where $<$name$>$ is the placeholder name.
+
+\ldots\ (16:38) We also have the word `score' to use. But I think I will stick to `estimator,' and then try to use `rating value/score' as much as possible for the estima\emph{tions}.
+
+I don't actualy think I will use a context for those placeholders after all. Well, I might, but the point is that I think I will only let there be a placeholder for the columnEntID, as well as for each entity in an instance list, for which we can just use the `key' that React requires (recommends) them to have anyway. (So prop drilling is also possible here.) So the main point is to just not give placeholders to any old entity that appears in the column, but only use it for these special standard entities. Then I'll just use `\#$<$entID$>$' for the rest.
+
+I think that it is very important to be able to see the whole list of `important correlated estimators' before one can give it a percentage score, so I'll probably only show those ratings on that list. But on the other hand, I will be very generous with showing that particular list, i.e.\ in a sub-menu to all ratings that you see.\,. Well, unless we get too much nesting, I guess.\,. Or maybe not; maybe the user should just be able to expand this ``discussion graph'' (which it essentially is in a lot of ways) as much as possible, always.\,. (16:47)
+.\,.\,(Well, on the other hand, why not open up a new column?\,. I guess I'll just see.\,.) (16:48)
+
+(17:16) EntityTitles should also have a className which denotes the typeID, preceded by a prefix as well, which can then be used in particular to make special rendering for tag, propTag and estimator entities (as well as other custom types later on, potentially).
+
+(18:06) So we could actually drop the title property for propTags and estimators.\,. *(18:13) Nah, I think defining a title should still be a convention. But I will just ignore this title almost completely for the EntityTitles when it comes to propTags and estimators, and then only show it in the Definition tab of the EntityPage.\,. (18:14)
+
+.\,.\,(18:09) Hm, I might actually not automatically uprate the properties from the propStruct after all with the EntityInserter class after all, since I think I like the convention to prioritize the defining properties over semantic ones, and then when you need e.g.\ to re-define a description, you just use a different property for that.\,. well, or you can use the same actually, since the app will not look it up by default if it is already present in the defining propStruct.\,. .\,.\,Anyway, I think I will not uprate the properties automatically after all, like I said.\,. (18:12)
+
+(18:15) I also want disambiguations/sub-titles.\,. .\,.\,Hm, let me just use a `title' \emph{and} a `short title' property. Then if a short title is not too long, the app might choose to render it, even at a somewhat deep recLevel. I guess this might actually be possible in CSS alone as well, as I think we can get the width and/or character number, let's see.\,. (18:19) .\,.\,Yeah, you \emph{can} (of course) do that. Good. (18:21)
+
+(18:22) Maybe I'll do something else instead of that 1--2 (or 1--3) character type sign: Maybe I'll just include a full `:: $<$type$>$' span element at the end of each EntityTitle (or `$<$type$>$: ' in front), and then let the CSS define when to display these. (18:24)
+
 
 
 
