@@ -3483,6 +3483,8 @@ I like this. As long as we make the arrow a bit shorter and/or the spaces around
 
 Then for the EntityTitles, the placeholder substitutions are then wrapped in a span tag with a className that includes this name, after some prefix. And all the other text around these placeholders is also wrapped in span tags, that are then siblings with the substitutes' span tags elements. Then when using CSS to determine the actual rendering of the EntityTitle, the boilerplate text of the original/initial title can always just be made to be `display:``none''', and then the CSS can insert its own boilerplate, as well as even rearrange the substitutes, and make that syntactic sugar I was talking about just above. :) (15:31)
 
+(15:37) Wait, we could actually even make it CSS whether to show the placeholder (i.e.\ from the given EntityPage context) or show an extended title. In fact, we \emph{should} do this! For then EntityTitle just needs to print out it all (down to some maxRecLevel), and then CSS can do the rest from there.\,! (15:39)
+
 
 
 
