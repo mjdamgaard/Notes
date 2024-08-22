@@ -3430,6 +3430,42 @@ When hovering over such composite entities (or clicking the first time for mobil
 
 .\,.\,For the type characters, we'll just use the first two characters of the type's title, unless there is a high enough rated alternative (when that is implemented). I actually just another though as well: the type sign could change to a link sign when hovered over (clicked once for mobile), and then a link to the type could be expanded (above the other HTML boxes, not moving anything, you know) below the sign, also of course displaying the full title of the type. (12:19) .\,.\,Hm, that would be three clicks in total, then, for mobile users to go to a link within an EntityTitle, but maybe that's okay.\,. (12:20) .\,.\,Yeah, actually it's fine 'cause it also serves to make sure that they don't click on the wrong sign within the EntityTiltle; they get to abort it if they do. And the sign and type display can just be expanded to make the third and final click easy to hit.\,:) (12:23)
 
+(12:30) We can say about `tags': They are functions that returns a `rating' to be rated by the users. And the semantic of these ratings can depend on the real world, as well as what goes on on this particular side. They can even be dependent on itself, or rather on what instances have previously been rated for it, and what those ratings are. For instance, a subcategory of `progressive rock' might be a decent one for `music genres,' until `rock' comes along. When `rock' is highly rated on the list, then it might be better to have `progressive rock,' not as a subcategory directly of `music genres,' but have it as a subcategory under `rock.' The same can be said about `rock' as a subcategory of music, until the subcategory `music genres' comes along (and all of a sudden makes `rock' and unwanted subcategory to see on the list, since you would rather have that \emph{under} the `music genres' category). (12:39)
+
+(12:47) I should mention that I'm thinking of using a scale from -100\% to 100\% for the `correlated ratings.'
+
+(12:57) When an EntityTitle is within another EntityTitle, and has EntityTitle children itself, then parentheses should be rendered around it. Luckily, we can do this just with CSS.
+
+.\,.\,So `my tag[correlated rating](my rating)' for the `correlated rating' ratings.\,. .\,.\,Well no, I guess: `my rating 1[correlated rating](my rating 2)'.\,. .\,.\,Hm, e.g.\ `good(The Lord of the Rings)[correlated rating](has good acting(The Lord of the Rings))'.\,. .\,.\,Hm, I might want to reintroduce ``short titles,'' first of all, and also it would be nice to be able to remove the repeated `Lord of the Rings' here, if possible.\,. Hm.\,. (13:07)
+
+.\,.\,And maybe I will just drop internal links, at least from the start, and just write all internal links in a list under the haeder of an entity's AppColumn/page header title.\,.
+
+.\,.\,Maybe I don't like the programming-like syntax after all.\,. (13:13) And maybe I should see if we could get a `this' keyword to insert.\,.
+
+.\,.\,Hm, if we could mend it into something like: `good[(1)] $\langle$correlated rating$\rangle$ has good acting[(1)]'.\,.\,? (13:18) .\,.\,Or just `good(1) $\langle$correlated rating$\rangle$ has good acting(1)'.\,.\,? .\,.\,Or `$\langle$good$\rangle$(1) correlated rating $\langle$has good acting$\rangle$(1)'.\,.\,?
+
+.\,.\,Hm, and we could also generate `short titles' automatically by taking all first letters (keeping capitalization) and punctuation, then potentially adding a number if several inputs have the same sequence of letters.\,. Hm, and for one-word titles, we could take one or two of the characters after the first.\,. But maybe I actually like just using number placeholders alone better.\,. (13:28)
+
+(13:36) And clicking on a placeholder should just fold out its EntityTitle, and perhaps give some margin to the surrounding text as long as you hover over it.\,.
+
+(13:40) I could then make a React context for making placeholders the same across several rating displays, e.g.\,.
+.\,.\,I like this a lot, actually.\,. (13:42)
+
+.\,.\,React children can then add any new IDs to the placeholder list (getting a small-numbered placeholder for that ID) of the context. This context should then in most cases be sitting at the top of the AppColumn/EntityPage, meaning that 1 will always be the placeholder of the top Entity of the given column. (13:46)
+
+.\,.\,(13:51) Hm, InstanceList EntityElements can also provide their own placeholder context.\,. Perhaps we can prefix these by `\#' or something.\,. .\,.\,And when the ID appears in both lists, we just write both the placeholders, separated only by a comma, e.g.\ `3,\#44'.\,. .\,.\,Well, we should always add the placeholder to the EntityPage's context, I guess, so one could also just write them in reverse order of the contexts: `1,3', where 1 is then always the.\,. placeholder for the EntityElement.\,. Well, how about we instead just make sure to always print out the placeholder at the beginning of each EntityElement. That sounds better.\,:) (13:57) .\,.\,(Then we just have the one placeholder list per EntityPage/AppColumn, i.e.)
+
+I like highlighting all tags in EntityTitles with angle brackets, like I just do above, but what should I do for properties (which serves as semantic relations).\,.\,?
+`$\langle$good$\rangle$(1)$\rightarrow$correlated rating: $\langle$has good acting$\rangle$(1)'.\,.\,? .\,.\,Not bad.\,. How about: `$\langle$good$\rangle$[1] $\rightarrow$ correlated rating: $\langle$has good acting$\rangle$[1]'.\,.\,?
+I like this. As long as we make the arrow a bit shorter and/or the spaces around it.\,:) (14:05)
+
+.\,.\,Note that we should only start collapsing EntityTitles into placeholders when they are sufficiently deep within, \emph{and} I should find a way to somehow make.\,. Wait, first of all, it should actually be: `$\langle$$\langle$good$\rangle$[1]\,$\rightarrow$\,correlated rating$\rangle$[$\langle$has good acting$\rangle$[1]],' then, but that probably won't look very good.\,.\,? (14:08)
+.\,.\,Hm, it is actually somehow not far from looking okay, but perhaps not good enough, still.\,. (14:10)
+
+.\,.\,Hm, I guess we could do all this with CSS as well.\,.\,! And then we could also quite easily introduce syntactic sugar, such as `$\langle$$\langle$good$\rangle$[1]\,$\rightarrow$\,correlated rating$\rangle$[$\langle$has good acting$\rangle$[1]]' turning into `$\langle$good$\rangle$[1]\,$\rightarrow$\,correlated rating: $\langle$has good acting$\rangle$[1]'.\,.\,:) (14:12)
+
+.\,.\,But to get back to my interrupted sentence, I guess I still need to figure out a way to make.\,. ah, to reduce the recLevel of a rating (statement) subject (like `$\langle$has good acting$\rangle$[1]' in this case), which should not be so hard, right?\,.\,. (14:15) .\,.\,No.\,.\,:)
+
 
 
 
