@@ -3466,6 +3466,23 @@ I like this. As long as we make the arrow a bit shorter and/or the spaces around
 
 .\,.\,But to get back to my interrupted sentence, I guess I still need to figure out a way to make.\,. ah, to reduce the recLevel of a rating (statement) subject (like `$\langle$has good acting$\rangle$[1]' in this case), which should not be so hard, right?\,.\,. (14:15) .\,.\,No.\,.\,:)
 
+(14:29) Hm, this means that we don't need that title-with-placeholders technology after all, since composite titles should actually be made with CSS instead.\,. Hm, it seems so.\,. .\,.\,And making the tags readable by machines to support blind people can be made in a layer above, I think, since it has to be language-dependent anyway (we should also support non-English speakers).\,. (14:34)
+
+%..I'll make an ExtendedHover React wrapper for making this hover-or-click computer-or-mobile-dependent action, btw.
+
+%..And when hovering over placeholders on computers, there should be inserted (by CSS) an 'expand' symbol.. ..The ExtendedHover can then therefore also get a computer-hover-specific action.. ..Or I'll perhaps call it HoverOrClickWrapper..
+
+(14:45) ``Rating entities'' are virtual entities; they are only composite things.\,. no, that's not right. I need them to be actual entities. Well, they can be, but they are just always rated in the database by splitting them up into their two components (which they always have: a tag and a subject). (14:47)
+
+.\,.\,So you might click on a rating entity, only to find that this entity haven't been inserted yet (and the app prompts you to do it), even though it has already been rated by users.
+
+.\,.\,(14:57) Hm, it would be nice to eliminate the `rating as a thing to rate'--`rating as a user-provided number on a scale' ambiguity somehow.\,. .\,.\,Yeah, I think it's actually wrong to use as the `thing to rate' itself, rather than the measurement/estimate, so let me think of another word.\,. (15:01) .\,.\,An `estimator' would be a correct term, but.\,. .\,.\,(15:06) Nah, I think we might be able to use.\,. well, `rating' although we \emph{are} not talking about the actual estima\emph{tion}, but rather the `thing to rate'.\,. Hm.\,. (15:07) .\,.\,Oh, how about a `rate'?\,!\,.\,. (15:08) .\,.\,No.\,. (15:09) .\,.\,I guess I might just use `estimator,' actually; it is the right word when talking about statistics, so yeah.\,. .\,.\,So I'll e.g.\ say: `correlated estimator' instead.\,. (15:11)
+
+(15:16) Okay, in terms of the composite titles, both the normal ones (for propTags and estimators) and all the custom ones, I think I will still use an (initial) title with placeholders. But then I will use named.\,. well, maybe not, actually.\,. `named placeholders' (like I did with my old Templates).\,. Maybe I'll just require that each placeholder appears first as the sole property value of a property member, before this placeholder is used anywhere else in the propStruct template.\,. (15:22)
+.\,.\,Except that we sometimes want (ID-referenced) entities as property keys, which does make it more appealing with named placeholders.\,. .\,.\,Sure, let me just do that; let me use named placeholders instead, probably with a `\%[$<$name$>$]' syntax. (15:24)
+
+Then for the EntityTitles, the placeholder substitutions are then wrapped in a span tag with a className that includes this name, after some prefix. And all the other text around these placeholders is also wrapped in span tags, that are then siblings with the substitutes' span tags elements. Then when using CSS to determine the actual rendering of the EntityTitle, the boilerplate text of the original/initial title can always just be made to be `display:``none''', and then the CSS can insert its own boilerplate, as well as even rearrange the substitutes, and make that syntactic sugar I was talking about just above. :) (15:31)
+
 
 
 
