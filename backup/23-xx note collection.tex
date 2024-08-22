@@ -3074,7 +3074,7 @@ correlations or anything like that, so maybe `importance' is simply enough.\,. (
 So in other words, the users should only rate the correlations for each piece of evidence individually with respect to the main statement of the discussion, and then also---after having discussed the possibilities for the pieces of evidence being correlated between each other---the correlation for the combined evidence with respect to the main statement. (14:05) .\,.\,(And from there, the likelihoods of the main statement being true or false can be obtained mathematically, i.e.\ for each user individually *(i.e.\ in terms of that user's underlying beliefs).)
 
 
-\subsection{*Continued on structured discussions (16.08.24)}
+\subsection{*Continued on structured discussions (16.08.24)} \label{struct_disc_cont}
 
 (16:04, 16.08.24) I guess a big question is: Do we want to aim for that idea of being able to deduce probabilities ``automatically'' from the sub-discussions, or should we just aim for having the related facts and discussions listed in order of how important they are to the truth/falsity---or rating---of the statement in question, and where the truth--falsity rating / subjective rating is then just shown for each one, which might inform the user in rating said statement.\,.\,? Hm, I guess we do want some kind of `rating the correlation between sub-statements and parent statement,' but how exactly.\,.\,?\,.\,. .\,.\,Hm, this calculation can then support the rating of the parent statement, but perhaps more importantly, it mean that it can be ``rated in advance''.\,. i.e.\ users can give ``dependent ratings''.\,. (16:11) .\,.\,Hm, and if we are thinking about subjective ratings (like most regular tags), then it could perhaps also signal the importance of the given aspect of the resource (movie, book, text, etc.).\,. (16:12) .\,.\,But I don't think that these two things should be mixed, actually.\,. .\,.\,(16:17) Well, if we are only talking about `importance,' then the systems could be mixed.\,. But `dependent ratings'.\,.(?) .\,.\,Hm, but couldn't you just not include the `dependent ratings' for subjective statements.\,.\,? (16:19) .\,.\,Yeah.\,. .\,.\,Hm.\,.
 
@@ -3392,6 +3392,41 @@ Hm, should the specs of the standard entities then actually just be the values? 
 
 \ldots\ (16:15) I know: Types should be defined by three things always: A list of supertypes, its propStruct temple for its type instances, and its description. And would you look at that, that fits neatly into the spec\_input, the own\_struct, and the data\_input columns. It even opens up for potentially being able to query for a list of all subtypes of a given supertype list, if one wants to implement that at some point. But in any case, it is just nice that it fits so well in the same table. .\,.\,Oh, but how do you tell them.\,. Ah, the typeID, never mind. Okay. .\,.\,And this also means that I should make that recursive proc after all. I should just make a proc for querying (or inputting) type instances and one for querying (or inputting) standard entities. Well, unless I just want to use the same proc for both, actually.\,. .\,.\,I'll see. But no need for the recursive proc.\,. %Well, maybe.\,. no, never mind.\,. (16:23)
 .\,.\,:) (16:24)
+
+(19:49) About the EntityTitles, I'll just do the same as before: The internal references become the links only in the AppColumn header (and of course in the propStruct as well on the meta info page). *(20:54) I think I will also add a link button to the left of all EntityTitles such that you can always click all links directly in principle, plus you can also always see what are the individual entities---especially since these should be highlighted when hovering over the given link button (for computer users). .\,.\,Oh, and mobile users should click to highlight it and make it a link, before clicking a second time to open it. (20:57) 
+
+(19:52) Oh.\,! I just realized how good the `correlated rating/sub-statement' ratings will be for the (ML) algorithms.\,.\,!
+
+.\,.\,(And I should indeed call the property `correlated rating' instead.\,.\,:)) (19:57) .\,.\,(Well, or `correlated statement'.\,.)
+
+(20:45) I think I need to have it so that tags can define their own statement templates.\,. .\,.\,Hm, yeah, they should define both the title/header of their instList, \emph{and} they should define how to take each instance and construct a statement with it.\,.
+
+.\,.\,And I think properties should do something similar, i.e.\ define how they should normally be rendered in various contexts. (And then from there, you can always add more rendering methods ``semantically'' via new up-rated properties, and also even overwrite all these for special individuals, potentially.\,.) (20:49)
+
+(20:58) Oh, I should also mention this idea: When showing the normal ratings under the `Ratings' tab, i.e.\ those meant for searching for (and filtering out) the entity, then the `((good fits $<$entity$>$)-$>$`correlated statement') fist $<$rating statement$>$' rating (this is why we need to have those better rendering options by the way.\,!) should always be shown just below (or above) the given rating. This will then make users used to the structure that all rating comes in twos: The rating itself, along with a rating of how relevant the first rating is for the most relevant overall statement, which will often be `good' (or `good fits $<$entity$>$'), but if in case of a submenu or page of another rating (such as the tab of `correlated ratings' to a given rating), then that will take the place of `good.' .\,.\,(I hope that made sense.\,.) (21:07)
+
+(21:38) Maybe a tag should define its own standard parent tag (like `good,' but also maybe like `funny' etc.), but of course ``semantically'' rather than directly in its propStruct.\,.
+
+.\,.\,I should mention: See Section \ref{struct_disc_cont} above for more on `correlated ratings/tags/sub-statements' and all that.
+
+(22.08.24, 11:37) Okay, I have a few new ideas. First of all, tags should not only be able to define their own rating, but they should even define their scale. And it should actually be such that they can define both a formula (potentially with rounding symbols), and define the format string that results in the rating displayed on the right of the rating bar. And then I will actually just drop the stars above (or constituting) the rating bar, but always just have a colored not-too-thin bar, whose color change from red to/through green depending on the position. For regular 10-star ratings, and other $n$-star ratings, a number is just displayed followed by a star (i.e.\ right of the bar).
+
+Left of the bar is shown an info sign that displays the description of the rating when clicked or hovered over. And above the bar is the tag displayed, followed by a symbol, I think, and then the subject/instance.
+
+I also just looked at UTF-8 characters, and I found the LEFT and RIGHT MULTIMAP symbols. That looks very well to be repurposed for pinning a tag to an entity. .\,.\,That is, unless I still want to construct the whole sentence for each tag--instance pair.\,. .\,.\,For each `ratable statement,' we can also say.\,. (11:47)
+
+.\,.\,Anyway, for each EntityTitle, whereever it appears, the should be a type symbol just left of it, possible with 1--2 characters shown (perhaps inside a square), at least until we start using pictures, perhaps. Hovering over these will then underline the entity and display the full type (and for mobile clicking them will do this). And clicking them will actually direct.\,. to the AppColumn/page of the entity?\,.\,. (11:52) (And for mobile, this would be clicking it again.\,.) .\,.\,I guess so, even though this is not too intuitive (but helpful).\,. (11:53)
+
+.\,.\,Hm, maybe the type signs should only be shown when hovering over the entity.\,. (12:00)
+.\,.\,Hm, or maybe we should use function-like syntax of `tag(instance)'.\,. .\,.\,Yeah.\,. (12:01)
+.\,.\,(12:04) Hm, and we \emph{could} then also use a `subject[property]' syntax for property tags.\,.
+.\,.\,Ah, then it is also language-independent, and thus sure to work in all languages, not just English. (12:07)
+
+When hovering over such composite entities (or clicking the first time for mobile), the type-and-link signs should be shown to the right, but should also introduce parentheses around the entity if it is a composite entity. .\,.\,And all this can still be done with the same placeholder technology, right? We just change e.g.\ `\%1 of \%2' with `\%2[\%1]' and `\%1 fits \%2' with `\%1(\%2)'? It seems so.\,:) (12:11)
+
+.\,.\,This is actually pretty nice.\,.(!) Sure this programming-like syntax will require some getting used to for a lot of users, but I actually don't even think that the alternative of constructing sentences is any better in that regard, ultimately. (12:13)
+
+.\,.\,What great changes.\,.\,!\,:) (12:14)
 
 
 
