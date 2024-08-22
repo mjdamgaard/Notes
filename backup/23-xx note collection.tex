@@ -3504,6 +3504,22 @@ I think that it is very important to be able to see the whole list of `important
 
 (18:22) Maybe I'll do something else instead of that 1--2 (or 1--3) character type sign: Maybe I'll just include a full `:: $<$type$>$' span element at the end of each EntityTitle (or `$<$type$>$: ' in front), and then let the CSS define when to display these. (18:24)
 
+(18:27) Maybe I'll even use a `long title' property as well.
+
+%(18:43) Let me just reiterate to myself that neither the types' ownStructs nor their template structs should include a 'type' property, as this is determined instead by the typeID field (previously the 'parentID' field).
+
+(19:48) Oh, there is a thing, though. When it comes to e.g.\ movies, or any specific class of things like that, it often makes sense to rate the importance and, more importantly, the correlation of various tags for all entities of that class at once. For instance, `has good acting' might be equally correlated for a given user's perspective for all movies of a certain class (like `fantasy movies' or just `live action movies' in general). Whereas when we are talking about specific discussions, the correlated statements are often quite unique to that discussion. So I need to figure out what we could do to make correlation (and importance) ratings count for a whole class at once, in some cases.\,. Hm, the natural suggestion would be to say that the correlation ratings can be done for a whole category at once, rather than just the individual entity. So how would that be.\,.\,?\,.\,. (19:54)
+\ldots (20:09) Well, we could uprate these ``(correlation) class'' categories for any individual movie (e.g.) and then make it so that the displayed correlation ratings are generally made by combining the ratings from this ``(correlation) class'' together with the specific ones for the individual movie.\,.
+.\,.\,Or maybe we could pull it from the type instead.\,. (20:13) .\,.\,Hm, and perhaps pull the weight as well from there, i.e.\ the weight used when combining them.\,. .\,.\,Nah, not the weight. And I also think using categories is better than using the types.\,. .\,.\,maybe.\,.
+
+.\,.\,Hm, I actually think that this might be the way, i.e.\ uprating categories for individual entities and then make it so that the correlation ratings are a combination, if a category is rated highly enough.\,. Hm, and.\,. wait.\,. (20:26) .\,.\,No, yeah, the correlation category is uprated for the individual (not the other way around, although you could insert that rating as well, why not.\,.), or perhaps for the type.\,. Hm.\,. (20:28)
+
+.\,.\,Wait, and it isn't easier to just rate the impact, instead, i.e.\ such that you rate the tag itself and the impact it has on the overall tag in question (often `good'), instead of rating the tag itself and the \emph{correlation}, which is just impact divided by score of the rating tag itself. Would this not be a lot easier for the users?(!) (20:32) .\,.\,And then the correlations can be subtracted statistically for a given class from these ratings, rather than the other way around.\,:) It sounds good, but the only thing is that for discussions, where the score of the ``sub-statement''/sub-estimator itself might not be known at a time where it is still informative to rate and see the correlation rating (which again is ``impact'' divided by the score).\,. (20:35) .\,.\,But it of course doesn't make sense to try to make two different things, i.e.\ discussions and quality ratings, fit the same system; we should then rather just make two different systems.\,:) (20:37) .\,.\,For quality ratings, the correlation \emph{can} be rated in principle (somewhere), but it will probably be better to extract that instead, statistically. And for discussions, it is rather the impact that (very much in this case) ought to be extracted rather than rated directly, and the correlation that ought to be rated instead. :) (20:39)
+
+.\,.\,Again, it \emph{does} also make sense for users to rate the correlations for quality estimators directly---maybe that \emph{could} actually help the statistics significantly, even---but again on the other hand, you are not supposed to rate the impact directly for discussions. (20:42)
+
+.\,.\,As for the ``correlation classes,'' well, these are then just uprated and used in order to extract meaningful correlation ratings from ratings of all the different entities in a given class. (20:44)
+
 
 
 
