@@ -3522,6 +3522,32 @@ I think that it is very important to be able to see the whole list of `important
 
 (21:30) Ah, maybe there should always just be the three ratings: the tag itself, the impact rating, and the correlation rating (to the given overall estimator, e.g.\ `good'). And whenever you rate the second one out of the three, the third one will also automatically be rated. Then for quality ratings, the correlation rating can just be hidden.\,. well.\,. Nah, maybe it's better to just show all three ratings at the same time (so always show `impact' below the correlation rating), I think so.\,. (21:34) .\,.\,(For as long as `impact' is just dependent on the estimator's rating itself, then you it does make sense to rate it, as it is equivalent of rating the estimator itself, i.e.\ if the ``correlation'' has already been rated.)
 
+.\,.\,Hm, in principle you could also do the same with the overall rating (e.g.\ `good[entity]' or the `likelihood[parent statement]') and all the ratings of the sub-estimators, together with their correlations (or impacts, equivalently). But maybe it's better to just show a slight warning if there is a discrepancy (and make this warning more pronounced if the discrepancy is larger).\,. (21:40)
+
+(26.08.24, 9:01) I just had the idea to use `quality' instead of estimator. Before that I have also been thinking about `ratable parameter,' but no, (ratable) quality is much better, I think. I'm thinking then that we could let `properties' denote the standard noun-defined qualities, and thus then let `qualities' be a superset of `properties.' I think this might make sense.\,.\,:)
+
+Another thing: We have to call types `classes' instead, if nothing else then due to how they are similar to classes in programming languages. Now, I'm currently thinking about exactly how to.\,. I think classes should be uprated more semantically; we should not use the propStruct as much.\,.
+
+.\,.\,I also think that I need to rethink the whole ``semantic search'' using categories---in fact I think I might use the classes instead of the categories.\,. .\,.\,(9:11) The overall idea is that seaching class $\rightarrow$ subclass $\rightarrow$ sub-subclass makes sense when you just need to specify a class more and more for a search. But often, if you are looking for something that you don't have the keywords to search for or don't know exactly what you are actually searching for at all, then it would better and more natural to find the given overall subject, and then look in `related entities' (downward, horizontally, or upward), and/or in properties.\,. (9:16) .\,.\,And whenever you go to a new thing, the classes of that thing is then looked up, followed by what properties, etc., should be shown on the various tabs, and of course also what tabs should be there.\,.
+
+.\,.\,(9:24) Maybe `quality' doesn't work so well with e.g.\ likelihood.\,. .\,.\,although `ratable quality' might.\,. .\,.\,Yeah.\,. (9:25) .\,.\,Yeah, `ratable quality'.\,. .\,.\,Also doesn't require further explanation but can be understood on its own, which makes it very useful. Okay, `ratable quality' it is.\,. (9:27)
+
+.\,.\,Okay, so the only thing that is now troubling me a bit, is whether we need to e.g.\ make a kind of virtual classes without templates which isn't used to define/specify an entity, but more to categorize it.\,. Hm.\,. (9:30) .\,.\,Well, we could call these virtual classes `categories'.\,.
+
+(9:40) Nah, it's actually bad to use classes (formerly `types') to anything other than defining/specifying, since there might be the exceptions that doesn't.\,. have the properties.\,. hm.\,. .\,.\,Well, we could of course just introduce a null value for properties, and we also already have the ownStruct for when an entity needs more properties to specify.\,.
+
+(10:15) Hm, when specifying a subclass, you often need \emph{less} information to then specifying the entity from there.\,.
+
+For all named entities, a list of supercategories followed by a name/title should be enough to define the entity (recall that semantic imprecision is allowed, and often good). And I guess for a lot of other entities, a list of supercategories followed by just one other property as well should be enough.\,. .\,.\,So maybe we could aim for that convention.\,. (10:19)
+
+.\,.\,(10:24) Ah, but then we could just forget about subclasses needing to define all the properties of the parents.\,. no, better to define these.\,. .\,.\,But you have the option to define them as null for special cases.\,. .\,.\,Okay, so I think I'm back to wanting most entities to be defined as a list/set of supercategories, which I will now, however, call *(super)`classes,' as each class should also preferable have a propStruct template in order to define instances of that class.\,. (10:28) .\,.\,Except it would be cooler if those template were semantically uprated instead.\,. .\,.\,(10:31) Well, should templates then be their own things.\,. .\,.\,Hm, entities which holds a variable propStruct template, which defines.\,. oh, this is equivalent of just calling my previous classes/types `templates instead'.\,. .\,.\,I could then make templateID *(tmplID) = 0 just mean that there is no template, and that the entity is fully defined from its ownStruct.\,. .\,.\,And since I'm not calling the entities `objects,' there is no need to call the templates `classes;' we can just say that templates is for entities what classes are for objects (in programming languages). (10:37)
+
+.\,.\,And I think I might use `categories' instead of `classes,' then.\,. (10:40)
+
+.\,.\,(10:42) Now, you \emph{can} make semantic searches by going the `category $\rightarrow$ subcategory $\rightarrow$ sub-subcategory' route, but it would probably often be better to just normal-search for the given topic first, and then use properties like `related entities' or `related subjects/topics,' and more properties of that nature, from there. (10:45)
+
+Okay, this seems very good; I think I know what to do now.\,.\,:) (10:46)
+
 
 
 
