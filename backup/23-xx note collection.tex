@@ -3612,6 +3612,12 @@ When defining a title template, one can then use a syntax to access the various 
 
 .\,.\,And then I surely need to add the classID field, don't I.\,.\,? (15:50) .\,.\,'Cause we can handle duplicates: If an entity should rather have another class, then we can just make sure that all users subscribed to the specific duplicate recognition user group can just have all their non-meta ratings about that tag, either as the subject, the tag/relation, or the object, be transferred to the better duplicate instead. (15:53)
 
+\ldots\ I think we might just look up properties semantically.\,. .\,.\,And then we don't need to have the classID field.\,. .\,.\,(And we already shouldn't need that, since the app will most often know it from the template (templateID).) (17:32) .\,.\,I'm thinking, then, of using a bot to uprate all property values from the propStruct.\,. .\,.\,I mean, if we are only using that bot, then it's pretty much the same, only it's not template-dependent and/or template-reliant.\,. (17:36)
+
+\ldots Hm, it seems more ``robust'' in some way to let the EntityTitles look first in the propStruct, but.\,. (17:53) .\,.\,So I'll implement that, and then we can also implement the other thing. Then when a compound title relies on a semantic property, the provided property is then an entity, whereas it is just a string when EntityTitle (or maybe a DataFetcher module) is supposed to look directly in the defining propStruct. (17:56)
+
+.\,.\,Hm, a PropertyFetcher module.\,. (17:57) .\,.\,Or JS class.\,. \ldots Let me make it as a JS class.\,. (18:09)
+
 
 
 
