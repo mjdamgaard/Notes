@@ -3596,6 +3596,12 @@ About the meta entities, I think it's best to just let the tag determine the int
 
 .\,.\,Not that users might not make frequent use of the propStruct to disambiguate the submitted entity further than the given template allows, i.e.\ whenever your entity is a bit special and you don't want to make a whole new template just for that, but the good thing is that this disambiguation data only needs to be shown in the (meta) info tab. So one can delay fetching that data until necessary. (11:11)
 
+\ldots\ (14:01) Note that missing template inputs just means (null) that they aren't specified. And I think I will take an empty string to always just mean null as well.
+
+For any compound entities, I actually think that the title template shouldn't be defined by the entity (template) itself, but should instead just always be defined either hard-coded in the app, or be defined by uprating the best title template for the given class. (14:05)
+
+When defining a title template, one can then use a syntax to access the various tmplInputs. And in a more advanced system, the title can even access the inputs of those inputs.\,. well, actually it can access all property values, and the property values of those, etc. (14:08)
+
 
 
 
