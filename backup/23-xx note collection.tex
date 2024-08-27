@@ -3602,6 +3602,16 @@ For any compound entities, I actually think that the title template shouldn't be
 
 When defining a title template, one can then use a syntax to access the various tmplInputs. And in a more advanced system, the title can even access the inputs of those inputs.\,. well, actually it can access all property values, and the property values of those, etc. (14:08)
 
+(15:00) Hm, is it better to look up the properties ``semantically'' for the titles?\,.\,. .\,.\,Or should we be able to do both?\,.\,. (15:03) .\,.\,Yes, both, why not?\,. .\,.\,So I guss EntityTitles should first look up the title template as a semantic property of the class, and then I guess let us then construct the title recursively like we have done before, but where the each EntityTitle, and its potential helper modules just gets a className that denotes whether all its children are ready. Then we can make it a responsibility of CSS if we want to e.g.\ render a placeholder of the whole outer EntityTitle until all its children are ready. (15:09)
+
+(15:14) Oh, you can even disable links via CSS alone! Nice.\,.\,!
+
+(15:23) Hm, shouldn't I add a classID column to the Entities table as well, or.\,.\,?
+
+(15:27) Hm, now I'm kinda thinking: wouldn't it also be nice if we could use relations directly, without having to look up or create the propTag first?\,.\,. .\,.\,We don't even have to make another ratings table, since we can just say that no subject means that the relation is a tag.\,. .\,.\,Hm, I really don't see why not.\,.(??\,.\,.) .\,.\,(15:37) It would only be a problem if you.\,. ah, if you need to look at `relevant tags,' which must be why I chose to do it this way. But let me see.\,. .\,.\,Hm, we can of course either just uprate a list of a subject and a relation instead of a tag, or we could uprate the tag, but just make sure that the app can see that it is a compound tag that should be split into two before rating.\,. (15:44) .\,.\,Hm, which would just require us to make a `compound tag' class instead of the `property tag' class, since now the relation can just know whether it is a `property relation' or not.\,. Hm, I know it would be a bit more complicated than this, but.\,. (15:47) .\,.\,But it's not any different that a `rating scale' entity also had to be split up into a tag and an instance (which I might start to call `object' again) before being rated. So yeah, I \emph{should} do this.\,. (15:48)
+
+.\,.\,And then I surely need to add the classID field, don't I.\,.\,? (15:50) .\,.\,'Cause we can handle duplicates: If an entity should rather have another class, then we can just make sure that all users subscribed to the specific duplicate recognition user group can just have all their non-meta ratings about that tag, either as the subject, the tag/relation, or the object, be transferred to the better duplicate instead. (15:53)
+
 
 
 
