@@ -3594,6 +3594,8 @@ About the meta entities, I think it's best to just let the tag determine the int
 
 .\,.\,And whenever you submit a new entity, you see the propStruct getting created, so you can see that you are formatting the input, e.g.\ a comma-separated list if ID references and/or strings, the right way. Okay, that takes care of that; now everything is possible, and most entities will be stored only with a template\_input, which will now be divided into two, however, but this is still about as space-efficient as it gets, and not least communication-efficient, since you should then only need to query for the tmplID and these two templInputs most of the time, and only really need the propStruct for templates, mostly, as well as some of the initial inserts, which one can however always hard-code into the app if one wants (and the same can be said for some of the common templates). (11:06)
 
+.\,.\,Not that users might not make frequent use of the propStruct to disambiguate the submitted entity further than the given template allows, i.e.\ whenever your entity is a bit special and you don't want to make a whole new template just for that, but the good thing is that this disambiguation data only needs to be shown in the (meta) info tab. So one can delay fetching that data until necessary. (11:11)
+
 
 
 
