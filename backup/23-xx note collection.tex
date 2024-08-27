@@ -3456,7 +3456,7 @@ When hovering over such composite entities (or clicking the first time for mobil
 .\,.\,(13:51) Hm, InstanceList EntityElements can also provide their own placeholder context.\,. Perhaps we can prefix these by `\#' or something.\,. .\,.\,And when the ID appears in both lists, we just write both the placeholders, separated only by a comma, e.g.\ `3,\#44'.\,. .\,.\,Well, we should always add the placeholder to the EntityPage's context, I guess, so one could also just write them in reverse order of the contexts: `1,3', where 1 is then always the.\,. placeholder for the EntityElement.\,. Well, how about we instead just make sure to always print out the placeholder at the beginning of each EntityElement. That sounds better.\,:) (13:57) .\,.\,(Then we just have the one placeholder list per EntityPage/AppColumn, i.e.)
 
 I like highlighting all tags in EntityTitles with angle brackets, like I just do above, but what should I do for properties (which serves as semantic relations).\,.\,?
-`$\langle$good$\rangle$(1)$\rightarrow$correlated rating: $\langle$has good acting$\rangle$(1)'.\,.\,? .\,.\,Not bad.\,. How about: `$\langle$good$\rangle$[1] $\rightarrow$ correlated rating: $\langle$has good acting$\rangle$[1]'.\,.\,?
+`$\langle$good$\rangle$(1)$\rightarrow$corre-lated rating: $\langle$has good acting$\rangle$(1)'.\,.\,? .\,.\,Not bad.\,. How about: `$\langle$good$\rangle$[1] $\rightarrow$ correlated rating: $\langle$has good acting$\rangle$[1]'.\,.\,?
 I like this. As long as we make the arrow a bit shorter and/or the spaces around it.\,:) (14:05)
 
 .\,.\,Note that we should only start collapsing EntityTitles into placeholders when they are sufficiently deep within, \emph{and} I should find a way to somehow make.\,. Wait, first of all, it should actually be: `$\langle$$\langle$good$\rangle$[1]\,$\rightarrow$\,correlated rating$\rangle$[$\langle$has good acting$\rangle$[1]],' then, but that probably won't look very good.\,.\,? (14:08)
@@ -3556,6 +3556,33 @@ Hm, interesting to read about \emph{Likert scales} and \emph{semantic differenti
 .\,.\,But maybe I should just make 1--5 the standard scale.\,. (That's why I'm reading about this stuff now.) (15:34) Oh, it's a continuous scale, as opposed to normal surveys etc., so 1--5 must be the best option.\,.
 
 (16:10) Oh, maybe I want a different syntax for sets and lists. The problem is that.\,. Well, I could manage, but it's not so nice when inserting a list or a set, or list elements, in place of a placeholder.\,. .\,.\,Hm, good question.\,. (What to do here.\,.\,?) (16:15) .\,.\,(16:16) Ah, can't we just say that the templates themselves don't have to be.\,. JSON.\,. No, that's not to good either.\,.
+
+(17:21) Hm, I'm thinking of removing the redundant boilerplate around list entity propStructs (writing them instead simply directly as the arrays), and then just make a convention that list entities below a certain length ought to be written out.\,. oh wait, I forgot that sets are not entities.\,. .\,.\,(17:25) Hm, do I then try with a new array placeholder, or.\,.\,? .\,.\,Wouldn't it be better to introduce extra syntax to the spec/template input?\,.\,. (17:27) .\,.\,Well, it's not that simple. Hm.\,.
+.\,.\, (17:37) Wait, I can just make sets a class of entities after all.\,! And then if you want to denote that a the set itself is the property value, and not all its elements, then you just have nest it in an array, like with the lists. Okay, so I just need to then figure out, it seems, if this can work when I only have the `[]' at my disposal (or should I try to use something else?).\,. (17:40)
+.\,.\,Well, I could also just keep like it were, but introduce a `set' class alongside the `list' class, and then make a convention that short enough lists or sets are exploded/folded out directly in the propStructs.\,. (17:45) .\,.\,That sounds like a decent solution, although it would be nice to cut some redundant bytes out of the list and set entities, I guess.\,. (17:47) .\,.\,Oh, but this is also not that simple, namely since we have the strings that contain more than just the placeholder.\,. .\,.\,But then you could just parse and explode/fold out for when the value is a single placeholder.\,. (17:50) .\,.\,Wait, none of this makes sense as we are talking about entities that are stored with a spec/template input string.\,. .\,.\,I should actually call it something else, rather than `template input,' perhaps `searchable input,' and then I should also actually put it last in the secondary index.\,. (17:55)
+
+\ldots\ (18:57) The propTag syntax should actually, I think, be more like the syntax for member declarations (inside objects) rather than for member accessing. .\,.\,So like `$<$property name$>$:$<$value$>$.' Now, I'm then also kind of thinking about using a list of tags as the definition, partly or perhaps fully (if that is possible (probably not)), or maybe just use it for something else handy.\,. .\,.\,Oh wait, I can't use that member syntax since the propTag consists of the subject and property (name), not the property and the value.\,. .\,.\,So never mind.\,. (19:09) .\,.\,But we could still let entity definitions be a list of tags, including such member tags.\,. .\,.\,Which is similar to just using boolean properties, which in JSON just means writing true as the value (with no quotation marks).\,. (19:12)
+
+.\,.\,Hm, maybe I'll just drop the JSON restriction.\,. (19:13)
+
+(21:18) Oh, it's not better to have expanded/exploded propStructs for normal, not-particularly-searchable entities.\,. .\,.\,Good.\,.
+
+(21:54) Ooh, I could also use JSON numbers as whole-value placeholders.\,.
+.\,.\,And a negative number could mean `get it from the data\_input,' and 0 could mean `\%b'.\,.
+
+(22:10) I will use different placeholders for within strings, more specifically named placeholders, and I will then perhaps just use the numbers for the initial whole-value placeholders.\,.
+
+(22:45) For meta relations/predicates, like `better duplicate,' you could just make entities defined like `entity \#$<$entID$>$'.\,. .\,.\,(22:49) Or use the SK instead.\,.
+\ldots (23:19) Hm, I think it is better to just make it tag/relation-dependent, now that these are often thoroughly described.\,. .\,.\,So any entity can refer ether to the given thing, or itself, the representation of the given thing, depending on the context of the tag. (23:21) .\,.\,Well.\,.
+
+(27.08.24, 8:46) I will by the way introduce relations again as a superset of properties, and then call properties `property relations' instead, which is more correct in regards to the standard use of the term `property' in programming languages (it seems). .\,.\,And these are then each ``\emph{represented} by a (singular) noun.'' (8:48)
+
+About the meta entities, I think it's best to just let the tag determine the interpretation of the entity, as a representation or as the thing itself. And in terms of.\,. Wait, the problem is how do you know which ratings to transfer, then, if a better duplicate is found?\,.\,. .\,.\,So either we make meta entities, or we give tags a formal way of denoting that they are speaking about the representation.\,. Hm, I like the latter.\,.\,:) (8:54) .\,.\,Perhaps with an `is meta' property.\,.\,:) .\,.\,Which means that I should make a template for meta property tags as well. (8:58)
+
+(9:00) I have another idea for writing lists and sets, namely by expanding the `@\ldots' syntax and use `@[\ldots]' and `@\{\ldots\},' which would make sense if we store them as searchable strings, and if we also say that two lists or sets right after one another means concatenation/union, but let me think.\,. .\,.\,For is it not better to just always store these lists/sets, and then reference them by ID?\,.\,. (9:04)
+.\,.\,Hm, I want to do both, but it does create a redundancy where seemingly the same propStruct can be formulated in different ways.\,. (9:10) .\,.\,Unless I just render the EntityTitles a bit differently.\,. .\,.\,Maybe by not replacing this SK reference syntax, and then only make the `@' in `@[\ldots]' and `@\{\ldots\}' become a link (where the list/set entity is then almost-automatically (prompting the user first) inserted if it is missing).\,. .\,.\,Then I would also need to implement special `concatenated lists' and `unioned sets' classes.\,. But maybe I'd rather just always reference by ID (PK).\,. .\,.\,Yeah, I think so (maybe).\,. (9:16) .\,.\,Yes, let's just always store lists and sets as separate entities, and then always reference by (PK) ID.\,. (9:18)
+
+
 
 
 
