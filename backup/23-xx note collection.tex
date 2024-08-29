@@ -3645,6 +3645,16 @@ I think I will refactor to the React Router now. But before I start this, let me
 
 As for property tags, we can perhaps also do a similar thing, i.e.\ removing the expected part in the right context. Now, I have more to say about properties as well: I still think that lower case, singular nouns should always be used. But I can just call a function that capitalizes and/or pluralizes the word in the right context, e.g.\ in a page section header. Pluralization will then depend on the usually expected number of that property (is it generally one-to-one, one-to-few, or one-to-many?). So here we can look that up (semantically, if not from the propStruct) to figure out whether to call the pluralization procedure. Now, I will just make a simply one to begin with, that just uses the most common (regular) rules. But since the database will at some point include all words with info on how to pluralize etc.\ anyway, i.e.\ since it will include dictionary info, then all we need to do is to look up that entry in the database at that point in order to right the exact right inflection (I think it's called, i.e.\ pluralization in this case). So there we are! This means that we can just use the property names directly for the page header on e.g.\ the `relevant properties' page, and I will just make a simple function to capitalize and potentially pluralize at first, which can then always be made more sophisticated at a later point.\,:) (14:27)
 
+(15:08) Hm, about the react router, if I want to achieve the same thing, I cannot simply use the standard Links, unless I save all states of the modules on the page, which I won't.\,.
+
+(15:41) Ah, Less CSS sounds nice. I think I will use that.
+
+(16:27) Hm okay, maybe I don't want to use the React Router: I think my column idea was better: You just keep the previous pages in memory and then if you open a new column from within the row of columns, all columns to the right are just deleted. Also we can always just keep a max amount of open columns and then close ones that are too far to the left, meaning that they will be rerendered if you go back to them again. (And then the same thing happens in the other end, so you need to close the columns in between if you want to go back and forth between these column and not cause rerenders.) .\,.\,And then I will just use the HTML5 History API to push.\,. wait a minute.\,. (16:33) .\,.\,Oh, I could also just use the same route for all paths, right.\,. .\,.\,Yeah, I'm pretty sure that the state will be saved then. So I guess I'll just use the React Router for the easy API, but only have one route in it, which.\,. wait.\,. .\,.\,Yeah, the props of a component can change while the state(s) remain the same, as I thought, so yeah, I should be able to do this. (16:46)
+
+%(17:16) Hm, why haven't I used template literals before in JS?.. It must have had something to do with working on that JS subset, but... ..Let me start using those from now on..
+
+%(18:25) Good, I can see that even the focus/highlighting of the link doesn't change when I follow a link back to the same page. I don't know why InterfaceMain doesn't update though, since I should be changing its props, but there's probably a reason for that. I'm sure it will work.
+
 
 
 
