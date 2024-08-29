@@ -3655,6 +3655,16 @@ As for property tags, we can perhaps also do a similar thing, i.e.\ removing the
 
 %(18:25) Good, I can see that even the focus/highlighting of the link doesn't change when I follow a link back to the same page. I don't know why InterfaceMain doesn't update though, since I should be changing its props, but there's probably a reason for that. I'm sure it will work.
 
+(19:50) I think I will actually just let the rat\_val go from 0 to 200 (and then the app just needs to subtract 100 when it also parseInt()s anyway). Then I will actually make -100\%--100\% the standard rating scale.\,.\,! 'Cause it makes sense to rate most predicates like that---in fact, it makes great sense, since it also mitigates some of the bias that people often choose the max score. But if it says `this movie's funny score is 100\%,' I think many people are much more likely to pause a little and choose a more fitting score.(!\,!)\,:)
+
+Now, some things makes more sense to rate on a 0--100\% scale, and I will therefore also allow that. And here I think I will just store this as precisely a 0--100 (tiny)int. And now I'm actually even considering making a separate table for this: MonadicPositiveRatings. The fact that I have already split SemanticInputs up make this more natural: why not just make as many versions of SemanticInputs as we need?\,. I'm therefore even thinking that if we ever want a SemanticInputs table back with a SMALLINT, or even larger ints, then, well, why don't we simply make that?\,.\,! So there we are: If that ever becomes beneficial, then we'll simply add it alongside the other SemanticInputs/Ratings tables. (20:01)
+
+Another thing: I think I will actually do something a lot simpler for the EntityTitles. I think I will just write out the class, and then up to three of the next (assuming that `class' is first) properties in the propStruct, but stopping if a `title' property occurs. This makes the rendering not just propStruct- but also template-dependent, but this is fine: we must just make sure to make good templates where the properties that should (maybe) be used for the EntityTitle appears first in the propStruct. Now, when a property is an entity itself (i.e.\ of the form `@$<$n$>$'), then it is also rendered as an EntityTitle, with a recLevel of one less, and we'll stop pretty quickly here before we just write their IDs instead.
+
+So when an EntityTitle is written out without further CSS, it will just be read as ``class: \ldots, prop1: \ldots, title: \ldots,'' e.g., but then we will simply rearrange this with CSS.\,. Well, this makes it less user dependent, 'cause it will take a while before users can upload and uprate their own CSS (and this will only be used after verification, possible human verification).\,. Hm.\,. .\,.\,But yeah, the idea is to ``just'' let CSS potentially rearrange these elements (which all have appropriate classNames), and probably hide some of them.\,. (20:11)
+
+But yeah, is this what we want? Is it good to use CSS for all this?\,.\,. (20:11) .\,.\,Yeah, it still makes sense: Users \emph{will} be able to uplaod CSS, and we developers \emph{will} be able to find time to go though and authorize the most popular ones submitted. (20:14)
+
 
 
 
