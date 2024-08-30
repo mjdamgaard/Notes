@@ -3680,6 +3680,8 @@ What else was there?\,.\,. .\,.\,I'm considering going back to just always using
 
 (11:56) Oh, I forgot: The EntityTitle should actually also query for and print out the rating of the `useful entity' (meta) tag, such that users can always see the popularity of the entity whenever they see it.\,:) (11:58)
 
+%(13:20) Ah, instead of listining to History events (go back, go forward), and do a very complicated state handling, I'll just add an extra index as part of the key when a column is opened that already exists in the row of columns. And then the Link will always go to the new key.. Hm, that's it: the Link wrapper checks existing columns and add the index if necessary. And when SDBInterface sees the added index, it makes sure to open a new column instead. If the index is unecessary since there are no existing columns of that type, then we just make a redirect *(I meant 'replace,' using the terminology of the react router) and remove the redundant index. ...(13:42) Oh, the columnManager should make the redirect (in the terminology of the react router) instead, i.e. when calling openColumn. ..Yes, that's better. (13:50) ..And then SDBInterface still carries the responsibility of focussing the new column, after it is opened and subsequently redirected to (giving the reins to SDBInterface). And if the directed-to column somehow doesn't exist (even though it always should, I think), the SDBInterface just calls openCoulumn to open and redirect to that column.
+
 
 
 
