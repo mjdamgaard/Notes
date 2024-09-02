@@ -3700,6 +3700,12 @@ I think that all these parametrized arguments should also generally come with an
 
 .\,.\,Oh, and let me talk about the fact that when bots calculate new ratings, they should make bins labels from 0 to 200, and record all the most precise ratings first (by adding them to this histogram (potentially weighted)). Then the take the intervals from the highest to lowest setting, and for the mean adds the ratings to the bin of the mean within that interval. (So if the mean of all precise ratings from 0 to 100 is 33, then you add all the 0--100 interval ratings to the 33 bin.) For median bots, you.\,. .\,.\,I guess you could do several things. But at the end of the day, you should end up with the number so that when all interval ratings for any intervals that contains the median number is removed, then there is an equal number of ratings to both sides of that number, also counting all the interval ratings where the intervals are strictly to one side of that median. (10:41)
 
+%(10:54) Jeg skal bruge React Router Links alligevel, og så er det SDBInterface, der skal handle openColumn(), hvis den får en column-nøgle, som ikke allerede eksisterer i rækken.
+
+(12:13) I should also note that I now want to show the `useful entity' rating as just a vertical colored (rating value-dependent) bar to the left of the title, with no number shown, but just with a maximum height of the text width. Now, should I combine this with the link button, then?\,.\,. .\,.\,Hm, how about a drop down menu button showing the first three letters *(3--5) of the class, with a rating to the left or right of it (before the title), and where the title is then the link?\,.\,. (12:19) .\,.\,That sounds better.\,.
+
+(12:20) Oh, I should also quickly note: We can't do the context entity thing in CSS alone, since that would require regex's with placeholders. But we can just use a React context, and then make a class to denote whenever an EntityTitle sub-span is the same as the context entity, or the context class (and whatever else we might have). (12:22)
+
 
 
 
