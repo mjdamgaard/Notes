@@ -3706,6 +3706,12 @@ I think that all these parametrized arguments should also generally come with an
 
 (12:20) Oh, I should also quickly note: We can't do the context entity thing in CSS alone, since that would require regex's with placeholders. But we can just use a React context, and then make a class to denote whenever an EntityTitle sub-span is the same as the context entity, or the context class (and whatever else we might have). (12:22)
 
+.\,.\,We could also use `useful instance of $<$class$>$' tags instead.\,. (12:25) .\,.\,Nah.\,. (12:26)
+
+.\,.\,I want to show the last class in the class set, but then again, that will often be a long one.\,. .\,.\,I could also let CSS decide, and then just make it so that unknown classes get least priority, and then actually give priority to the first class in the list from there.\,. That actually sounds like a good plan.\,. .\,.\,Yeah, 'cause we also only need to prepend all the first letters of these classes; CSS can be responsible for rendering the first priority in an interesting way. (12:35) .\,.\,I guess I can even let CSS decide when to cut off the class name. (12:37)
+
+(12:40) Hm, we don't want to task the users with uprating compound entities, do we?\,.\,. .\,.\,(12:43) Hm, but if I print out the sub-entities usefulness rating as well (in HTML), then I can just CSS-remove the outer rating for compound entities.\,. .\,.\,Hm, shouldn't I just move the usefulness ratings down in the drop down menu/display?\,.\,. (12:46) .\,.\,I think I'll do that, at least for now. (12:47)
+
 
 
 
