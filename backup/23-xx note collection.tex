@@ -3712,6 +3712,18 @@ I think that all these parametrized arguments should also generally come with an
 
 (12:40) Hm, we don't want to task the users with uprating compound entities, do we?\,.\,. .\,.\,(12:43) Hm, but if I print out the sub-entities usefulness rating as well (in HTML), then I can just CSS-remove the outer rating for compound entities.\,. .\,.\,Hm, shouldn't I just move the usefulness ratings down in the drop down menu/display?\,.\,. (12:46) .\,.\,I think I'll do that, at least for now. (12:47)
 
+(13:48) One could also display the usefulness rating and/or the class instance rating as a colored outline of the class button box. Then we can just divide the rating scale into, say, five intervals, and then display a different color for each interval. And when I say `\emph{and}/or,' I'm thinking that one \emph{could} even make two outlines for the two different ratings. I am, however, also considering postponing making such ratings part of the EntityTitle itself (and not the drop-down menu), as I've mentioned.\,. (13:51) .\,.\,Hm, there \emph{is} something tempting about using the class instance rating.\,. .\,.\,Hm, and about using both.\,. \ldots Hm, it's easier to just show it in the drop down menu; and that's only one click away.\,.
+
+.\,.\,Yes, and if I ever include a rating to show next to the title, let me then just make a separate module for that. (14:16)
+
+%(14:52) (Okay, I hoped I could get back from my midday walk and continue with the same freshness and productivity level, but I guess it was good while it lasted; still impressive (given that my last three nights have been: night bus, party, night bus).. I think I have more in me, actually, but we'll see..)
+
+\ldots\ (16:04) I think I will use SASS rather than LESS. And even though one \emph{could} try to hack using CSS specificity, I will just use the not selector together with SASS in order to implement the logic flow of how to render the EntityTitles.
+
+(16:39) While it might be a good idea to make it CSS-dependent which class to use from the entity's metadata, or it's `representation,' let us just cut corners for now by assuming that we always just want to use the \emph{first} class in the set array of classes.
+
+%(16:42) Oh, and from there, it as actually also quite easy to extend, since you can just base you selectors around what class appears first in the set array, and then you only have to select between subclasses from there, if you in some cases want to make a specific rendering for a specific subclass. (16:43)
+
 
 
 
