@@ -3724,6 +3724,9 @@ I think that all these parametrized arguments should also generally come with an
 
 %(16:42) Oh, and from there, it as actually also quite easy to extend, since you can just base you selectors around what class appears first in the set array, and then you only have to select between subclasses from there, if you in some cases want to make a specific rendering for a specific subclass. (16:43)
 
+(17:07) Oh, you could also do something else, rather than using the left-over numbers when dividing with 255/200 for the intervals.\,.\,!\,.\,. You could perhaps use a multiple byte rating.\,. .\,.\,Adding a prefix byte just before the rat\_val in the PRIMARY KEY, but then perhaps make it so that.\,. Hm, this is almost the same as using SMALLINTs, hm, except that you can still output the ratings as TINYINTs if you want.\,. Hm.\,. (17:11)
+\ldots (17:41) I think I will add another byte \emph{after} the rat\_val byte, used for denoting the interval radius of the rating (and potentially more in the future), at it almost cost us nothing: It shouldn't result in much more hard disk space used once compressed when it comes to the rated lists of the bots. And here we can also just remove it from the server response.\,. Hm, or use a different table.\,. Hm.\,. .\,.\,Oh, wouldn't it actually be nice if the bots also showed an estimated ``uncertainty'' as well, rather than just using an offset?\,:) I actually wanted to show the rough number of users who have rated the scale anyway in a future implementation. But here we jut get that opportunity from the get-go!\,:) (17:51) Okay, I'll do that.\,:) (I'll add that byte after rat\_val to show an interval radius (and perhaps more in the future, since we don't need 256 different interval radii).) (17:52) 
+
 
 
 
