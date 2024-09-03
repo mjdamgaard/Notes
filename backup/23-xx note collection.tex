@@ -3757,6 +3757,14 @@ I think that all these parametrized arguments should also generally come with an
 
 (12:57) Did I ever note that when we start trusting other apps from third parties, we can CORS-allow other sites to input (and delete) data from users?\,. And no, I don't have to make a prompt each time the user submits an input, if I don't want that. (But making such a prompt available, still, can allow other apps to work, even before they are trusted (by the company and the community behind the SDB).)
 
+(16:30) Hm, should I add (optional) types to the members of the propStructs? For instance: `class(@this):@this'.\,.\,?\,\ldots\  \ldots\ (17:54) Yes, I will have this, but I will not put it after the property names, but after the entity references. This also opens up for suppressing class clarifications in texts, so that you e.g.\ don't get `the movie's director is John Doe (director).' I will implement this by having an optional `c$<$classID$>$' suffix to the entity references. Note also that `\%e1c1' becomes e.g.\ `@123c1' after substitution, which is how we can define the classes of template inputs (and thereby suppress the class clarification). I will then let JS print out the class clarification if and only if the class of the entity does not match the given `c$<$classID$>$' suffix. But note that CSS is still free to hide (display:none) these class clarifications if we want to (e.g.\ for tags, where I'm thinking of wrapping them in angle brackets instead).
+
+I'm also thinking of mainly using one class for each entity. For instance, if we have @123 := `Viggo Mortensen (actor)' and @456 := `person (class)', then it doesn't hurt to render `@123c456' as `Viggo Mortensen (actor).' In other words, it doesn't hurt to specify the class from `person' to `actor,' when expecting `person' and getting `actor.'
+
+I will not do anything to warn against mismatched classes, for instance when expecting `tag' and receiving `person.' But the template can make sure to show the class clarification when it is not the expected, to-be-suppressed one, which means that the users can see themselves if an input in a compound entity looks out-of-place. (18:08)
+
+%(19:45) I was adding a ClassClarification module to EntityTitle, but this means that I would have to fetch data for the 'c123' suffix as well. So now I'm thinking of using the flexbox order property instead.. ..Yeah, I'll do that for sure.. ..So what to do, do I then add an 'expected' className to the prop-member-class member?.. ..Something like that, I guess.. (19:49)
+
 
 
 
