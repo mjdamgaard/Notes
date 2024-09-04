@@ -3765,6 +3765,16 @@ I will not do anything to warn against mismatched classes, for instance when exp
 
 %(19:45) I was adding a ClassClarification module to EntityTitle, but this means that I would have to fetch data for the 'c123' suffix as well. So now I'm thinking of using the flexbox order property instead.. ..Yeah, I'll do that for sure.. ..So what to do, do I then add an 'expected' className to the prop-member-class member?.. ..Something like that, I guess.. (19:49)
 
+%(04.09.24, 10:14) Hm, I could perhaps also just put a of-class-<class> className on entOfClass references, and then do the hiding of the class name for each individual class.. That's just not so neat.\,. ...(10:27) Hm, now I'm actually considering changing it back to having classID as a column in Entities; if I'm only using one class anyway (and the rest are always just the superclasses of that).. ..And I can just make the input proc pare a "this" instead of a numeric classID, and immediately after the insertion change the classID column to itself.. (10:30) ..And the templates and representations can always include the class property on top of this if someody want them to, so it actually doens't hurt at all to have it like that. Okay, I'll do it! :) (10:31) (And with that, it will be pretty straight-forward to supress the class, since it comes from the classID column in the first place..)
+
+%(10:44) Hm, that does mean that we ought to remove the class property from the templates as well, but I guess that's alright..
+
+(04.09.24, 10:46) As noted out in the source comments, I think I will introduce the classID column to the Entities table once again.\,.
+
+(10:59) ``And I can just make the input proc pare a "this" instead of a numeric classID, and immediately after the insertion change the classID column to itself.\,.'' I guess this is more relevant for the entity inputs, actually.\,. .\,.\,(11:08) Oh, I'll of course just store `this' entityInputs as exactly that, and then let it be up to the app to change `this' with a `thisEnt' reference.
+
+(11:57) Maybe I'll just treat missing entities exactly like/as @null, meaning that we can actually also just use `@0' instead of `@null' (since @0 is always missing). .\,.\,But maybe we want to distinguish.\,. (12:03) .\,.\,Sure.\,. .\,.\,So `@null' it is.\,.
+
 
 
 
