@@ -3787,6 +3787,22 @@ I will not do anything to warn against mismatched classes, for instance when exp
 
 (21:13) I had a thought: I'm considering whether it would make sense to not normalize the curves, but just let them take values from 0 to 1, where 1 then means `I don't disagree with this rating result,' and 0 means `I disagree completely with this result'.\,. (21:15) .\,.\,That actually does kinda make sense to me.\,. But of course, this makes it un-normalized as a likelihood function.\,. .\,.\,Oh, maybe this is the \emph{only} thing that makes sense; maybe normalizing it would mean that users essentially get to choose their own weight. (21:19) .\,.\,Yeah.\,. Great.\,.(!\,.\,.) (21:20)
 
+%(22:16) And then it does indeed make sense to make an inverse-correlation matrix of the user-to-user \emph{dis}agreement, and do ML on that instead.
+
+(05.09.24, 9:23) I think I will use that convention of making rat\_modifier either embody extra precision or an exponent that determines the standard deviation (SD) of a Gaussian curve. But I will let the precision codes end in 1-bits preceded by 0, where you then also remove the 0. And I will let the exponent (all numbers ending in a 0-bit) be interpreted as a signed number, that is then divided by some number and put as the exponent of a default SD , preferably. But in any case, as long as the app and the bots just mainly don't use too much precision for the SD code, then rated lists will generally mostly contain the same few rat\_modifier values, by which they can be compressed away most of the time on the hard disk.
+
+In terms of showing the error curves to the users, I think I will actually just show my extended error bars (where the line extends out to $2\sigma$ on either side). Then I can just show examples of what that error bar means on a separate page. (9:32)
+
+.\,.\,Oh, and when it comes to the bots estimating the SD of a ``mean''/`most likely value,' I think they ought to take the average user-SD, and then do statistics of.\,. Well, maybe no; maybe forget the user-provided SDs altogether, and just look at the SD of the center points instead, then calculate the SD of the ``mean''/`most likely value' based on that. .\,.\,And if there are too few data points to estimate a good SD of the center points, just use some default SD instead. (9:37)
+
+.\,.\,Hm, and for some bots, maybe especially in the early times, we can just calculate and use the actual mean of the center points, rather than finding the `most likely value' from the curves. (9:39) .\,.\,But users should still see those (extended) error bars, and be able to adjust them, both because it will create a significantly better UX, I think (since you don't have to worry about not taking the time to make a very precise estimate), and it also helps with the ML later on (and the fact that these error bars serve a purpose is also necessary in order for the UX to increase as a result of them). (9:42)
+
+.\,.\,Hm, and if we are using a lot of actual-mean bots anyway, then.\,. Oh, then users will just want to use max error bars to ``agree'' as much with other as possible.\,. perhaps.\,. Oh well, maybe I should just stick to the `most likely value' bots, still, then. They are also not hard/costly to maintain, since the bots can just keep their histogram data, and then subtract (potentially) and add to all bins whenever a user changes a rating or adds a new one. (9:47)
+
+.\,.\,When submitting a rating, we can still show a range out on the right, but just make it go from $-2\sigma$ to $2\sigma$ (rounded to within the interval of the rating scale, of course).\,:) (9:49)
+
+%..(Oh, and let me clarify: Now I'm thinking of only using Gaussian curves: never the flat step curves.) (9:53)
+
 
 
 
