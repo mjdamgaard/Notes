@@ -3803,6 +3803,12 @@ In terms of showing the error curves to the users, I think I will actually just 
 
 %..(Oh, and let me clarify: Now I'm thinking of only using Gaussian curves: never the flat step curves.) (9:53)
 
+\ldots\ (11:55) Nice that you can use :where() and :is() to better control specificity, along with using :not() and SASS.
+
+Never mind about determining the sigma from how many significant digits there are: If the curve represents disagreement, then it might very well happen that users want to make a precise rating, namely when they want to position an entity relative to others on a rated list, but still not `disagree strongly' with other users who has selected another rating that is still quite close to that of the user in question. So I'll just let the first four bits of rat\_modifier by a precision always, and let the last four bits denote the exponent in an SD calculation. And with this, I might as well just make rat\_val a SMALLINT again, and interpreted as a floating point number between -100 and 100, or 0 and 100, by dividing and potentially translating the SMALLINT UNSIGNED value (and also in principle after making the four last bits 0, but I probably won't really do that in practice, though). (12:02)
+
+%(13:26) Hm, do I even want to use browser history when navigating columns? Don't I just want to "redirect" in order to change the top URL? I think I'm gonna use the React Router for other things as well so I might as well keep it, but I might not want to push and pop history pages when navigating the columns.. ..Hm, I'm also gonna use Links, since I like how they already opens other tabs on ctrl-clicks.. ... (14:25) Okay, I will do like I said before, and the way I will do it is to just add 'from=<colKey>' to the queryString whenever opening a new column. SDBInterface (/SDBApp) will then open a column and immedeately redirect to it afterwards (but not change its state to the new column before after the redirect). If the there is no caller/from column, or if it is unrecognized, the SDBInterface/SDBApp just looks at the history.action (if I can find it somehow..), and opens and either opens appends the given column at the end or prepends it at the beginning, depending on the action. (14:31)
+
 
 
 
