@@ -4056,6 +4056,24 @@ Hm, about `relations'.\,. Oh first of all, you can always include the user as we
 
 .\,.\,(15:28) Hm, we could also call them `relational statements,' `predicative statements,' and `propositional statements,' and then perhaps group them together under `variable statements'.\,. Hm.\,. .\,.\,Hm, `relations' is probably better.\,. (15:31) .\,.\,Oh, why do we even need a term for the grouping?\,.\,:) I could just call it `propositions/statements,' `predicates,' and `relations'.\,.\,:) .\,.\,And if we want a grouping, then we could just call it `variable statements'.\,. But I don't think we really \emph{need} a class the includes all three subclasses.\,.\,:) (15:34) .\,.\,Yes! And we can also call it propositional function, or whatever. And also note that we will still often use the term `properties' as well, which is then just taken as a subclass of `relations.' (15:37) .\,.\,Oh, and `finitary relation' could also potentially serve as a superclass.\,. But let me just refrain from defining and using that superclass myself, I think.\,. (15:39)
 
+\ldots\ (17:21) I've actually come up with some new naming conventions.\,.\,! Okay, first of all, I'm now thinking of calling `rating scales' `qualities' instead. So qualities are basically number properties of entities (sometimes more or less implicit entities in terms of what I previously called `propositional tags'). And note that `qualities' includes `quantities,' which means that we don't need `quantities' as a class and/or a thing, really. 
+
+Then I will actually call `tags' `quality functions' instead. And in case of 0-ary quality functions, well, those are just qualities.
+
+And `ratings' I will actually call `scores' instead, since it makes more sense to sy that a user `scores a cost of something,' rather than `rates it,' and it also makes more sense to say that bots `scores' qualities rather than `rates' them.
+
+`Rated (entity) lists' I will call `scored entity lists,' `score-ordered lists,' or `score lists.' I'll decide on that.\,. (17:28)
+
+.\,.\,And I will call the `propStructs' `defProps' instead, and call the `ownDefProps' `otherDefProps' instead, and then just, as I've said, make the label simply `defining properties' rather than `other defining properties' when displaying the metadata. I will still call `struct' property values the same thing, though: `structs.' (17:31)
+
+.\,.\,And I will stop using `properties' to describe `relations,' but simply use `relations' much more instead. I will of course still make it a convention to use nouns for the short EntityTitles of relations, though; not much has changed in terms of how I want to render what was before `tags' and `statements'/`rating scales.' (17:34)
+
+.\,.\,(17:36) We can btw call it `grading scores' and `grading qualities' when it comes to the F--A (and below and beyond) scales.
+
+I've also thought about making compound qualities a purely app-implemented thing, where the app simply shows all the rating bars of the atoms/input qualities, and then makes sure that if all but one is rating, when including the compound itself as well, then the last one gets, not rated automatically, but the bar gets set automatically. Whether to input each rating or not is however up to the user. Each individual bar, including for the compound rating at the top, just has its own submission button that the user can press at any time. And no, we don't care if they choose to submit the ratings one at a time, after adjusting in-between, and then submits mismatching ratings (that doesn't add up to the compound like they should). (17:42)
+
+.\,.\,And I think I will make it standard for relations to use a compound quality consisting of `is true' with a weight of 75 \% and of `is an important member of.\,. you know what I mean.\,. of the tag $x$' with a weight of 25 \%. (17:44)
+
 
 
 
