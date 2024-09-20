@@ -4082,6 +4082,21 @@ I've also thought about making compound qualities a purely app-implemented thing
 
 .\,.\,Oh, Arguments should be scales, of course, except that they might also be wrapped in a short sentence about why.\,. it matters.\,. Nah, better to have that as a.\,. wait.\,. .\,.\,Well, you seem to need a wrapper, indeed, if you want to uprate such an explanation for the argument ('cause the argument itself doesn't ``know'' its parent).\,. .\,.\,Ah, but this will be one of those `derived entities' (compound entities) where we don't actually need to upload the entity before displaying it in a list: We can wait doing this until someone has something to rate about the entity.\,:) (23:19) .\,.\,(So no, the explanation follow along; it isn't mandatory. But explanations can be submitted and up-rated by users (of why the Argument is relevant to the overall scale statement.\,.).\,.) Hm, `scalar statement'.\,. interesting.\,.\,!\,.\,. (23:22) .\,.\,I think I like that a lot.\,.\,!\,.\,. (23:23)
 
+.\,.\,And then you could also say `scalar predicate' and `scalar relation,' which are then superclasses of respectively `predicate' and `relation' (which assumes a likelihood scale).\,. (23:31)
+
+.\,.\,Let us use both: Let us use `scalar statement' \emph{and} simply `scale' for short. (23:34)
+
+(20.09.24, 10:02) I think I will just use `scale' more so than `scalar statement.' But I will still then call it `scalar relations' and `scalar predicates.' (I've also thought about using `scalar' instead of `scale,' by the way, but no, we don't want the score/value--scale ambiguity.)
+
+Now I'm thinking about the `@subj' and `@obj' keywords: Do they make sense?\,.\,. .\,.\,(10:07) Ooh, we could also make a more general `@[$<$property name$>$]' syntax.\,.\,! .\,.\,Yep! (10:08)
+.\,.\,(10:17) Well, and what then, should the scalar functions (formerly `tags') then be templates, or what?\,.\,. .\,.\,Hm, I guess I haven't really though about this any time recently.\,. .\,.\,Maybe the `scalar functions' \emph{are} actually scale templates.\,. (10:23) .\,.\,And then scalar predicates should just always include a `subject' property, and `scalar relations' should include an `object' property as well.\,. (10:24) .\,.\,Oh, we \emph{can} by the way also still refer to scalar predicates as `tags' as well.\,. .\,.\,Tags are the scalar predicates that uses a grading scale, not a likelihood sc.\,. well, relations use a compound scale, which is a compound of a likelihood and a grading scale, so what to display on the scale there? (10:27) .\,.\,Oh, maybe I'll just use `predicate' instead of `scalar predicate,' and the same with relations, and let that be implicit such that the two shortened terms are the general terms.\,. .\,.\,Okay, many questions.\,. (10:30)
+
+.\,.\,Oh yeah, predicates/tags and relations \emph{have} to be templates, as scales they produce have to be derived (formal) compounds. So yes, `scale templates' it is. And yeah, let's say that.\,. Oh wait, first of all, I was about to say that subject and object (if there) have to be the first and the second inputs, respectively (and should be the only inputs). But this reminds me: We do already have the input placeholders, then. So we don't need the `@[$<$property name$>$]' syntax, no.\,. We can just use the convention of always introducing each placeholder as the only value of a property bearing the given name instead.\,. (10:37) .\,.\,Hm, and I could then render the placeholder from there as.\,. the name.\,. well, maybe we just want numbers.\,. But yeah, you could also potentially name it. But that's a matter for the application layer. (10:39)
+
+.\,.\,And yeah, I'll call the unary and the binary scale templates `predicates' and `relations,' respectively, and yeah, the `subject' should always be the first input, the `object' (if there) should be the second, and there should be no other input placeholders than that, or any other type of placeholder for that matter.
+
+.\,.\,There we are.\,:) And now the remaining question is just: How to render a compound scale?\,.\,. .\,.\,Well, that's just something to think about.\,.\,:) (10:59)
+
 
 
 
