@@ -4117,6 +4117,16 @@ I've also thought about the trouble that using floats introduce in relation to b
 
 .\,.\,That is absolutely true, and I could even just call then unary and binary (scalar) functions, but you know what? How about `scalar statements,' `scalar predicates,' and `scalar relations,' actually? I think that that's actually nice, and I even think I might \emph{want} to say `scalar statement' rather than just `statement' when talking about e.g.\ Arguments.\,. (19:18)
 
+(21.09.24, 8:12) I almost think that `scalar statements,' `scalar predicates,' and `scalar relations' is very close to working, but it just doesn't work in the end. So what I'll do instead, I've now decided, is to simply use `statements,' `predicates,' and `relations,' and then actually assume that quantity qualities are always formulated as statements(/predicates). So for instance, `the  cost of $x$' becomes `$x$ costs money' instead, and then you just use a quantity scale (particularly with units of money) to specify this statement. (8:16) .\,.\,I've also thought about whether to use `tags' and `properties' for the particularly formatted predicates and relations, but then again, I think that pretty much all predicates and relation can be at least summarized as (compound) words, so there's no real sense in making that distinction. I therefore think that it's actually much better to call it the same thing all over: `predicates' and `relations.' (8:21)
+
+.\,.\,And this means that most predicates are formed simply by the user choosing a (compound) adjective or verb to use for the given predicate, and then most often inserting it into the same predicate template, namely the grading scale one. But they might also choose a likelihood scale, or some quantity scale, in which case they might also have to choose some parameters of that scale themselves in the template. So yeah, generally the just have to pick a template (where they'll often pick the same), then formulate the title (as a compound adjective or verb), and then in rare cases also adjust some other parameter(s). And for relations, it's exactly the same thing, of course just with nouns instead, and where they'll also have to pick an class subject class.\,. Wait, all predicates and relations need to have their subject class defined (and maybe you also want to define the object class in some instances for relations.\,.). So yeah, the users also always has to choose that as well. (8:30)
+
+The ``Apply()'' templates that I talked about yesterday will then of course be respectively a `compound statement' template and a `compound predicate' template. (8:32) .\,.\,And what I meant by ``bare'' is this: They are each only defined by two inputs: the predicate/relation and the subject/object. (8:33)
+
+.\,.\,The likelihood scale should have buttons to say either 0\% or 100\% with negligible uncertainty, but the grading scales, and quantity scales should of course not.
+
+Oh, and one could, by the way, talk about `quantity statement,' which is then the statements like `$x$ cost money,' where you expect/want to see a quantity scale accompanying that statement. (8:37) .\,.\,(But this is just a term that we \emph{might} use, and not something that consider making a class for.) (8:38)
+
 
 
 
