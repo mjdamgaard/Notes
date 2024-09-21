@@ -4159,6 +4159,16 @@ What about the ``meta flag,'' which should actually be a class, and the other ``
 
 (13:10) Hm, maybe we'll actually change me convention and start mostly using plural nouns for relations' subject nouns, and then only use singular nouns when you expect there to be only one.\,. .\,.\,I mean, why not?\,.\,:) (13:11)
 
+\ldots\ (14:29) I think I will actually not include the unit property, as this can just be defined by the.\,. text.\,. Hm, and how to know to express likelihoods in percents, then?\,.\,. Anyway, let me point out that we can always ``edit'' the representations afterwards. I have probably said this before, but I should make a proc to query the metadata of the best representation right away, of course given the query user as input.
+
+Let me also note that I want the scale to zoom out automatically if the user places the slider at the end of the current interval. But I don't want this for likelihood ratings in particular. So there should be a property that can limit the interval, indeed. Oh, and I don't think that I need the buttons to rate 0 or 1 with negligible uncertainty after all. For as long as the center point of the curve is at the maximum value precisely, then the uncertainty doesn't matter much for the most frequent score.
+
+.\,.\,Hm, I guess I should add the (optional) unit property. And maybe I should write `$<$Movie$>$ has a length of $x$' rather than `\ldots of $x$ h.' Hm, that is actually a bad example.\,. Oh no, it's not.\,. .\,.\,Ah, not as long as we can mark such statements as being `factual' as well, such that authoritative users can be queried. Oh, and that reminds me: I think I should make the meta statements a separate class from the statements.\,. .\,.\,Hm.\,. (14:43) .\,.\,But yes to the unit property, btw.\,.
+
+.\,.\,But `factual statement' can just be a subclass, for sure.\,. .\,.\,And so can the meta statement. Then Statement should just state that unless otherwise specified, the statements are about the thing that the entity represents, not the representation itself. .\,.\,Hm, let me call it `Data statements' instead.\,. (14:53)
+
+(15:10) I personally only plan on using two Data relations, and perhaps one Data predicate (saying `is well-formed'), but only maybe. So let me not define a template for Data relations, etc. Let me instead just define these relations via other\_props.
+
 
 
 
