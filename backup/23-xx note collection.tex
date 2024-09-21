@@ -4139,6 +4139,26 @@ But I said that we can read it ``directly off of a property,'' which is not quit
 
 (10:39) Oh, we don't need to read off the unit automatically: the user defining the statement (or predicate, or relation) can just insert the appropriate unit themselves, why not. Okay.\,:) (10:40)
 
+(10:44) Hm, I'll use capital first letters for classes.\,. .\,.\,Or will I?\,.\,. (10:47) *(10:57) Hm, I think capitalization is preferable, indeed.\,.
+
+(10:49) Oh, and we must also at some point add syntax that makes us able to transform the score value, perhaps introducing a syntax like `@score($<$calculation formula$>$)'.
+
+(11:14) Predicates and relations must have Predicate and Relation, respectively, as their main class.
+
+(11:18) Oh, instead of `metadata' I could say `defining data'.\,. .\,.\,That makes more sense.\,.\,:)
+
+(11:48) Hm, it would actually be nice if we could make statements more modular and use entities as rating scales, e.g.\,. .\,.\,Yeah, of course, modularity for the win.\,.
+
+(12:12) Okay, so what does a statement need?\,.\,. .\,.\,A title?\,.\,. .\,.\,Hm, for compounds I will use that special syntax for rendering them.\,. And atomic statement should mostly be whole sentences, or several, meaning that they should be Texts.\,. (12:15) .\,.\,Yeah, and ones that can include the `@score' keyword. So for atomic statement: A text and a scale definition.\,. .\,.\,And I'll let Scale definitions, or `Scale format,' be a class of entities, which I will figure out as I go along. So let's move on to predicates. These should have a subject class, and a title, which should preferably be an adjective or a verb. And then they should have a Scale spec.\ as well, and that's it, isn't it?\,. Then for relations, we might then just have an optional object class as well. (Recall that an empty string as a property value is interpreted as null/undefined.\,.) Yeah.\,.
+
+Okay, so let me then start to think about the scale format entities.\,. .\,.\,`Scale specification' entity, rather.\,. (12:21) .\,.\,Hm, is lower-case better?\,.\,. .\,.\,Hm no, since we won't always be able to highlight entities in titles (and texts), so the least we can do is to capitalize entities that often needs highlighting.\,. Hm, but don't they all, then?\,.\,. (12:23) .\,.\,Okay, I will highlight them, and I might also make them clickable, where the click then just don't bubble up to the parent, and where I'll also set some small markers at the start.\,. Well, that all depends on the context; in some contexts I might do this, in other we might not. (12:31) But about capitalization, then?\,.\,. .\,.\,I think whenever can entity can hide some details underneath the title, like basically all classes, then they ought to be capitalized. Great.\,:) That was a good realization of why we should capitalize entities like classes.\,:) (And note that I \emph{can} still say `classes' here with lower case, since the reader knows what kind of classes that I am refering to, but the entity should be capitalized when referenced directly.) (12:34)
+
+What about the ``meta flag,'' which should actually be a class, and the other ``flags''.\,.\,? (12:42) .\,.\,Well even though the class of a predicate should always be the fundamental `Predicate' class, they can still have other classes.\,. .\,.\,So yeah, a list of classes as a common property as well.\,. (12:44)
+
+(12:46) Oh, Class specifications should not just be data structures after all, like was otherwise thinking. But they can also just be descriptions.\,.\,! .\,.\,And a mix, of course.\,.\,! .\,.\,Yeah, so I will probably let the ones I have in mind be descriptions for the most part, and then only use other properties for the potential units, and the potential limits.\,. Well, the ``limits'' don't need to be limits; they can also just be markers of where the app should initially make the intervals (if it doesn't later overwrite this with some other user preferences). For the grading scale, I'll let it go from F to A, meaning that the user has to click `zoom out' in order to access A+, A++, etc. (12:52) .\,.\,Oh, and a property to define whether there should be button to give min or max scores with negligible uncertainties?\,.\,. Sure.\,. (12:54)
+
+(13:10) Hm, maybe we'll actually change me convention and start mostly using plural nouns for relations' subject nouns, and then only use singular nouns when you expect there to be only one.\,. .\,.\,I mean, why not?\,.\,:) (13:11)
+
 
 
 
