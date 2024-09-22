@@ -4189,6 +4189,16 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 .\,.\,By the way, since we are using capital first letters for the classes, it now means that it makes sense for e.g.\ a Template entity to hold a `template' property member, and for a Predicate to hold a `predicate' property. .\,.\,Hm, should we then capitalize for.\,. e.g.\ for compound Predicates holding a Relation property, or should we reference.\,.\,? (10:42) .\,.\,Hm, or should we just write lower case `relation,' and then just let it be up to the description to explain that that property should take a Relation entity, I think so.\,. (10:44)
 
+%(12:03) Oh, I should remember to use the @123c456 syntax..
+
+(12:07) Hm, maybe we should \emph{also} be able to denote a class context at the property name.\,. Hm, but that will mainly be used by set properties---unless we do it for aesthetic reasons.\,. .\,.\,Yeah, let us introduce a `@c123' syntax (with no numbers before `c') to use at the end of property names. (12:12)
+
+(12:26) Hm, maybe singular nouns are better.\,. .\,.\,Oh wait, we could just make two different relation templates. And that makes sense---actually we have to!---since we generally want likelihood scales for one-to-one relations, and grading scales for one-to-many relations. (12:29)
+
+(12:36) Hm, I think I will just define my likelihood scale and grading scale purely from their description for now. And for the quantity scale, we just need the `unit' property, don't we (since we'll just assume that the quantities in question are always limitless for now (as it doesn't matter very much if some limited scales are treated as unlimited)). Oh, we also need the default range specifiers. So maybe I'll add the `limited scale' class or property if it is easy to do (when I'm already implementing it for the likelihood scales anyway). (12:40)
+
+(13:01) Maybe I'll drop the star (emoji) units, and just let the grading scale scores have numerical values.
+
 
 
 
