@@ -4199,6 +4199,16 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 (13:01) Maybe I'll drop the star (emoji) units, and just let the grading scale scores have numerical values.
 
+(13:32) I could also just write `@[Subject]' rather than `@subj', and then just say that an entity can also make such references to properties that are not their own, but which are properties of the compounds in which they appear.\,. .\,.\,Ah, and the description can just explain what the reference refers to. So these are just `non-substituted (and implicit) references'.\,. Sounds good.\,.\,:)\,.\,. (13:36)
+
+(13:38) Hm, and let me.\,. wait.\,. .\,.\,Hm, do I want to.\,. yeah, hm.\,. .\,.\,Ah, I'll just define both the `statement' \emph{and} a `predicate' property for Relations.
+
+(13:49) Hm, sometimes one might want to insert the other properties, right.\,. .\,.\,Well, I can always add e.g.\ a `@($<$Property name$>$)' syntax later if we want that. (13:52) \ldots (14:20) If we ever implement this, be careful about users writing `@(\_prototype)' (and always refrain to access user-specified properties directly for the same reason).
+
+\ldots\ (15:35) The scales' zoom buttons can be up in the right corner instead.
+
+(15:50) Hm, Templates can have descriptions of how to use them, but these will not be a part of the derived entities. So I guess Templates should just have description properties as well.\,. .\,.\,Alternatively, we can make the entities inherit the description from the template.\,. Hm.\,. .\,.\,Automatically, without needing to store it twice of course.\,. Well, that's almost the same thing as using the `description' property.\,. Hm.\,. .\,.\,Okay, I actually feel like I ought to change it a little bit to make descriptions smarter, maybe by factoring them out as a description column, only meant for that.\,. .\,.\,Ooh, and then the template could hold a.\,. `instance description' property.\,. Hm.\,. .\,.\,No.\,. (11:58) .\,.\,That would almost have to be a instance description column.\,. .\,.\,Is that it?\,.\,. .\,.\,Adding two new columns.\,. .\,.\,And then we might as well split up data\_input into a text and a binary data column.\,. .\,.\,I guess I should.\,. (16:03) .\,.\,Oh no, that gives us too many hashes.\,. So I do actually need to multi-purpose columns.\,. .\,.\,Hm, I could make Templates' descriptions two-part, where the second part is the instance description.\,. .\,.\,Or I could make data\_input into a struct that is free to specify its own data.\,. That does seem a bit neat.\,. Oh, and that would also allow for binary entities with metadata, or other fields that are not part of the format of the file itself.\,. .\,.\,Yeah, meaning that.\,. Nah, never mind, it doesn't give us any new powers/possibilities that we didn't have before. But it still sounds neat with that kind of data\_input column anyway.\,. .\,.\,Except it would then have to be JSON. So how about we instead just say the the data column \emph{can} be a JSON object, that sounds better.\,. (16:11) .\,.\,Alright, then I need to make data property placeholders, and just disallowing any leading `\_' for these properties. And then Templates just assumes a specific format for the data column, without needing to specify this in their defProps.\,. .\,.\,Hm, let me call it the other\_data column.\,. (16:17)
+
 
 
 
