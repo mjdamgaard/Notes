@@ -4257,6 +4257,16 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 (10:55) Let us turn template text placeholders into text references instead.\,.
 
+%(14:24) I think I will reimplement useStateAndReducers() now, actually..
+
+(20:34) I don't \emph{think} that the user--user agreement ML is gonna help much, actually. But the regular ML (where we don't use the agreement curves) is gonna be very powerful anyway, especially since the users can curate list of good scales to score in order to do efficient ML (i.e.\ scales that seems to be very telling of a users tastes/opinions (potentially including scales where the user rate their own tastes/opinions, of course)).
+
+(25.09.24, 8:03) I still think they might be worth it, but I wish my agreement curves had a little more utility than being a tad better than the median, apart of course from giving user more ease at scoring something.\,. .\,.\,Wait, what happens if you plot the agreement curves on all axes and then.\,. hm.\,. (8:06) .\,.\,Hm, no.\,. .\,.\,Hm, maybe we could just add the agreement as another parameter to the regular ML, for then.\,. hm.\,. (8:09) .\,.\,Nah.\,. But maybe we could use these curves to adjust all scores before going into the ML, meaning that we draw then towards the mean, but of course only if the have agreement with the mean. (8:14) I could do it just with the mean, or we could do it with the local peak, hm.\,. .\,.\,Yeah, we could multiply the individual users curve with the total one, before then selecting the resulting maximum as the score going into the ML. I think this makes very good sense, actually.\,:) (8:16) .\,.\,Oh, and one could even make several rounds, maybe where you first do the ML process without this adjustment, then you do the adjustment, but where you first filter the total curves according such that.\,. you only take the most.\,. Ah, I was about to say that this would be a $n^2$ runtime, but you only need to compute the distributions for each scale, and each of the most prominent ``correlation vectors''.\,. .\,.\,The `principal components,' rather (no wonder I forgot it.\,.).\,. you need to do that only once.\,. .\,.\,Yeah, so after the first round of ML, one could do another on top that adjusts each user's scores, if they have a significant score\_err, towards where there are most agreement among the top principal-component (PC) groups from the first round that they belong to. (8:30) .\,.\,Or you could, of course, adjust in the first (and perhaps only) round already. (8:31)
+
+.\,.\,Yeah, this does make sense, actually. And we could even tell the users about it: When putting a larger score\_err, your score is pulled more towards the most frequent score, which means that you score matters less in the ML process (in terms of putting you in the right PC groups and not putting you in the wrong ones). And conversely, if you chose a small score\_err, your score will not be pulled as much towards the ``center of gravity,'' and which means that your score will be more effective at setting you apart from the average, which is of course often desired, as not many of us average on all points. (8:38)
+
+.\,.\,Perfect.\,:) (8:42)
+
 
 
 
