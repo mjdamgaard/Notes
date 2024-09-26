@@ -4267,6 +4267,34 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 .\,.\,Perfect.\,:) (8:42)
 
+%(9:59) Considering storing props and contexts at the DOM node. But what about dispatch(), i.e. if we want reducers to be able to trigger ancestor reductions..? ..I could just send a.. ..I could just let dispatch pass a self-dispatcher. Okay. So I'll store state and context data at the DOM node.:) ..But what about reducers..:\.. ...I could also make an auxStore with nonces as DOM node keys.. ..Yeah.. (10:27)
+
+%(15:01) I think I might use a convention instead for classes where we capitalize every "important" word (nouns and adjectives at least, and also the first word, of course)..
+
+%Ah, you could also pass useRef() refs containing dispatchers as the current property in order to pass the parent/ancestor dispatchers.. (15:45) ..But then we have to wrap the returns in that, so I kinda like my solution better..
+
+%(18:12) I seem to be so close, but for some reason, EntityTitle dispatch event repeats four times, and doesn't bubble to the ancestors.. Now, I should actually also use Map() for the auxDataStore, and use the nodes directly as keys.. So let me do that (tomorrow, probably), and then hopefully I will also catch the bug somehow.. (18:16) ..And then an alternative to using event is to just look up the DOM tree for parent nodes with entries in the auxStore (Map() of nodes), and then call the reducer (using the stored setState) from there.. (18:21)
+
+%(18:23) Oh, I have to remember that tags can also be nouns, so I should implement noun predicates as part of my template as well.. ..Hm, maybe I want lower-case after all for the classes, btw.. (8:24) ..And I should keep in mind that tag predicates can also be e.g. 'funky rythms' or something like that, where there is an implicit 'contains' in the front, rather than an implicit 'is'. (8:26)
+
+%(26.09.24, 11:42) Nå, jeg er stået meget sent op i dag, men jeg lå også vågen en del i nat, hvor jeg så til gengæld udregnede, hvad jeg vil gøre med min useDispatch(). Jeg overvejede at bruge contexts i stedet. Men jeg kan virkeligt godt lide at reducerne får DOM-noden automatisk, og jeg kan endda gøre det på en måde, hvor disse noder ikke fastholdes i hukommelsen. ...Hm, I thought I could easily select all ancestors with plain old JS.. But maybe I want to use event bubbling anyway, and specifically to use keys, now passed to useDipatch() along with reducers.. (12:16)
+
+%(15:03) Hm, mens jeg er på Fyn (og på vej til of fra) kan jeg researche lidt, hvordan jeg tegner kurver i CSS + JS.. ..Jeg behøver forresten ikke et søgefelt i den første prototype (når man ser bort fra den for et år siden), for jeg kan bare bruge 'semantisk søgning' til eget behov.. ..(Og muligheden for at gå til et entID via URL'en.) ..Så Relevant predicates, vægt-filtring a klasseset, Arguments (med derived score og impact som en virtual relation), og dermed også Comments, for der er behov for comments som statements. Og så sevfølgelig login, hvor jeg vil lave en kap til lynhurtigt at lave en anonym bruger, hvor e-mailen kan vente. Og er det så ikke nærmest "bare" det, jeg behøver for at kunne vise idéen frem..? (15:10) ..Hm, jeg behøver heller ikke at implementere 'better duplicate' eller 'better representation' til denne første prototype.. ..Nå ja, og der skal også være nogle specially insert-muligheder i det mindste, nemlig så man kan uploade tags (prædikater) og relations, og selvfølgelig også tekst-statements, samt ikke mindst kommentarer.. (15:13) ..Hm, rart at jeg kun skal lave særlige inserts til at starte med. Så sparer jeg i hvert fald en smule arbejde der (inden den er klar til visning).. ..Og jeg kan også bare forklare om browser-udvidelsen.. ..Nå ja, og jeg skal også lige lave et par bots.. ..Hm, hvordan skal man query'e for de samlede kurver?.. (15:19) ..Det skal jeg lige finde ud af.. Men jeg bør jo overveje, om jeg ikke skal skære nogle hjørner med agreement-kurve systemet---eller er det for centralt for systemet..?.. (15:23) ..Hm, jeg kan godt vente med at vise de totale kurver, således at brugerne kun ser guide-(Gauss-)kurven, og altså ikke ser noget aggregeret data om, hvad andre brugere har scoret før en selv. (15:25) ..For det er stadig en fin pointe, at agreement-kurven kan lokke flere brugere til at afgive scorer, og altså skabe en bedre UX også omkring at afgive scorer. (15:27) ..Ja, fint, så jeg skal altså bare have, i hvert fald, en bot der finder type-scoren, men ellers ikke behøver at agregere data mere end det for nu---ja, borset fra at man godt lave kunne opgive en kurve-bredde (som score_err) for de samlede scorer, også selvom botten altså for nu.. måske.. smider disse kurver ud efter hver aggregering.. (15:29) ..Ja, og her taler vi dog om den samlede kurve for én skala, hvorimod jeg før snakkede om den samlede kuve for ét \emph{predikat}, hvor hvert datapunkt så er en instans type-score af den pågældende klasse, i modsætning til i det andet tilfælde, hvor hvert datapunkt er en brugers score for den specifikke skala. (15:33) ..Og vi behøver altså ikke en bot der udregner den samlede score-kurve for en klasse til at starte med.
+
+%(15:40) Hm, skulle vi lave en konvention om at man må have en parentes forrest i sit @[Predicate] i "tag"-prædikat-skabelonen, hvorved denne parentes så kun printes for den fulde titel?.. Lyder da meget nice, ummidlbart. Så kan man nemlig skirve f.eks. 'is a', 'is an' eller 'has' (eller 'contains') foran sine navneords-tag-prædikater..:).. (15:43) ...(15:59) Så, nu har jeg skrevet: "
+%    "@[Predicate] should either be a (compound) adjective or ",
+%    "a (compound) verb. However, by writing e.g. 'is a'/'is an', or ",
+%    "'has'/'contains' in a parenthesis at the beginning of @[Predicate], ",
+%    "the app can cut away this parenthesis when rendering the title of ",
+%    "the entity in most cases. For instance, you might write '(is a) ",
+%    "sci-fi movie' as @[Predicate], which can then be rendered as ",
+%    "'sci-fi movie,' since the 'is a' part will generally be implicitly ",
+%    "understood anyway. Or you might write '(has) good acting', which ",
+%    "can then be rendered simply as 'good acting.' And as a last ",
+%    "example, one could also write '(contains) spoilers' as ",
+%    "@[Predicate], which can then be rendered simply as 'spoilers.'"
+%"
+
 
 
 
