@@ -4309,6 +4309,34 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %I'm going to Fyn now, so I'll be taking notes on my phone instead.. I just want to mention something about each Proposal having a list of Issues that can be uprated for it, and then you can up-rate proposals for that, such that a combined plan goes Issues -> Proposal list -> Issue list -> Proposal list, etc., all the way down to leaf Proposals (or issues to which no solution has been found yet). (8:33) ..Yeah, and then when you finally vote for a Plan, then that is choosing a the whole tree with Propsals at all leaf nodes.. (8:34) ..And so you actually rate support/want for the Plans, at the end---although you could also vote support for the individual Proposals along the way (which are formulated as texts (that are not necessarily full of all details)). But yeah, it will probably be these Plans that you are voting and bargaining for at the end. And then.. Oh, I got to go.. (8:37)
 
 
+%Kopieret fra telefon:
+%"
+%.. and then while the plan is being executed, some new hurdles might arrive, but then you can react by voting for new plans under the same tree, and try to quickly vote for these changes..
+%
+%Issues skal nok hovedsageligt være udformet som desires. Men Issues skal også have et time stamp, og kan også indeholde nogle beskrivelser af de hurdles, der forventes at være. Men nu tænker jeg også, at hurdles skal være en dynamisk liste også, som man så voterer om. Så Issues -> Hurdles -> Proposals..? (9:24, 27.09.24)
+%..Hm, I think that makes sense..
+%
+%(10:37) Man kunne også lade.. Proposals holde deres egen Issue, så det kunne gå mere som Proposal/Issue -> Hurdles (eller problems/tasks/issues..) -> proposals/issues.. Hm..
+%..Hm, Desire -> Hurdles -> Proposals..
+%.. -> Hurdles -> Proposals, osv., indtil proposals'ne bliver simple nok.. ..Og Hurdles kan så holde deres Desire, som kan være afledt af Proposals (a desire to undertake this proposal), og Hurdles kan i princippet have flere Proposals som forældre (altså en semantisk relation). (10:56)
+%..Og ja, en Plan er så, at man udtager et helt træ af Proposals (men hvor man stadig kan bruge det "levende" træ, både ved at skæve til, om der nu skulle komme bedre løsningsforslag (proposals), imens man arbejder, som man måske kan nå at bruge, og/eller bruge det til at rette planen, hvis nu der opstår uforudsete hurdles. (11:00)
+%
+%(11:13) Og diskussionerne kommer jo bare så i reglen under Arguments til proposals'nes support-skala/statement. 
+%
+%(13:27) Desires skal nok be være statement, og så bare udformet som f.eks. 'vi burde gøre sådan og sådan' eller 'det her trænger til at blive gjort' osv. ..Tja, måske, men så skal det nok være en underklasse af statements, det så evt. kan hedde desires alligevel..
+%
+%(29.09.24, 20:51) Problem -> Proposals -> Problems -> etc.
+%"
+
+%(30.09.24, 9:14) Problems -> Proposals -> Problems -> etc. virker nice. Og så skal Problems i øvrigt også bare gerne kunne være dynamiske.. måske.. Men man kunne godt have f.eks. maintenance problems, som så kan være vedværende.. Ja, det må vi have..
+
+%Jeg har nogle vigtigere (alt efter hvordan man ser det) idéer omring entity titles også. Nå ja, og den helt store idé er, at jeg skal gå væk fra at have relationer i almindelighed som en compound relation, og tilbage til at have én samlet rating, som både fortæller om sandheden i den samt om 'usefulness.' Og der er den simple iagttagelse at, jamen, hvis en ting ikke har den pågældende relation til objektet, jamen så er den heller ikke særlig useful at se på listen. Så vi behøver bare usefulness i langt de fleste tilfælde.:) ..Og det gør ikke noget at listerne bliver lange, for vi sørger jo bare for ikke at query mere en til D-ratingen, aller højest, medmindre brugeren beder specifikt om det. Og ja, jeg tror jeg vil beholde.. Nå ja, beholde F--A på aksen, \emph{selvom} jeg altså har overvejet at bruge en anden skala: en relevancy scale.. Men måske går det faktisk fint med grading scale. For selvom jeg gerne \emph{vil} vise den der Gauss-kurve i baggrunden, så skal de siges, at det slet ikke er altid at man forventer, at entiteterne skal følge den kurve nødvendigvis (især ikke når der er nogle store spring i, om en ting har en kvalitet eller ej (f.eks. SSD, eller whatever), som gør meget for værdien). (9:28) ..Men kurven kan godt alligevel være guidene, selv i sådanne tilfælde, hvis man altså bare er klar over, at den kun er en vag guide. ..Og ja, måske behøver jeg så bare grading skalaen, og ikke en separat 'relevancy' skala. ..'relevancy/usefulness/importance'.. (9:32) ..Ja, så prædikatet er altså i virkeligheden, hvor relevant, og lad mig bare bruge det term, entiteten er for relationen subj. + rel. + obj.
+
+%(9:35) Jeg skal også sige, jeg har fundet på at omkapsle prædikater i en rektangel med runde hjørner for grading-prædikater, og med skarpe hjørner for likelihood-skala-prædikater, selvom jeg jo så ikke får brugt dem særlig ofte nu, andet end når vi kommer i gang med diskussionerne. Relationer renderes med klassen i parentes, efterfulgt af en pil, og så navneordet. Og når objektet indsættes, så erstatter dette så selvfølgelig parentesen, og får så pågældende klasse som klasse-kontekst i stedet. I øvrigt vil jeg begynde at bruge plurale ord som klasser.:) ..Først når en relation gives et objekt, og bliver et prædikat, vil jeg så tegne den rektangulære ramme (for det meste med runde hjørner, fordi vi jo oftest taler om grading-skalaen). Og når et prædikat gives et subjekt, så vil jeg bare rendere det som 'subjekt : prædikat', hvor prædikatet så stadig får sin ramme omkring sig. Og subjektet får så også subjektklassen som kontekst-klasse, det er klart. (Men jeg lader altså bare subjektklassen være implicit når prædikater renderes, både for sig selv og i statements. For i det mindste kan man jo indirekte se subjektklassen i statements, fordi denne renderes hvis og kun hvis subjektet har en anden hovedklasse.) (9:44)
+%..Og jeg vil generalt bruge lower-case-ord, og kun bruge store begyndelsesbogstaver for proper nouns. ..Egennavn, nå ja.
+
+%(10:03) Alternativt kunne jeg vise subjektklassen, også i en parentes på subjektets plads (i 'subjekt : prædikat'), kun når klassen ikke er den nuværende kontekst-klasse.. ..Ja.:) (10:05)
+
 
 
 
