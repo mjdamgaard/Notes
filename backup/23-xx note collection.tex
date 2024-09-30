@@ -4371,6 +4371,21 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Ha, nu hvor entiteters rendering også styres af React-klasser, så kommer får jeg slet ikke brug for min DataFetcher-klasse, for nu skal der bare query'es én gang for alt main data, og én eller to gange mere for at få de 1--2 descriptions. (15:46)
 
+%(17:06) Hm, maybe we should just be able to have as many descriptions as we would like.. ..Ah, or at least the maximum unique index key length divided by 56, and then I could just make one text data column with the hashes of all the descriptions.. ..Ah, which can be handed to the app in a query, along with classID and attributes (the text).
+
+%(17:17) Ah, the "descriptions" can also still have text references, i.e. e.g. '@text3', which then references the 3rd "description," which I then might call simply 'texts' instead.. ..Or should I not do this..? (17:20) ..Ah, I should make a separate column, then, for texts, I guess.. ..Well, for \emph{a} text, let's say.. (17:23) ..Which could just be combined with the binary_data column. I think I should do that. And then we'll just implement a '@text' reference, similar to the '@bin' one, which the descriptions can then use to refer to the text. And the app can then also use this text directly, without having to fit and parse this off of the attribute struct. (17:26)
+
+%(17:43) Hm, eller skal vi hellere sige, at vi bare har en række texts (eller binary strings), hvor eneste konvention så bare er.. Nå nej, vi behøver ingen gang nødvendigvis en konvention om at første text altid hentes som den eneste, for det kan EntityTitles (etc.) godt selv ændre, nu.. Men for ikke-kendte klasser, der henter vi bare den første tekst kun, og antager, at den er et JSON-objekt.. (17:46) ..Så jeg kan udskrifte attr_hash, desc_hashes og data_hash med bare data_hashes i stedet..(?) (17:47) ..Nah, vi tager en konvention om at første tekst altid fetches, for så vil jeg nemlig lade den normale.. Nå nej, der kan jo bare være flere query procs. Ok, hm.. (17:48)
+
+%(17:49) Ah, default-titlerne bør i øvrigt også stadig printe alle properties i text1, hvis dette er et JSON-objekt, og ikke bare 'title,' for så kan brugere namlig stadig i princippet inføre deres egen rendering via bruger-sheets. (17:50)
+
+%..Alle description texts kan i øvrigt bare indledes med.. <h1>Description</h1>.. Hm, på nær at man så får en masse gentagende headers.. (17:52) ..Well, jeg kunne jo bare indsætte tal i alle gentagne headere efterfølgende.. (17:54)
+
+%(18:01) Hov, jeg skal bruge SHA2(_, 256) i stedet, for den har JS også..
+
+%(18:05) Ah, man bør jo egentligt vende det om, så shared descriptions kommer først, og så kommer JSON-objekterne til sidst.. Og disse descriptions kan så referere frem til de andre tekster via '@text<n>'. Og dermed behøver man ikke en header som sådan, fordi konteksten for teksten i princippet altid er defineret på forhånd. ..But then again, we want to query the first text at defualt..
+%(18:10) Okay, attributes skal også kunne have '@bin' og '@text<n>' som mulige values, udover entity-referencer of rene strenge.. ..Og jeg beholder attributes som en separat kolonne. ..Jeg bør nok også beholde descriptions. Og så mangler jeg bare texts og binaries, som dog godt kan være én kolonne.. Hm.. (18:13) ..Hm, lad mig bare beholde det som attr_hash, desc_hashes og data_hash.. (18:15) ..Og så har vi bare '@data' keyword'et som det eneste.. (18:16)
+
 
 
 
