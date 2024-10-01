@@ -4405,6 +4405,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(13:02) Oh, do I remove the data_hash? Maybe I should.. ..Well, but then there's the issue that I don't want to fetch the data always. So can't we just make a data_attrs column.. ..Or simply keep data_hash.. ..Okay, let me keep it as is. Yeah, and then we can also use it for the class descriptions, actually! (13:05)
 
+%(13:18) Damn, I already feel like I lack the extra texts.. What to do..? ..(It's for the inst_desc..) (13:19)
+
+%(13:24) Hm, vi behøver jo ikke nødvendigvis at begrænse os til JSON-objekter; vi kan jo også have (JSON-)string-entiteter.. ..Og så kan vi bare bruge entitets-referencer i stedet for '@data'/'@d' osv..:) (13:26) ..Hm, og så kunne jeg faktisk eventuelt have en liste af 'descriptions' i stedet for klasse-listen.. Og så er vi også sikker på at undgå klasse--template-dualitetsproblemet.. Så vil 'classes' og 'descriptions' være to meget hyppige attributter, man ser i starten af JSON-objektet..
+
+%(13:32) Lyder rigtig nice. Og så kan jeg kalde attrs-kolonnen for json_value i stedet.. ..Og så får vi bare json_value samt json_hash som de eneste kolloner (hvor hashet afhænger af json_value, self.).
+
 
 
 
