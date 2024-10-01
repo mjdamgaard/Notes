@@ -4411,6 +4411,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(13:32) Lyder rigtig nice. Og så kan jeg kalde attrs-kolonnen for json_value i stedet.. ..Og så får vi bare json_value samt json_hash som de eneste kolloner (hvor hashet afhænger af json_value, self.).
 
+%(13:41) Så sekundær-nøglen bliver jo bare json_hash, og så er det jo lige før, at jeg bare indføre @<json_hash> som en slags midlertidige referencer, der bliver oversat til primær-nøgle-referencer under indsættelsen.. Og dette kan jeg jo bare implementere i JS.. (13:42) Så lad mig det..:)
+
+%... (15:01) I'll just make pseudo-references instead that references objects in the current batch of insertions.
+
+%... (17:38) The bot(s) that used by default for the relational entity lists shuould first of all cut off (and not score) all entities with a score of F or lower, and should also cut off entities that haven't been scored by enough people. But then the users should of course also be able to change to at least one other bot without these cutoffs.
+
+%..(17:45) Instead of using 'instance descriptions' for classes, let us just instead simply display an entity's class' descriptions underneath its own descriptions. And then these class' descriptions can just speak about what potential attributes that its instances might have, where this is then not needed to be repeated in the instances own specific descriptions (if any).
+
 
 
 
