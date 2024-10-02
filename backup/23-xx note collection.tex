@@ -4438,6 +4438,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Hm, I do think I like this.. (12:54) ..For it also means that users can now quite easily write the entKeys.. well, maybe 'entity addresses' is actually better.. write these themselves when they submit new entities. By the way, maybe texts should just rely more on references where the users write the link texts themselves.. Well, that's not for me to decide..:).. (12:57)
 
+%(13:07) Hm, since all entities now has an adress with a userID in it, I no longer need the creator_id column, nor the associated index. ..Unless I want to separate ent_addr into creator_id and ent_key.. (13:10) ..Yeah, let me do that, that seems pragmatic. (13:10)
+
+%(13:19) Hm, jeg skal så enten tilføje entKey til def_str-hashet, eller jeg skal gøre det muligt for brugere om at stemme om re-mappings af keys.. ..Måske gøre det en del af hashet.. Hm.. (13:21) ..Yeah, that seems like the samrtest thing to do.. (13:22) ..Making the entKey part of the def_hash.. ..Hm, or even better, make addresses that each only refers to another address.. ..So making an AddressRemappings table.. (13:27) ..Hm.. (13:28)
+
+%..(13:31) Hm, maybe we should forget about address remappings for now, and just make the key part of the definition.. ..And since the key ends in '"', we can just concat it with the def_str before making the hash.. (13:34)
+
+%(13:36) Oh wait, this doesn't work for derived entities.. Well unless we could find a way to construct.. 'derived entity addresses'..!!.. (13:37) ..Okay, something to think about... (13:38)
+
 
 
 
