@@ -4461,6 +4461,15 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %Note that most entities will now be derived ones once again..:) (16:05) ..Mostly consisting of a class, plus the relevant template inputs, and that's it. And note that this means that we mainly need the userIDs in the entKeys when it comes to classes. (16:07)
 %..Oh, and this means that we should also make strings part of entKeys, hm, and couldn't we just.. No, we can't just use the string, not for texts.. So what to do with templates that takes strings as inputs?.. ..Well, we could allow for both: Both to insert a string/text via its entAddr, but also just to insert an anonymous string (a pure string, without an entAddr) directly.. (16:10) ..Yes..
 
+%(16:25) Okay, I'm not completely sure I want templates for entities that are not derived.. hm, nah, I only want it when the semantics is defined functionally, and not just when we have a standard way to write the important attributes of a class instance.. Hm, so let me think a bit..
+
+%(16:45) What about a system where every user can just upload an address--entity pair at any point, as long as they havn't used the key before? And then every entity can just get several addresses: as many as the users upload for it..?
+
+%(17:01) Hm, as an alternative that allows us to insert future-/sibling-referencing entities, we could also just add a proc to request reservation of some entity IDs, where you then also get a code to redeem these reservations.. ..Ah, and then each user can then in principle just define their own entKeys, which the app can then translate into entIDs..
+%..(17:09) I mean, this sounds like the better alternative.. And in terms of the distributed database, I've already figured that out, plus you can always remap the entIDs at any point anyway.. ..Hm, so what does that mean, it mean we are back to just having a def_str, which is then hashed for the SK?..
+
+%(17:48) Yes. And we just create an entity with a coded def_hash for each reserved entity, and then then the entity is finally submitted, with the right passcode, we just replace the def_str and the def_hash. ..By the way, I will make a flag for the 'special attributes' section that.. Well, or maybe I will just make a 'discontinued attributes' section instead, e.g. to say that a compound statement no longer needs the scale type, as this should now be defined by the predicate/relation. (17:52)
+
 
 
 
