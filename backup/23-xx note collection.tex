@@ -4419,6 +4419,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(17:45) Instead of using 'instance descriptions' for classes, let us just instead simply display an entity's class' descriptions underneath its own descriptions. And then these class' descriptions can just speak about what potential attributes that its instances might have, where this is then not needed to be repeated in the instances own specific descriptions (if any).
 
+%(02.10.24, 9:41) My "explicit references" should be called "attribute references" instead, and let us just render them with a monospace font rather than capitalizing.
+%..Hm, maybe I should use XML instead of the '@[syntax]'.. ..Then I can just define my own <attr> XML, and I could also btw define a <class> tag, which I will then also render using a monospace font myself (but this can then be changed in the future, and adjusted according to user preference). (9:47)
+
+%(10:08) Maybe I will just have one 'documentation' instead of 'descriptions,' and then I'll use <h1--h6> headers inside the documentation.. ..(yes 'documentation'..) which I will then all make expandable on the info page, including the outer <h1> one.. ..And I will allow tags inside the <h1--h6> tags (but otherwise I'm gonna limit nesting quite severely in the beginning).. (10:13) ..Hm, then I should also include the paragraph tag.. Nah.. Hm.. ..Hm, I guess I ought to, such that my XML will be HTML-like. (If you include a part of HTML, then it's only expected to continue in that direction.) But I don't care to look up if <attr> or <class> matches any HTML tags; we'll never need to go \emph{that} far down the line of making the markup HTML-like. (10:18)
+
 
 
 
