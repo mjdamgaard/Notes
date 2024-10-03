@@ -4489,6 +4489,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Men FULLTEXT-indekserne får vel så ikke noget med entID-indekserne at gøre, gør de?.. (13:30) ..Ja, adskiller man ikke de to ting: de komprimerede entID-indekser og de søgbare..? ..Hm, og skal de søgbare indekser faktisk ikke være indekser \emph{over} entKeys/entAddrs, således at man altså får dette først (og dette kan man jo også bruge til at query'e databasen direkte for entitetens data, uden at behøve at fetche ID'et først)..? (13:34) ..Jo, sådan bør det jo være..
 
+%(13:39) Ah, skal jeg så alligvel indføre compound ent-adresser for at gøre definitionerne helt uafhængige af entID'er, også for compound entities, det må jeg vel næsten.. ..Men brugere er så stadig frie til at uploade entKeys for compound/derived entities; man behøver ikke bruge den afledte adresse.. (13:41) ..Og hvad, siger vi så at definitionen på derived entities består af et JSON-array, og at lister så bare må være nestede arrays?.. (13:43) ..Ja, det gør vi vel. Og templates er så bare vilkårlige entiteter, hvorom det bare kræves, at de holder en 'template'-attribut.. (13:45) ..Ja..:) (13:46)
+
 
 
 
