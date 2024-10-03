@@ -4505,6 +4505,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(18:01) Let's make is customary for users to always reserve at least 100 entities at a time.. or not?.. Hm.. ...(18:35) Maybe we should make a bot insert derived entities.. For I don't want these to be editable, and this also mean that we won't get many single-entity-insertions, which means that it makes sense to always just reserve an interval first.. ..Yeah, let's make that a bot, in any case.. ..And yeah, let me just.. ..make do with the procedure for reserving an interval and then one for inserting/editing/finding (where we find only if the entity is finalized, otherwise we replace it) an entities in these reserved intervals. (18:41) And then I can always make a procedure for inserting only one entity at a time, if that becomes useful..
 
+%(18:47) Wait, saving derived entities as their reference means that texts containing nothing but a reference to a derived entity won't exist.. Hm.. ..Hm, but we could make it a noramlly ill-formed reference.. (18:50) ..For we don't care about ill-formed texts.. not existing.. right..? ..Maybe we might.. ..Hm, since numbers.. Nah, we can't use JS numbers for BIGINTs, never mind.. ..I could also just try-catch JSON.parse, or always do a preliminary.. nah.. ..Hm, alternatively we could just use 'null' as the defStr for derived entities, but then hash the.. ..the non-JSON derived-entity reference.. Yeah, that could work.. (19:00) ..And we already have entID = 0 as the null entity, so we won't need an entity with a defStr of null at any point, I'm sure.. (19:02) ..Let's do this..:) (19:02)
+
 
 
 
