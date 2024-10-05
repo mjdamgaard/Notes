@@ -4546,6 +4546,21 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(11:32) Yeah, it seems that this is the way forward.:)
 
+%... (14:35) Jeg laver InitialInserter i PHP i stedet, hvad jeg jo også bør. Og måden den virker på er så bare at indsætte alle entiterne i første runde med relative ID-referencer, hvor disse altså bare hver især er nummeret ud af alle brugerens creations, som den referede entitetet har. Lad mig bare lave en syntaks for sådanne midlertidige relative referencer i øvrigt. Og så i anden runde så rettes alle entiteter så, der indeholder relative referencer.
+%Første indsatte entitet bør så være "initial_admin," som så også er den indsættende bruger. Og bemærk at vi ikke vælger userID = 0, for jeg vil faktisk gerne kunne redigere legitimt i entiteterne efter realease, nemlig ved brug af denne "initial_admin"-bruger.
+%Now that all entities with creatorID != 0 are editable, always, one way to back up another users entity will then simple be to submit a duplicate with the anonymous creator_ID = 0. Then one can subsequently uprate this as a "better representation," and just choose a very wide rat_err, if you don't want to really say that it is better than any potential future editions of the entity by its creator. (14:43) ..Duplicating an entity and "backing it up" using one's own userID, rather than creator_id = 0, is not constructive; creator_id = 0 should always be used for this purpose, when the user in question don't actually make any changes to the original defStr. (14:45)
+%..And let me just underline: isPublic does not mean that the entity is not still editable; it is. (14:46)
+%..And the admin(s) can also edit or delete entities at will, in principle (although in practise it has to be done by request, of course, or to prevent legal issues). ..An edited entity might keep the same hash, but the admins might also change the hash with it. Note also that deleted entities can still be in indirect use if their representations are not deleted/missing/undefined, since I'll make that query proc that can be used to get the best representation directly, without ever having to query for the original entity. (14:49)
+
+%..Oh, and I should say: The insertion page/column should just use the same procedure, i.e. inserting entities in two rounds.
+%..(Btw, since we allow only one entity of any given defStr for each user, we don't need any keys to prevent inserting the entity twice.) (14:52)
+
+%Oh, when I'm inserting the "wrong" defStrs in the first rounds, then I'll keep replacing and replacing back the entities each time.. ..Well, so the app then has to query for all the creations first, and then suppress all that.. No.. Hm.. ..Should I just not care about this for now..? ..No, the app should just replace the relative IDs before the first round if possible (meaning that it should first query for the creations).. And my PHP Inserter class?.. (15:56) ...I might as well do the same thing: query the creations first..
+
+%(16:34) Oh, PHP doesn' allow for functions in preg_replace.. ..Ah, but it has a '\n' syntax, that I can use instead.. (16:37)
+
+
+
 
 
 
