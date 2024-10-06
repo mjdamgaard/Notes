@@ -4557,7 +4557,9 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %Oh, when I'm inserting the "wrong" defStrs in the first rounds, then I'll keep replacing and replacing back the entities each time.. ..Well, so the app then has to query for all the creations first, and then suppress all that.. No.. Hm.. ..Should I just not care about this for now..? ..No, the app should just replace the relative IDs before the first round if possible (meaning that it should first query for the creations).. And my PHP Inserter class?.. (15:56) ...I might as well do the same thing: query the creations first..
 
-%(16:34) Oh, PHP doesn' allow for functions in preg_replace.. ..Ah, but it has a '\n' syntax, that I can use instead.. (16:37)
+%(16:34) Oh, PHP doesn' allow for functions in preg_replace.. ..Ah, but it has a '\n' syntax, that I can use instead.. (16:37) ... (18:07) Hov, nej, jeg har jo brug for en funktion til at slå creation-ID'et op.. ..Jeg kan dog bruge preg_match_all i stedet.. (18:14) ..(Det er jo nok noget formiddagsarbejde, kan være jeg holder fyraften i stedet..) (18:17) ..Ja, jeg er for træt nu, og jeg ved det bliver en let sag i morgen..
+
+%(06.10.24, 15:17) It's really nice that user settings are stored as private entities, and ones that are editable. It means that we get the following for free: Users can change there settings at anypoint without having to upload new entities each time, otherwise costing them data space with the database node. But they can also save several settings by making more than one setting entity (for whatever given setting that we are talking about), and then uprate all on the entity list over their prefered settings (which is already how we find a users setting, even if they only have one). And it also automatically mean that users can publicize their settings, although they should of course then prefereable publicize it as an "anonymous entity" such that they forfeit the rights to edit it (as that would be a very bad situation, where a user can all of a sudden edit a bunch of other users current settings). (15:23)
 
 
 
