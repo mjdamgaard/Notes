@@ -4584,6 +4584,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..But a good place to start is also the intra-Semantic Network proposals, where each user who has contributed enough to the network gets a vote, e.g. about what bots to implemnt, what app features to develop, and things like that. (11:15)
 
 
+%(12:14) Hm, er det bare op til brugeren at lave creationIdent-stier, der starter med et tal, hvis man gerne vil ordne kronologisk.. Nej.. Hm, så hvad gør jeg..? ..Ah, men da vi ordner efter public og.. vent.. ..Hm, kunne is_public omdannes til en tinyint (char), der har flere værdier, og som så kan opdele insert page i grupper?.. (12:16) ..Eller tilsvarende hvor vi bare indfører en ekstra kolonne, selvfølgelig..(?) (12:17) ..Nå nej, med et helt filsystem, så er der allerede rigeligt orden på det, never mind.. (12:20)
+%..Hm, jeg har både lyst til at have is_public før crIdent i det index, og har lyst til ikke at have det.. ..Hm, men hvor tit søger man på en anden brugers creations.. Hm.. (12:26)
+%..Åh vent, creationIdentifiers skal jo slet ikke være synlige for andre brugere.. Så vi ville skulle bruge et andet indeks her, eller bruge en bot.. Hm.. (12:32)
+%..Ja, hvis ikke man skulle bruge en bot, så skulle man jo lave et index over creator_id, is_public, id.. (12:35) ..Nah, vi kan jo også bare undlade at vise identifierne.. Hm, eller bare lave identifiersne public..? (12:36) ..Hm, man har jo ikke behov for særligt mange private entiteter ad gangen, så skal jeg ikke bare springe alle private creations over, når man selecter en anden brugers entiteter. Og så kunne jeg bare lave creation_identifiers public, altså kun hvis entiteten selv er offentlig..? (12:38) ..Ja, lad os sige det. (12:39)
+
+
 
 
 
