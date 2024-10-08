@@ -4589,6 +4589,15 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..Åh vent, creationIdentifiers skal jo slet ikke være synlige for andre brugere.. Så vi ville skulle bruge et andet indeks her, eller bruge en bot.. Hm.. (12:32)
 %..Ja, hvis ikke man skulle bruge en bot, så skulle man jo lave et index over creator_id, is_public, id.. (12:35) ..Nah, vi kan jo også bare undlade at vise identifierne.. Hm, eller bare lave identifiersne public..? (12:36) ..Hm, man har jo ikke behov for særligt mange private entiteter ad gangen, så skal jeg ikke bare springe alle private creations over, når man selecter en anden brugers entiteter. Og så kunne jeg bare lave creation_identifiers public, altså kun hvis entiteten selv er offentlig..? (12:38) ..Ja, lad os sige det. (12:39)
 
+%... (14:57) Nå ja, forresten, jeg tænkte på for noget tid siden (forleden engang), kan ikke huske hvornår, at jeg også kunne lade rektanglerne gå hele vejen rundt om statements'ne, og ikke bare om prædikatet. Så det tror jeg, jeg vil gøre. Og så renderes relationer så som en rektangel (måske med rundede hjørner) rundt om et navneord efter et ':' og et '\rightarrow' symbol, prædikater er et ord eller et '<objekt> \rightarrow <navneord>' compound, som så står efter et objegatorisk ':' (også inden i rektanglen), og statements are så enten tekster, eller prædikater med et subjekt foran kolonet, også altsammen inden i en rektangel.
+
+%(17:13) Since I'm using JSON encodings, I think it becomes a bit of a mess when I then also use backslashes to escape '@'. Let me me from now on instead use '@@' to escape '@' as the beginning of a reference.
+
+
+%(08.10.24, 11.36) Hm, jeg skal lige have overvejet, om det virkelig \emph{er} det her "app column" system, jeg vil bruge, eller hvad.. ..For alternativt så bruger vi jo bare browserens tabs i stedet, og det kan jo være, at de har bedre memory management eller noget, det ved jeg ikke.. (11:39) ..Men hvad så for mobile..? ..Hm, skal jeg satse på mine "columns"..? (11:43) ..Ja, det skal jeg jo nok.. Og kan man ikke bare gribe ind, hvis nu der bliver problemer med memory og hastighed (hvad der jo nok kun vil, når vi får store billeder og videoer ind..)? ..Eventuelt ved at lave en billed-wrapper, der spørger en React context, om billedet skal inkluderes eller ej.. ..Jo, det må være det.. (11:48) ..Men jeg tror jeg vil kalde det app pages, og så vil jeg bare sørge for at alt i appen bliver inden i disse "pages".. (11:49)
+
+%(11:59) Hm, og lad mig gøre colSpec til en URL path igen, sådan at URL-stien kun bare parses af "app page'en"..
+%Hm, og hvad med ReactRouter eller lign.?.. ..Ja, men altså hvor man går tilbage til den kolonne/side, der sidst var i fokus, ikke hvor man går én tilbage i listen a kolonner/sider, som jeg ville have det før.. (12:09) ..Men lad mig bare selv pushe URL-tilstandene i stedet for at bruger ReactRouter, det bliver det nemmeste, tror jeg faktisk.. (12:11)
 
 
 
@@ -4603,6 +4612,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 
 
+
+
+
+
+\ 
 
 \chapter{Economic ideas}
 
