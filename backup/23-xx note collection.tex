@@ -4899,6 +4899,24 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(16:43) Oh, wait, there hould also be some kind of "switch," or whatever, which determines whether we see.. well, whenever in "scoring mode," we see the same kind of entity element, with the same React components, i.e. And when searching, well, there might be several options.. And each tab should.. Ah, so each tab on the entity page just also defines the initial type of EntityElement component, but then you can also shift to the default component, which is also automatically switched to if you go into "scoring mode".. (16:46)
 
+%... (19:29) The bots don't have to make the n cutoff for all sets, and n can also vary. For very popular sets, we might have no cutoff, and for less popular sets, there might be a not so large n. And here I'm talking about these specially ranked sets/lists where the higher scores count have more weight than the lower scores, used for making the class more searchable w.r.t. to its popular ordering predicates.
+
+%When it comes to normalizing the correlations (and shifting them to also give them the same mean always (not just the same variance)), the app should keep track of all the user's chosen subdivisions, such that whenever a scale is shifted, the scales that are correlated with the given scale, above or below, will also all be shifted. The app might store this data in an entity, or it might simply query for it one relation at a time.. (19:35)
+
+
+%(23.10.24, 11:12) Hm, rather than my SubpagesUnderTabs, maybe I now need to.. Hm, I need several racks of "tab bars" (although the "tab bar" is just one potential styling of the menu).. Should I make them signal their relative id/key to the AppPage/Column?.. ..Well, maybe the AppPage/Column should be the one to hold the state of the menu.. ..Sure, let me do that, yes.. (11:16) ..But yeah, it's gonna be a complicated state.. ..But I can manage.. It's basically just that there's a currently selected tab/choice for each submenu, which gives us the entity list and the scoring display, and then there's also some more data to the state internally, which the outer AppPage doesn't have to know about.. Well, Should I modularize it then.. Nah.. ..Well, if we do, that then means syncing the states, which is not a good thing, I think (don't sync states with each other in React, I'd say..).. ..So no, we can just modularize by dividing the state into several parts, and keep the currently selected choices closer to the surface of the state object.. (11:23) ..And let me try to start simple and then build from there.. ..Also, do I call them Columns or Pages now?.. (11:25)
+
+%...Let's move the scoring display down to just above the entity list (and out of the menu, actually).. ..Well, maybe not..
+
+%... (14:11) I think I will remove the agreement curve for now altogether.. It does so little now, especially when we're also using the median for likelihood and value scales. So yeah, let me remove it, at least for now.
+%Another thing: Yes, the app should save the user's scores in a private entity as well. This will then also even allow the user to try different settings without having to create and/or change to different accounts. They can then experiment and use different settings, while still keeping the same scorings for the outside world.
+%Now, we might even make it at some point such that the bot just reads the scores off of the user's puplic score entity, instead of the user uprating the normal way. And this then also relates to the first thing about the agreement curve, 'cause when doing it this way, there's also no limit on how the bots can reimplement the users' inputs. (14:17) ..For instance, we might implement the agreement curve (or another kind of "uncertainty") this way, or we might also implement a system where a user also proves that they have the right to score a given entity (maybe by attaching en encrypted receipt of a product, for example).
+
+%About where to start.. Oh, one thing first: The class's likelihood scale should also be an option (the first one) in the ordering predicate menu.
+%Let me start by not implementing the bar at the top where the user can select the class to get the right Main Tabs. Let's also ignore the scoring display for now. Oh, about that, this \emph{should} actually be above the menu, in a way, an take the place of the top column/page header when this is minimized (which it is automatically after having scrolled down). Let me then start by simply showing the class entity list ordered by likelihood. Then I can add the subclasses tabs. Then I can start adding the Ordering Predicates. And then I'll see what to add next from there.. (14:26)
+%..Hm, and let me just keep calling them 'pages,' actually..
+%..Oh, I should also use my useRestorableState() now, so that I don't have to refactor a lot later.. ...I'll do that tomorrow instead..
+
 
 
 
