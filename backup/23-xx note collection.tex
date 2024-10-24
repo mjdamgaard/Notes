@@ -4953,6 +4953,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %And something else: The database then don't have to know anything about the users' settings. You could even let the app store these settings in localStorage if you really want to be sure, and then the app can just promise (which is easy registerable) not to send these settings to the DB at all (except when deliberately submitting a set of settings).. (11:14) This then gives the system this extremely cool quality of 'not needing the app to gosip/tell about the user in order for the user to get personalized settings'..! (11:16) ..(Of course, if the DB is controlled by the wrong party, the can still figure out stuff about you from your queries, but another part is that the DB shouldn't do this: We should not log anything about our users that they don't submit themselves, other than perhaps some connection-related data in order to prevent DoS attacks.) (11:19) ..(But for non-guilty/not-highly-suspicious users, we should also even delete these logs after only a short while.) (11:21)
 
+%(11:37) Oh, but the user \emph{can} also rate the "compound"/"divisible" predicates themselves, so how to deal with that..? ..Ah, whether you ever query for that score, or if you only query the underlying predicates, that is then just up to the user with their settings.. (11:39)
+
+%..Hm, now I do have three similar-looking score tables. Do I gather them?.. (11:41) ..Hm, especially if we just make predicates refer to their class, perhaps.. Oh, we could call it a Tag, a predicate and class pair.. Hm.. (11:42) ..Or a 'rating'.. (11:43) ..A rating scale, rather.. ..And then we can combine the tables by writing scale_id.. (11:45)
+
+%(12:56) Oh, in a way, a specific search (using predicates) is like creating temporary outer "compound"/"divisible"/whatever predicate that essentially says 'relevant for me now'.. ..And let us actually implement searches this way, such that users can save various searches, only where the users then don't have to submit these predicates publically (and they don't even have to submit them privately)..:) (12:59)
+
 
 
 
