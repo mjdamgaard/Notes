@@ -4957,7 +4957,19 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Hm, now I do have three similar-looking score tables. Do I gather them?.. (11:41) ..Hm, especially if we just make predicates refer to their class, perhaps.. Oh, we could call it a Tag, a predicate and class pair.. Hm.. (11:42) ..Or a 'rating'.. (11:43) ..A rating scale, rather.. ..And then we can combine the tables by writing scale_id.. (11:45)
 
-%(12:56) Oh, in a way, a specific search (using predicates) is like creating temporary outer "compound"/"divisible"/whatever predicate that essentially says 'relevant for me now'.. ..And let us actually implement searches this way, such that users can save various searches, only where the users then don't have to submit these predicates publically (and they don't even have to submit them privately)..:) (12:59)
+%(12:56) Oh, in a way, a specific search (using predicates) is like creating temporary outer "compound"/"divisible"/whatever predicate that essentially says 'relevant for me now'.. ..And let us actually implement searches this way, such that users can save various searches, only where the users then don't have to submit these predicates publically (and they don't even have to submit them privately)..:) (12:59) ..(And they also don't have to name them..)
+
+%(13:03) These changes (from today) means that we have to implement Arguments in their own way, but that is also perfectly fine.:)
+
+%... (15:13) I should actually make/derive scale entities from classes to make the likelihood scales, even though it's just a one-input function / monad. But it pays to be semantically precise. And luckily, we can always use the secondary key, i.e. the hash, of these class likelihood scales.
+
+%About "absolute scales," in a way, when you define a predicate in relation to a class (or rahter define a scale from both), this \emph{is} an absolute scale, at least with the simplifying assumption that the class is constant. And even though it isn't, that's still as close as we are ever gonna get, anyway, on an absolute scale.:)
+
+%Like I've mentioned before, users should be able to rate paremeters that allows the app and/or the bots to transport ratings of the same predicate from a subclass to its parent class (and perhaps the other way as well, if we implement it). I should implement this pretty early on, but perhaps I'll then just let it be completely governed by the app at first. Then we can always implement it for the bots later, in order to save storage space, as well as upload data.
+
+%When it comes to scoring entities, I still think I will make the drag-and-drop/move-entities-around functionality. And I've also had the idea that users should then be able to click back and forth between levels of "knownness," but all the while keeping the top level out, which are the "representatives." The user can then move these around to rate, after which their coloring/style will shift to mark it as rated. They can also rate the 'knowness' scalar for each, which is also a way to skip rating the entities, as they will then move down many levels, if you give them a low 'known' score. So when all the entities on the list are now either rated or marked as not-very-known (by the user), the user can then submit an go one level lower. And when the user in the future rates a different predicate (or the same) for the same class, the 'known' scorings will then be kept such that the user will see their known entities closer to the top. (But the app still always selects a representative list, such that the representatives are approximately equally spaced.) I think this will be a really good way to get the users to rate a bunch of entities at once---and one with good UX..:)
+
+%About normalizing, all that should be done is that a bot ought to keep two lists for each rating-scored entity lists: one unnormilized and one normalized one (perhaps where the non-normalized one is not queryable, I don't know..) And that's it.:) (15:29)
 
 
 
