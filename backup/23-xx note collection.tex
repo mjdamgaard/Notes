@@ -5000,6 +5000,20 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %Hm, for the order of the Special attributes, let us actually just put the removed attributes where they would otherwise have been in the order.. (12:19) ..And the same when overwriting their option with either 'mandatory' or 'optional'..
 
+%(12:45) If we ever want default values for attributes, let us implement it by using a '= <default value>' syntax right after the type/class declaration in the Type row of the Special attributes table.
+
+%(13:04) "Or should we use a Scale type attribute intead after all?.." No, we shouldn't..
+
+%(13:17) Oh, relational classes should also inherit from a list of useful relational classes.. And one might even extend that to (derived) subclasses of (derived) subclasses, on so on.. Hm.. ..Ah, but this is just done by uprating Relations for Relations, as the Object will be constant. So we just need a relation of 'Useful sub-relations'.. (13:25)
+
+%By the way, I'll call.. Wait, if I call general class members 'members,' and only call members with the class as their 'class' attribute's value 'instances,' then I don't need to say '\emph{child} instances'.. (13:53) ..Sure..
+
+%(14:03) Hm, I guess def_str should be a BINARY instead, or what?.. ..Hm, SVG is a text file format, not a binary one (of course).. ..But binary files might be needed, e.g. JPGs.. ..But why not make a separate database for binary files like images and videos, and then just refer to them via an URL?.. ..For if the files are still stored by the same DB / DB node, this node can then still make the exact same promises about when to keep these binary files, and when to throw them out. So yeah, let's say that binary files are refered to by URLs (and some nontext file formats, such as SVG, might also be referenced by URLs as well).. ..So let us use utf8mb4 for def_str.. (14:14) ..Well, one can set that option for the whole database instead, so we'll just keep the simple 'TEXT' type..
+
+%... ...(16:19) I'm gonna call it 'Rejects submissions' rather than 'Rejects instances' such that I can use it for Users and Comments as well.. ..Oh, or I could use a self "type".. But then I also need to remember implement checks in the backend.. But.. Oh no, the attributes is simply not set when it has that type. Rather the creator will be the input. And so I could call it 'creator' instead.. (16:24) ..Well, no let's instead just make the app check that the creator attribute matches the creator.. ..Hm, it makes more sense to make a boolean, then, that says 'is claimed by user'.. (16:29)
+
+%(17:31) Hm, could be nice if we could make it part of a class's attributes, whether or not the creator should always be 0, a bit similar to the 'Rejects submissions'.. well, shall we not just include that attribute?. That should be all there is to it (and then the app can just handle it from there)..
+
 
 
 
