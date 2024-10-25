@@ -4971,6 +4971,35 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %About normalizing, all that should be done is that a bot ought to keep two lists for each rating-scored entity lists: one unnormilized and one normalized one (perhaps where the non-normalized one is not queryable, I don't know..) And that's it.:) (15:29)
 
+%(18:34) I should make settings entities modular..
+%(18:45) For the thing about the entity lists aggregated with more weight (perhaps even growing quadratically, or more) to positive scores for each user, we just need to implement a bot that does this.
+%About transporting ratings, we should also make the app (at some point, but in the early stage) transport ratings fro the "compound"/"divisible"/or-what-to-call-them predicates as well, by the way.:)
+%...(19:00) Wait, but maybe the aforementioned type of aggregation isn't really useful.. ..No, I think we just need the median bot for the early version of the app/backend..
+
+%(20:23) I should make a new entity datatype of just the class ID followed by the "template inputs" / attribute list, I think.. ..And I should make a query proc to get the defStrings of a whole list of entities at once, or rather the defStrings until some max length.. (20:25) ..At least at some point, we should do these things.. (20:26)
+%(20:32) Ooh, could we not just reserve the rights to edit all entities such that they are transformed to this other.. Wait.. Another idea: Couldn't the aforementioned query proc not just query an entity with this data instead?.. (20:33) ..Yeah, that's what we will do instead.. (20:34)
+
+%(25.10.24, 9:44) When we "scramble"/overwrite the creator_id for an entity, we should actually make a new entity containing an encrypted key to reclaim the entity, with a maximum deadline as well, and perhaps the user can also choose a closer dealine if they want. And the creator_id is then set to the ID of that entity. *(Never mind about the deadline..)
+%I should also at some point make a proc to get the (public) entity with the lowest ID above 0 for a given defStr hash..
+%..I should also make a UTF-8 (perhaps with datatype = '8') datatype, used for bot and settings data, ect. *Let us actually say datatype = 'u' instead, 'cause then we can potentially use datatype = 'U' for UFT-16.. or unicode..? ..Well, that's just a union of UFT-8 and UFT-16 in practise, as far as I can see. So yeah, let's plan to do this for now..
+
+%..Maybe I'll keep the '@...' syntax for the XML texts, actually, meaning that we should write '@@' to get '@'.. well, \emph{or} we could say '@\n'.. I like that better.. ..Well, no, 'cause when users.. No, I like it better.. (9:57)
+
+%Let's make 'description' an optional attribute, since an entity can also just rely on the description of their class. And let us do this for our derived entities, i.e. not include the description.. (10:12)
+
+%(10:20) Hm, when we implement a feed at some point, I could let the app save a number in localStorage of how far down the user has reached, and then make it possible for them to return to that. And a more important thing: We could let localStorage hold a least recently used list of.. wait no, of "seen" entities.. we don't need that before we get to a point of having more user-taylored feeds, and here it might still work to just save that number.. oh, if we're talking about videos, or something, where the user has seen the thumbnail, but not necessarily the video, it might also make sense to keep a list over "seen" videos/movies etc., and perhaps a least-recently-used list indeed. But all this is only at an advanced stage of the app. ..Well, except that a user would want to keep such lists across platforms, so one culd save it in a privite entity instead, if not in a private entity list.
+
+%(10:57) Let's make a convention of always ordering the attributes from first to last added, when going from the root class, 'Entities,' (always an implicit parent class of 'Classes') and all the way down to the class itself. But let us also always put the optional attributes below the mandatory ones.. Hm, and always put 'description' last as well?.. ..Hm, should 'Enitites' actually be the outer class, or.. No, yeah, it is the outer class.. ..And then the 'special attributes' attribute than only counts for JSON entity instances of the class.. ..Well, we shouldn't divide them into data entities, and general/abstract/standard/object entities?.. ..Ah, or I could make a Data Entities subclass of Entities, and just remove the attributes.. ..Or simply write.. ..A boolean attribute that removes all atrributes.. Wait, in order to even define the class, we need to use a JSON entity, so no, it just goes without saying that the 'special attributes' are for JSON entities only. ..Well, we should say it, of course.. (11:10) ..And yeah, let's just always have the description at the bottom. This convention is then both used when writing the entities, and also used for the submission forms. (11:11)
+
+%..(11:13) Hm, to use 'Scale types,' or to divide scales into subclasses..? ..Hm, and to capitalize all first letters of classes, or just the very first..? ..Hm, to only capitalize the very first.. ..Hm, and I think I should subdivide into subclasses.. Then the Scales class should just not be used other than a parent class.. Hm, and if so, can we denote this.. ..Well, no, let us simply just not have the 'special attributes' attribute for it (such that you would technically need to define instances of it from just the description, if not for the subclasses). (10:20)
+
+%And for the 'Special attributes' attribute, let's also list them in order of mandatoy and optional.. hm, and maybe 'removed' first?.. Sure.. And let's also list the removed attributes in the order that they would be written.. (11:32)
+%(11:37) Oh, should we also denote the expected type and/or class for the special attributes?.. ..I think so, yes.. ..So either a strings denoting the type, or an entity ID (a string starting with '@') denoting the class.. (11:39)
+
+%(12:06) Hm, 'Scalar predicates' or 'Tags'..? ..'Tag'.. (Used to define Rating scales..)
+
+%Hm, for the order of the Special attributes, let us actually just put the removed attributes where they would otherwise have been in the order.. (12:19) ..And the same when overwriting their option with either 'mandatory' or 'optional'..
+
 
 
 
