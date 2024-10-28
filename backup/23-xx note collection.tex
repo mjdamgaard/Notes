@@ -5120,6 +5120,23 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..Oh, and I \emph{will} try to measure the correlations between tags, by the way, at least at a slightly later stage.. Hm, but how?.. (11:32) ..Nah, maybe not.. ..Well, or yes, maybe.. (11:33) ..Well, if you can calculate the correlations for each leaf, then you can just propagate these upwards.. ..Okay, but yes, I will only implement all this at a slightly later stage, I think.. (11:36) ..Just to give an example, if one class of recepies has some.. Nah, bad example.. Hm.. ..Hm, all the examples that I'm thinking of have trivial correlations, I think, when you think about it.. Hm.. ..Oh, and these correlations also typically show up simply in the fact that this might allow the tag curves to be wider than they would if the two tags conflicted more with each other.. Okay, so let's forget about these measured tag correlations.:) (11:42)
 %..Great..
 
+%..Let us also extend the Arguments tab bars from the tags, just like we extend the tags tab bars from the (sub)class tab bars..
+
+%Ah, and we can put the scoring/adjustment of the offset and the relative scaling on the scale display, where this is done by dragging and adjusting the center of the subclass curve, as well as its "error bar".. (11:49)
+
+%..Oh, and instead of computing a combines curve when selecting more than one tag, we can also just show both curves.. We can at least just do this for the first implementations of the app, and then we can always see if we want to compute the transformed (estimated) curves as well.. (11:52)
+
+%(11:56) Wait. We still have a problem of scoring the most 'known' entities in large classes according to the tags when tags are only scored in relation to the leaf classes.. ..But I guess we just propagate the scores of all well-known entities upwards, and then take the average score, perhaps, when there are intersections.. ..Or just take the score from the subclass that is the most popular when there are intersections.. (12:01) ..Yeah, maybe the 'known' entities are all propagated from below, together with all their predicate scores from their (best) leaf node, and where these scores are then transformed each time it moves up.. ..And the 'knowness' itself is also part of this, meaning that not all subclasses will propagate their entities all the way up, even if they are consistently among some of the most 'useful' subclasses all the way up.. (12:04)
+
+%..Hm, do we just make the bot record the most 'known' entities for each (usefu enough) class, together with their tag scores, via entities?.. (12:08) ..I could also make a special Scores table where the score, or a package long with the score, can be an arbitrarily large (almost) string of data.. (12:09) ..Let me do that in any case.. (12:10) (..:))
+
+%..And we only need to propagate tag scores whenever the parent also has the given tag among its most 'useful'/'relevant'.. (12:15)
+
+%Wait, we can also rate for each entity which class is best for it for scoring.. (12:17) ..Then app can just query the tag scores from there.. Well, no, 'cause we still ned propagation in order to transform these scores. So yeah, never mind, I think I was on the right track..
+
+%(12:19) Now, what do we do with relations that has large domains?.. Do we try to make these sortable as well?.. ..Maybe not; maybe we just make do with the fact that these can have "sub-tabs," implemented via the "sub-relations" relation.. (12:21) ..Yeah, for sure.. (12:21) ..Hm, so we won't really implement tag searches for relation subject lists?.. (12:24) ..We make do here with subtabs and user groups?.. (12:25) ..Maybe I should implement a kind of "tagged" tabs, then at least.. (12:26) ..Well, on the other hand, you can just add the adjective in front of the relation in most cases, and then the 'relevancy' will automatically include the degree to which that adjective fits the subject.. (12:28) ..Well, but let's indeed make tabs that are derived from a relation and a tag.. or rather: derived relations each made from a (non-tagged) relation and a tag.. (12:29)
+%..So yeah, maybe tag searches will otherwise only be a thing for the outer entity structure. And then once you have selected the first entity and search via relations from there, you only get tags in terms of "tagged relations," but not in a way where you can (re-)sort the given tab; all relational tabs will only have one order per user group.. (So you can at least inlfuence the scores and the ordering this way, at least, namely by selecting a user group that shares your tastes..) ..I think this might be so.. (12:32)
+
 
 
 
