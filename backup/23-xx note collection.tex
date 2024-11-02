@@ -7557,6 +7557,32 @@ And then let's look into what I should do after this assumption.\,. (9:40)
 
 (21:35) Hm, maybe you could also just use an almost-eigenvector that has a vanishing amplitude for the last $m$ levels out of the $n$ levels up to our cutoff, where $m$ is the order of $q$ that we are looking at. We should be free to send $n$ towards infinity for any fixed $m$, right?\,.\,.
 
+(02.11.24, 9:56) There's some other trouble. .\,.\,One thing: When you Lo.-transform, we get a differently shaped amplitude distribution (w.r.t.\ momenta), and that seems to cause trouble. Also, when you look at e.g.\ an antiparticle that is created and then annihilated again within the path integral, this corresponds to a part of the operator in the pre-DSR case that is vanishing (when $\delta k \to 0$). And you can say the same weird thing about a negative-energy fermion being created/produced and annihilated/turned back inside the path integral in the pre-DSR case; that also corresponds to an operator that should be vanishing for the desired DSR'ed Hamiltonian. So it seems there are some big thoughts to be made\ldots\ (10:03)
+
+(10:40) Wow.\,. I just realized that we might desire there to actually be an enhancing factor on all positive-to-negative-energy transitions, and an opposite dampening factor on the negative-to-positive-energy transitions, proportional to $\delta k$, before we get the desired physics for the DSR'ed Hamiltonian.\,.
+
+.\,.\,(10:45) Oh, and maybe we could get this exactly by considering transitions with incoming and outgoing negative-energy fermions with spread out momentum distributions.\,.
+
+.\,.\,But I should try to get the Lorentz covariance argument to work again, and then see if that gives us any altered factors, with or without some kind of freedom to adjust them.\,. (10:49)
+
+(11:05) Hm, it seems that we maybe will get that $\delta k$-dependent factor automatically when considering spread out wave functions for the incoming and outgoing negative-energy fermions.\,. That's quite exciting.\,.
+
+\ldots (11:28) Hm, maybe that was wrong.\,. .\,.\,Hm, or maybe not, I'll see. But first I need to figure out how to even make the Lo.\ cov.\ argument work.\,.
+
+(11:45) Oh, one could maybe use the momentum distribution coming from making.\,. consecutive boosts of an initial momentum state.\,.\,? Hm.\,. .\,.\,Ah, yeah, that is the point.\,. (11:47) .\,.\,Oh, but that might work in one dimension, not necessarily in three: I don't think rapidity as additive in three dimensions.\,.\,? (11:48) .\,.\,Or is it?\,.\,. Or more to the point: Can't you make a circuit of boosts in all three direction and then expect to get back to the frame that you started in? Or.\,.\,? (11:50) .\,.\,No, I don't think so.\,. (11:57)
+
+(12:03) Ah, but despite the seeming distorted integration measure that we seem to ought to get from one frame to another, I think we might be able to instead argue via very thinly spread out wave functions, i.e.\ some that approximately transform to themselves, and then get the desired euclidean integration measure.\,. (12:06)
+
+(12:16) But we can't come in with more than one fermion in this particular spread-out state.\,.
+
+(12:20) Oh, forget about the thing about `needing a $\delta k$-dependent factor'.\,.
+
+(12:21) Hm, and can't we just come in with a very ``thinly spread-out'' approximate Dirac sea?\,.\,. .\,.\,Wait, maybe there's no need: Maybe you can just argue that the operator is Lorentz-covariant when we sum over all initial annihilation operators (in the pre-DSR picture).\,. (12:25) .\,.\,But what does that mean, then?\,.\,. .\,.\,Ah, that when sandwiched with some creation operators at the beginning and some annihilation operators in the end, the result is the same. Hm, but this is in the pre-DSR case, and that means that we still have to then gather in terms of inner antiparticle momentum when we make the DSR.\,. (12:28)
+
+(12:36) Hm, maybe it's not a problem after all: If the contributions from each inner antiparticle momentum is Lorentz-covariant, then the sum of two contributions is also Lo.-cov., and so on.\,. .\,.\,Ah, yeah, I think that's right.\,. (12:39) .\,.\,And then we just sum more and more paths together and get more and more of the full path integral in both frames (of the DSR'ed system).\,. (12:40)
+
+.\,.\,Hm, doesn't this mean that I'm now back to where I (thought I) was last night, i.e.\ at the 21:35 paragraph?\,.\,. (12:42)
+
 
 
 
