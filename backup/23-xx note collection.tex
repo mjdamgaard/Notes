@@ -5192,6 +5192,19 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(20:03) Yeah, or maybe I'll keep the relational classes, and continue the way I was going, I'm not sure. I'll figure that out when I get back to the project..
 
 
+%(04.11.24, 9:25) I will continue exactly like I was, always defining the scales such that they have a class as a domain, and then making derived 'relational classes' from relations.
+
+%Something else that I realized here in the shower: Even though my unbounded relative scales are a good idea, in a way, I will use bounded relative scales instead, at least for the early app. I'm thinking of a scale from 0 to 10. Then we can always convert to the unbounded versions of these relative scales at some point if/when we want.
+
+%This then makes the rating part of the app a lot simpler for the early stage. And I even think.. these two other things: We should just postpone implementing any automatic transporting of the ratings between parent and child-/subclasses. So for the earliest stage, it is just the users responsible to maintain all these, if they want.. Well, or put in other words: Let's not care about the ratings of superclasses that are too big and too varied for the (relative) ratings to make sense. It's not that I don't want this whole thing where users get to essentially sort even the very large classes (see what I have written above), but let me just focus on some other things first (for the first prototype). And then the other thing: This means that we can just uprate all relevant scales, other than the obligatory relevancy scale for any given class, and for that class alone, meaning that we don't include any automatically derived scales. The relevant scales are made and uprated for a particular class individually. (And when you uprate relevant scales for an Entity, each scale of course knows it own domain, and it is therefore easy to figure out if you also want to uprate that scale as a relevant scale for its given domain (you useally do when you have created the scale, after all).) So all sorting for the earliest stage of the app will just be to see, when you stand at any given class (including relational classes), if there are any other uprated scales for that class (apart from the standard relevancy scale), and if there are, you just click on them and then see---and potentially then give your own ratings for---the relevant entity list.
+
+%By the way, having a scale from 0 to 10 also means that the users can also just be free to score an entity on the scale without seeing the entity list (even just the representatives (or the reps of the reps)), much like it was in my previous little prototype. And since I will then focus much more on the semantic structure part of the app, including the discussions and Arguments and Proposals and Problems, and also very much including the user groups, I might also postpone the drag-and-drop rating, even, at least for a while. (9:43)
+
+%Something else: I should actually also implement representative voting for user groups. Oh, and I also have a point about that that I need to make in the E-democracy section.. Maybe I'll do that first.. (9:45) ..(9:48) Oh no, it's maybe fine that I just write it here, at least for now. 'Cause it is a bit technical and specific anyway. ..Oh, and it's also somewhat trivial, maybe I have even suggested something like it before. It is just that when calculating the votes, you start by looking at the whole user group, with initial weights for their voting power, potentially. Then you extract all users who has given a vote themselves and aggregate that. Then you take all the votes given to other users and derive a new distribution of voting power based on this. Then you can repeat the process in exactly the same way, where you extract and aggregate all users who have given a vote themselves. And then you just repeat this process for a finite number of iterations (or until done). If there are any voting power left in the distribution after these n iterations, you just simply cut that out and renormalize the already given votes so that they sum to 1, if you want that. (This process means that loops will not only not cause problems to the process, but they can even make sense to have.)
+
+%Now, should I try to implement this for the app at a pretty early stage as well?. Yes, I think so.:) (9:57)
+
+
 
 
 
@@ -5621,6 +5634,16 @@ By the way, the organization behind the e-democracy party that makes the apps fo
 
 
 
+
+
+
+
+
+
+
+
+
+
 \section{Robots}
 
 (19:07.24, 9:15) I've been thinking about various things these last couple of days, and also a bit about robots (and modular building) yesterday. And today I actually had a quite interesting idea about.\,. .\,.\,well, about robots.\,:) The idea is a kind of self-assembling robotic system. Specifically, the idea is to have robotic arms on rails, where the arms can assemble these rails themselves, and where we are not at all just talking `rails on the ground,' but more like scaffolding. So a self-assembling scaffolding with robot arms that can move around on the rails of the scaffolding (and which are the ones that assemble/rearrange the scaffolding).
@@ -5664,9 +5687,20 @@ It is really important that this project is an open source one, not just for soc
 
 
 
+
+
+
+
+
+
+
+
 %## Future "church"
 
 %(10.10.24, 10:10) (Haha.) I just had the thought: Instead of churches at sunday, teaching christian morals, which to be honest, doesn't do too much in actually helping us with our moral systems today, we should have a "church" instead (I mean for those who want it) where we meet up and discuss morals and values (although it should still be mainly like "preaching" and not so much a discussion forum, but the participants might also give inputs, who knows..). And then we can make sure to spread good morals and value, and not least everyday tips about how to tackle everyday situations (and of course situations that are not everyday). That's really the main focus, apart from the overall value system, that the commuity wants to follow, but also specifically points about how we ought to behave in various situtation, and not at all just in order to benefit the groups, but very much in order to better the given actor's own happiness, and that of their family and friends. (And of course, bettering the happiness of the community, now and in the future (so child raising is also a topic, e.g.) is also part of it, but a big focus should be on bettering our individual lives.) Just a thought, and of course, it doesn't have to be on sundays, and it doesn't have to be only on sundays, but maybe it could work nicely as a sunday activity, providing an alternative to the regular kind of church..:) (10:20) ..Oh, and of course, life and death and meaning could also be part of it.:) (10:20)
+
+
+
 
 
 
@@ -7639,6 +7673,27 @@ However, when we look at transitions where two vacuum bosons interact, then the 
 .\,.\,Hm, but a factor of $n^2$ is just two factors of $n$; it still shouldn't alter the shape of the Poisson distribution.\,. .\,.\,Yeah, no, so maybe the vacuum bosons do play a part.\,. Okay, so I should get to trying to solve the problem.\,. (12:37)
 
 .\,.\,Oh, I should mention, we do need the solution to be the (non-degenerate) ground state. But I don't intend to try to show that. If I can find a solution that is an (almost-)eigenstate, and that looks like it could be the ground state, then I'm satisfied with that.\,. (12:40)
+
+(14:01) Nah, it's not ``just $n^2$,'' not when seeking the ground state. $\hat n^2$ should matter, i.e.\ since $\hat n$ also matters a lot on its own.\,. Interesting.\,. .\,.\,Hm, so maybe there will actually be some kind of ``drain''.\,.
+
+(14:50) Hm, but couldn't we try a separable solution instead, where we solve for each occupation number of the first vacuum bosons individually.\,.\,? .\,.\,Hm, if the energy of each separate solution turns out to be proportional to said occupation number, yes.\,. (14:53) .\,.\,And if not, then we might also still be good.\,.\,? .\,.\,Nah, we prob.\ can't separate due to the self-interaction between these first-order vacuum bosons.\,. (14:57)
+
+(14:59) Oh, by turning up $k_{max}$, don't we get a more and more powerful ``drain''.\,.\,?
+
+(04.11.24, 9:58) I don't think there will be a ``drain'' after all. The way I see it, we have a problem which might be solvable with something that is close to a solution of unentangled coherent waves. But that $\hat n^2$ effect that I think we get seems to make it a not so easy problem.\,. I think I will look a little bit more into it this morning, but otherwise I might resume working on the semantic network project again, and just be happy that I now basically understand QED, finally.
+That's actually really nice.(!) I do still think that the perturbed vacuum problem might very well be computer-solvable. And if that is indeed so, then it is just a matter of doing that, and then we can derive our Hamiltonian of QED. This result might then make the path integrals much quicker to convergence. (I hope so.) So it might even be at least borderline Nobel-price-worthy to solve this problem (even if done numerically, I think). Now, if there exists an easy solution to the problem, well that's just awesome, but if it is a bit harder than that, that's also fine in the end.
+
+I do have an idea about solving the problem that I want to share. But I also ought to look a bit more into it, I think, now that I have finally the way to get the full $\hat H_\mathrm{QED}$. So let me do that I guess (unless I want to just resume programming, and let this be evening work instead, but I'll see about that as well).\,. (10:09)
+
+Oh, and although I thought I was so close with the $n$-dependent cutoff above (and considering $n - m$ and such), I just don't see how to get around that interference problem. So I no longer think that this is the way. Instead, if the vacuum is really decoupled with the ``physical'' particles, which I now doubt, then the solution to the vacuum (ground) state will show that in the end. So the next step for this project seems---apart from the whole SA aspect of it, and maybe seeing if my `regularizing bosons' idea works (well, after also first having extended my SA proposition in that case)---to be solving this perturbed vacuum problem (trying something close to coherent wave states). (10:15)
+
+Oh, by the way, I think a reason why I didn't like to pursue this approach before was that I found the interference between the ``physical'' particles and the vacuum particles (and the ``vacuum bosons,'' you can say) to be troublesome. But as long as.\,. Wait, no, I might have been right.\,. Let me think for a bit about this (which I also already planned to do).\,. (10:18) .\,.\,Ah, no, I think that the fact that we can let $k_{max}$ increase is what then gives us less and less interference (and I do specifically mean `interference' (between fermions), not `interaction;' that I no longer think will vanish).\,. (10:22)
+
+(10:37) Okay, I think I will indeed let it be something to potentially do in the evenings instead from now on (until/if I get a major breakthrough at some point) (if I have the energy to spare).
+
+The thing I wanted to share is that you might try, when solving numerically, to use solutions to something like $c_1\hat n^2 + c_2 \hat n + c_3 \hat x$ (instead of just to $c_2 \hat n + c_3 \hat x$) in place of the coherent wave solutions. This gives some extra parameters to adjust (unfortunately), but it might still be possible to solve (numerically). Now, I should also say, this suggestion is just based on loose thoughts about the problem (I haven't done any actual paper (or latex) calculations anywhere yet about trying to solve the specific problem yet (only a few small calculations related to it).) .\,.\,Hm, and I should also mention, I'm not so used to the problem of finding exact eigenstates, let alone the exact ground state. So I've also had a hard time even seeing how one would prove that. But as I've said, just finding some solution that seems to minimize energy, at least locally might be satisfactory for now.\,. Hm, but that the thing I was really getting at: Maybe one could try to solve the equation directly, and maybe one could also instead try to just minimize the energy. It's not the the latter is necessarily easier, but if we consider a case where you just assume that there is a solution that is approximately equal (norm-topology-wise) to a state of unentangled coherent waves, well, then you \emph{could} just (``just'') solve the problem of minimizing the energy from there. And if that is doable, one might even obtain some knowledge of what the actual ground state could look like. But of course, as long as you have some proof/argument for why the ground state should be approximately that, then you would still get the desired results from this calculation, since all we need to know in order to get $\hat H_\mathrm{QED}$ is what the occupation number is for each of these almost-coherent waves (in relation to $\delta k$, as well as the $k_{max}$-dependent amplitude of the unnormalized vacuum bosons.\,.). When we have that, we'll get the strength of each of the interaction terms that we need to add to the Hamiltonian. (10:57)
+
+%Let me also mention: In the past I have also sometimes wrongly assumed that an interaction with the perturbed vacuum would change the state of the perturbed vacuum as well. But this is not the case (when the solution is coherent(-wave)-like). I think I did manage to realize this when I worked on the project last this spring/early summer, though.. (11:00)
 
 
 
