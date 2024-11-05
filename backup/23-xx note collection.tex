@@ -5281,6 +5281,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Hm, and then I could indeed split the tabs.. or rather the entity lists.. into two.. ..(And I could also make combined lists, though..) Hm, let me think.. (14:23) ..Hm, maybe we can just postpone implementing any combinations of entity lists, and then, yes, indeed split up each such entity list into two. And for the tab bars, we can do this the way that I just described above.. (14:25)
 
+%... (15:03) Well, it doesn't really make sense to introduce a boolean 'for instances' attr., when the relations have descriptions. One could then instead introduce a subclass of (monadically) derived relations. But I only need it for very specific things, and one of the things, sub-relations, is even different. So no, let me just make the 'for instances' relations the normal way..
+
+%(16:40) Ah, I have a better idea about the tab bars: Rather than splitting them up (apart from the recently selected tabs, which might still get their own line, potentially), let us just query a few from both entity lists. And then when you click on the more tabs button, \emph{then} we just divide the two entity lists up under two different tabs.
+%..Oh, and for something like the 'useful qualities' we can also do a similar thing, if we want, just by having three tabs, with the mixed entity list (which only queries a few from each list to begin with.. well, that is up to us; we query for as many as we want) as the default tab, and then the separate lists as two alternative tabs. I think this is a good idea..:) (16:45)
+
 
 
 
@@ -7775,6 +7780,8 @@ The thing I wanted to share is that you might try, when solving numerically, to 
 %..Oh, and let me also just underline, that I'm also just so happy to have reached this point: I really feel like I finally understand QED. Even though I don't yet know what those coefficients on the added interaction terms are, I know that they are most likely there (and likely non-zero, I now think), well-defined and finite.. How nice is that.:) (11:10)
 
 (19:12) Oh, maybe it won't change the scattering computations much, I don't know. So yeah, maybe it won't be the helpful technology that I hope for. But it would still be a great theoretical result. And who knows, maybe it \emph{will} help the computations, so it's definitely worth solving (numerically or otherwise).\,.
+
+(05.11.24, 16:47) Oh, it might help the computations, indeed. But I'm not sure. It remains to be seen. But yeah, it might.\,.\,:)
 
 
 
