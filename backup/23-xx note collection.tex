@@ -5254,6 +5254,23 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Hm, simply 'scale type' could also work.. (10:54) ..Hm, and then we could have different subclasses of 'Scale types'.. (10:57) ..(11:02) Hm, 'quality'..? ..Oh, that seems almost perfect.. ..Yes! And the idea itself of changing Scales this way is also very good, since this means that when looking at different sortings for an entity list, then you just have to look up the relevant Qualities. (11:05) ..Okay, yeah, this is great..!
 
+%(12:07) Hm, maybe we don't want to mix simple tags with e.g. 'relevancy,' which is very much dependent on the "domain".. Well, so are tags.. Hm..
+%..Hm, I could also make tags be able to have formats, maybe with a syntax using '<Domain>', '<Object>', and (if ever needed) '<Relation>'.. (12:14)
+%..Hm, if I do that, maybe I \emph{should} then render 'Instances of $class$' as simply '$class$' instead..
+%..(12:20) Well, we could also just always show Domain in parenthesis to the left side of the tag.. ..Let's do that.. ..And we also don't need the formats even for something like 'performance in <Movie>', as we can just let the tag name be 'performance' still for this, and then elaborate in the Description. (12:23)
+
+%(12:36) Hm, or is it a good idea to let the scale type sit on the quality.. Well, yes.. Ah, but maybe scale type could be an attribute, rather than being defined by the subclass of qualities.. (12:37) ..Yep..
+
+%..There's another thing: I do like having the 0--10-star scale for the relative scales at first, but how do we prepare a neat transition to the unbounded relative scales, without having to change all our Qualities for others? Can we make a scale type that transforms into the unbounded one at some point?.. (12:42)
+
+%And I also need to anwser, by the way: Lowercase for all tags, or just adjectives and verbs?.. ..Hm, if I'm going to use lowercase for verb tags, then I should also do so for attributes.. (12:45)
+%..I might just say: Think of it this way: A tag (or an attribute) is never defined just be itself. Thus, it's its own thing. Two tags (or attributes) with the same names are not necessarily equal. They depend on their Description. And users should in principle always read these before scoring (or assigning) them. Therefore, we should always use upper cases (for the first letters), since they are never understood from just the name, but is something more.
+%Hm, I could say this.. ..Yeah, I think I will.. (12:53)
+
+%Hm, we could also then use this as a signal when a tag has no further elaboration. When the thing \emph{should} be understood just from context alone, then we can use lower cases, and, as I said, use this very deliberately to say: 'Don't go looking for an elaboration, 'cause it isn't further elaborated. I think I like this convention.. (12:56) ..(Hm, and then I should make the Description optional for Qualities..) ..Yes, let's do this!.. (12:58)
+
+%..Oh, but back to my other question.. ..About the relative scale types.. ..(13:04) Hm, one potential solution is to just use a 'better representation'.. But this is a little bit hacky, though. Maybe we could just describe the 'relative' scale type in a way that anticiates this change.. ..Yeah, I think I might do this.. (13:06)
+
 
 
 
