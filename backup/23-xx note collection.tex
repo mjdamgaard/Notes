@@ -5234,6 +5234,26 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:21) Oh, maybe I \emph{am} gonna make a user index for the Scores table.. ..Ah, yes, I will, 'cause we can always remove it later if it becomes not worth it. I could then also make it the user group bots' responsibility to make their own user indexes for the various salars, either before or as part of removing the all-inclusive user index. But at first I will just implement the bots such that they might use this all-inclusive index for their processes. In particular I'm thinking about the process of determining user group weights, as well as voting power distributions (for each iteration of the process that I described earlier today). Here the bots might go through said index (one user at a time out of all the users (which is fine at the early stage)) in order to calculate these things. And this thus means that I might implement weight distributions (and voting power distributions) via scores. (16:30) ..Yes, alright.:)
 
+%(17:56) Ah, the task of making the first prototype seems so surmountable now..!:) Let me also just give another shout out to my Arguments idea (thank you very much): Using scales for discussion trees is just such a good idea..
+
+%(19:05) Ah, the app page body component should also generally read the subject class of the given relation, and then it can also branch according to that. So if the subject class is e.g. Comments, it can load itself as a comment page.
+
+%(19:52) Hm, maybe I should give the conditional votes a comeback.. ..(A vote conditioned on another thing passing..) ..Hm, and maybe also one that can't be retracted after a certain deadline.. and which remains valid until a certain deadline as well, importantly.. ..Yeah, we should implement these as well..
+
+%(20:39) Oh, I don't think there's any need, really, to try to make the conditional votes binding. Not for out digital system. So I don't think I need to do that. And then all we have to do, is to count all the different types of votes for each Proposal, i.e. the 'yes' votes, the 'no' votes, the 'yes on condition Condition A' votes, the 'yes on condition Condition B' votes, etc. Let us also make a cutoff for any condition that didn't get enough votes with it as the antecedent. And that's it, then you show the results, and people can then decide and/or renegotiate from there. (Of course we should also automate deriving when two Proposals is voted through conditioned on each other, and such, but that might all depend on the rules of the given democratic system, so that can just be implemented later, sorta on demand..) (20:45)
+
+%(05.11.24, 10:18) Hm, I'm not sure optional attributes should always come after the mandatory. Maybe we just remove that rule and treat them equally..? ..Yeah, so except the description, which is always last, the order of the attributes is just determined by the order in which they were added.. (10:20)
+
+%(10:31) Wait, so do I implement all scales via 'Tags' instead, letting the optional 'Tag' be a function to reinterpret the score as something else, other than the standard relevancy score?.. ..(This is instead of introducing a class for each individual type of scale..) I mean, this actually does sound like a much better solution, right?.. (10:34) ..Hm, but then the tag would just need to specify the type of scale.. ..But we can do that.. Hm.. (10:37)
+
+%..Hm, side note: When we render 'Instances of <Class>', let's just render this as '<Class>' for the scales, I guess.. (10:41) *Hm, let's actually not do this at the beginning.. (11:08)
+
+%..Hm, I like this idea, but I think we need a word that's better (more precise) than 'tags,' then.. (Then we can use tags for the specific subset of the given class..) (10:43) ..Well, 'tag' is actually not too bad.. ..Hm, 'function' might also work.. ..Hm, but then it is in principle a function of the score, returning a (real-world) semantical meaning, rather than being a function of the subject.. ..Hm, something like 'label' could also be a good idea.. ..(Which is why 'tag' is also not too bad in principle..) ..Something like 'interpretation' might also be worth considering.. (10:49) ..Well, or something like 'definition'..
+
+%..By the way, let's actually just make relevancy a 'tag'/'function'/whatever as well (but still have it as the standard one, the one to most often query for first)..
+
+%..Hm, simply 'scale type' could also work.. (10:54) ..Hm, and then we could have different subclasses of 'Scale types'.. (10:57) ..(11:02) Hm, 'quality'..? ..Oh, that seems almost perfect.. ..Yes! And the idea itself of changing Scales this way is also very good, since this means that when looking at different sortings for an entity list, then you just have to look up the relevant Qualities. (11:05) ..Okay, yeah, this is great..!
+
 
 
 
@@ -7726,6 +7746,8 @@ The thing I wanted to share is that you might try, when solving numerically, to 
 %Let me also mention: In the past I have also sometimes wrongly assumed that an interaction with the perturbed vacuum would change the state of the perturbed vacuum as well. But this is not the case (when the solution is coherent(-wave)-like). I think I did manage to realize this when I worked on the project last this spring/early summer, though.. (11:00)
 
 %..Oh, and let me also just underline, that I'm also just so happy to have reached this point: I really feel like I finally understand QED. Even though I don't yet know what those coefficients on the added interaction terms are, I know that they are most likely there (and likely non-zero, I now think), well-defined and finite.. How nice is that.:) (11:10)
+
+(19:12) Oh, maybe it won't change the scattering computations much, I don't know. So yeah, maybe it won't be the helpful technology that I hope for. But it would still be a great theoretical result. And who knows, maybe it \emph{will} help the computations, so it's definitely worth solving (numerically or otherwise).\,.
 
 
 
