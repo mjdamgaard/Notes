@@ -5269,7 +5269,13 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %Hm, we could also then use this as a signal when a tag has no further elaboration. When the thing \emph{should} be understood just from context alone, then we can use lower cases, and, as I said, use this very deliberately to say: 'Don't go looking for an elaboration, 'cause it isn't further elaborated. I think I like this convention.. (12:56) ..(Hm, and then I should make the Description optional for Qualities..) ..Yes, let's do this!.. (12:58)
 
-%..Oh, but back to my other question.. ..About the relative scale types.. ..(13:04) Hm, one potential solution is to just use a 'better representation'.. But this is a little bit hacky, though. Maybe we could just describe the 'relative' scale type in a way that anticiates this change.. ..Yeah, I think I might do this.. (13:06)
+%..Oh, but back to my other question.. ..About the relative scale types.. ..(13:04) Hm, one potential solution is to just use a 'better representation'.. But this is a little bit hacky, though. Maybe we could just describe the 'relative' scale type in a way that anticiates this change.. ..Yeah, I think I might do this.. (13:06) ..(13:15) (But we can still change the Description after the change via a better representation (removing the now redundant part about the 0--10-star scale type).)
+
+%(13:21) Hm, or is it better to make different scale classes instead, and.. Ah, no, 'cause it's a very good thing that the qualities are treated equally, and that the scale type only derives from them. But it does mean that users have to input an entID for the scale type in principle, for every quality that they make.. Ah well, this isn't really a big problem, we can handle that.. (13:24) ..Oh, but that's exactly why we have the attribute classes for entity attributes. Then the app can go look there. Okay, no problem at all, then. (13:25)
+
+%(13:41) Whether or not to use capital first letter for relations with the same convention, I'm not completely sure. I do like to have capital first letter always, at least for the standard noun-based realtions (child instances of the outer 'Relations' class). But on the other hand, I don't really have to decide this now, since I intend to provide descriptions anyway..
+
+%(14:00) Hm, to perhaps divide tab bars into (up to) three parts: Tabs from class, tabs from entity self, and then tabs recently selected?..
 
 
 
