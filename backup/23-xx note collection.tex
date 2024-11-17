@@ -5382,7 +5382,27 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(15:27) Oh, the syntax should not be '=<some constant>' instead of 'removed,' but should be 'constant' instead of 'removed' (or 'optional' or 'mandatory'), and then the Type should just be '<some type>=<some constant>'.
 
+%(17:20) Hm, lt's remove that Cutoff point attribute.. And I think that I'll let the tab bar size for each stage be determined by the scores, including perhaps up to 20 from the top part of the score range. Let me also just add any other picked tabs at the end of the list of tabs, if they are not in the list already. And do I then remove the "second stage" of the tab bars, or what..? ..Yeah, and then the button on the left just always goes to the "third" stage, i.e. replacing the page temporarily with the More tabs page.. (17:26)
 
+%(18:52) Funny idea: I could also make a special 'thumbs up' unit, where 1 is a thumbs up, 0 is a sideways thumb, -1 is a thumbs down, 2 is *thumbs up* \times 2, 3 is *thumbs up* \times 3, etc. And in a really advanced version, we even rotate the thumb from \pi/2 to 3\pi/2 when the score runs between 1 and -1. (18:55)
+
+%(16.11.24, 10:47) For the tab bars, I'll of course just make them horizontally scrollable. And then we just stick the 'more tabs' button to the right (containing just an arrowhead down), above the other tabs that scrools under it.
+
+%(11:18) Hm, but maybe each tab bar should have a small header of some kind as well..
+
+%(17.11.24, 10:29) I'll give EntityList an optional elementComp prop. And let me just think about selecting Qualities for a moment. We should of course query the relation for qualities. And is that it? I don't want to try to query the Set, i.e.\ the object--relation compound, for relevant Qualities, do I?.. ..Hm, we do want qualities for class members.. But here we also even want to query the ancestor classes.. ..Hm, if we decide to query them all, then luckily the data will be cached for the ancestors a lot of the time.. (10:34) ..But for relations, I think I can just query the relation, indeed, at least in the beginning. ..And then do I indeed query the.. Oh, the ancestor row will often be shorter than the subpage nesting depth. So yeah, let me query all ancestor classes up to some maximal number (maybe 3, or thereabout). And we don't need to use Sets either for this: We just uprate the Qualities for the given classes. (10:39)
+
+%(11:13) Hm, for entity reference links, we could just display the ID on the left of the title, and then make that, and only that, a link.. *Well, no. Inside texts, I want the whole entity reference to be the link. And in other places, I can just insert the entID link manually next to the entity reference, somewhere. (11:38)
+
+%(11:31) I'm taking it slow today (apparently)..
+
+%(16:04) I think I'm gonna add context.. well.. Qualities, right?.. ..Context qualities, which are then added to the.. Hm, qualities tab. Oh right, Qualities are indeed like my former Tag now, only an extended version of them. And yeah, let me give context Qualities to EntityPage, which can be passed as a prop. ..So when we click the Qualities button on an entity element, we go to the EntityPage with the Qualities tab open as the initial tab, and where the extra "context Qualities," or what to call them, are also added. These are then taken from the given tab where the enity list with the given entity element is shown.
+
+%(16:10) Now, where to put the insert new entity to the list button, well, or to the class.. The problem with inserting under relations is that the Members relation has Entities as the Subject class.. So what to do..? ..Well, we can certainly put an insert button or tab in the AllMembersSubpage.. ..Yeah, and in the RelationSubpage body as well. And then we just need to make sure to provide the right Set in both cases, as well as.. well, as well as the right class not least, of course. And then we can also even provide a list of qualities, starting with the currently selected one, which the user can rate immediately after insertion. And when the entity already exists, and the user just need to type in the ID?.. (16:18) ..We could make two tabs for the insertion page: 'add member' and 'create new member.' ..And is it okay to also call Set members 'members'?.. I guess so, right?.. (16:21) ..Sure. (16:21)
+
+%(16:23) If I'm really cool, I also implement a 'show in list' button at the rating bars, where we then go directly to the score that is currently the value for the rating bar. And then we insert the given entity in that spot, as if the user had just moved it there. We can get the local part of the list be making two queries on either side of the given score value, one with a=0 and one with a=1.. (16:25) ..Hm, I actually think I should do this.. (16:26)
+
+%(16:29) By the way, the Qualities tab should be split up into the '<class> -> qualities for members' part, which is the standard one, and then the '<entity> -> qualities' part, which is where one can find reviews and such as well, which is specific (and might potentially be a spoiler for) the given entity. (16:31)
 
 
 
