@@ -5663,6 +5663,23 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(22:52) Hm, we actually don't need to "cheat" for the 'Relevant' lists. We should just be able to use an entListFromHash procedure.. ..Yeah.. ..Ah, well, that works well for classes, but not so much for Sets, unless.. Well, one could make it work, also without having to get the setID as an intermediary step, but I'm not sure that we want to.. ..Then again, it could be both illustrative, and more consistent as well.. (22:56) ..'Cause I can just use a template of 'Relevant and useful for <Object ref> $\rightarrow$ <Relation ref>,' and for the 'Members' relation specifically: 'Relevant and useful for <Class ref>'.. (20:59) ..Well, on the other hand, it actually makes a lot of sense to separate them, since relevancy scores and Quality scores are quite different.. ..Hm, why don't I just call it 'Relevancy,' btw?.. I think that works better.. ..Oh, and why not measure it in percentages instead as well, and then just say that 100 % means 100 % relevant for 100 % of the set members?.. And then e.g. 90 % means an average of 90 % relevancy. One can then "measure" the individual relevancy in terms of how likely it is that a user want to use the given Parameter. Okay, this is nice, thank you..:) (23:08)
 
+%..Oh, and I don't need to construct the Label like that. I can just make a subset of Relevancy qualities that all take both an Object and a Reletion as attributes. :) (23:11) ..And yeah, then I can for sure just use an entListFromHash proc.:) (23:11)
+
+%(26.11.24, 11:32) No to using the percentage scale type for 'Relevant;' we should use the predicate, 10-star scale. ..Oh, maybe I should reintroduce the Scale type class, rather than having subclasses of.. No, maybe not. Subclasses of Qualities is better.. And I will then use an 'Elaborate label' instead for the mouseover text. And I then don't think I will fetch the Description for EntityReferences in the prototype / beta version. Relations can then also have an optional elaborate title as well, I think. For the qualities page, I will then show the Elaborate label. Oh, and for 'Relevant,' this will just be: 'Relevant for <Object> -> <Relation>.' (So I will just insert the entity references in the Elaborate label after all, rather than making a subclass of Relevancy qualities.)
+
+%Now, I'm thinking about how to implement the Quality searching and the Settings.. (11:39) ..Which means reimplementing the Quality tabs, probably, unless I just want to use a getTabTitleFromID() that returns some more complicated JSX..
+%..Yeah, I should definitiely at least put the Quality tab bar below an EntityList/SetSubpage header. And yeah, I should probably make a special one.. ..Hm, but maybe I \emph{can} just make them have more complicated JSX tab titles.. (11:50) ..Sure I can build the Quality tab bar from SubpagesWithTabs and well, and then just wrap it in a component that has some more actions, to respond to adjusting the weights.. Hm, but what about Settings, then?.. (11:54)
+
+%... (12:48) Just took a walk to get some (actual) sunlight (the two past days have been grey and dark), and there I realized: The "Settings" should just be Compound qualities, i.e. Qualities that consist of some defining formula, of atomic Qualities, weights, etc., where the bots then don't look at users' scores for the given compound Quality, but compute the scores based on the formula instead.
+
+%Another thing that just struck me: Maybe we should actually make 'Estimators' a class, and then provide this as well to the bot Scores table.. ..Or use a '<Bot> + <Estimator>' compound instad of just the bot_id for the table.. (12:53) ..Well, a '<Bot> + <Quality> + <Estimator>,' then.. (12:54) ..Hm, and maybe I should call them just 'Uer groups' instead of 'Bots'.. (12:55)
+
+%..Now, I'm thinking of making a Compound qualities tab as a sub-tab to 'Relevant'.. But that does mean we get a lot of those tabs popping out.. Maybe we could have them be collapsed at the start, where the users then has to press them to expand them in the first place.. That might be the solution, yes.. (12:58)
+
+%..(12:59) Ha, a very simple way of forming User groups could then in principle be to just look at who votes for which Compound qualities, and then divide according to that. Not sure that I will use that idea, but it's pretty neat that it might actually work..
+
+%..Okay, this this, I think I might know what to do, then.. ..(Oh, and I should mention, the user can then either request the bot/DB to update a certain Compound quality for a given Set, or they can also just let their app compute the compound instead, namely by querying for all the lists and combining them.) (13:03)
+
 
 
 
