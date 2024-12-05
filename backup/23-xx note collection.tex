@@ -5916,6 +5916,18 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(17:34) Maybe there are defaults, and also Quality functions that can break out of the defaults. But let me also just remind myself that atomic qualities should actually be separated from compound qualities / compound list entities, where the latter is only used for searching..
 %(17:50) Hm, I think I ought to then not make any compound qualities, but make what we either might call something like 'variable list entities' or call something else entirely, like.. ..I don't know.. But maybe something like 'variable list entities' isn't a bad idea.. (17:52) ..And then we don't need to use them at first, but at some point, we can start using the "variable"/"user-dependent" list entities, exactly in the same way that we might at some point use the "context-dependent qualities" in place of normal qualities, also where the app then generates the actual quality or list entity, respectively, depending on the context and/or the user.. (17:55) ..Yeah, I think this might be a better solution, rather than the one I had with using "quality types" and all that. 'Cause with these user-dependent List entities, we also get the same result, both in terms of users being able to categorize Qualities (namely by chosing the right user group variable for them), and for users to then choose their own User group for each User group variable.. (17:58)
 
+%(19:53) 'List templates' and 'Quality templates'..
+
+%(22:15) It's okay that some semantics is definied "semantically" (not very fitting term in this case), i.e. by uprating the right definition. I's not much different from uprating a 'better representation' with a expanded/changed definition. And it's totally fine, so we can let the semantics of the various functions for the 'f' entities, which all defines a subclass of the 'f' (Functional) entities, be defined by up-rated Descriptions..
+
+%(05.12.24, 10:29) Hm, and we can let the functions, such as 'hist' or 'op,' without any parameters, alone in the defStr, be the Function entities themselves. These are then the entities for which we can uprate the Descriptions that define these functions..
+
+%(11:54) Oh, MySQLi must be able to handle binary data (BLOBs)..
+
+%(13:09) Wait, why on earth do I want binary, non-UFT-8 entities anyway?? Shouldn't we instead just use URIs?.. Well, let me think.. ..Yeah, we should absolutely just use URLs instead. Nice, this makes it a lot less complicated..
+
+%(14:30) Oh, I should mention: I now plan not to use 'Elaborate label,' but to fetch the first part of the Description instead, and then just let the header (<h1> or <h*n*>) of the description constitute the elaborate title/label. And I will then do those for all EntityReferences, unless supressed, i.e. fetch the first part of the Description on mouseover, and then show it on mouseover when fetched (after ending any not-yet-finished HTML elements (by adding their end tags prematurely)).
+
 
 
 
