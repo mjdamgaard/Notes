@@ -6239,6 +6239,19 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %Okay, there we are..:) Let me think for a bit more, but I kinda think that I'm getting there.. (12:19) ..Yeah, no, I think I can actually call this a plan..:).. (12:21)
 
+%(12:58) Oh, we could actually use a signed TINYINT for score_weight_exp, and then simply let the weight be given by w = 1.2^{score_weight_exp}.. ..I think I will do this.
+
+%..Hm for score_err_exp, we can use 1.1^{score_err_exp} \times |score_val|, that should be more than enough range.. ..Well, maybe  1.2^{score_err_exp} as well.. ..Sure, then they follow the same scheme. Okay.. (13:12)
+
+%(13:30) We can also just represent datetimes as floats for the recency scores. (Then these floats just increase and increase (linearly) as the time goes on.)
+
+%(13:34) Oh, I \emph{can} use that trick of saying that an entity list is viewable by a given user iff that user can view the given List entity.. ..Hm, and then the UserScores table.. ..Nah, I have a bit of a puzzle on my hands here indeed, so let me think.. ..Or maybe I don't: just use a private user scores table for (semi-)private scores..(?) (13:38) ..And I can even go bak to my previous UserScores table, also with the full "users-at-the-end index".. ..Ah, but maybe I can still drop the previous PK, i.e. the score-ordered entity list (subject-at-the-end) index.. ..Yes..
+
+%(13:57) Hm, I don't think GroupedUserScores will be useful before a very "late" stage anyway, so let me just remove it (out-comment it) for now..
+%..Great, that leaves me with only a public and a private user scores table, a histogram table, and an aggregated scores table, where only the first and last of these table has two indexes rather than one, namely the first and the last one. (14:01)
+
+%(14:05) I've now made a PrivateUserScores table, with a user_whitelist_id column/field, where they point is that all users on the user whitelist (with scores above 0 on the list, of course) can add scores to the list, and delete from it.. Hm, and what happens when a user is kicked out of a whitelist?.. Can we find a way to delete the scores automatically?.. ..Well, yes, we can make a procedure for this, but how do we call it?.. ..Ah, I guess we just set a request automatically (with a reducable countdown and all that) each time a user queries from the private list.. (14:09)
+
 
 
 
