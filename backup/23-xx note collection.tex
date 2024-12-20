@@ -6328,6 +6328,18 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:57 *(that's wrong..)) Or maybe we could go in the other direction, and make a separate table for each type of aggregate lists, and then let it be up to the users to use the right listIDs.. ..Hm, but then we should.. ah, also make sure to denote the list type explicitly for compund lists.. Well, no, it can still be parsed by the.. Well, we don't need to care about the length of a request, really, so yeah, maybe the request could just point to the table in which to find the given entity list.. ..Oh, one could even reuse the same List entity for several kinds of aggregates, meaning that their can be several versions of the same List.. Hm, that's maybe not bad.. (16:54) ..as it can then hide it at the top layer whether we tend to use meadian whith or without score_width, or if we use the maximum point, or something else (like the mean, e.g.).. The List entity will then still look the same, even if we change the convention for which of these types of aggregates is the standard/default one.. (16:56) ..Okay, I think I like this a lot.. (16:58)
 
+%(20.12.24, 9:50) Wait, that all didn't make sense.. damn.. I still need to parse the List entities, since they still need to have the right parameters within a given score aggregate table.. ..But still, I don't need to parse the functions if we instead.. use identifiers, wait, why is this a good idea again?.. ..(9:56) I guess it isn't.. Shouldn't we just have a one-to-one correspondence with a list function and an aggregate table?.. ..Btw, since functions are 'f' entities, I can just insert them right away with '@[...]' plaeholders, and with initial_admin as the creator, and then just substitute at a later time. ..Yeah, and then I don't need a whole bunch of similar tables.. ..Hm, and I think the query procs should just.. ..Yeah, maybe one extra read is better than transferring more data, I think so.. So we'll just query for and parse the listID's defStr for all entity list or score queries.. (10:03)
+
+%..Oh, why don't we use named function declarations (definitions) instead of anonymous ones for the 'f' entities, so that we can then render the function entity using its name?. Let's do that..
+
+%(10:31) Hm, I was thinking: I probably need that advances 'c' query proc, but now I'm also thinking, maybe we should use higher-order functions as well. In particular, the histogram function could be a.. No, never mind, the median function just knows which kind of histogram to use.. ..Well, or maybe not. Maybe that histogram function input is what decides whether the scoreWidth is used or not.. (10:34) ..Hm, I don't hate it..
+
+%(10:42) Maybe I should use more regular function call syntax as well.. ..Well, maybe not quite.. ..No, let me keep it as it were, and then use those param numbers (right after the function) for the advaced 'c' query proc.. (10:44)
+
+%..If a functions parameters aren't typed, it means that the user is not supposed to construct these themselves, really, but rather the app is supposed to take care of it.. ..Well, might as well give them types anyway..
+
+%(11:19) I'm just gonna let the standard qualities be 'a' entities, and then parse the domain via a RegEx match of '"Domain":"@<ID>"'. ..Oh, no, I mean: I should parse Object and Relation this way..
+
 
 
 
