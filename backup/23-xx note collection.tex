@@ -6340,6 +6340,15 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(11:19) I'm just gonna let the standard qualities be 'a' entities, and then parse the domain via a RegEx match of '"Domain":"@<ID>"'. ..Oh, no, I mean: I should parse Object and Relation this way..
 
+%(11:35) Oh, maybe my plan for the recency scores is now a bad idea, given that the histograms will be updated less and less frequently. So I should instead add a request to increase a recency score, and I guess then just automatically send this request when scoring.. Well, but maybe we want to send it for the Object and/or Subject, and not for the Quality--Subject pair.. ..And I can then let that be a thing for frontend; as long as I just implement this 'boost recency score' request, then it should all be good.. ..And then the user/app should provide a user group along with these requests, which will then yield the weight to use.. (11:39) ..But let me make the fundamental requests to get the median lists first..
+
+%(12:00) Oh, this means that I can remove the modified_at columns, right?.. ..Yes..:)
+
+%(12:04) Hm, shouldn't User group also just be 'a' entities, and then we can also just parse e.g. the Cutoff, or the Superset, if these are indeed some of the attributes from that?. I think so..
+
+%(12:06) Hm, shouldn't I actually make a new table for user groups..? ..Where the List pointed to by list_id then determines the user list it is based on, as well as the cutoff.. ..Ah, and maybe the superset as well, namely via some kind of filter() call..(?) (12:08) ...(12:19) Oh, when I'm using that ScoreContributors (formerly GroupedUserScores) table, then we don't need a Superset/Supergroup attribute. The filtering can just be.. Right, users are only inserted if they have a positive score anyway..
+%..And yeah, I think I ought to make a.. ..wait.. (12:22) ..Hm, no, we don't necessarily need a table for the user groups.. ..We can just parse the (optional) Offset/Cutoff attribute and use that.. ..So user groups are 'a' entites with the attributes: 'Name,' 'List,' and 'Cutoff'/'Offset'.. ..And User contributor lists are 'c' entities with a User group and a Quality.. ..And then we need to parse the Cutoff from the User group, and the Object and Relation from the Quality.. Oh, as well as whether or not.. well, if Relation is the 'Relevancy' relation, then we handle it differently.. ..Ah, but we also need the 'Relevancy-determining user group' in that case.. ..Well, no, in the opposite case we need it: when the Quality is a Relevancy quality.. (12:38) ..Sure, fine. (12:41) Let me take a walk first, and then qet to work on the request to be marked as a score contributor...
+
 
 
 
