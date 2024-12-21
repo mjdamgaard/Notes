@@ -6383,6 +6383,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Oh, and some requests should just run straight away on acceptance, such as the requestUserGroupScoreUpdate() request.. (11:09)
 
+%(11:16) Wait, why even queue requests now?. Why don't we just always run them straightaway now?.. ..Yeah, no point in delaying now; that was only meant as a way not to make a lot of redundant updates. But now the app and the.. Well, okay, one potantial reason could be as a way of preventing DOS, either purposefully, or in principle also accidentally, if a lot of clients' apps roll to request an update simultaneously. But then why don't we just put a limit on the period (in terms of shortness) after which the same update request can be made again?. .. (11:20) ..Sure, let's do that instead, indeed.. (11:21) ..So a goodbye to my plan for these scheduled event "worker threads," and all that.. We can pick that up again if it ever becomes useful at some point (but I don't see how it would become that (but what do I know..)).. (11:23)
+
 
 
 
