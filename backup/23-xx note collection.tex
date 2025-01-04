@@ -6493,6 +6493,22 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Great.:) (16:19)
 
+%(16:31) I'll probably need a separate table for votes, though, come to think of it. Unless we can implement signals somehow.. well.. ..Hm, maybe that's not too bad of an idea: Adding a signal/flag column to the table.. ..Yeah, 'cause then we don't have to change the DB interface with the app when we implement some new things like that, i.e. where private scores can be aggregated in some special ways. Okay, I might do that.. (16:35) ..And then place it first in the index so that it can be compressed away almost completely.. (16:36) ..(You could put it several places for that, but I want to put it first..) ..Let it be a "list_type_ident CHAR".. (16:40)
+
+%Hm, 'activity points' is then the wrong term.. (16:50)
+
+%(17:24) Hm, pos_score_weight_sum is redundant: just query for the contribution median instead..
+
+%(19:39) Instead of making the big update-all-medians-on-a-list request, we could also just let the app (roll and) send some update requests for individual elements that the user views in the given list.. ..Yeah, this is better, 'casue it also removes the redundancy of paying for the whole list or paying for each element separately. So yes, let's not implement that big one. (19:43)
+
+%(19:51) Ah, about the recency/activity/engagement score/points, we can just multiply all new contributions by some root to the power of the UNIX time stamp.. Well, unless we just want to multiply for some reason, let's see.. ..No, we want an exponential decay of old points, or a exponential growth of new points, if you will. (19:53) ..(19:59) And we can subtract a constant (some time before launch) from this timestamp..
+%..(20:03) Oh, but I can't just update this score in _insertUpdateOrDeleteScoreAndWeight(), can I? namely since user's would then just be able to boost it as much as they want. No, I need to do it via requests somehow..(?)
+%(20:27) Ha. Just had the idea to implement it via another counter, one that when it runs out means that the user can't request anymore recency score updates until the next interval.. ..That could be a way to do it.. ..But it still shouldn't happen in _insertUpdateOrDeleteScoreAndWeight().. ..It should still be implemented as a request.. ..Hm, and maybe also implemented through FloatScoreAggregates (not FloatScore\emph{AndWeight}Aggregates)?.. (20:32)
+
+%(20:33) Oh, about the exponetnial decay. We could then also have some very infrequent events that goes though all recency scores and divides them by a number, and then (somehow..) also shifts the timestamp offset to a new value, such that the FLOAT exponents don't overflow.. ..Well, maybe it makes more sense to store it at a time-like score, where the closer the time is to the current one, the higher the recency score..
+
+%..(20:39) Wait, and we can't just make period-dependent Qualities?.. ..Ooh, maybe ones that can then only be scored in the given period..!? (20:40) ..Yes.. (20:41) ..I mean, yeah, come on..!.. (20:43) ..Yes. Only thing is: What about positive \emph{and} bad scoring activity? Should polerized engagement not also be able to be tracked and used?. .. (20:45) ..Ah, but that's the weight! Okay, great!.. (20:45) ..Yes! So I should implement those only-in-a-period-active Qualities, then!:) (20:47)
+
 
 
 
