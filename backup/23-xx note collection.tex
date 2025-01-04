@@ -6509,6 +6509,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(20:39) Wait, and we can't just make period-dependent Qualities?.. ..Ooh, maybe ones that can then only be scored in the given period..!? (20:40) ..Yes.. (20:41) ..I mean, yeah, come on..!.. (20:43) ..Yes. Only thing is: What about positive \emph{and} bad scoring activity? Should polerized engagement not also be able to be tracked and used?. .. (20:45) ..Ah, but that's the weight! Okay, great!.. (20:45) ..Yes! So I should implement those only-in-a-period-active Qualities, then!:) (20:47)
 
+%(21:26) Well, you could also just attach a period to the specific score contributions list, and also for the corresponding score median lists.. ..Hm, or perhaps add a date to the score contribution lists (as nother column)..? ..Hm, I think the period-specific Qualities idea was a better idea.. well, maybe, but maybe not.. ..Yeah, maybe not.. ..Hm, so a FloatScoreAndWeight\emph{AndDate}Aggregates table for the score contributions?.. (21:33) ..Well, yeah, that \emph{would} be the easy solution.. (21:35) ..And then we don't need anymore in the fundamental layer other than that, and then we can get whatever decay rate we want for recency point aggregates, \emph{and} we can also get period-specific score aggregates. (Well, we still need to implement the algorithms and the requests for each new type of aggregate, but that's fine. as they can be made afterwards independently on the other procs.)
+
 
 
 
