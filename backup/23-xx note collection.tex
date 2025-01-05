@@ -6540,6 +6540,13 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(19:24) Wait, could we even make it such that the user gets to decide which of the two tables counts for a given score? ..Oh, that's actually easy: If the single-score one is scored, then that counts, and if not then the other one counts, provided the score is there.. ..Or the other way around.. Hm, and we don't want to then make a third one \emph{with} a unix_time as well?.. (19:27) ..Wait, why don't we just make the max_score and the unix_time nullable.. well, because we want a secondary index only on the single-score one.. ..(19:31) Yeah, just forget the unix_time on the single-score table, and also just forget using this table to contribute scores to a user group with; the single-score table is only meant to be aggregated directly via some list combination functions/algorithms. (19:33)
 
+%(20:21) Oh, I don't really need another index for the PublicUserScores now.. ..Yeah, as this don't need to be part of the.. Hm.. ..Oh, but we could also change min_score and max_score into score_mid and score_rad now.. (20:24)
+
+%..I btw forgot to mention something from this morning (lying in bed still), which is this: We ought to start denoting more explicitly what \pm we are tanking about, e.g. by giving it a \sigma subscript. And for uniform distributions, we could then give it a \mathrm{u} subscript. And in cases where the distribution is more irregular than just a uniform one, but it is still bounded, we could then give it a subscript of $\mathrm{b}$. I think I will start doing that myself. And when there's no room for a subscript, e.g. in a mouseover text, we could just write the given symbol out in a parenthesis right after (the unit after) the \pm value. (So e.g. '4.54 s \pm 0.3 s (\sigma)'). I think I will do this, indeed.
+%In particular, if we start using score_mid and score_rad instead now, and want to also display these, then I could use the $\pm_\mathrm{u}$ notation, specifically. (20:32)
+
+%..Hm, now we \emph{can} gather the existing publicScores table together with this new single-scores table.. ..So I guess let's do that.. (20:34) ..But I should probably call it now and do this tomorrow.. (20:35)
+
 
 
 
