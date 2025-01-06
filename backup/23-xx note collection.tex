@@ -6547,6 +6547,28 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Hm, now we \emph{can} gather the existing publicScores table together with this new single-scores table.. ..So I guess let's do that.. (20:34) ..But I should probably call it now and do this tomorrow.. (20:35)
 
+%(06.10.25, 11:11) Oh, except that we only want the list_id for the single-score table. So let's keep them apart, I guess..
+
+%..(Slept a lot, like 9--10 hours..:) ..Oh, and while I'm at it, let me mention that I feel such a good post-vacation *(/holiday) energy!:) I feel so focused again.:) Anyway, back to work.:))
+
+%(11:17) Hm, maybe it's nice if users can query for only the entities that they've previously scored around a score that they are currently considering. So maybe I do want to gather those tables, and also turn min and max into mid and rad(ius) (which is free anyway).. ..Ah wait, what if we just do use that view for the query procs as well?..!.. (11:19) ..Ah, well, not for \emph{all} query procs, but we can make a combined one that can be used to also query non-standard entity lists as if they had.. well, as is they were stored as our view.. ..makes them look like.. Okay, good. Then we can keep the (userID, qualID) "head" for the PublicUserScores table.:) (11:23)
+
+%(11:31) Hm, with this view, I guess I could also ask if we now need the score contribution List entities..(?) ..Well, we do \emph{want} it, I think, so yeah, let's keep it.. (11:33)
+
+%(11:40) Hm, a weight-ordered index for the \geq 10 table \emph{would} perhaps be a very good way for users to be able to find some good entities to rate in order to find themselves in a PC-space.. ..(14:48) Yeah, and it shows the engagement. I think it might be a good idea. The alternative is to make it as a derived list, and then make update requests for it.. ..I think let's make that index.. (11:50)
+
+%(12:41) Hm, if the list type needs to always come first in list entity function calls, then we need a function syntax for 'input has to be this'.. Well, just replace the ':' with a '='. And then in this case the '=' means 'has to always be' rather than 'defualt value (if null) is'. Okay..
+
+%(12:56) Hm, the ListMetadata table whould then also have the same "index head" as the view, shouldn't it?.. ..Hm, should we include the PK of the PrivateScores table somehow in the combined view..? ..Namely where we just break the convention in this case that the list is ordered (by the score/weight value).. ...(13:11) No, no need, I think.. About deletion of scores, the users should just have "paid" the compCost for this, essentially, when they upload the private scores..
+
+%(13:13) Oh, entities should also have a paid storage (upload) data cost counter on the Entities table.. ..Alright.. ..Well, or a query counter.. Nah, I like the paid upload data cost better..
+
+%(13:21) If, we ever want to change the IDs from base 10 to base 16 or 64, we should just do it only in the interface between the control server and the client.. ..Hm, and do we want to do this, or no?.. ..I'm kinda still leaning towards 'no'.. (13:23)
+
+%(13:26) Okay, since the update requests and sub-procedures need it, we do indeed need to make the "index head" of the ListMetadata table like our (still unamed) view.. ..And therefore we might as well just implement the metadata also for the PrivateScores, and also for the PublicScores (which is a must).. ..Ah, but I don't need to include the PK index of the PrivateUserScores.. (13:29) ..(13:34) No, and not in the view either..
+
+%(14:09) Wait, with two sec. indexes on StandardScoreAggregates to choose from, we don't know which one given just the list_id. So I do need two tables, right?..
+
 
 
 
