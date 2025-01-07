@@ -6638,6 +6638,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:28) Let's make a PublicListMetadata table, and perhaps a private one, although I actually think that we might not need one.. ..No, let us not make one for now.. ..But let's on the other hand add a private storage counter.. (16:30)
 
+%(18:07) So how do we store score contributions exactly? Do we still store them on two lists.. well, yeah, that was the plan.. ..And with the weight and the time.. ..Oh, the time doesn't really make much sense for min and max scores, does it?.. Okay, let me think.. ..Hm, it does make sense, and I do then need to store it on both lists (in the on_index_data column).. (18:14) ..Okay.. ..Ah, but the public user scores?.. ..I can.. ..Hm, could one make a view for conversions? No?.. ..But one could make a FUNCTION, I guess.. ..Anyway, we can store the max_score as a binary, where we just use FLOOR(LOG2()) to get the exponent, and then also divide with that to get the fraction, after removing the '1.'.. ..Hm, unless we just also store this as two values.. ..Oh, and where if the user only uploads min_score, then this is just treated as if max_score is the same.. ..Yeah..
+
+%(18:53) I should maybe make a list of.. ..hm, weight-ordered.. ..either subjects with qualID as the on-index data, or qualIDs with subjIDs as the on-index data.. ..And the point is that the float sum of this can then also be used instead of my former weight_sum for the score contributions lists.. oh no, that would require a (qualID, subID) entity at the end.. (18:57) ..My (loose) idea before that was to just make at least one weight-ordered score contributions (users-as-the-subjects) list.. ..Hm, i think it's better to put a nullable weight next to the (other) on-index data column, which we can then sum as well in the PublicListMetadata table.. (19:01)
+%..Ah, and with a second nullable float, we can also just use that for the max_score instead.. (19:04) ..I think this is better; it also means that.. well, i wanted to carry that FLOAT-valued weight around for a majority of entity lists anyway, and now it is just much easier and clearer.. (19:06)
+
 
 
 
