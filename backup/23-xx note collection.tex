@@ -6685,7 +6685,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(17:06) Hm, should I start using '@[<ID>]' instead of '@<ID>' in order to have a clear end point, and one that is part of the reference?.. ..And also such that we don't need to escape '@'s for 'h' entities in principle..(?) ..Hm, and then not allow for purely numeric paths, of course.. ..Well, they can't start with a number, is the requirement.. ..Sure, let's just do it.. ..Oh, wait, no the end is just the.. Well.. Hm.. ..Hm, okay, let's do it.. (17:12) ..Hm, just 'null' or '@[null]'?.. ..I guess it need to be the latter.. ..We could also use '@[0]'.. ..Sure, just like how the NULL value is often the 0 address in programming languages.. (17:16)
 
-%(17:31) Oh, and let's escape references instead by '@\textbackslash[...]', which then turns into '@[...]' in plaintext when rendered.. 
+%(17:31) Oh, and let's escape references instead by '@\textbackslash[...]', which then turns into '@[...]' in plaintext when rendered..
+
+%(10.01.25, 12:33) Okay, I need to figure out what to do with all those two-part lists. It would be nice if there was a simple standard for calling one or the other.. ...(12:43) Well, a flag in the list function calls could do the trick.. ..I think that's the solution, yeah.. And then we just have that flag for all such list functions.. maybe put it in front.. ..Yes, alright.. (12:46) ..What do we call the flag?.. ..hasPassedWeightThreshold would be a long version of the name.. ..'Above threshold flag'..? ..'Is above weight threshold'.. ..'Is above weight 10'.. ..Or 'Is aspiring'.. ..Yeah, that's better.. ..Or 'Is above threshold,' maybe that's actually better.. (12:54) ..Or more verbose: 'Has passed weight threshold'.. (12:56)
+
+%(12:57) Oh, forget about my sudden reservation of using 'null,' and using '@[0]' instead, by the way.. ..Oh, but '@[0]' \emph{is} actually smarter for entity substitution.. ..Okay, so don't forget it, actually..
 
 
 
