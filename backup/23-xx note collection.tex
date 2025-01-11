@@ -6691,6 +6691,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(12:57) Oh, forget about my sudden reservation of using 'null,' and using '@[0]' instead, by the way.. ..Oh, but '@[0]' \emph{is} actually smarter for entity substitution.. ..Okay, so don't forget it, actually..
 
+%(14:45) Oh, I guess we need to use 'undef' rather than just an impty string.. ..Hm, well, no, but let's just do that for simplicity, I guess..
+
+%(15:48) Oh, with this implementation of _workerThreadBody(), I will probably get those damn gap lock (bug! (it seems..)) deadlocks.. ..(15:55) Well, it does say that "Gap locks in InnoDB are “purely inhibitive”, which means that their only purpose is to prevent other transactions from inserting to the gap." So I guess it might be a.. feature..:\ ..Okay, let me just select first and then try to get a single row lock..
+
+%(11.01.25, 10:31) Should i make a view in the DB over all entIDs that are important for it?.. ..Yeah, I should..
+
+%(18:28) And what precisely is the point of having the 'a' entities, now that function calls can be substituted, and when i don't really want the 'a' entities to be edited, other than through substitutions?.. ..We don't get the sec. key for the 'a' entities, of course, but why would we want to not have that, now that 'c' can be subbed?.. I kinda think we don't need the 'a' entities anymore.. (18:32) ..Hm, i guess the only reason would be that 'a' entities can be bigger without the size limitation, but I don't necessarily think that we want.. well, I mean, \emph{maybe} very large entities could have som use, but I don't think they'll have much use at all, if any really.. ..I have the 'j' entities for large data objects.. ..And the 'c' entities can just hold 'j' entities as part of their definition/input.. (18:35) ..Hm, the only point of keeping them would be to make them editable; then they would needed. But what we really want to edit is texts, and they can just hold editable texts (such as an editable Description). And then we can always use 'better representations' beyond that (also to get language-specific versions of the same entity). So yeah, it seems that we want to combine 'function call' entities and 'attribute-defined' entities, which is also nice, 'cause both of those names was a little bit off anyway.. What to call them instead, then? Standard entities? Object entities? I have to think on that.. (18:40) ..(18:42) Ah: 'r' entities, where 'r' can then stand for 'referential,' or 'regular,' if one likes. So I'll remove the present 'a' entities, and start calling the 'c' entities 'r' entities instead. (18:43)
+
 
 
 
