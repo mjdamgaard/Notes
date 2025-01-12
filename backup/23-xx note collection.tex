@@ -6699,6 +6699,16 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(18:28) And what precisely is the point of having the 'a' entities, now that function calls can be substituted, and when i don't really want the 'a' entities to be edited, other than through substitutions?.. ..We don't get the sec. key for the 'a' entities, of course, but why would we want to not have that, now that 'c' can be subbed?.. I kinda think we don't need the 'a' entities anymore.. (18:32) ..Hm, i guess the only reason would be that 'a' entities can be bigger without the size limitation, but I don't necessarily think that we want.. well, I mean, \emph{maybe} very large entities could have som use, but I don't think they'll have much use at all, if any really.. ..I have the 'j' entities for large data objects.. ..And the 'c' entities can just hold 'j' entities as part of their definition/input.. (18:35) ..Hm, the only point of keeping them would be to make them editable; then they would needed. But what we really want to edit is texts, and they can just hold editable texts (such as an editable Description). And then we can always use 'better representations' beyond that (also to get language-specific versions of the same entity). So yeah, it seems that we want to combine 'function call' entities and 'attribute-defined' entities, which is also nice, 'cause both of those names was a little bit off anyway.. What to call them instead, then? Standard entities? Object entities? I have to think on that.. (18:40) ..(18:42) Ah: 'r' entities, where 'r' can then stand for 'referential,' or 'regular,' if one likes. So I'll remove the present 'a' entities, and start calling the 'c' entities 'r' entities instead. (18:43)
 
+%(12.01.25, 13:25) Let's turn the 'undef' keyword into just '_' instead.
+
+%(15:44) Hm, could we rename 'rellevancy qualities' to 'sets,' and thus just make 'Sets' a subclass of Qualities..? ..It would be handy.. And it does kinda make sense, doesn't it?.. (15:45) ..Or we could call it a 'set quality'.. well.. (15:47) ..'membership quality,' perhaps.. ..Oh, wait, that would change things significantly, and maybe it was fine the way it was.. (15:50) ..Yeah..
+
+%(16:10) Instead of including the "High end" and "Low end" inputs for the metrics, why don't we just let the app guess the initially displayed range (until the user starts zooming in or out) from querying the score, and then just multiply by e.g. 1.50, and then round up to the nearest two-significant-digits number.. Let's do that..
+
+%(16:16) Oh, should I implement a bool for the metrics to prepend the unit, such as '$', instead of having it at the end?.. Or should I just use USD as the unit for dollars, or just not care about writting it after the value?.. ..Hm, I'm leaning towards including that bool flag.. ..Primarily because it might have other uses.. Okay.. (16:21)
+
+%(17:25) Hm, I should maybe reintroduce the 'Member (data)type" input to the class() format.. ..Yeah.. ..Ah, or make the 'Member format' input by of a disjunction type.. of '(f::Format|t::Entity type)'.. (17:28) ..Yeah.. (17:30) ..'(f::Function|t::Entity type)', rather.. (17:32)
+
 
 
 
