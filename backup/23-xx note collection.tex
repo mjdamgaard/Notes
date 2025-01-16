@@ -6809,6 +6809,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(18:02) (I'm really glad for this. I got a very good morale boost from my vacation (holiday..) for some reason, but in the last few days, and \emph{especially} last evening/night, btw, I've really felt that I needed a better argument for how the ball can get rolling. So yeah, I'm very glad. And the other ideas today has also been very great.:))
 
+%(18:16) Hm, should the half time list be part of the Metrics, then.. Oh, I've forgotten about excluding scores that exceed the upper or lower bounds from the score contr. lists, by the way.. ..Well, but I think it should be part of the List function call, and so should the upper and/or lower bound, by the way.. ..Hm, and these then only appears in the update requests.. ..Well, but we could still gather all these often-repeated inputs into the metric, and then just provide that along with the update request.. Well, or parse it from the quality.. (18:22) ..Yeah, let's do this, indeed. And the filter list is just parsed from quality itself, namely from its Domain attribute (which can be undefined).. Okay, good.. (18:24)
+
+%(18:57) Oh, it could be handy if we could call attributes of input entities, let's say by a syntax like e.g. '%2."Subject title"'.. ..No, we don't wnat to use doulbe quotes, so let's say like '%2[Subject title]' instead.. (18:59) ..Ah, but then my "singularization code won't work in this instance.. (19:01) ..Oh, and it's also a bad idea anyway, since we don't want to query several entities in order to render one (other than the class and the class' format, which will mostly be cached..)..
+%..Hm, by the way, do I even really want the 'Member title' attributes?.. (19:05) ..Let me just say no for now, I guess; not really worth it, I think.. (19:06) ..For instance, we ought to say '<predicate> among <class>' instead of '<predicate> as a(/an) <class[Member title]>'. So yeah, let's drop the 'Member title' attributes. (19:12)
+
 
 
 
