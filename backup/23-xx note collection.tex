@@ -6797,7 +6797,7 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %... (17:07) About the whole editor thing: No. If third parties want to make their own versions of a list, then they just contruct an appropriate quality for this list. I do, however, then think that we ought to call it float1 and float2 everywhere, or actually score1 and score2 instead, which is what I intend to rename them as now. (And I will also drop the '_val'/'Val.')
 
-%About the '<*n*>...</*n*>' expressions, the order should actualy be reverse: A parent expression should always have a number that is 1 greater than the greatest number amoung its children expressions. I should of course then make sure to expect input that doesn't conform to this, which should just result in an empty output.
+%About the '<*n*>...</*n*>' expressions, the order should actualy be reverse: A parent expression should always have a number that is 1 greater than the greatest number amoung its children expressions. I should of course then make sure to expect input that doesn't conform to this, which should just result in an empty output. *[The order actually doesn't matter. The tags can actually be anything, as long as the same tag isn't nested in itself.]
 
 %I'm thinking that we perhaps just always make sure to create a recency score list along with the score contributions lists, and then make sure to maintain the recency score each time a contribution is updated.. (17:14) ..But I'm not sure that i want recency scores for other than the relevancy qualities.. (17:17) ..Hm, but maybe it can just be part of the.. no, not part of the request; it needs to be decided by the List.. (17:18) ..Wait, but the Lists are also different for relevancy and other qualities, namely since the non-relevancy are generally always filtered. ..Hm, why don't we just add a flag.. Oh, or a half time input, to the lists, then. And then if that input is undefined ('_'), then the recency score is just not updated as part of updating a score contribution?.:).. (17:22) ..(17:28) And let's actually make it a list of up to two half times, or perhaps up to three, which are then all maintained for the contribution updates (meaning that up to two recency score lists are created and maintained for each.. well, each \emph{quality}, sp let's actually be generous and say up to three, if not four..). (17:29)
 
@@ -6814,6 +6814,35 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(18:57) Oh, it could be handy if we could call attributes of input entities, let's say by a syntax like e.g. '%2."Subject title"'.. ..No, we don't wnat to use doulbe quotes, so let's say like '%2[Subject title]' instead.. (18:59) ..Ah, but then my "singularization code won't work in this instance.. (19:01) ..Oh, and it's also a bad idea anyway, since we don't want to query several entities in order to render one (other than the class and the class' format, which will mostly be cached..)..
 %..Hm, by the way, do I even really want the 'Member title' attributes?.. (19:05) ..Let me just say no for now, I guess; not really worth it, I think.. (19:06) ..For instance, we ought to say '<predicate> among <class>' instead of '<predicate> as a(/an) <class[Member title]>'. So yeah, let's drop the 'Member title' attributes. (19:12)
 
+%(17.01.25, 11:03) I think qualities starting with 'good at' (followed by a (compound) verb) and 'good at being' (followed by a (compound) noun), will be a really important "subclass" of qualities, so much so that we might even want to abbreviate it as 'g.a.' and 'g.a.b.'..
+
+%(11:10) Hm, instead of pos_list_len, maybe we just want to split some lists into two, for instance predicate quality lists that can be split along the score = 5 point, and user lists that can be split along score (weight) = 0. I think I should do this instead.. ..Hm, we could then make it a split point/pivot for the score1, and then also have one next to it for score2, which is then what is used for most lists to split along the weight = 10 point. But then we'll need four sub-lists for all such lists, including the.. Well, I guess it's also good to have the (score1 < 5, weight < 10) part of the list.. (11:17) ..(11:22) Wait, no, we don't want this. This makes looking up specific scores a mess.. ..(11:27) Maybe a lot of things would just be simpler if we used a -5--5 star scala instead. But that's just a bit strange to see; not very normal.. We could of course store it in one unit, and then display it, well, in two different units, depending on the choice. But that also complicates things in another way.. ..Hm, how about using -100--100 instead, just to remove previous expectations..?.. ..Well, -10--10 could also do it.. Wait, I think we actually want that, 'cause then we get whole numbers in the middle of out intervals, i.e. the
+%"[0, 1, "extremely not"],
+%[1, 2, "very much not"],
+%[2, 3, "truly not"],
+%[3, 4, "somewhat not"],
+%[4, 5, "slightly not"],
+%[5, 6, "slightly"],
+%[6, 7, "somewhat"],
+%[7, 8, "truly"],
+%[8, 9, "very much"],
+%[9, 10, "extremely"]"
+%intervals. (11:35) ..Then they become
+%'[-10, -8, "extremely not"],
+%[-8, -6, "very much not"],
+%[-6, -4, "truly not"],
+%[-4, -2, "somewhat not"],
+%[-2, 0, "slightly not"],
+%[0, 2, "slightly"],
+%[2, 4, "somewhat"],
+%[4, 6, "truly"],
+%[6, 8, "very much"],
+%[8, 10, "extremely"]'
+%instead.. ..I like that..:) (11:38)
+
+%(12:00) Hm, I guess I don't \emph{need} to wrap the function parameter names in double quotes.. ..We can just lex a space-separated string of words as one lexeme.. *(Let me wrap it still, such that these names can use any characters.. (12:22) ..Well, they just have to not use ':' and '?' so i should be fine.. ..and '='.. ..Yeah, but I can include '.' and a lot of other things, so let me just keep it like this..)
+
+%(12:20) Hm, and I'm sure about not using that editor input parameter..? ..(12:28) No, I'm not.. ..Hm, and I guees we could actually introduce those DB node entities.. ..Well.. ..Yeah, maybe.. ..As long as you are not really supposed to use List entities other than in queries, and you aren't, since that's what we have the List formulas for; the users are supposed to think in terms of List fromulas, and then the actual Lists underneath is something that the app decides (and don't regularly expose to the users, i.e. unless they look for it).. (12:33) ..Yeah, and then the obligatory editor input can be replaced, instead of the a DB node, by any third party user as well..
 
 
 
