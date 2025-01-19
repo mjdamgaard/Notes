@@ -6869,6 +6869,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %... (16:00) I didn't mention a previous overall idea for excaping the references---and now also tags---which in one version of the idea is to escape simply by letting '@[' or '@<' be followed by a neline character, in which case you simply remove the newline character when transforming the text back to the original one (when e.g. rendering), and for any '@[\n' or '@<\n' occurrence in the original text, you just replace this with '@[ ' (i.e. newline \to space character) instead. ..Hm, so first you transform all occurences (that has to be escaped, of course) of '@[' to '@[\n' (and likewise with '@<'), and then you.. Oh wait, that's all you need to do.. ..Yeah, that's all, as long as no paths, IDs, tag names, etc. inside the brackets starts with a '\n'.. ..So I should therefore remove '\n' as a valid character for the paths, which are of course fair.. (16:10) ..Hm, but let me just say ';' instead of '\n', actually, just because.. (16:12)
 
+%(19.01.25, 12:13) We don't actually need the "tags" to be different; I can change the procedure to work without that. So we can just change the syntax to '@<*readerWhitelistID*>...@</*readerWhitelistID*>'. *Hm, maybe I'll just keep the same syntax as before.. (12:58) ..Or I could make it more like actual XML (except the '@'s).. ..Yeah, maybe I'll do that.. (13:00)
+
+%I've also thouhgt about something else. If we want to reduce the rendreing time due to consecutive fetches, then we could just add a string of the form 'funID,num(;funID,num)*' to the entity query proc. And the point is that whenever the returned defStr start with one of the listed functions, then you also return the entity referenced by the num^th input. Or I guess we could even allow for several num(ber)s per funID in this list. I think I might implement this, actually..:) ..And of course, we put a bound on the recursion level for the query. ..Maybe this bound could actually even be determined by some input. (12:21)
+%(14:57) Hm, maybe this will be harder than I thought; how do we even union several rows.. well, I guess with a temporary table, but.. ..Oh, we use $mysqli->multi_query().. (14:51) ..That also means that I can get the listID from a list query in a much better way..
+
 
 
 
