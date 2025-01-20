@@ -66,12 +66,15 @@ there is even a chance that it could lead to slightly altered predictions! (Beca
 (All my ideas here are also described (poorly, of course) in my working notes found in 'qed.tex' and '23-xx note collection.tex', but I do not really expect anyone to read those.)
 -->
 
+<!--
 (20.03.24) I have found some problems with my vacuum paper, and now I actually have more hopes for a different idea, where one does the Dirac sea reinterpretation
 via a countable basis. This idea is described in '23-xx note collection.tex' found in the 'backup' folder. I will also make some corrections to my vacuum paper on arXiv
 at some point, but since no one reads it currently anyway, and since I'm quite exhausted now from working a lot on this problem, I might very well delay this update
 for a while.
 
 (16.05.24) No, I now (think I) know how to make the argument from my vacuum paper work! And what's more, it might also give us a solution to Task 2! So I think we can therefore get through the whole thing, potentially (i.e. all the tasks), with this new idea! I've described it in '23-xx note collection.tex' found in the 'backup' folder. I'm going on a vacation now (to Norway), and when I get back, I will update (and correct) my vacuum paper!
+-->
 
+(20.01.25) I have just submitted a withdrawal request for my vacuum paper. As can be seen in '23-xx note collection.tex' (found in the 'backup' folder), I actually think I know a route to completing the problem, and thus obtain a full Hamiltonian for QED. But it involves solving a hard (but probably tangible) equation, which is not something I have the time to move on with right now, nor is it something that I am particularly good at, I would say (although my ideas so far, described in '23-xx note collection.tex,' might still constitute a good start, who knows...). But there we are: I think the problem can be solved, but I will not personally go any further with it for the time being.
 
 Feel free to email me if you have any questions about my work.
