@@ -6884,6 +6884,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(14:55) Okay, that's it. I think I got it. And let me just repeat then: "No lemexe can be cut such that the lexer lexes it as two or more lexemes."
 
+%(17:43) Hm, maybe I can just throw a special (reserved) "EOS" error when EOS is reached..(?) ..I guess except that right now, I only record the children on a success.. ..But I could just change that.. ..That might be solution, yes. I think I will do that. But I'll take a break first.. (17:47)
+
+%(22.01.25, 13:39) Okay, I think I might change the API of the Parser such that symbols are always strings. Then instead of RegExp symbols, I will use strings of the form "/.../", and then automatically add those symbols to the grammer as well in a preprocessing of it. And for qualifiers, I will just make trailng "?", "+", etc. wild for the symbols inside the rules, meaning that the qualifier and subSym is simply parsed from the string instead. For sub-parsers. I then have to make.. Well, we could also give the Parser constructor a SubParser input.. Hm, and then make a syntax for referencing those parsers in the symbols, but what about recursion for sub-parsers, btw? ..Hm, maybe if we make it a method instead to add sub-parsers.. well, or just add a method for this, along with having the optional parameter in the constructor as well. I guess this is the way.. And what should the syntax for calling subparsers be, then? ..Hm, let's say a leading '$', which is then followed by the parser key.. and what about the startSym?.. (13:48) ..Let's make it an optional "[<startSym>]" at the end, and then require that parser keys do not contain any '[' or ']' characters. (13:54) ...(14:46) Oh, and how to set the subLex flag?.. ..(14:51) Hm, using two leading '$'s?.. ..Yeah, why not.. (14:52)
+
+%(16:41) I'm thinking of maybe adding an optional leading or trailing '!' to the syntax, which tells parseRules() to parse the symbol (with the '!' removed) even if another symbol as already been successfully parsed for that given rule symbol index.. ..Let's say a trailing '!' in that case.. (16:44)
+
 
 
 
