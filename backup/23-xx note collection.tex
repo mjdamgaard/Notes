@@ -6890,6 +6890,17 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:41) I'm thinking of maybe adding an optional leading or trailing '!' to the syntax, which tells parseRules() to parse the symbol (with the '!' removed) even if another symbol as already been successfully parsed for that given rule symbol index.. ..Let's say a trailing '!' in that case.. (16:44)
 
+%(24.01.25, 10:37) I don't recall what I wrote last about user qualities, but it's really simple: The descriptions of qualities can determine if the score is dependent on the user. This will probably be used in 'Good' qualities for most things, i.e. to make it a subject statement rather than an objective one: If a user don't personally like a thing, but knows that it is very liked in general, they ought to score according to their own opinions/feelings, rather than an objective assessment. *(And then we just make a class of "user qual.. well, we probably want to call it something else.. .."user descriptors".. ..And then also make an appropriate quality sorta like "Fits me"..)
+
+%I breifly thought that maybe we could implement the fulltext index via a special counter, and where users can submit entries, costing them some of that counter. And then we could have two tables: one for storing all requests together with the combined paid cost of that counter, and then the actual fulltext-indexed table, that can be updated at frequent intervals. But then I realized that it's much better to make the entry requests as a special (formal) class of entities, and then just have users uprate them semantically instead. And the DB node then just chooses what user group they will use for this, and then parse the requested entries from the given entity list.
+
+%... Ah. I just changed it so that we do wrap function parameter names and property names in '""'. And now I just thought: Why don't we insert entity references outside of a string?.. Hm, or maybe not, but let me think. The idea was to have literals of the form e.g.
+%'@{1}+" ⋲ "+@{2}'.. (12:46) ..But yeah, maybe not.. (12:48) ..Let me say no..
+
+%... (14:25) I will actually reverse it so that the XML-like syntax has to include an 's' (boolean) attribute in order to get substituted.
+
+%(15:44) Hm, I just realized that I can't capture XML whitespace with a RegEx.. oh, maybe unless I use capturing groups.. Hm.. ..Wait, no, this is not true, but it is true for the whitespace of JS template strings.. ..But here we can just not use any whitespace, problem solved. Okay.. ..Oh, in XML, the whitespace is meaningful, as.. well, you can argue either way.. ..Yeah, let me parse /\n\s*/ as whitespace for the XML parser.. ..Yeah, but that of course doesn't change the grammar much, so I can still use that as the "prototype" for the XML-like syntax.. (15:51) *(Never mind, the wsPattern should just be /\s+/, easy. And of course template literals should have its whitespace removed, btw. (It's a good example where one wants to use a subparser for this, with two '$'s in front.) (16:43))
+
 
 
 
