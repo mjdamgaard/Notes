@@ -6901,6 +6901,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(15:44) Hm, I just realized that I can't capture XML whitespace with a RegEx.. oh, maybe unless I use capturing groups.. Hm.. ..Wait, no, this is not true, but it is true for the whitespace of JS template strings.. ..But here we can just not use any whitespace, problem solved. Okay.. ..Oh, in XML, the whitespace is meaningful, as.. well, you can argue either way.. ..Yeah, let me parse /\n\s*/ as whitespace for the XML parser.. ..Yeah, but that of course doesn't change the grammar much, so I can still use that as the "prototype" for the XML-like syntax.. (15:51) *(Never mind, the wsPattern should just be /\s+/, easy. And of course template literals should have its whitespace removed, btw. (It's a good example where one wants to use a subparser for this, with two '$'s in front.) (16:43))
 
+%(18:59) Hm, do I actually want type disjunctions?.. ..Yeah.. (19:00)
+
+%(25.01.25, 9:44) Oh, didn't know about RegExp so-called "assertions." Very nice to know..!
+
+%(26.01.25, 11:39) I think I will drop the '!' symbol operator, and always try new symbols. And then i might just make it so that we still only keep a single "record," and then use just that to skip the first parts of a rule that has been previously parsed, and is now part of this "record".. ..Ah, but I could turn it into "if the parser reaches here but the rule does not succeed, fail the whole nonterminal symbol" instead.. I think I might do that.. ..(11:49) Well, it would be most intuitive to make it say "If \emph{this} symbol fails, fail the nonterminal symbol," but it could also say "if this symbol suceeds, \emph{then} it is do or die for the remainder of this rule".. So is there any advantage to the latter?.. ..Obviously not, so let's do the former.. (11:51) ..Oh, except that you then have to put '!'s on all the remaining.. Well, nah. Let's just say that all subsequent symbols also automatically get the same meaning: "This symbol is do or die if reached".. (11:53)
+
+%(16:26) Hm, maybe I should call it pre() and post() instead of test() and process(), since it might be handy in a lot of instances to process elements right when they are parsed, such that this can be used in tests of parents as well.. ..Hm, and maybe I should make them return an arrer instead, and let the return void, or rather falsy, on success.. (16:29) ..Maybe preProcess() and postProcess() is better, then.. (16:30) ...(16:41) Hm, or maybe I could just call process() before the test.. ..and only on a success.. well, then we could just gather the two, or in other words remove post(), and rename test() to process()..(?) (16:43) ..Yeah, the thing is: It will be very rare that we would not want to process a succesful nonterminal symbol.. ..So yeah, let me do this.. ..And then I guess I should remove the parseAndprocess() method, and just use parse() instead.. (16:47)
+
 
 
 
