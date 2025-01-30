@@ -6932,6 +6932,32 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..Maybe let me name the tables after the on-(sec.-)index data types, e.g. as in FloatFloatEntityLists_01, and then indeed put that suffix on all tables, as there can be other properties of the table (e.g. compressed or not, as well as not least what off-sec.-index data types there are).. (13:18)
 %..Okay, but let me make this change at a later time.. (13:19)
 
+%... (15:45) I should still use the 'correlation' and 'impact' relations, but i should just not derive anything directly from them; they don't need special implementation, except being highlighted/up-rated initially.
+
+%(19:20) Wait, maybe i \emph{can} let score2 be an uncertainty estimator for all combined lists.. ..And I could then just record the combined weight (perhaps taking the least weight sum among all the components/atoms of the formula) in the off-index data.. (19:23)
+
+%..Let me vy the way just call the various entity lists tables 'EntityLists_01', 'EntityLists_02' etc., and similarly for the ListMetadata(_xx) tables as well..
+%..But yeah, maybe I can make do with just the one initially, and indeed make it a convention that score2 holds the uncertainty most often, rather than the weight (with exceptions such as the score contribution lists).. (19:26) ..Yeah, I will do this.. (19:29)
+
+%(19:32) Oh, maybe I should make the formula functions more abstract, such that instead of calling score1() and/or score2(), we call functions like score(), uncertainty(), and/or weight().. ..Then the formulae can be more list-type-independent.. ..Yes..:) (19:39)
+%..(19:47) And then for whole list combinations, the formulas wil fail if they include functions to off-index data (or non-existent data). If data is stored off-index, then you can only request the update of one score at a time for the list. (19:48)
+%..By the way, time() is another function that we should have, which for any aggregated list will then be an estimator that is used as our "recency scores." (19:50)
+
+%(20:29) Oh, and list() is not part of it either; we instead just call the various score() etc. functions on quality and user group variable parameters..
+
+%(30.01.25, 8:26) Vågnede tidligt og har tænkt nogle tanker. (Vågnede faktisk igen efter en tre timer først, men faldt så ret hurtigt i søvn og sov en tre timer mere, så det er jo bare dejligt.)
+
+%I've realized that it should be "Relevant \emph{among} <Class>" and not "Relevant \emph{to} <Class>". And then, I later realized, that means that the Class should just be the domain of the quality.. Hm, do I by the way have a way to make quality templates where the domain might vary?.. ..Right, the relevancy qualities subclass/format, where the input class should just be the "Domain" instead.
+%In tabs I will then not show the domain, but everywhere else it should be shown, and it should actually \emph{not} be inside parentheses. (8:33)
+
+%Now, I also have some more ideas/realizations about by tabs. I don't think my very-complicated tabs rack is such a good idea. So I think that I try to make it so that the type of the tab bars, and how they relate to the tab/tab bar above them doesn't change after the.. well, \emph{after} the first bar, meaning that it can only change from the first bar to the second, but then the third bar has to relate in the same way to the second as the second to the first and so on.. ..Oh, I think I can make that happen in a good way..!.. (8:38) I think I could make it so that we.. perhaps, never have to use the "more tabs" button.. ..Let's see, if we look at the Members(/Instances) tab of a class, then the tabs beneath the "main" one (where one has selected 'Members') could then all be.. qualities.. hm.. (8:40) ..Hm, maybe we could make a second main tab that just includes.. ..I was thinking: just 'Relevant' and then 'Qualities'.. but maybe not.. (8:41) ..(8:47) Hm, or maybe you add the next tab bar manually each time.. ..And for the 'Members' tab, you add quality bars each time, which can then also be relevancy qualities for subclasses.. ..Or maybe you can choose which type of tab to add each time.. (8:49) ..Hm, and maybe when you click to add a tab bar, you actually open the "more tabs" list directly, and then pick you first tab from that.. ..Hm, this is definitely something I will do if nothing else: It will be very good to not have a whole rack of tab bars unfolded each time, but only ever one tab bar at a time.. (8:52) ..And yeah, then I might actually stick more or less to the direction that I was going, also keeping the "more tabs" button if the user wants to change a selected tab.. (8:55)
+
+%(9:17) Wait, we could potentially use an entity title format to make the EntityTitles/References, namely by uprating a title format for any given class semantically..!.. (I've also been thinking about entity reference/title rendering, naturally..) ..That actually sounds so great.. (9:19) ..Ah, and a format could potentially take zero input parameters as well.. No, we should just add another quality that uses the entity itself as the Object, rather than the class, and then up-rate JSON strings as the titles. That way we can all the languages we want, it seems (at least if we also implement an ability to reverse reading direction, which shouldn't be hard to do).. (9:22) ..Ah, but the latter could also just be included in uprating "better representations," like I've thought it before.. (9:23) ..Ah, and the Object (class) of the title format relation should actually be the formats specifically, and not the class, which is not only more efficient, but it also means that a user could use a differnet format in a 'better representation' of an entity, and then use a title formet specifically tailored to that format.:) (9:26) ..So that is what I will do: Better representations will still be the way to translate to other languages, and then we should include 'Title formats,' which are uprated for a given class's format. And by the way, I should mention that a reason that a 'better representation' might use a differnet format in another language, is that there might be more information needed in order to render it well, e.g. by specifying word gender via an input parameter, and such.:) (9:29)
+
+
+
+
+
 
 
 
