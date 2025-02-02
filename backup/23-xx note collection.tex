@@ -7087,6 +7087,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(17:36) Oh, here's a problem: The user group lists need to have a special format. Hm, so I should either just make an update request to create or update a user group from a list that defines it.. or several.. or I should.. Hm, the latter actually sounds best.. 'Cause we kinda have to do that anyway when we have said that all non-positive scores/weights should be filtered out of the list. Okay. So user groups will each get their own List entity, and only have the list header as the whole list key as well..:) (17:40) ..Yep..:)
 
+%(02.02.25, 9:12) First of all, what was i thinking removing the possibility to query without logging in. So let me just say that the user is only authenticated if u (userID) is greater than 0. And then I'm also gonna add a default parameters input to the InputGetter. And let's also just remove the download data counter for the early stage; we can always put it back and implement it later.
+
+%There was also an infinte recursion problem with the reader whitelists, and the reader whitelists of the reader whitelists, etc. I think I have a solution now, though. We just make entID = 1 represent the list of no users, essentially (and I guess it doesn't matter that it normally referes to the 'type' type as well..). And then we'll just make it a convention that the "index" used for querying isMember just always has to be of the form '<listID>;1;<userID>', and that's all; that is the full element string (the full list element key, and there's no elem_data). I think this will work well. Then we also don't have to restrict the actual user group lists that are used in algorithms; we only restrict their.. ..Well, and it's not an "index" in the way that.. ..Hm, unless we just say that.. 1 is the index, so to speak. Yeah, a list has the power to write anything after the initial '<listID>;' so the list can indeed also have other "indexes." Great.
+
+%I'm also thinking about whether it's a bad idea to have a mixed server, 'cause it makes it harder to setup, which both makes it harder to install the server manually, and it might limit the options for.. ..what's it called, not SAAS or IAAS.. Anyway, it might limit the options for renting a server.. (9:24) ... (9:37) Yeah, and I can see the i can implement authentication in roghly the same way, just with the bcrypt library instead..
+
+%(12:54) Just reinstalled mysql. Took me \emph{forever}..:\ Big thanks to https://dev.to/sureshramani/how-to-reset-mysql-root-password-in-ubuntu-2fp3.. But I have yet to get my new Node.js server to connect to the DB...
+
 
 
 
