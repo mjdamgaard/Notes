@@ -7260,6 +7260,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(11:58) Let's make arrays and object different types, and make sure that Array.isArray() will always return true if and only if the variable is of the array type. ..Therefore, if a user inserts a member with a numeric key into an object, we also prefix it with "$" (like any other key), and if a user tries to insert into an array with a non-integer key, we throw. Oh, and floats and integers are also two different types. And I don't think I will convert floats to strings automatically, but throw if it is.. Well, if an integer can't be parsed from it.. ..Yeah, so float->interger->string is a valid automatic conversion route.. (12:02)
 
+%(17:09) Hm, member assignments, and postfix operators, and such: How..? ..I can't just evaluate the expression, but I could check it first.. Yeah.. ..Yeah, check that its type is either "member-access" or "identifier".. Ah, but I should make a separate method for this.. ..(17:18) Hm, I should make an environment class, and then actually open up for having variables of different types in the sense that they might be constant. ..And let's make all functions constant by default.. (17:19) ..But I'll still do that DefinedFunction thing that I'm currently doing, so I'm not making the values of the variables/expressions (strictly) typed.. (17:20)
+
+%(10.02.25, 14:29) It's gonna be very hard to implement 'await' for the interpreter (as in: not worth it), but as I just realized, we can just use callback functions instead. I just won't implement anonymous functions, both because I don't want to evaluate them and insert variables, and also because users ought to value efficiency and use named functions instead. *We can implement anonymous functions at some point, but I don't want to do it at first..
+
+%Something else that I've realized: Now that we'll get modules, we don't actually need to let the Struct hold several functions. We can just let it hold a module, and then the users can call all the exported functions in that module. This also means that I won't need any main functions, 'cause the client jst ought to provide the name function to execute as part of the request.
+%Also, we should actually not separate forwarding handler from the query handler, and we shouldn't even separate the insert handler and query handler. I will still make the "simple" query handler, i.e. that doesn't run any scripts, and the entity insert handler, which also doesn't run scripts. But all the rest can just be grouped into one. And then the user should just make sure not to provide any forwarding or insert gas, if they don't want that to happen.
+%By the way, the script request handler should make sure to initialize all gas counters to 0 if they are not provided. That way the old request formats will still be usable if/when we add a new counter to the gas object. (14:40)
+
 
 
 
