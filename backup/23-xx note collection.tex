@@ -7274,6 +7274,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(12:07) Well, the app will only handle a few function names automatically, where the user do not necessarily need to check the gas prices first, but there's nothing stopping us from making a page for the Structs where super users get to call any function of the module that they like.
 
+%(15:32) Hm, it it really worth the overhead costs of implementing dynamic type checks and conversions?.. I don't really think so, actually.. ..So we can just say that the types are purely for the sake of front-end purposes.. ..And then we should also make them optional.. ..and perhaps in practise only really using them for the functions facing outwards to the app/the users.. ..Ah, but if we don't make the dynamic type checks, if they are not there, then the overhead cost becomes negligible, so maybe I *should* implement it.. (15:37) ..Yeah, okay.. (15:38)
+
+%(15:42) Oh, I just thought about whether I should implement the 'this' keyword, now that we *can* actually have real methods. And then I just realized that implementing anonymous function won't actually be hard at all. 'Cause you can just loop through the syntax tree, and then.. or at least the stement-list/expression part of it.. and then for each expression node, you just evaluate, and perhaps also handle some other nodes as well, oh, in particular accesses.. Wait.. ..Wait, JS must know not to evaulate certain expressions like.. Hm.. Okay, maybe it is actually much more difficult, namely because you need to check which expressions should be evaluated at declare or execution time, and that actually seems complicated.. (15:47) ..Oh, well, if I just implement a built-in bind() function, which can then be used as a virtual method as well, then we don't need the anonymous functions, while still being able to do OOP.. (15:49)
+
+%(15:57) Hm, then maybe instead of having the virtual methods insert the object as the first variable, we can just make a temporary, call-local binding of the 'this' keyword to the object.. ..Hm, I like that.. (15:59) ..Yeah, and then I of course don't need the bind() function, really.. (16:01)
+
 
 
 
