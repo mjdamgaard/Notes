@@ -7268,6 +7268,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %Also, we should actually not separate forwarding handler from the query handler, and we shouldn't even separate the insert handler and query handler. I will still make the "simple" query handler, i.e. that doesn't run any scripts, and the entity insert handler, which also doesn't run scripts. But all the rest can just be grouped into one. And then the user should just make sure not to provide any forwarding or insert gas, if they don't want that to happen.
 %By the way, the script request handler should make sure to initialize all gas counters to 0 if they are not provided. That way the old request formats will still be usable if/when we add a new counter to the gas object. (14:40)
 
+%(17:40) I will still run the default export || the 'main' function || only function/expression if no function name is supplied in the request..
+
+%(11.02.25, 10:09) The names of functions in the Struct modules are important, since these will decide how the app treats them. The app will thus only offer a limited list of function names that it knows how to handle. For instance, at first I will only really implement the insert score, update whole list, query score, and query whole section of list functions. There are however no limit in principle to what these functions, of the same names, can take as input. ..Oh, and maybe we could make it so that the app only shows input fields for the mandatory input parameters first, and then only if you click to expand will it show the rest of the input fields.. (10:15) ..And the app also decides the default gas for each of these function names, but the user can also adjust this, potentially.. well, but let me not implement this at first.. (10:16)
+
+%(12:07) Well, the app will only handle a few function names automatically, where the user do not necessarily need to check the gas prices first, but there's nothing stopping us from making a page for the Structs where super users get to call any function of the module that they like.
+
 
 
 
