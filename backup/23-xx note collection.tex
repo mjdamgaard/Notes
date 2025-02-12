@@ -7280,6 +7280,18 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(15:57) Hm, then maybe instead of having the virtual methods insert the object as the first variable, we can just make a temporary, call-local binding of the 'this' keyword to the object.. ..Hm, I like that.. (15:59) ..Yeah, and then I of course don't need the bind() function, really.. (16:01)
 
+%(16:11) Oh, I *can* make anonymous functions, just not arrow functions.! But I can make anonymous 'function' functions.!:) Great.. ..(16:15) Wait a minute!.. Isn't the only differnece on arrow and 'function' functions the behaviour of 'this'; surely arrow functions don't evaluate any expressions right away. Yeah, that must be so.. Ha, well oaky, then I can implement the arrow functions just fine.. By the way, I think I'm gonna change the syntax such that 'let myFun = obj.myMethod;' automatically binds this to obj for myFun. And similarly, 'let myFun = obj->myOtherFun;' will do the same.. (16:18)
+
+%(19:02) Started trying to implement arrow function syntax, but it's too complicated if we want to make it so that grouped expressions aren't parsed twice.. Now, we could also just do that, potentially, but since 'this->function(...) {...}' will work the same as '(...) => {...},' maybe i just want to.. Nah, maybe it's better to just parse grouped expressions twice.. ..Or alternatively we handle ill-placed tuples at runtime, but nah, maybe not.. ..Well, since I can't decide, let me just postpone implementing them.. (19:08)
+
+%(20:03) Hm, I *could* just say that arrow functions always need to wrap expression output as well, and then just treat both arrow functions and 'function' expressions as tight-binding (with maximal precedence).. ..Yeah, I think I'll do that.. (20:06)
+
+%(12.02.25, 6:33) (Got up early.) Ah, it doesn't matter if we parse an arrow function partly before a grouped expression, since the "expression" inside a tuple just has to be an identifier.. ..Well, let me not break the precedence rules for anonymous function, then.. ..No, fine. (6:37)
+
+%(8:47) Okay, I think I might remove the compound array type, and then just use the more primitive "array" type instead. But then we can still use a default value to.. Hm, well, then we don't get the column names of the table.. ..Oh, but we could change the syntax of the RHS (formerly just a literal) such that the defualt value can contain column names. And then we could just make it so that all array fields on the insert page is editable in terms of column and row number (but not column names, I guess (why would we)).. (8:52) ..Well, but isn't it preferable to keep the compund array types instead?.. ..Hm, we could also call it a table type, and then write it as table(...).. ..Wait, maybe we should parse tables as '{colName1: [...], ...}'.. (8:57) ..And give the user the option to flip the table inwhichever way they want.. (8:58) ..And then you can also replace a whole row/column (depending on the orientation) with a value field instead, and that is how you type in objects. Okay, I like this.. ..Yep, and then we *could* actually do what I just thought about, and drop the compound array types, and use defualt values instead (and potentially type check further within the function, btw).. (9:00) ..And I can still keep the disjunction (which indeed doesn't have to include any names; the name of the parameter is enough (plus the desciption/documentation of the function, or the class that uses it, more often)).. (9:03) ..Yes, alright. (9:06)
+
+%(10:54) Hm, let me just not try to convert the input parameters automatically..
+
 
 
 
