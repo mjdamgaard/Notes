@@ -7529,6 +7529,10 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(9:36) I'm gonna reserve 'settings' as well, namely as a global immutable object, that functions are meant to only query optionally, but never require anything from (so all scripts can run without fail if you use an empty settings object, although this is not a guarantee; only a convention).
 %This is not to say that I'm reserving 'parameters' and 'constants,' though; I kinda wish to avoid that.. (9:39) ..Hm, I could just introduce the pseudotype 'const', only for the purpose of making some script parameters constant. Yeah, let's just say that.. (9:46) ..Well, and let me just include it everywhere, even though it doesn't make much sense to use anywhere else. But it generally means: 'this parameter needs to be undefined, and will then get the defualt value (if one is provided, but it makes no sense not to do so).
 
+%(10:42) Ah, shouldn't I just fetch the function/format for any imported formal entity (or one that is part of the script parameters)?..:) ..Yeah, that sounds better.. (10:43)
+
+%(12:45) We should by the way direct requests such that all requests with supplied computation gas under some limit is run by one set of threads/servers, and all other are run on some other servers. We could even have several levels. This way we make sure that even if a lot of users make heavy requests at once, then the small requests still gets to run quickly on their own designated servers. (12:28)
+
 
 
 
