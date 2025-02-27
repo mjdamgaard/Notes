@@ -7548,6 +7548,9 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:20) Ah, the entity references for some of the types can now also work like functions, meaning that if you call myExpEnt() with myExpEnt holding a 'e' entity reference, it returns the expression value, if you call myScriptEnt(callback), it runs the script and calls the callback on the output, and if you call myFormEnt(callback?), it runs the expression/script the formal parameters as inputs.. Oh, should I keep the 'parameters' statement for 'e' entities, or should 'f' entities just always use function-valued expressions for their formats?.. (16:25) ..I guess the latter; that's neater.. (16:25)
 
+%(16:35) Wait, maybe that is too much work, or more importantly complication, just to include that 'static' keyword. So no, maybe users should just export function/methods instead of static constants.. (16:36)
+%(16:49) Ah, and with shared data stores (objects), the users can implement their own static constants, simply by always looking up the value before computing it. Okay.
+
 
 
 
