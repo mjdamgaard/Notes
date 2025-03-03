@@ -7638,6 +7638,17 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Now, since I won't actually compress the data (manually) initially, I then actually do not need to do anything with the dataformats yet, well, other than to convert from strings to a char.. I don't even have to check that the types are right, 'cause i can just say that all entries that does not conform to the.. ..datatype of the format will just be removed, although that doesn't sound to nice, actually, unless I help the users somehow to do the type check.. ..Well, the write functions might do that check.. ..Sure.. (10:38)
 
+%(10:47) By the way, I might stop refering to the Data Structures as "structs" now.. ..I think I will.. ..Well, then again.. (10:51) ..Hm, i could also call then DB objects (dbObj)..(?) (10:54) ..Hm, I think I like that.. ..Well, or 'data handlers', and then also just call them 'handlers' in the context of the DB..(?) (10:56) ..'Data (structure) handlers'..
+
+%(11:16) Let's use TINYINTs instead of CHARs for the data format identifiers, and then also drop the string identifiers..
+
+%(11:21) Let me remove the "DataStructureCounters." Instead let us just say that all uploaded data needs to be paid for, and then in terms of removing old data, let's maybe implement this in a layer above that, or at least just postpone any implementation of it in the DB layer.. ..Yeah, but most likely, we will just implement it in the APU layer, where the DB node can then take part in using that layer (as a "user," warning users that some data might be removed, unless someone pays some extra upload gas to keep it).. (11:24)
+
+%(11:27) Hm, I guess not but let me ask the question anyway: Should I just inlude a secondary index for the entry_key_data?.. ..Well, no. Bu then, should that just be part of the payload?.. 
+%..Oh, I guess I *do* need to implement open connection from the beginning, where one can strat, commit, and roll back transactions.. (11:30) ..And get locks.. (11:31) ..Yeah.. (11:31)
+%But I could also make two tables, one with the two indexes and one with just the one.. (11:33) ..Yeah, that seems smart.. (11:33) ..Yeah, and we already have two tables in principle, since we also have the fulltext table (which is actually mutliple tables; one for each DB handler). So yeah, let's just make that three.. (11:36)
+%(11:42) And yeah, then I can still just postpone implementing the open connections, the transactions, and the mutex locks..
+
 
 
 
