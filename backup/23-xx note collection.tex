@@ -7649,6 +7649,10 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %But I could also make two tables, one with the two indexes and one with just the one.. (11:33) ..Yeah, that seems smart.. (11:33) ..Yeah, and we already have two tables in principle, since we also have the fulltext table (which is actually mutliple tables; one for each DB handler). So yeah, let's just make that three.. (11:36)
 %(11:42) And yeah, then I can still just postpone implementing the open connections, the transactions, and the mutex locks..
 
+%... (13:28) Ah, I might make it so that the reader whitelist is actually a whitelist *script* instead, and then also actually remove the "simple" query/read procs. There will still be servers that serve, clients that are not logged in as users, with a limited supply of gas, but these requests are then still sent to the same server, only with an undefined reqUserID and sesID.. (13:30)
+%..(13:34) And the script can then not only be given the reqUserID, but also the ID of the caller data handler..
+%(13:44) Wait, but then we don't even need the readerWhitelist(Script)ID at all, as we can just let the read methods handle it, then.. ..Yeah.. ...But we do of course still need it for the private entities, and here we can still use the convention of a userID meaning that only that user can read the thing.. ..Yeah, but for data structures, it could still just be the responsibility of the read method.. (14:04) ..Let me just shorten it to whitelist_id for the entities, and then this can either be 0, a userID, or a scriptID.. (14:05)
+
 
 
 
