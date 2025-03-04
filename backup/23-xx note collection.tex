@@ -7697,6 +7697,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:51) Or maybe I'll rather make just one PHP server, and then just make a firewall/WAF that blocks the client-side-originating requests from the server-side directory..
 
+%... (19:00) We could maybe let the built-in imports come first, and then allow the entity-referenced imports to depend on the built-in ones, as this could be a way to get our "fundamental entity IDs"..
+
+%(20:28) I have to make sure that I also check, when running a protected method, that no methods are executed with other permission flags required inside that function (or any of its called functions).
+%I think I will make a built-in applyProtObjMethod() function that I will then direct all protObj method calls through (which then allows us to brach out depending on whether we are client- or server-side)..
+
 
 
 
