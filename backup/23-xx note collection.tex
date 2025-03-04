@@ -7671,6 +7671,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(18:50) Hm, maybe I'd rather let the DB interface be low-level, and then send the column data in the shape of hexadecimal strings. And then I'll just make a class that serves as an interface between this low-level stuff, and then the JSON-like arrays.. (18:52) ..I can still keep my table split up in two, like I introduced today.. (18:52) ..Yeah, I think i want this.. ..And maybe all the data read/write procedures are just implemented there as well, instead of as MySQl procedures.. ..Not that that is so important. The important thing is just that I actually make the DataStructures tables as low-level as possible again.. ..Well, we still need MySQL procedures, 'cause I still need to unhex the input (and hex it in the other direction).. ah, unless this is done automatically.. ..Well, whatever, let me just make those MySQL procedures.. ..But yeah, I think I might indeed keep it low-level in the DB layer itself.. (18:58)
 %..Yeah, in the same way that I'm also now making entity insertions and edits more low-level, namely by now exposing the former sub-procedures as the actual procedures of the API.. (19:00)
 
+%(04.03.25, 9:08) We can actually make several DataStructures tables, inparticular where the "score" column can have many different types, thus utilizing (My)SQLs ability to sort the rows correctly. So we might thus very well at some point introduce a DataStructures table that uses VARCHAR scores, collated normally (with e.g. 'é' being close to 'e'). And we can introduce these tables at any point, and then just add more methods to the DB interface class, which i by the way think I will simply call (Main)DBInterface.. (9:12)
+
+%(9:32) I *can* HEX() and UNHEX() in the MainDBInterface class (in Node.js), so I think I might just write the read/write MySQL there..
+
+%(12:08) Oh, I forgot to mention: If we look at the current DataStructures tables, we see that there's no table (yet) that can order the data by e.g. (someVarchar, someFloat, someOtherVarchar) as the score. But users don't really need this, at they can always just make the entry_payload hold another struct_key, And that way, even with just the few DataStructures tables I've made already, the users can already implement arbitrary data structures (with arbitrary ordering). So that's quite nice..:) (12:12)
+
 
 
 
