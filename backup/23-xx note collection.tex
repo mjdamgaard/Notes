@@ -7738,6 +7738,9 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(18:36) Maybe I will just always fetch the full entity definition, and then just say that users ought to use modular HTML documents when they are above a certain size.. ..Hm, should I even restrict the size of the 'e' entities?.. ..I think so, yeah.. And we can always just lift those restriction again, if we want.. (18:38)
 
+%(06.03.25, 10:17) I got it. We don't need the import/export signals, i.e. the flag strings. We should just allow protect() to save and look up data in a mutable data object that is local to the given protObj method execution (and which might have the calling method/function data as a parent as well, etc.). Then if we want to e.g. allow a protected module/object to "read as user" as long as it doesn't write anywhere, we can just make sure to set flags in said data object when writing somewhere and when reading as user, and then make sure that these are mutually exclusive. By the way, this also shows another reason why we don't want functions to be able to mute their parent environment, as we wouldn't.. Oh, but they can still mute input objects.. Hm, I was going to mention that we need to call protect() as well, then, whenever 'this' is muted (including "assigning to") inside a prot. method, but maybe we should then just call it whenver an object is muted, 'this' or that..? (10:24)
+%..(10:28) Well, muting an input object is not much different than just returning an object.. ..But muting 'this' is different, so maybe we could just call protect() when that happens, which would make sense to do ("protect" a protected object).. (10:30) ..Yes, alright..:) (10:31)
+
 
 
 
