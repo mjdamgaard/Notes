@@ -7829,6 +7829,11 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(11:10) Ah, and in order to make entity IDs remappable, let's say that the EntRef constructor only accepts string *literals* as input. ..Hm, and entity placeholders?.. Do we make a new constructor, or do we perhaps just say that e.g. strings starting with '/' is interpreted as a path?.. (11:12) ..Let's say the latter.. (11:12)
 
+%(11:32) Hm, can I also make the types a subset of TypeScript types?.. ..(11:41) Ah, TypeScript has custom types, which can be imported/exported from modules as well. So we could just reserve some syntax for the typenames to actually refer to an entity class instead.. ..Maybe saying that all identifiers starting with '$' is interpreted as a class ID.. (11:43) ..Wait, types can even contain strings, it seems.. ..Yeah, so one can even declare: 'type MyClass = "#<ID>";', and there we are.. (11:46) ..Cool, so we should also aim to make the types a subset of TS (and thus make the whole language a subset of TS), once we get to implementing those.. (11:47)
+
+%..Oh, I could also use a '"use #<protectScriptID>";' syntax.. Ah, and this can even be extended to '"use #<protectScriptID>, #<namingScriptID";', or somehting like that, if we want..! (As opposed to the side-effect imports, where there can only be one path name.) Okay, let me do that instead!.. Oh, wait.. ..Can modules start with strings before the imports?.. ..It seems so.. ...Yeah, now, I've debugged until getting runtime errors, so yeah, we *can* start the modules with a string expression statement.:) (12:21)
+%..Well, since we can have more than one.. Hm, let me just check that.. ..Yeah, we can use all that string expression statements that we want, so this now gives a natural way to add name modules.. ..Well, but we probably want to know which one is the protect script, but maybe we could just let the name scripts start with 'names' rather than 'use'.. (12:29)
+
 
 
 
