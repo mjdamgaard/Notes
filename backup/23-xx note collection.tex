@@ -7864,6 +7864,10 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(16:44) Hm, read(), write(), and replace(), where write by defualt inserts a list of rows, and on duplicate keys overwrite the given rows, and where replace first deletes.. Well, then we might as well use read(), write(), and delete(), where the same thing applies for write(), and where delete either deleted an exact row, or, if given two keys, deletes everything greater than or equal to key1, and less than or equal to key2.. (16:47) ..Well, call it 'remove' instead, due to 'delete' being reserved as an identifier.. ..Or maybe 'erase' is more fitting with the two other words..
 
+%(17:03) Well, let me generalize it and name it back to ProtectedObject, and then say that all protected objects can have private methods, potentially.. ..This opens up for other developer functions, that defines other kinds of private methods as well. (But these has to be developer functions; users modules can't define their own kinds of ProtectedObjects.) (17:06)
+%..(17:09) Hm, maybe I want to go away from thinking of "protected functions," then, and also not store the protectSignals on the functions, but rather store these on the ProtectedObjects.. ..And then functions declared inside protected/privileged environments, at least anonymous ones, will then just inherrit the privileges in the same way as they inherrit the right/privilege to affect the decEnv.. (17:12) ..Let's maybe call it privileges in general, and then call the specific ones that protect() returns the 'protectPrivileges'.. (17:13)
+%..Yes, alright.. (17:14)
+
 
 
 
