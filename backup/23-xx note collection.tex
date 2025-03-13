@@ -7949,6 +7949,25 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(17:49) render(), and all the event handlers, by the way get access to a plain object containing protected objects that is the children, such that it can call any and all of the events that the children expose to their parent. (17:51)
 
+%(13.03.25, 10:55) Har sovet godt: Var i stand til at falde i søvn igen, de gange jeg vågnede.
+
+%I think I will introduce Private() and Public(), on top of Protected(), and then make them all be able to take any value, function and non-function, and then Private also takes a signal, just like Protected(). For private attributes (non-function properties), we then first emit the "g" or "s" signal, and then emit whatever signal the attribute holds. (10:58)
+
+%(11:54) Oh, I guess the user can only assign to private attributes (how would they tell that they want to assign to a protected one?.).. ..(12:03) Yeah, use getter and setter methods to access and assign to attributes/properties..
+
+%(13:32) Hm, shouldn't we allow to use public function members as methods, or no?.. ..Oh, let's remove the public members.. ..Except if we want to keep public (read-only) attributes, but why not just use protected properties instead, as these can also be non-function-valued..? (13:35) ..Yes, let's do that..
+
+%... (15:54) I think I will forget about extract() (or what to call it), at least for now, and then just use explicit imports from the dev libraries also..
+
+%(16:22) Ha. Det sner helt vildt lige nu..
+
+%(17:10) Jeg gik i stå over modul-stierne, men det sagen er vel den, at use-scriptet skal definere et sti-til-ID-map, og så skal libaryPaths vel definere et ID-til-st-map, således at vi i sidste ende for konverteret fra sti (som brugerne ser det udadtil) til sti (som servren eller browseren skal bruge).. ..Og hvis modul-referencen så er et ID allerede, så behøver man så ikke første skridt.. ..Og, hvordan kender vi forskel på dev- of bruger-moduler?.. ..Hm, det er vel bare, når libraryPaths returnerer undefined.. (17:15) ..Ja..
+
+%(17:39) Let's make it so that the 'moduleIDs' object exported from the 'use' script automatically splits the paths along each '/' occurence, i.e. in order to become a tree structure rather than just a depth-1 object.. ..So for now, we are only importing protect(), convertSingal(signal, useScriptRef), and moduleIDs.. (17:42)
+
+%(17:53) Oh, and how do we import the dev libraries, with an import() call, but how exactly..? ..Well, we then store the imported namespace object in liveModules, now changed so that is holds a boolean flag of whether the module is a user one or a dev one. And when we subsequently finalize the import statement, we then just extract the DeveloperFunctions from that namespace object. (17:56)
+%..Okay, I'll do this tomorrow, and then presumably finally finish this new implementation of my interpreter. Then I can get on to making some dev functions, and then make a working server (with a simple stub in place of the userDB), and then I can start remaking the app.. ..And then I can start implementing the React-like system.. (18:00)
+
 
 
 
