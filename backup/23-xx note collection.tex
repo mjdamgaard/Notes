@@ -7976,7 +7976,27 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(12:32) Okay, how exactly do I want to handle to dev libraries..? ..Should I convert then into a liveModule object holding only [val : DefinedFunction] for each entry, and do this as soon as possible?.. ..Oh, no, there's also the signals.. ..Hm, could the dev libraries just export these [val : DefinedFunction, signal] pairs for each function?.. ..And export [val : non-function] for all constants..? (12:38) ..Hm, I kinda like that, but maybe the order should be reversed somehow..? (12:39) ..Oh, wait, never mind: Dev libs only export vals; the signals are not export signals, but signals sitting on the defined functions. So we can just export the DefinedFunction instances, and then wrap them all in [] when importing to get the liveModule object.. (12:41) *(13:35) Oh, then I don't even need to record when a liveModule is a dev or a user one..
 
+%(16:06) I think I will start calling the "'use' script" the 'base script' instead.. ...Hm, 'base module,' rather.. (16:18)
+
 %(12:58) Oh, should there be some kind of permission to call exit()? Maybe we could make it behave like a protected function?.. ..Yeah, let's do that.. (13:00)
+
+%(17:17) I'm thinking of giving protect() the baseModuleID as an argument, instead of using convertSignal(), and then we could maybe say the baseModuleID === undefined means that the base module is the same as the one protect() comes from, and also say that baseModuleID === null when protect is called in some of the fundamental cases, like in my current cases with the "g", "s", and "e" signals.. ..(17:21) Yeah, I think I like this a lot, 'casue this means that a protect() function can just import and use another version of itself, rather than having to convert every single signal into a new format. So yeah, let me do this.:) (17:22) ..Let's maybe say baseModuleID === "0" rather than baseModuleID === null.. (17:25)
+
+%(15.03.25, 9:48) I forgot that the actual base script is the one provided as an argument to interpretScript(). Let's also include a baseScriptID in each Defined function, and let's use "10" for all the initial dev libraries. And then I'll make sure that the first base script get's the ID of "10"..
+
+%(9:52) Let's.. ..Hm, I was about to say 'use "s" for "select entity'", but that collides with 'set'.. ..Hm, 'f'/'F' for 'fetch'?.. ..Hm, or turn 'g' and 's' into just 'a', 'cause do we really need them separate after all?.. (9:55) ..Hm, then I like 'f'/'F' better.. ..Well, or maybe there's no real need to split up 'r'/'R' after all.. (10:01) ..No, alright, let me just keep using 'r'/'R' for both entity and data reads..
+
+%(10:03) Hm, would it make sense to just always make a signal a pair.. or even a two-part string..? ..Yeah, let me do that, I think that's nice.. (10:06)
+
+%(10:25) Hm, to use baseModuleID === "0" or to use baseModuleID === "10" for the 'g', 's', and 'e' signals?.. ..I think baseModuleID === "10" is actually better..
+
+%(10:33) Oh, it's probably dangerous to use undefined to mean "same as the global baseModuleID," since the module might also just be missing a base module string.. ..Hm, maybe let's just use a flag instead, which can tell is the.. Hm, but then I kinda have to split up the signalPair again.. Or we could just provide the gobal baseModuleID to each protect call..?
+
+%(13:39) Oh, maybe we don't want to always exit on an uncaught error/exception.. ..Hm, but maybe we do most of the time, as users just shouldn't use wrong modules.. Well, nah, it would be nice to handle errors more gracefully.. ..So maybe we just log it.. ..Nah, best to exit.. ..And then we just want to use runScript() whenever we want graceful error handling within the app.. ..Ah, maybe I could.. Hm.. ..Or could we try to make try--catch albe to catch callback exceptions?.. ..Oh, maybe a tryCatch() function..!.. (13:46) ..Well, no, not just that..
+%(13:51) Hm, maybe developer functions should just never throw, only warn, and then we should be able to just use the try--catch statement as is..(?) ..So should dev functons just always have a resolve and a reject function?.. ..Oh, and if reject() is missing, then the dev function just throws instead of calling reject().. (13:53) ..Wait, not all: Some dev function just returns a value, and that it. And these are free to throw on failure.. (13:54)
+%..Alright, and \emph{can} we then just get away with using the regular try--catch statement?.. ..No.. (13:56) ..Hm, unless we just make it a convention to use resolve() and reject() callbacks.. (13:57) ..Well, no, not quite.. ..(13:59) Oh, making a "try-catch" environment could maybe solve it!.. ..(14:05) Oh, and we can just use a syntax of 'try {...} catch ([err, i]) {...}'..
+
+%(14:58) Oh, we do also sometimes want to query the server for the non-parsed entity definitions, namely when users want to expect code, and/or when an error occurs, in which case the defStr can be fetched and lexed in order to be able to investigate the code where the error happended (and we can even at some point make it so that the user can jump around in the call stack, just like you can when debugging in the browser.. console/debugger..). (15:01)
 
 
 
