@@ -7998,6 +7998,47 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(14:58) Oh, we do also sometimes want to query the server for the non-parsed entity definitions, namely when users want to expect code, and/or when an error occurs, in which case the defStr can be fetched and lexed in order to be able to investigate the code where the error happended (and we can even at some point make it so that the user can jump around in the call stack, just like you can when debugging in the browser.. console/debugger..). (15:01)
 
+%... (16:26) I want to make it so that each catch block is wrapped in try--catch when being executed, and if the user throws a CustomException containing exactly the same msg as the original one, or more precisely one that is '==='-equal, then we make sure to throw the initial exception (with the original node and nodeEnvironment) instead of the new one.
+
+%typeof should just work like in JS, and then I will make getType() a dev function..
+
+%..(16:30) Also, I need to introduce an Entity class, or maybe actual several (at least three, which is my current number of Entity types, well, I guess unless I want to add UTF-8 entities as well to the mix..). ..Hm, and I guess all users can do with these is to call dev functions on them (including getType()).. (16:36)
+
+%(18:00) I might make just a "fundamentals" dev library, and then an "io" library in two versions, as the only two/three dev libs in the beginning..
+
+%(18:27) I will use another system for the initial signals, and not the single-character ones. I might use whole (space-separated) words.. ..But not anything more complicated than that; only boolean flags/attributes, and no disjunction syntax.. (18:29)
+
+%..(18:32) protect() should have the moduleID, or rather the moduleRef, rather than the thisVal protected object.. ..I think..
+
+%(15:20) I think I will use comma-separated strings for the signals (in my own app, and thus in the initial protect()).. ..Hm, and let me perhaps use more verbose signals, e.g. such as "get", and "read-pub", "read-prv".. ..And "insert-anon", and "insert".. ..And I'll just take "read" here to also mean select (of entities).. (15:26) ..Let's make that "read" instead of "read-pub," and then we keep "read-prv".. Hm, and maybe I want to use snake case rather than kebab case.. (15:29)
+
+%(15:46) Let's say that all entity def strings are limited to the size of the TEXT type.
+
+%(17:03) Hm, shouldn't we say that formal entity functions can only be expressions?.. Or will we need functions, dev function and/or user-defined functions?.. ..I think not; the function is only meant to convert some more compressed data into a JSON object, but holding the same data, pretty much. ..Yeah, and you can always add a script reference to the JSON object if you want. So okay, formal entities just used expression functions to transform themselves into a JSON.. well no, not JOSN, just an object (a JS object, if one will).. (17:07)
+
+%(17:58) Hm, maybe it doesn't really make sense to make the list_key (formerly "struct_key") binary.. 'Cause it's compressed anyway, and maiking it binary just means that we need to hex and unhex it, which means that the IO then won't be compressed, perhaps even less compressed in many instances. So yeah, should I turn list_key into a VARCHAR?.. ..Yeah, let's do that.. (18:03)
+
+%(17.03.25, 8:41) Oh no, we want the list_key to follow the same principle as the elem_key, don't we.. Well, I was about to say 'since we want to be able to use entIDs in it.. ..And yeah, we might, so let's maybe indeed use the same system for list_key, and thus keep it as a VARBINARY.. ..Yeah, that's actually important.. (8:44)
+
+%(8:51) Ah, I don't think I need to/should use different module files for the different sides, i.e. client and server side..!.. ..I think I should just branch some of the dev functions depending on where they are run, and then simply make sure to import the.. MainDBInterface dynamically (with a path that only yields something for the server).. ..Yes.. (8:57)
+
+%(9:01) Ah, maybe we can make a system, where the DB nodes get's to name their own libraries.. ..Well, it could just be defined in the base script, namely the ID of the DB node.. (9:02) ..I have by the forgotten that moduleIDs would have needed to be gotten from the script's base script, and not the global base script, which is what made me think of this. And yeah, we still need to run it for each module, well except that we just run it once, and then use the same "liveModule".. (9:04) ..But now we can just extract a DB node ID rather than the moduleIDs.. ..Well, unless we still want users to be able to name their libraries, but maybe they should just do this "semantically," as I've called it in the past, which is to uprate a name/title for it via the DataStructures.. (9:06) ..The app can then render the name of the.. Well, maybe this is actually a bit dangerous/bad since it would mean that people would need to guard against users naming a script the same thing.. ..Well, but one can just show a trust score next to the name, and there we are.. (9:08)
+%..Hm, so libraryPaths needs to hold a map for each DB node that defines a library.. group.. (and that the given DB node recognizes).. (9:12) ..Call it a.. well, I was about to say 'DB partition,' but what did I actually end up calling it?.. ..'UPW providers,' I think it was.. (9:14) ..Yeah, so a UPW provider ID. And I will just use some fixed number, like 11, or whatever, and then make libraryPaths hold only one "library group," if we want to call it that, indexed by that ID, and if the base script defines another UPW provider ID, then we'll just throw, i.e. for the time being.. (9:16)
+
+%(9:19) Jeg har det lidt mærkeligt her til morgen. Muligvis noget hjerteflimmer, men ved det ikke helt. Håber det går over. Skal forresten lige huske at rette mit try--catch-statement, og sørge for at "==="-lig undtagelser kastet fra catch-statementet bliver kastet videre som de var..
+
+%(9:22) Something else, I think it should be a convention for write methods to always first check if it is running on the server side, and then brach off to send the method to the server instead, via a runOnServer() call, if it's not..
+
+%(9:40) Oh, I also thought of something else. When running a script, you might want to transform the permissions for the script.. Well, no, I think I landed on just use protectData instead.. ..Yeah..
+
+%(10:02) Oh, and then we don't need the base script declaration, especially not when sending string-defined scripts to the server..
+
+%(10:14) Hm, when gathering the server-side and client-side libraries, we do then make 'cause the clients to have to download some unreachable code.. But It's not a lot.. ..And we can also just change this in a layer above it all, redirecting them *(or actually just directing them) to another server with some more compressed versions of the libraries.. ..Yeah, let's say that.. (10:17)
+
+%(10:28) Wait, why don't the users just divide the signal into two parts as well, and declare the protect signal system via an ID for each protected import, similarly to the dev functions?. Isn't that a lot better?.. ..Then we don't need to use the base script declaration for protect()'s sake anymore..! ..And, and they declare it via an entity-refernece string, such that it is remapable.. ..Oh, and why don't we then also just do a similar thing for the dev library names..!.. (10:32) ..Ah, this is much better.. ..And the app can check that the proverIDs inside of the import 'from' string is one of the excepted and/or trusted ones..:) (10:34) ..Oh, and let's maybe parse the 'from' string in a special way, such that it is easier to change.. ..Nah, it's alright; we can easily transform it under a remapping.. (10:35) ..And let me also just use the proverIDs for the folder names in the public dev_lib folder, and then we can just transform the (ID-prefixed) library names, consistently, rather then using a libraryPaths object..:) (10:38)
+
+%..(10:39) Virkelig fedt, det her. Uroen i kroppen er forresten også gået væk nu..:)
+
 
 
 
