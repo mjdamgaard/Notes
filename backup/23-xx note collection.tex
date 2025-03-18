@@ -8066,6 +8066,28 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(12:09) Oh, a problem: When running a method on the server, then we need a callback for the method.. ..Hm, could we make a convention that the callback should always be the last input in the input array?.. (12:12) ..At least whenever protect() can return protectData.shouldRunServerSide == true.. ..I think, yes, let's do that.. (12:13)
 %..Hm, and then we need to give to give.. Well, since we are making a special request for this, we can just omit the callback at the end in this request, and let the server replace it automatically with a callback that calls exit() on the result. Okay..
 
+%... (14:42) Oh, I guess I don't have to be worried about webpack at all, since I won't be using it, as I won't be using React.. *Ah, but then I also have to put all modules into a.. No, I will use webpack.. ..I'm not going to use React, but then I'll just have to manually make sure that webpack is used.. (14:47) ...Wait, why not "use React," if I'm using webpack.. (14:59) ..Oh, becasue the React code. Okay.. ..Hm, it seems that there is an API for compiling a webpack when creating a Node.js server, so I'll use that.. (15:05) ..Oh, surely the dynamic import won't work with.. well, but it doesn't need to either.. (15:08) ..Wait, maybe I don't need webpack: The modules will often be cached, won't they?.. ..Well, no, maybe not.. ..Oh, one can maybe also use webpack while the server is running.. I think I might aim for that.. ..So when the user queries for index.js, we make sure to read the file that is the output of webpack, and then we serve that. Alright.. (15:14)
+
+%..In terms of the bash script (or C program, but I would prefer a bash script), I've decided that I will just reserve 'entities.js' and 'expressions.js' to be script that contains respectively formal entities and expression entities, and then all other names will be treated as a script entity definition. (14:45)
+
+%(15:42) Wait, I of course do need the dynamic imports to work, if I'm using them client-side.. Hm, so maybe I shouldn't?.. ..Hm, there is a way to handle dynamic imports with webpack but can't I do something else?..
+
+%(15:52) Oh, I could use the singleton pattern for the entity caches..
+
+%(16:14) Hm, couldn't I just not use webpack, and then instead just use an import map..
+
+%(16:28) Hm, webpack.ProvidePlugin seems to be providing a somewhat hacky way to get the equivalent of an import map with webpack.. ..Oh, or there's the DefinePlugin..!.. (16:34) ..But not ideal for static imports.. ..(16:38) Hm, Module Mapping Webpack Plugin.. ..Yes, that's what I need. Nice.. (16:39)
+
+%(16:53) So I'll definitely make the entity cache modules and the entity io modules side-dependent. But what about the read()/write/etc. methods?.. ..Hm, I guesss this should also be side-dependent, where the client-side versions then just read and write to sessionStorage. So yeah, all of the io, both data and entity io, will then be two modules that are chosen at build-time.. (16:35) ..And I'll keep this.isServerSide; we won't go full hardcore mode on resolving the differences at build-time.. (16:57)
+
+%..And what about the dynamic dev lib imports, which still ought to be dynamic, I think.. ..Well, we can just import getDevLibPath() from one of these chosen-at-build-time modules as well.. (16:59) ..I think I'll call them "two-sided modules" for now.. ..Hm, do I want to use CopyPlugin.. ..Oh, I mean 'DefinePlugin'.. Do I want to use that for isServerSide (-> IS_SERVER_SIDE)?.. ..I guess I do.. (17:03)
+
+%(17:11) Hm, when we at some point open up for allowing modules to store data in localStorage, don't we then also want to let this be governed by protect()?.. ..Well, maybe we just want to define a whole new dev function (and appropriate signal) for this particular thing. But then for session storage, we can just use the read()/write()/etc. methods.. (17:14) ..Sure, yeah.. ..Oh, but since we are handing protectData to the dev functions, it's easy to make a function dependent on protectData if one wants to. Okay.. (17:16)
+
+%(17:25) The permissions object should also work in the same way as the gas in the server requests, meaning that the server has a standard permissions object, which the users are then allowed to make relative changes to (but only for certain properties, of course not for all). In particular, we might have a standard forwarding permssion property of false (no forwarding to other UPW nodes), but the user can then send permissions={"forward":true} to turn this property to true. By the way, in terms of the standard gas object, if the user doesn't have the all the gas in that, then the resulting gas is just filled up as much as possible, as the standard gas object isn't meant to define a minimum of gas required, but a maximum of gas spent. (17:29)
+
+%..Wait, so should the sent (relative) permissions object then not be able to depend on protect()/protectData?.. ..Or maybe not, maybe protect() just restricts it.. (17:31) ..Well, and if we want it to be able to do so, then we just need to handle all that in a dev function, since these have access to protectData, unlike the user-defined functions.. (17:33)
+
 
 
 
