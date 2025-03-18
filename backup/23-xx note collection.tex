@@ -8043,6 +8043,29 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(14:58) Wait..!.. Hm, does the Node.js module caches just remove elements from the cache when its max size is reached?.. ..Oh, never mind, I'm not import()'ing the user modules. He.. (15:00)
 
+%... (16:45) In terms of the CSS, I will let modules generally be able to change their own styles, but not in any way that changes how the children are rendered, nor in any way that responds to what happens in the children. And then I'll make another less restrictive style signal where the module gets to affect the rendering of all descendants.
+
+%..(16:48) Should the server just have a standard gas object, which the user can then change, where the changes are perhaps made relative to the standard object?.. ..(16:57) Ah, yeah, and then the server can inform the app about that standard gas object, such that it can act accordingly when controlling the gas usage..
+
+%(17:41) I should make a program, maybe a bash script, that takes a folder of js modules and then turns it into a JSON file, ready to be loaded by the app, which can then compare with your existing "workspace" object, and then make the new insertions and edits.
+%..Oh, and the user should also be able to upload scores/data this way. Then we'll just figure out some format.. maybe also JS *[no.. well, unless I want to use .mjs for script entities, and .js for other entities, but I'll just see.. (18:02)], only a small subset of JS.. where the user can define the scores/data to be inserted.. (17:48)
+%..Oh, this is actually very great, come to think of it, 'casue when I get this done, then i don't even need the entity insert page in the app frame. It can just be this function, and that's it: that'll be a very good way for users to upload new entities..:) (17:52) ..(And edit them.)
+
+%(18.03.25, 11:20) Apart from read(), write(), erase(), we also need a create() and eraseAll() method (for the protected structs). ..Hm, and maybe create() also just erases all by default..
+%I've also had the idea that maybe we should make it so that these methods, when called client-side, will read and write to a localStorage object instead, i.e. for testing purposes.. at least mainly.. (11:23) ..Hm, it could actually also just be used as a general feature..!.. I think so.. (11:25) ..Oh, should we then hand over protect to dev functions as well (in the first object argument), such that they can call it with a signal depending on the input.. ..Sure, let's do that.. ..And then read(), write(), etc. can emit signals depending on whether they are called client or server-side.. ..Yeah, at leat if we want them to, we can (so let's indeed pass protect()).. (11:28)
+%..(11:31) And let's then use the settings object to store a flag whether the written data should be automatically erased() after a timeout.. Well, or rather be given an expiration time, after which some gerbage collector should remove it.. ..Then fortesting purposes, users can then runScript() client-side, with that settings object as an input.. Hm, but maybe the settings should then also make the read() and write().. or rather the "read" and "write" methods, branch such that they can also be run client-side, if the settings object tells us to do so.. ..Hm, and then I'm back to trying to make the program more independent /unknowing of where it is run.. ..So then I guess I really ought to make this method call branching a more fundamental thing.. ..Hm, could settings simply hold an object with all protect signals which are redirected to the server..? (11:37) ..That actually sounds much better (than making each dev function branch), let's see.. ..Yeah, I think so, and then we just say that if a signal contains any one of these signal atoms (a signal can be compound (as a comma-separated list), remember), then the method should be sent to the server instead.. (11:39) ..Alright..:) (11:40)
+
+%..(11:41) Hm, since server requests mainly will be a small script calling a single method of a protected object, shouldn't I make a special request for this?.. ..Yeah, I think so, let me do that.. ..Then we just provide the moduleID of the prt. object, the method name, and the input array.. ..Yeah, for sure, actually.. (11:44)
+
+%..Oh, I guess it needs to be a tad more complicated than that. I think settings needs to be able to hold module-specific settings.. ..But maybe it can hold both?.. ..Hm.. (11:47)
+
+%(11:53) Let's use sessionStorage rather than using that expiration time, and then do this as the default (and maybe leave localStorage io. for later).
+
+%It \emph{could} maybe be much nicer if we used protectData instead of settings here..(?) (11:55) ..We could simply say that if protect() outputs a protectData with a certain flag in it, then we send the method to the server instead (if not already on the server, I guess, but than protect should also just never return/alter this flag).. (11:59) ..Yeah, and then the user just adjust the thing in the permissions object (the part of permissions that they are allowed to adjust).. (12:00)
+
+%(12:09) Oh, a problem: When running a method on the server, then we need a callback for the method.. ..Hm, could we make a convention that the callback should always be the last input in the input array?.. (12:12) ..At least whenever protect() can return protectData.shouldRunServerSide == true.. ..I think, yes, let's do that.. (12:13)
+%..Hm, and then we need to give to give.. Well, since we are making a special request for this, we can just omit the callback at the end in this request, and let the server replace it automatically with a callback that calls exit() on the result. Okay..
+
 
 
 
