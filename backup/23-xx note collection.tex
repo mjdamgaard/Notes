@@ -8102,6 +8102,15 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(12:47) If the dev libraries all import from the same module, in particular from ScriptInterpreter.js, then it might make sense to keep that out of the webpack, if that is possible (which it most likely is), such that clients get a webpack of anything but that, and then have to send two HTTP requests to get the full script, but then don't have to download the whole script interpreter for each dev lib import. That definitely sounds like the right thing, but I might postpone this for a later stage of the app. (We shouldn't be too concerned with load speedups of that type for the prototype..) ..Ah, apparently, there's an 'Externals' option excactly for this (which makes sense; it should be a pretty common ask), so it shouldn't be hard at all.. (12:53)
 
+%... (14:44) I'll make it a responsibility of the (two-sided) io module to queue outgoing requests/queries as promises, like I did in my DBRequestManager..
+
+%(15:42) Hm, wouldn't I need a formal entity secKey -> ID cache?.. ...(15:53) I should cache formal entity IDs. And then I just need to make the size of the key parts adjustable in my IDTrees (as I've been calling them until now), such that we can use node keys with lengths greater than one char. I will not try to cache struct data, however, as this is too volitile.. ..Now, this reminded me that I needed to setTimeout() some events to remove entities from the EntityCache when the inserted entity isEditable. And this further got me thinking that maybe my current system where users can always subsitute placeholders, even when they are not editable, is maybe not the best system.. ..Maybe I just want to make it so that formal entities can be editable, in which case they just aren't given a sec. key..(?) (15:58) ..Oh, and/or maybe they are editable if and only if their whitelistID is equal to their creatorID.. Hm, or maybe not..? (16:01)
+%...(16:21) I think I'm indeed going to add a nullable "editor_id" to the sec. keys, such that the full key becomes (entType, editor_id, whitelist_id, def_str)..
+
+%(17:24) Hm, do I \emph{really} need to change my IDTree (which I've started calling KeyTree)..? ..Hm, let me at least postpone doing so, can I not?..
+
+%(18:10) (I forgot that I just remove entities from the cache \emph{when} they are edited..)
+
 
 
 
