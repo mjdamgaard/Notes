@@ -8136,6 +8136,20 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..(16:34) Oh, but this then greatly complicates the entity cache.. ..Hm, but maybe it could be replaced by a dev function to cache an element.. Oh, and then the cache could just work in a similar way, where the first part of the key will be the structID/moduleID..!.. (16:36) ..Yes, this would actually be quite awesome. Then we only pretty much need one cache, at least server-side, and then all data can be cached, potentially.. ..And let's then perhaps make a 'priority' gas, that users has to pay when setting in the cache, but where a struct/module is of course able to decide to not give the user the ability to choose the priority value (although some other struct/modules might make this value user-adjustable).. (16:40)
 %..I like this a lot, and I also think that this will end up simplying the backend source code quite a bit.. ..At least I hope it won't make it more complicated, but yeah, I think it will actually simplify things.. (16:42)
 
+%..(16:47) If the user fetches and parsed a script dynamically, we of course still wrap the parser output in a special Script(Entity) class, as we don't want the users to be able to hand just any old object to runScript().. ..(Of course, we might allow this at some point, if/when we can show that it is safe, but we won't allow it for the initial runScript().) (16:49)
+
+%... (18:16) Hm, I think I might.. well, I'm considering making a global convention of using a '<hex-number>(/<hex-number)*' syntax for all entity IDs, where all hex numbers before the last '/' are then structIDs (and the default entity struct is always at the root, implicitely)..
+
+%(18:26) Ha, one could even use the entity structs as representing classes.. ..(and then automatically wrap the stored data in the class-specific data..) ..But this won't be as efficient as just making broad entity structs, spanning over several classes.. ..Well, except for lists where all elements have the same class, meaning that prefix can then be omitted. Then it would actually be more efficient..!.. And I guess most of the entity lists in the semantic app would be lists of just a single class.. (18:31)
+
+%(18:41) Ah, but without global entity IDs, we don't.. Well, the structIDs could just follow this same syntax, also in terms of the DataStructures key..
+
+%(18:43) Oh, in terms of compression, when the table is compressed, we don't even need to manually remove the class prefix.. ..Yeah, so it might actually be a good idea to implement classes via entity structs..!.. (18:47)
+
+%..(18:48) Oh, and maybe we should make this system specifically for structs that are completely readable by anyone.. ..And private data is then just not enti.. well.. (18:50) ..(18:54) Hm, maybe we just get each class/struct in the path one at a time..
+
+%(18:57) Ha, it even means that we can make script templates, and templates for other kinds of entities for that matter, namely by letting the class's struct's read function automatically fill in the boilerplating.. (18:58) ..In particular this might be useful for scripts and for HTML entities.. (18:59) ..And yeah, especially for scripts.. ..Such templates might even just take an existing entity as a prototype, and then define ways to alter this.. (19:02)
+
 
 
 
