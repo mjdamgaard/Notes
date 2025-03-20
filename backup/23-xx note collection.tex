@@ -8111,6 +8111,25 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(18:10) (I forgot that I just remove entities from the cache \emph{when} they are edited..)
 
+%(20.03.25, 11:59) In terms of expiring editable entities in the front end cache, all we should do is just never back any cache entries up in localStorage if they are editable.
+
+%(12:36) Hm, when users make their own scripts ect., they need to use entity IDs for the entity references. But if the DB then remaps the entity IDs, this means that all this code needs to be transformed as well. Of course, one could provide a program, that can be run in the "app frame," which automatically looks at the data of a source directory, and then converts it, outputting a zip file with the transformed source code. But now I do wonder if it's worth considering making the entity IDs constant. I think I will consider this for a moment.. (12:40) ..I mean, it would remove a lot of boilerplate code, that I'm currently a bit bothered by, and it would also make the data read/write functions more simply, I think.. But of course, I'm still leaning towards making it remapable.. ..Yeah, no, I think I should keep it like this.. (12:45)
+
+%... (14:15) Okay, I  think I'm actually going to turn entity IDs constant, such that they are just strings. And I'm then going to make hexadecimal strings, with uppercase letters, the standard, i.e. above the database interface. Then I'll also just remove the so-called entity placeholders, and just make it a feature of the inserter program that it recognizes placeholders, of some syntax, in the entity files, and then if it has such placeholders, tries to substitute them, or else just inserts the "0" (= null) entity ID, in the meantime.
+
+%..(14:28) And the DB nodes of course then just have to work together to not make overlaps.. Hm, and about duplicate formal entities across nodes?.. ..Hm, but maybe we could just say that formal entities shouldn't really be referenced directly in scripts ever, and then it won't be hard to.. Well, but they need to be referenced in expression entities.. ..Hm, unless perhaps we make it a convention to refernece them via their secondary key instead..? (14:34) ..I mean, that would also be more efficient, wouldn't it?. .. ..Well, no, not really (due to caching), but..
+
+%..By the way, one of the reasons why I want to make this change is that users need to be able to go from entRef to entID and vice versa for the HTML modules in the app anyway, so we can't really make it fully remapable anyway.. (14:38)
+
+%..(14:44) Wait, maybe we don't want to use formal entities for things like classes..!.. Maybe we want to use expression entities instead..(?) ..Hm, this would then break the convention that only formal entities are "referential," but otherwise it does make a lot of sense, I think.. ..And we could just say that being referential or not is not really a property of the entity, but more a property of what context the entity is used in.. (14:48) ..Hm, this is kinda back to my "attribute-defined" entities, only where these are now mixed with all data entities as well.. (14:51)
+
+%...(15:03) Hm, in principle, we could just make the data structure hold the.. keys.. Hm, but then we won't get compression of all the regular, class instance entities, which is also a good thing, I think.. ..Ah, but for these we don't need to worry as much about duplicates (as these can't really be prevented anyway).. ..Well, or more to the point: we don't actually need to search on them via their sec. kay; we would only use 'f' entities here for the compression alone.. ..Hm, and maybe it's better to then just go back to the "attribute-defined" entities for such entities, and just not make them formal, but make their defStr holde the whole object expression.. (15:09) ..Well, I guess the format function also did a nice job of making sure that users would likely.. ..have an easier time with choosing the formats.. (15:10) ..And the little bit of duplicate prevention doesn't hurt either (even though it would cost a bit of storage space).. (15:12)
+%..Wait we can't just let the sec. key index be a user-defined data structure?.. ..Hm, and we can of course still get to use formats, even if the "regular" entities are technically free from any format.. (15:14)
+
+%...(15:34) Okay, I do kinda like te idea of just turning the formal entities and the EntitySecKeys into a data structure instead. Then we just need to user-program some checks to see if the submitted entity fits the submitted format and input array.. ..Which I guess could maybe just amount to a JOSN-stringify-and-compare.. ..Sure, and if need be, then this could just be an extanded and/or restricted stringify(). Okay, I think I might go for this, but let me think a bit more.. (15:39) ..Yeah, I think it's the right move.. (15:41)
+
+%..By the way, let me just completely forget about TypeScript, as it doesn't even really help us now for the formats.. ..And without static checking, it comes with a runtime cost, which no one really wants. So no, no TypeScript.. (15:44)
+
 
 
 
