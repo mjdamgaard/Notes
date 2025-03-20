@@ -8156,6 +8156,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(20:21) Hm, maybe getting and using the subclass script can just me part of a subclass-read method of the root entity struct..(?) ..Yeah, I think so.. (20:24)
 %..Hm, shouldn't the whole data structure then.. Well, I guess you could say it is already: structured according to these paths.. ..Hm, and then when we reference another script, the cache tree can be automatically traversed to the new path, relative to the starting point, when execution a (dynamically imported) module from a given module. And maybe users then even get to use relative paths.. Yeah, why not.. (20:30) ..i.e. when importing dynamically, and probably also in the import statements.. (20:31) ..And note that a class struct will then contain both a list of instances, i.e. in its local data structure, and also a list of subclasses.. (20:32) ..(which are defined by scripts now, just to make clear..)
 
+%(20:39) Oh, and relative ID paths can then also be used in data structures/lists, including paths that starts with '../', or '../../', etc.
+%..Which means that we also ought to store Qualities in the "folder" of the subject class, although we might, again, not do this.. Well, I guess it makes sense to use such a "directory structure".. (20:42)
+%..So I guess we ought to make the root.. Oh no, it doesn't have to be the root struct, luckily, right?.. (20:44) ..No, luckily not; the "sub-directory scripts" ultimately decides what to do with the tail path that is given to them.. (20:45)
+
+%(21:01) Hm, but I'm not sure how to make those relative paths a reality.. ..Well, by giving each entity struct script, that conforms to the system, a method to read from the parent module, I guess.. but.. (21:03) ..Yeah, actually. And this means that the called struct needs to dynamically import and call the caller struct, but that's actually okay.. (21:05) ..Yeah.. ..(This means that the.. "child scripts".. need to hold *(contain, i.e.) the parent's ID, by the way, which is of course fine..) (21:08)
+
 
 
 
