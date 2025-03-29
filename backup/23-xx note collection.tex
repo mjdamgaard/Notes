@@ -8440,6 +8440,10 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(13:57) Oh, is there a chance that we could implement the de-cache key list on the control server alone, purely in memory, and then just say that if it has been removed from memory (we could store these lists in some cache), then the client will just have to remove everything from their own cache themselves as well, and start over from there..? (13:59) ..That does sound enticing, 'cause them we also get to implement the query cache underneath the IO layer, instead of having to implement it just above it, which would require more code, I think.. (14:01) ..I think this might be the play, indeed..(:)..) (14:02)
 
+%(14:07) Oh, since we now have keys for all queries, couldn't we use these now also for the locks?.. ..We must be able to do so, yeah. Nice.. (14:08)
+
+%(14:10) Hm, I do kinda want to use UFT-8 strings, then, for the list_keys at least.. ..Otherwise it will be a bit of a hassle to work with all these query keys.. ..And since it will generally be compressed, it hardly costs us anything. Okay, let me do that.. (14:13) ..Oh, on the other hand, if we always use base64 strings for the list_key, then we don't have to require anything about which characters appear in it. So never mind, a binary list_key is better.. (14:15) ..I must remember to restrict file/dir names, by the way.. (14:16)
+
 
 
 
