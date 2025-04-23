@@ -8783,6 +8783,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(15:15) Okay, when and how do we queue rerenders after a dispatch? I'm thinking that receiveDispatch() should always just do this. And then we need some global instance->shouldRender Map, perhaps..? (15:16) ..Hm, we want to prevent discarded instances from rerendering, btw.. (15:18)
 
+%... (16:37) Hm, I can just call an async callback / a Promise to rerender an instance after a received dispatch, and then make sure to give JSXInstance a boolean to suppress rerenders after having been discarded, and that should do it right?.. ..Hm, should the rerender then get the action function environment as its callerEnv, or..? (16:39) ..Hm, it would kinda make sense, but also result in more ad more memory usage, so maybe no.. (16:40) ..And the render() method ought to be able to handle all states, so it should be so important to debug where it has gotten the wrong state from.. Well, no, that is still important, but maybe the user just has to figure that out without the env. call stack.. (16:42) ..I don't really see any other (good) way.. (16:51) ..Ah, it can only change it's own state, so it's not hard to figure out, where the wrong state must have come from (and it ony requires a limited number of console.log()'s, worst case).. (16:54) ..We could also store that last called action, if we really want.. well, but that might actually only potentially cause more confusion than clarity.. (16:55) ..Alright, let me go ahead.. ...(17:11) Hm, so maybe I should store the parant's (caller-)environment and (caller-)node on each render(), and then just reuse the stored ones when calling render from receiveDispatch()..
+
 
 
 
