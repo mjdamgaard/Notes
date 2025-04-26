@@ -8820,6 +8820,16 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(14:28) Oh, shouldn't we also be able to have files that is locked from the admin? I guess my idea before was that the admin should remove themself when the directory is published, but in reality we might very well want to keep the admin in some cases, but without granting the admin access to read all locked files.. ..Hm, the straightforward idea is to then just use '__' (two leading underscores) for completely locked files and/or query paths.. (14:31) ..(thus being open only for methods..) Oh, but the admin can just edit the methods..! Hm, so should the admin remove themself ("themselves" but singular..) after they publish a server module?.. (14:33) ..Well, maybe that's something to think about on a walk soon..
 
+%... (15:39) If we want to have data that the admin can't read, without the admin needing to remove themself, we can just either introduce some filetype, that doesn't allow certain data to be queried, neither through route-queries or module method queries (if these are disjoint sets), or one could also just encrypt it using another server module (with no admin), such that the module in question never handles or sees the unencrypted data. ... (Or one can also divide the directory up into several ones, some of which has the admin removed from it. (17:15))
+
+%(17:37) Oh, if we branch according to filtype, where do we.. well, we should place the call action handling under the directories module, then.. ..(as one can only call module.js, anyway, or main.js in cases when module.js has not been defined yet..) (17:39)
+
+%(17:42) By the way, I'm allowing all kinds of unicode characters in the file paths now, which just means that if someone wants to download a directory (i.e. all the public data of it), one just have to automtically convert any filename that does not agree with the user's file system. 
+
+%..Oh, it's a problem that "/" is used in base 64 numbers.. ..Hm, and MySQL's FROM_BASE64() only accepts padded input, btw.. ..Hm, so maybe I should just convert to hexadecimal in the control server (in the file type dev modules), and then use HEX() and UNHEX() in my .bbs MySQL procedures..? ..Let me indeed do that for now.. ..But I'll still aim to keep the same base-64 API towards the client side.. (17:53)
+
+%(18:44) Hm, should I change the syntax of the "query \emph{path}" such that it can also be used by directory paths..? ..(18:53) Okay, I'm excited to look up "query string boolean values".. Yeah, it is not completely unconventional to use boolean values for query strings, so let me indeed just do that, and then get rid of the "query path".:) (18:55) ..It doesn't conform to REST, but I have no intention of trying to conform, even partially, to REST.. (18:57)
+
 
 
 
