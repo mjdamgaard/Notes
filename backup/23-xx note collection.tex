@@ -8830,6 +8830,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(18:44) Hm, should I change the syntax of the "query \emph{path}" such that it can also be used by directory paths..? ..(18:53) Okay, I'm excited to look up "query string boolean values".. Yeah, it is not completely unconventional to use boolean values for query strings, so let me indeed just do that, and then get rid of the "query path".:) (18:55) ..It doesn't conform to REST, but I have no intention of trying to conform, even partially, to REST.. (18:57)
 
+%(27.04.25, 8:43) Hm, should I transfer my convention of also locking the query if a variable starts with "_" onto the query string, then?.. ..Note that with the query string, we don't have the problem of not being able to use "/" for base 64 encodings.. ..Sure, let me just extend the convention to here as well.. (8:46)
+
+%(10:19) Let me go back to passing the gas directly as the first input of all functions again. And the gas should then also be defined (and tanked up to some extend) even for requests with no reqUserID attached. Also, let me not use protect signals where gas payment may suffice, such as for instance when creating a new home directory, and such.. ..We should also then be able to remove gas from the environment, btw.. (10:22)
+
+%(10:55) Okay, I've changed it so that gas is handed around everywhere, but is this actually what I want? Wasn't it better to just get it from the scriptGlobals (on the environment)?.. ..Hm, I think so, so let me actually just undo the whole thing.. (10:58) ...(11:23) Oh, the point was that in the the AJAX/control server, we don't have an environment, but only the gas. I could however also just create a global environment there..
+
 
 
 
