@@ -9064,7 +9064,9 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Oh, should I still at least \emph{think} a little more about the binary files, though, before I continue?. I'm pretty sure I'm going to drop my "separate file DB" idea (although my idea for the redirect() function is potentially still quite good, and should stay), but let me just think a bit.. (14:08)
 %..Aside: I'm still gonna say isEnclosed = (initSignals !== undefined) ? true : false (i.e. the default value), since otherwise one should put those signals in callerSignals anyway..
-%..Well, isn't it just a matter of syaing that, sure, we can upload and download binary files as octet streams or base-64 strings, but in order to get a certain MIME type, some signals need to succeed first..? (14:14) ..Yeah, and the dev function that emits this signal can even provide the file contents, or more likely the hash of it, as part of the signalParams if we want (or it can just provide the path and query some whitelist regex of safe files of the given type).. (14:18) ..Okay, fine. (14;18)
+%..Well, isn't it just a matter of syaing that, sure, we can upload and download binary files as octet streams or base-64 strings, but in order to get a certain MIME type, some signals need to succeed first..? (14:14) ..Yeah, and the dev function that emits this signal can even provide the file contents, or more likely the hash of it, as part of the signalParams if we want (or it can just provide the path and query some whitelist regex of safe files of the given type).. (14:18) ..Okay, fine. (14:18)
+
+%(14:48) Oh, I really don't like the Last-Modified header very much.. ..(14:54) Hm, I'm inclined to just go back to using POST exclusively for now.. ..Sure, I think that that's much easier at first (it also easily prevents the browser from caching automatically), and then again, as long as I box in this network API, then it should be easy to change.. (14:57)
 
 
 
