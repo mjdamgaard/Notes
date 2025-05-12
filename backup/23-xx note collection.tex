@@ -9077,6 +9077,18 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(14:48) Hm, what was my plan for dev JSX components again?.. ..Oh right, their render() just returns a DOM node, potentially, if not a JSXElement..
 %..Oh, now that I don't have the protected objects, my JSXInstanceObject instances won't be protected objects.. Is this okay and/or should I make its methods arrow functions and/or enclosed functions?.. (14:54) ...(15:08) Hm, I guess it could make sense to reintroduce ProtectedObject, or what to call it, again.. ..'ConfinedObejct' could also be its new name.. (15:09) ..Let me just do it.. (15:16) ...(Instead of introducing a ConfinedObejct class, I've just decided to introduce an 'isConfined' prop, which is true for a (user-handled) object should then mean that that object also has its decEnv attached as a 'decEnv' property.) (15:28)
 
+%(18:00) Okay, I can see that I'm not supposed to pass credentials via the Authorization header (it results in CORS errors), so that's good to know; then I'll just put it back in the post body..
+
+%(11.05.25, 11:52) (Jeg føler mig virkeligt doven i dag, ved ikke lige hvad der sker. Jeg arbejder da, men det går bare meget langsomt.. ..Som om min krop vil have, at jeg holder søndagsfri..)
+
+%(20:00) I feel like i have a pretty good overwiev of how to complete the backend. In regards to pooled requests, the users should just choose a gasEnum, and then they each (in principle) choose a multiplier, which is the number of other users has to pay for it, with a similar gas enum. And if the request requires some kind of admin privileges, the admin just has to be among the users in the pool (we can tick it off when the admin makes the request). If the query is carried out sucessfully, then all users help pay it, and not just the ones who initiated it. And afterwars, the pool for the request/query will thus be emptied. ..Also there's an expiration time on pooled requests, which is checked after each and any unsucessful run, perhaps. And of a request expires, all users just get all their locked gas back.. (20:06)
+
+%(20:59) Oh, I guess 'enum' is actually the wrong term, since I intended to use actual integers..
+
+%(21:02) Hm, 'open data, partitioned profiles'.. ..(and 'user-driven/user-made algorithms').. ..(and semantic data)..
+
+%(12.05.25, 12:00) Hm, when "evicting a route" from the cache, do we then only remove() that route, or do we remove all its route extensions as well, or do we do both depending on some boolean parameter.. Ah, we could maybe say that when the "routesToEvict" array has a string-valued element, we do one of these things, and if it's an array, we treat it as a route--removeExtensions pair.. ..And let's say that not removing the extensions, but only removing the route itself, is the default.. (12:10)
+
 
 
 
