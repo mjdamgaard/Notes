@@ -9175,6 +9175,9 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Now, I'm also considering perhaps using a number of layers, identified simply by there number, which both the app's style sheet and the components' style sheets can use ad libitum in order to get a light version of !important, i.e. that can overwrite specificity, but can also still quite easily be overwritten themselves, and in particular by the !important flag. Yeah, I think I might atually do this, and maybe it could even just be auto-generated, namely such that the app just declares how many layers it needs.. or that they are simply added to the HTML page's style sheet dynamically when needed.. Yeah, that might actually work, 'cause I think it just takes a single line of declaring them, one after the other, and I'm almost certain that you can just edit that dynamically.. (13:36) ..Yeah, I think that's just what I'll do, and then its perfectly fine either way, whether we put the app's style element first or after the component styles (so I might just put it first; I somehow like that better)..:) (13:38)
 
+%(16:24) Maybe we should use actual layer names rather than just numbers, and then let the app's style sheet declare the order of these named layers.. ..I think so..
+
+%Something else, by the way: The component (JS) modules should also be able to subtract variables from a SASSModule, and that's how users can get the unique class names, without actually having to know how they are implemented in the end (i.e. whichever prefixes and suffixes they are given by the aforementioned SASS function). (16:27)
 
 
 
