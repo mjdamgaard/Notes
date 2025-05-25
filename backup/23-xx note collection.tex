@@ -9317,6 +9317,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Ah, and with SASS modules sharing one '#'-query string at all times, I probably no longer need to ever remove the style sheets, except if restarting the app of course, which is very nice.. (13:37)
 
+%(13:51) Oh, I don't like that we need to consult whether each style sheet is loaded every time the component instance renders.. ..So I'm considering letting getStyle(Fun)() return the routes instead.. Hm.. ...(14:08) I think it does make sense to let a components style sheets be decided by getStyle(Fun)() indeed, and then it can also just return a boolean, maybe, if and when it is ever time to refresh the list.. ..Yeah, the style sheet list/object shouldn't depend on the instance props.. (14:11) ..Hm, and since the render() method can still use the "bare classes", I think that we probably shouldn't even let style() depend on the instance props, but also be component-global.. (14:13)
+
 
 
 
