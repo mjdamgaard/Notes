@@ -9373,6 +9373,13 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %(11:22) Oh, I can use Element.querySelector() instead for my class transform "hack".. ..querySelectorAll(), rather..
 %..Ha, and if I really don't care to make it very efficient ('cause it can easily be changed, due to not changing the API), I could just intersect the two NodeLists for each transform instruction.. (11:27) ..Ah, well, but if I do let getDOMNode return the "ownDOMNodes" after all, then I could just quickly give them all special class, no unique ID required, and then remove it right after the transform, which happens synchronously.. (11:28) That actually seems quite decent.. (11:29)
 
+%... (13:32) My "style-protected" plans doesn't work completely, or at least not optimally, 'cause we still want the app to be able to theme-style new components. So I do need an isTrusted flag somehow. And then I think I'm gonna use "protected", just, rather than "style-protected", and then automatically transform "protected into "protected by-<style sheet ID>" such that styles from the same style sheet can affect the particular style-protected elements that are.. Wait, that doesn't make sense, 'cause the class name cames from render and classTransform. But we could then find a syntax to declare "by-..." here.. (13:36) ..Which just means reserving the "by..".. well, not even "reserve," since we are no longer transforming the prefixes automatically; the user does this.. ..Yeah, all we do is filter out un-prefixed class names, \emph{except} "protected" and "by-<ID>" class names, then.. (13:39)
+%..Yeah, and then as for isTrusted, I mean, the obvious solution is just to allow a route--isTrusted pair in place of a route in the styleSheetPaths object.. (13:41) ..Hm, or make.. and/or make it an input object to createJSXApp()..? (13:43) ..(13:49) Let me not do that, no, at least not for now.
+
+%(14:20) Oh, in order for getStyle() to work properly, it need to be able to gt the component module's.. styleSheets object, well, why don't I just export that?.. (14:21) ..I mean, say that this should be exported by the module.. ..Yep, okay.. (14:22)
+
+%(14:26) Let's make the classTransform object (returned or not) an array of selector--class-string pair( array)s..
+
 
 
 
