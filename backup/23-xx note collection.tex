@@ -9380,6 +9380,17 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(14:26) Let's make the classTransform object (returned or not) an array of selector--class-string pair( array)s..
 
+%(16:46) I will actually just drop the idea about having classTransform possibly being a function. So we can forget about styleProps and that, at least for now.
+
+%When transpiling the style sheets, I still ned to transform routes to prefixes, so I guess I still need the loadedStyleSheets Map/object to exist outside of getStyle(). Hm, but could I just pass it as-mutable to getStyle()..? (16:49) ..I mean, yeah, I could..(?) (16:52)
+
+%(28.05.25, 10:42) The returned classTransform from GetStyle can be falsy, but should never be undefined, as I'd like to use this in order to warn users not to import JSX modules directly with import(), but to use JSXInstanceObject.import() instead..
+
+%(12:06) Hm, the problem with letting getStyle() handle loadedStyleSheets is that it will often be called in parallel.. ..Yeah, so let's go back to having getStyle() just always returning the full styleSheets object, and then handle loadedStyleSheets outside it---that also sounds better in general, actually.. (12:08)
+
+%(15:04) Oh, I've forgotten that e.g. a selector of "div.myClass" is not the same as
+%"div .myClass", so I do need to lex whitespace as lexemes, I gues..
+
 
 
 
