@@ -9413,6 +9413,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(16:46) I won't merge BinaryFiles and TextFiles..
 
+%(17:35) Hm, maybe it's a bad idea to remove my scored tables and implement them manually..? ..Hm, it should be fine, no..
+
+%(17:28) Hm, if I don't care about interval overlaps, and just say that it is the apps' problem to try to choose consistent intervals.. ..well.. ..Hm, maybe this is actually not so easy..
+
+%... (18:18) I was a bit afraid that my thing of requiring in particular JSX modules to be actual JS(X) modules but complicate bundling a lot. But it turns out my '#.js(x)' trick actually makes bundling even easier trivial, since now we just need to collect all modules into a module that export each one as a variable. And the we can just ?get turn each relevant import statment and function (with a string literal in it) into one where the script/module is just imported from the same, bundled module, namely wiht a ?get route with a '#.js(x)' tag appended to it. And we can even bundle style sheets this way as well.
+%Now, the reason I thought of this, was that I thought about the fact that a way to manipulate the cache into storing a hache entry with a certain maxAge value, without needing to create a new DB file for this, is just to ?call a method with an appropriate argument, possibly an unused 'maxAge' argument that only serves to create a unique route for the given maxAge value, and this method should then just fetch and return what is on the input route. And in relation to this, this also kinda shows that we need to use postData for the ?call routes, in particular where postData could be a JSON array of inputs. And it also shows that we need to append postData to the route for the cache key, which can be done since postData will always be a UFT-8 (or unicode, rather, but you know what I mean) string. One way to do it could thus just append it after a second '?' after the route, and if the route did not include a '?' before, we just add one at the end, such that the postData string will be preceded by '??'. (We could also use '#' since the cache doesn't see the tags anyway, but I might like using a second '?' better..) (18:29)
+%..And I'm not done thinking about it, but I believe that my conclusion about the cache and its level of sophistication will just be something along the lines of: 'Manipulating the cache will just be a matter for the dev-and-user layer,' or something close to it.. (18:31)
+
 
 
 
