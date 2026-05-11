@@ -30,15 +30,15 @@ A user-programmable platform like this will have a great advantage over other pl
 <!--  -->
 - But like any open-source platform, this platform will also be able to draw on the entire world for coming up with new creative ideas for how to extend the apps on the platform, and for implementing those ideas.
 <!--  -->
-- These contributors might also be users of the software themselves, who are also motivated to contribute simply in order to the product better for themselves and their peers, on top of the potential for monetary rewards.
+- These contributors might also be users of the software themselves, who are also motivated to contribute simply in order to make the product better for themselves and their peers, on top of the potential for monetary rewards.
 <!--  -->
 - And like open source, this platform will also ensure that the users of the software will not end up being squeezed for money by the owners, since the users themselves will end up being the owners of the software, effectively.
 
 With these benefits, the platform will be able to draw in many more creative contributions than any closed-source platform can ever hope to get from its workers.
 
-And especially in an age where AI continues to evolve as a development tool, and the process of going from idea to implementation gets easier and easier, a platforms success will to an increasing extend rely on its ability to generate new creative ideas for how to improve the platform with new apps and features.
+And especially in an age where AI continues to evolve as a development tool, and the process of going from idea to implementation gets easier and easier, a platform's success will to an increasing extend rely on its ability to generate new creative ideas for improving the platform with new apps and features.
 
-Thus, a user-programmable platform will have a great competitive advantage in the long run over any other kind of platform that does not to the same extend engage its users continuously in its development.
+Thus, a user-programmable platform will have a great competitive advantage in the long run over any other platform that does not to the same extend engage its users continuously in its development.
 
 
 ### The users can trust the platform
@@ -53,7 +53,9 @@ Another great benefit of this platform is that the end users will be able to tru
 - *Are you tired of ads that just keep increasing in volume?*
 - *Or are you tired of updates in general that make things worse?*
 
-With a user-programmable platform of this kind, you will no longer have to worry about any of these problems.
+With a user-programmable platform, you will no longer have to worry about any of these problems. Here the *users* are in charge, and each user can freely choose which version of each app they want to use.
+
+And if a part of the user base wants a new feature, it is only a matter time before someone will implement it, and collect the rewards for doing so.
 
 
 
