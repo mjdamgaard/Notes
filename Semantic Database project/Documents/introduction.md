@@ -4,21 +4,20 @@
 
 ## A user-programmable platform
 
-This is a 'user-programmable platform.' It is a platform where:
+This is a 'user-programmable platform,' which is a platform that puts its users in charge of its development:
 
 - The users are free to build and extend the apps on the platform themselves, in collaboration with one another.
 <!--  -->
+- A majority of the profits of the platform will go to rewarding the users who contribute source code and ideas to the platform, similarly to how [Web 2.0 platforms](https://en.wikipedia.org/wiki/Web_2.0) will often reward their content creators.
+<!--  -->
 - Each individual end user is free to choose whichever version of each app they want to use, just by changing their settings for the platform.
 <!--  -->
-- A sandboxing technology makes it safe for users to try out even brand new prototypes of apps and features uploaded by other users, allowing the development of the platform to move fast and with minimal central oversight required.
+- A sandboxing technology makes it safe for users to try out new apps and features uploaded by other users, allowing the development of the platform to move fast and with minimal central oversight required.
 <!--  -->
-- A majority of the profits of the platform will go to rewarding the developing users who contribute source code and ideas to the platform, isimilarly to how [Web 2.0 platforms](https://en.wikipedia.org/wiki/Web_2.0) sometimes reward their content creators.
+<!-- - The rest of the profits will go to the investors, but only until these have gained a fixed maximal profit margin on their investments. -->
 <!--  -->
-- The rest of the profits will go to the investors, but only until these have gained a fixed maximal profit margin on their investments.
-<!--  -->
-- The platform will be governed by three parties: 1, the investors, 2, an organization of the developers, and 3, an organization of the end users.
-<!--  -->
-- The platform will have an initial stage where it is mainly governed by its investors, a middle stage where it is mainly governed by its developing users, and an end stage where it is mainly governed by its end users. Thus, the platform will essentially turn into a [consumers' co-op](https://en.wikipedia.org/wiki/Consumers%27_co-operative) in the end (or a "users' co-op," if you will).
+<!-- - The platform will have an initial stage where it is governed mainly by its investors, a middle stage where it is governed mainly by its developing users, and an end stage where it is governed mainly by its end users. Thus, the platform will essentially turn into a [consumers' co-op](https://en.wikipedia.org/wiki/Consumers%27_co-operative) in the end (or a "users' co-op," if you will). -->
+- The platform will also let its users take part in its governance, giving them a vote on corporate decisions. And the weight of this vote will slowly increase over time, meaning that the platform will essentially turn into a [consumers' co-op](https://en.wikipedia.org/wiki/Consumers%27_co-operative) in the long run (or a "users' co-op," if you will).
 
 So not only are the users put in charge of the platform's development from the very start, but they are also put in charge of directing the platform completely in the end.
 
@@ -67,6 +66,42 @@ And if a part of the user base wants a new feature, it is only a matter time bef
 For more information on what sets a user-programmable platform apart from other platforms, follow [this link](README.md).
 
 And for more information about the proposed governance structure of the platform, follow [this link](open_tech_co-ops.md).
+
+
+
+
+
+
+<!-- 
+# About how to pitch the idea (verbally)
+
+If sensing that the listener(s) are expecting a more neat and smart-sounding sales pitch, I should maybe start by saying something like:
+
+- The advancement of AI means that creativity will be the deciding factor in the competition between platforms.
+
+- Open source is able to draw on the creativity of the entire world, but it has the major drawback that the contributors aren't getting paid, meaning that the development is still slow.
+
+- This platform solves this problem: It is the perfect midway between open source and closed source.
+
+And then I can continue from there.
+
+And if the listeners are made up of mainly potential future users, the pitch can just start much like my current README.md file's introduction section.
+
+And if it is a bit more relaxed scenario, which is probably what I will encounter the most, I could maybe start much like this document in its current form, but maybe leave out the sandboxing point at the beginning..
+
+-->
+<!--
+I just realized: Why don't I start the pitch something like:
+
+- It's a platform that engages its users in it's own development and allow them to build and extend the apps on the platform. Similar to how a Web 2.0 allows its users to create and upload their own content, this platform allows its users to also create and upload the actual apps and algorithms on it.
+
+Hm, maybe this is a good start, but maybe the start of this current document is better, and then you can just keep this point in mind..
+
+-->
+
+
+
+
 
 
 
