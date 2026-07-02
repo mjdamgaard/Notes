@@ -1,5 +1,5 @@
 
-# A user-programmable platform
+# User-programmable platform
 
 
 ## Introduction
@@ -72,16 +72,18 @@ A user-programmable platform also ought to allow for decentralization, namely by
 
 
 
-## Proposed core business model: A freemium subscription model
+## Proposed core business model
 
-Each user of the platform has an amount of resources that they can use for free each month, both in terms of storage space and computational resources. And if they need to use more than what the free plan allows, they need to subscribe to a paid plan.
+Each user of the platform has an amount of resources that they can use for free each month, both in terms of storage space and computational resources. And if they need to use more than what the free plan allows, they can subscribe to a paid plan.
 
 The free resources that each user gets is paid for at least in part by sponsorships, grants, donations, and/or initial investments. And if this does not cover it, they can also be paid for in part by charging a the paying users more in the paid plans.
 
-<!--
-Actually, there's also an option to show ads, where the users just determines themselves whether ads should be shown or not, how many ads should be shown, and how intrusive vs. non-intrusive they should be. The latter will then be a global setting, i.e. the intrusiveness, and so will whether to see any ads or not, such that all ad-showing (dev) components will just automatically collapse if that setting is off. And in terms of volume, this is technically just a matter for the apps to decide. But they are supposed to read and adhere to the user's ad volume setting (and they don't benefit from not doing this, only on the contrary). But the ad-showing components can also perhaps make this easier by adjusting the ad volume automatically.
+And apart from subscription models, the platform can also potentially allow its users to turn on ads, and then "pay" for their resource usage that way.
 
-And here's the important point: The ads then ought to once in a while show a captcha, that the user is supposed to react to and answer in order to get more gas/tokens. Then these captcha samples are supposed to be random, and only occur with low enough frequency, and with high enough gas rewards, that the user will benefit from and generally be interested in submitting the captcha answers.  
+<!--
+[...] The users just determines themselves whether ads should be shown or not, how many ads should be shown, and how intrusive vs. non-intrusive they should be. The latter will then be a global setting, i.e. the intrusiveness, and so will whether to see any ads or not, such that all ad-showing (dev) components will just automatically collapse if that setting is off. And in terms of volume, this is technically just a matter for the apps to decide. But they are supposed to read and adhere to the user's ad volume setting (and they don't benefit from not doing this, only on the contrary). But the ad-showing components can also perhaps make this easier by adjusting the ad volume automatically.
+
+And here's the important point: The ads then ought to once in a while show a CAPTCHA, that the user is supposed to react to and answer in order to get more gas/tokens. Then these CAPTCHA samples are supposed to be random, and only occur with low enough frequency, and with high enough gas rewards, that the user will benefit from and generally be interested in submitting the CAPTCHA answers.  
 -->
 
 
@@ -92,13 +94,13 @@ While a user-programmable platform could certainly be based purely on open-sourc
 
 <!-- Such a model might be especially interesting if a user-programmable platform wants to succeed in the space of business applications, and not just web and mobile applications, since business customers will generally happily pay more in order to get quick and reliable updates and maintenance of the software. -->
 
-We thus propose utilizing the model of an '[open tech co-op](open_tech_co-ops.md),' on top of the proposed core business model, in order for the platform to be able to attract more contributions, and more investments as well.
+We thus propose utilizing the model of an '[open tech cooperative](open_tech_cooperative.md),' on top of the proposed core business model, in order for the platform to be able to attract more contributions, and more investments as well.
 
-In short, this model designed to be a midway between an open source and a closed source model, in a way that still motivates the developers to collaborate publicly, and share their contributions quickly and openly with each other, but which nonetheless still limits the use of the resulting code base in order to generate a profit, which can then be used to pay the developers.
+In short, this model designed to be a golden middle between an open source and a closed source model, in a way that still motivates the developers to collaborate publicly, and share their contributions quickly and openly with each other, but which nonetheless still limits the use of the resulting code base in order to generate a profit, which can then be used to pay the developers.
 
 And by promising investors a share of this profit as well, this model can thus also help bring in investments for the platform.
 
-You can read more about this model of 'open tech co-ops' [here](open_tech_co-ops.md).
+You can read more about this model of an 'open tech cooperative' [here](open_tech_cooperative.md).
 
 
 
@@ -131,7 +133,8 @@ And due to the sandboxing of the all user-uploaded code, a user-programmable pla
     <!-- - Or another idea might be to introduce more parameters that users can rate for any given type resource (such as a post, a video, a movie, etc.), other than just the normal 'good vs. bad' parameter. Think of [tags](https://en.wikipedia.org/wiki/Tag_(metadata)), but where each tag forms its own rating scale, which can be rated by all users on the platform. Such "ratable tags" could then be used to improve search results, and to improve algorithms on the platform in general. -->
     - And as a last example, it would also be a natural idea for any social media app on a user-programmable platform to allow its users to freely build their own individual profile pages however they want, almost like a personal website.
 
-* If you have an idea for some website or app that you want the world to see/use, and you do not aim for this website/app to make enough ad money to make it profitable, you can choose to publish it on a user-programmable platform and save all the costs of running the servers. On a user-programmable platform, the only cost to the developer is paying for the storage space for the source code, which is usually miniscule, and the users pay the rest of the costs. Thus, on a user-programmable platform, there is no ad money to win, but there is also no money to lose either. And your website/app will stay up for as long as the user-programmable platform stays up, regardless of how many users it has.
+* If you have an idea for some website or app that you want the world to see/use, and you do not aim for this website/app to make enough ad money to make it profitable, you can choose to publish it on a user-programmable platform and save all the costs of running the servers.
+<!-- On a user-programmable platform, the only cost to the developer is paying for the storage space for the source code, which is usually miniscule, and the users pay the rest of the costs. Thus, on a user-programmable platform, there is no ad money to win, but there is also no money to lose either. And your website/app will stay up for as long as the user-programmable platform stays up, regardless of how many users it has. -->
 
 
 
@@ -159,6 +162,21 @@ In the future, we also intend to make it possible for the users to program in ot
 
 And while the current prototype at this point only uses an interpreter for executing user-uploaded code, a compiler will also be added in the future, allowing the users to compile their source code modules and achieve near-native speeds.
 
+<!--
+My current plans for implementing a compiler, by the way, is to transform the
+JS(X) to a safe version of JS, where all variable names are prefixed, and where
+there are guard clauses around all statements where this is necessary, such as
+whenever an object is mutated (checking first that the object is mutable), and
+at the start of all function calls where it makes sense. Furthermore, all
+import statements might also be transformed, perhaps using Promise.all(), such
+that the imported modules are also transformed before use.
+(And JSX elements should of course be transformed similar to how React does
+it.)
+
+And another related point: The component browser should also include the possibility to link to JS Fiddle, or a similar service, instead, such that the users can program components in any framework from the beginning. And whenever
+these components get enough attention and up-rates/likes, the user community and the platform (company/cooperative) should of course then work on translating this component into a dev component (and make it available via a dev library). 
+-->
+
 
 
 ## Key takeaways
@@ -173,6 +191,6 @@ And while the current prototype at this point only uses an interpreter for execu
 
 * Hosting the apps is essentially free for the developers, regardless of whether they implement something simple, like a personal website or a blog, or a small game or a tool of some kind, or if they implement something large like a full social media app.
 
-* The cost of the resources that an app consumes is instead carried by the users of the platform, via a simple freemium subscription model.
+* The cost of the resources that an app consumes is instead carried by the users of the platform, who generally pay either via subscriptions or by watching ads on the platform (unless they qualify for a free plan).
 
-* An [extended business model](open-dev-co-ops.md), if utilized, will allow the developing users to get paid fairly for their contributions, and can also allow the platform to attract more investments on top of that.
+* An [extended business model](open_tech_cooperative.md), if utilized, will allow the developing users to get paid fairly for their contributions, and can also allow the platform to attract more investments on top of that.
