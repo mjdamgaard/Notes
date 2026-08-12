@@ -10115,6 +10115,12 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 	%- I think it's a good idea to let the app browser prevent users from adding or up-rating an app version to a given parent app if said app version does not either use the same apiDefiningAppDirID is the parent app or use itself for its own apiDefiningAppDirID. (27.07.26)
 
+	%- The overlay pages won't work well for mobile users, since going back doesn't go back. So I should just replace them with actual pages with their own URLs. And then I should just make the root base app's apiDefiningAppDirID property undefined, like the other apps, such that sub-versions of it \emph{can} change the URL API of these pages, i.e. the login page and account page, etc. But of course, sub-versions \emph{should} still conform to the same fundamental URL API, minus these formerly overlay, now actual pages. ..Oh, but what about what we might call "URL (or page) hijacking?.. ..I \emph{could} also reimpl. the overlay pages such that navigating back in the browser removes the page, and goes to the previous page. But this will be a bit hacky.. ..Maybe it's better to black-list URLs for take-over..? ..Which could just be anything that doesn't start with an appDirID segment (with or without "o-" or "s-" in front).. (14:58, 11.08.26)
+
+	%- I've now converted all map(), split(), etc. calls to fundamental method calls instead, but not gone carefully through each one, so I should go through them all, and check that they are not called on unsanitized input.
+
+	%- Clean up all unused dependencies in package.json.
+
 
 
 \section[todo list]{(There's a todo list above this section in the comments)} 
@@ -15230,6 +15236,15 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %// long run?..
 %" (10:13) ..And then you just generally trigger the desired events, i.e. "hideHeader", "showHeader", "hideMargines", and/or "showMargin" on the app's initialize() function.. Hm, this seems like uneccesarry work, though, compared to just styling the outer element.. Well, it's not that big of a difference, in terms of lines of code.. ..Hm.. (10:17)
 %...(10:28) I tinnk I like the events--contexts solution better. And since the main.jsx component of an app will typically only render once, it can just trigger the events there. And let me just introduce "show/hideFrame" events as well, such that you can often just call one of those in main.jsx('s render() function)..
+
+%(16:35, 11.08.26) Oh, isn't it dangerous to let the users use fundamental methods, since it is easy to call foreign functions? Or is it okay?.. ..Maybe it's okay..(?..) (16:36) ...(I've decided to be okay with it..)
+
+%(12.08.26, 12:21) I'm not gonna impl. the social media app yet, but just focus for now on getting the prototype ready again, simply using the Mastermind and the Flip game apps as the only two first proof-of-concept apps in the list, apart from the fundamental ones. And then for the versions, I will upload different ones that only changes the style. (And their descriptions should just say that this is just for show indeed.) And then I'll make the first (short) version of the about page, and also edit the tutorials. And I think that's about it.. And that for sure won't take two weeks (7, 9, 13) *(until TechBBQ, i.e.), so after that, I might continue by impl. the SoMe app.. (12:25)
+
+%(17:08) I've realized what to do for the root base app and its formerly overlay, now actual pages, and for base apps in general: You just link to the base app itself, i.e. by using a first segment with the given base app's appDirID, and thus let the AppLoader load a nested copy of the same base app (which, if trusted, will hide the global header and the margins). That way all base apps get to extend the URL API, but not for the actual first segment. Well, in principle yes, but the base apps, as well as the users, ought never to actually link to the URLs without the appDirIDSegment in front. So there we are. And then for the root base app in particular, since it won't be given an apiDefiningAppDirID, it can just use an "o-<appDirID" segment instead as the first segment. (17:14) ..Hm, and maybe it would be best to let the.. Ah, yeah, if.. if 'loadUpdatedSelf' is true, then the base app also checks that the URL is of the root base app's API. Well, come to think of it, we \emph{can} then let the base root app have an apiDefiningAppDirID, but it should just be noted, that only a subset of the functional API is actually part of the URL API definiton. But that is similar to other root apps, whose defining URL subset is just the empty set, and all implemented URLs are not part of actual defining API.. (17:19) ..So I should also make sure to explain the fundamental URL API in the root base app's description, btw.
+%..Btw, I thought about whether we really need the "base/<id>" URLs, but yeah, they are there as a fail safe if the user chooses an incorrect base app as their preferred base app.. (17:21)
+
+
 
 
 
