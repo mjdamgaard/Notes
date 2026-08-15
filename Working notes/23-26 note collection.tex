@@ -15259,6 +15259,10 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(15:58) Hm, is it the right route to go with the "hideHeader", "hideFrame", etc. events, or should I try reimplementing it in another way? I seem to have trouble with it here, but.. I can probably just debug it. But let me see.. ..Oh, the bug doesn't seem to be caused by the "hideFrame" event. So never mind about that. It seems to be caused by the AppLoader for some reason.. Oh, of course it does: It is supposed to change the URL when you reload it. Well, except that the history state should prevent it. Yeah.. (16:04)
 
+%(15.08.26, 13:55) I was thinking about letting the root base app use the "additionalURLs" prop to include the "login", "signup", "account", and "about" pages, and then let it use itself as its apiDefiningAppDirID. The point is, while the app technically then implements these pages, it, and any other apps, are not supposed to link to these pages directly, without having "o-<appDirID>" as the first segment. So the app would implement these URLs, but not have it apart of its API, at least not its defined API. But I've now realized that there is really no need for base apps to use apiDefiningAppDirID props at all, not even future versions of the base app, really. In fact, it might be a decent convention to say that they \emph{shouldn't} set their "apiDefiningAppDirID" property ever. So never mind about using "additionalURLs" for the root base app.
+
+%However, I've also realized now that I actually shouldn't shy away at all from letting the "root" app use the "apiDefiningAppDirID" prop, except in the case of the base app. For you can always just define a new "root" app, before the original "root" app, with a less restricted URL/web API. So users can thereby change the "roots" of their app trees. And this means that I shoulddefinitely start making the app and file browser apps use themselves as their apiDefiningAppDirID.. (14:04)
+
 
 
 
@@ -18052,7 +18056,11 @@ I think I might actually try to contact some engineers about this idea.\,. .\,.\
 
 
 %(19:15, 12.05.26) Imagine creating (via selection or gene modification) a plant like a rice plant, that can stand in water, and who is modified to keep producing seeds continuously, and shedding then continuously, and where those seeds float in water. Then once in a while, you just need to flush your fields through with water such that the seeds float along, and all rather in the same place.
-%How cool. But now take a step further and imagine that the plant can instead withstand and thrive in salt water, and that it can be made to grow from some sort of wire or tube floating on the water. (Maybe this plant is based on seaweed.) And then you just need to implement some way of "flushing" your "fields" (on the ocean, or a saltwater sea), and you can now grow vast, vast quantities of food (and oil). Maybe you make sure to place the "fields" where there is a current, maybe in the Sargazzo sea (or what it's called), or somewhere similar. And then you let that current do the work carrying the seeds away. Or maybe you just collect them with some machines of some sort. In any case.. come on.. this idea \emph{must} be worth investigating and researching further.. (19:24) 
+%How cool. But now take a step further and imagine that the plant can instead withstand and thrive in salt water, and that it can be made to grow from some sort of wire or tube floating on the water. (Maybe this plant is based on seaweed.) And then you just need to implement some way of "flushing" your "fields" (on the ocean, or a saltwater sea), and you can now grow vast, vast quantities of food (and oil). Maybe you make sure to place the "fields" where there is a current, maybe in the Sargazzo sea (or what it's called), or somewhere similar. And then you let that current do the work carrying the seeds away. Or maybe you just collect them with some machines of some sort. In any case.. come on.. this idea \emph{must} be worth investigating and researching further.. (19:24)
+
+
+
+%(14:04, 15.08.26) Here's a very simple version of the idea(s): Construct some.. ..buoys that pump nutrient-rich seawater up from the deep, which makes algee and seaweed grow. (And maybe you could also construct nets between the buoys to make it possible for seaweed algae to attach.) This will hopefully then increase the fich population many-fold, is the intention. Then catch a lot of fish, and possibly extract some carbon from the atmosphere, stored in this increased population of algae and fish, and possibly also increase the albedo of the planet. (14:10)
 
 
 
