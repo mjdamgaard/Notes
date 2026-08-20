@@ -15277,6 +15277,14 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..And you can of course also extend these licenses such that the numbers also give the contributors a proportional share in the profits coming from licensing the software.. (11:59)
 
+%(20.08.26, 9:36) I have thought some more about the pitch, beyond just the elevator pitch, and now I have a lot of thoughts, in particular of how to formulate some use cases briefly. So I'll just get to working on the new About page right away.
+%But before I do, let me also just note that I think I have maybe overlooked the simple model where the users get to vote on the reward distribution (each month or whatever). So I should keep that in mind some more, as that is also a very good idea (which I think I maybe  ought to aim for, in fact; at least it should be a top consideration) which is also very easy to explain..
+
+%(10:17) Oh, I almost want to rename "base app" to "home app" after all. Hm, now is the time to do it, if so.. ..And "home app" \emph{does} make sense, 'cause the app browser doesn't have to be the start app; the home app can choose a different app as the start app, or implement it itself. And that way you can just see the app browser as a nested app within the "home app." So yeah, let me actually rename "base app" to "home app" after all.. (10:19)
+%... (13:59) The home app (formerly the "base app") will of course still have to load a specific start app, like how the app browser is the current default start app. But yeah, then we can just refer to this app as I do now, namely the "start app," rather than the "home app." So the 'home app' (formerly the "base app") generally always a start app, at least unless it uses the empty URL as its start page. Oh, sure, home apps should also be able to implement the emtpy URL string (or the "/" URL, you might also say), apart from the "(/base)?/([os]-)?<appDirID>" URLs.. ..Yeah, so technically, the home apps don't need to actually choose a start app, but can just use itself. However, this is only as long as the home app stays on the empty/"/" URL; as soon as it swithes to another URL (of the form "/([os]-)?<appDirID>/..."), it must load an app to implement (and define the semantics of) that URL. (14:06)
+
+%... (17:19) I just realized a great point: A SoMe app where the users can design their own profile page might especially be interesting for graphical designers and for developers, who will get to show off their skills on their own profile pages. And incidentally, web designers and web developers are exactly the user group that is most important to attract at first to a user-programmable platform.(!..) ..Yeah, that's such a good point..(!) (17:22)
+
 
 
 
