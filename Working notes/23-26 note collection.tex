@@ -10126,6 +10126,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 	%- There is still a problem of the pages not being scrolled to the top. And I think what I want to do is actually implement this.. wait no.. ..No, I should just implement it via setHistoryState().. ..But what about when going to a new page?.. ..Well, then the initilaize() function, or the first render(), should scroll the component to the top (perhaps by triggering an event if need be), namely if there is no history state..
 
+	%- There is a bug where I get an internal error server-side rather than a user error. The error happens if loading a non-existing dev library. (It was caused in my case because postEntity() was loading an app entDef with an ILink in it, and the importing of the ILink was causing the error to be thrown.)
+
 
 
 \section[todo list]{(There's a todo list above this section in the comments)} 
@@ -15312,6 +15314,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %(12:29) It makes sense to allow the app-developing users to also choose between having their contributions judged democratically by the community of developers as a whole, and/or by the user community as a whole, or indeed by any user group that they want. Or they can also let the matter of which contributors get what for a given app be an internal negotiation purely between them. The first creator of the app then starts with all the "shares" of the app, in terms of how big part of the revenue/profits from that app they get. And whenever someone makes a new contribution to that app, they then have to negotiate with the existing "shareholders" of the app for how big a share their contribution shold net them. (And in principle, the developers can always just stop giving out shares to new contributions, which means that all further contributions will just be voluntary with no rewards from that point on.)
 %And then apart from these models, there is of course also the model where the users create "tickets" for the developing users, and donates individually in order to reward the one(s) that take(s) on this task (and do/does the work satisfactory). (12:37)
+
+%(13:50) A very weird bug is happening. I've just updated up-web.org, but it doesn't render as in my localhost. For some reason, the AppFrame isn't loaded at all, and the first child of the #up-app-root element is a div (no className) with a shadow root element, whose child is then already the className="app-browser div. And the URL also becomes https://up-web.org/apps/cat/59, meaning that the appDirID segment is lost for some reason..?? (13:54)
 
 
 
