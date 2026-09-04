@@ -15514,6 +15514,20 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..Hm, I think a transduceContexts() and a transduceEvents() method makes more sense.. ..And then these functions can also take the child's instance key as one of their arguments.. (18:45) ..And then they just return an array that specifies.. Hm.. ..Yeah, I think it makes sense, but maybe I will use the "*" wildcards for both. And then for the contexts, you just have the option to let it be a function, in which case that function is called and its return value is returned rather than it. And then for the "*" event, you are supposed to just return an array which is the arguments for the implicit trigger() call.. Maybe something like that.. (18:51) ..Well, that sounds good, but I'm not sure about using "*" rather than exports.. (18:52) ..Maybe an 'eventTransducer() and contextTransducer() export is better.. (18:53)
 %..But again, I might let this be a future todo instead, namely since I find it hard to decide.. (18:54) ..I think I might do that..
 
+%(04.09.26, 11:56) I think it's a good thing that I have thought of some ways where you can have a commercial vehicle on top of an open-source and decentralized system. But it might also not end up being necessary, we'll see; it is also possible that the system will just take off as an open-source system from the start, and not having to rely on that vehicle to boost it..
+
+%(12:12) There's a lot of ATProto fans out there, but there's certainly also a lot of skeptics, and not least skeptics who want's more than what ActivityPub offers in terms of usability, but has reservations with BlueSky. We need to get those people to join us. :)
+
+%(13:09) Okay, back to developing. I feel that since I've removed the child key argument from the events, I almost need to implement the event and context transducers.. ..And I'm leaning towards making them exports..
+
+%..The context\emph{Transformer}, as I call it now, can also be useful in order to transform or block contexts without causing the intermideary node to rerender when the context changes. So that's also a reason to implement them (as I am also doing now)..
+
+%(15:18) Hm, would it make sense at all to make a separate federation server alongside my other servers?.. ..I don't really think so.. (15:23) ..Nah, it's too easy to implement federation procedures once we get a network of UP nodes.. (15:26) ..internal federation at least..
+
+%(15:28) Wait, shouldn't I put the contextTransformer before reaching the instance's own contexts, similar to what I do for the eventTransformer, namely such that an instance thereby gets to filter its own contexts as well for its own children. I think so. If nothing else then also for symmetry's sake..
+
+%..(15:31) But back to the federation thing quickly: I should mention that I now also think that implementing a SoMe app with federation (and migration) is also an important first goal. And then we indeed need to use that to attract those people who are on the fence about BlueSky, like I mentioned before..
+
 
 
 
