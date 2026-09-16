@@ -10135,6 +10135,15 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %- Oh, there's still a bug where the page switches back and forth after logging in. Fix this, and preferably find the cause this time.. ... (It's a bit hard to debug, since there seems to be a race condition somehow which makes the bug go away when I use the debugger statement.. ..Oh, maybe i should try console.trace()..) *Okay, I've fixed it now by letting AppLoader check to see if the path has changed before calling replaceURL. That must have been what caused it, and the loop probably also had something to do with the fact that the userID, and thus the userContext, also changes just before I call this.back() from the login page. Anyway, it is fixed now. I guess I should also fix the fact that I get a nested AppLoader and the AppFrame for the login page and other home app pages, though.. (Check)
 
+	%- Tried saving the about page to my computer, using Firefox, and it didn't work. The error in the console seemed to be due to Bootstrap. (Hopefully this will be fixed once we let go of using Bootstrap..)
+	%Oh, and another todo: Maybe git rid of bootstrap, and instead just use the most basic of their rulesets, namely the ones without classes. And also get rid of all the CSS variables, I think (\emph{I'm} not using them..). ...Oh, and I should probably do this sooner rather than later..
+
+	%- Add 'Object' and 'Number' etc. as global variables, such that e.g. Object.entries() can also be used without importing anything. And maybe I can even just let these objects be equal to the corresponding dev library namespace object.
+
+	%- Add publc repo links to metadata.js files.
+
+	%Change the component class in em1.js (I believe) to be a derived just from the componentPath.
+
 
 
 \section[todo list]{(There's a todo list above this section in the comments)} 
@@ -15528,6 +15537,69 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..(15:31) But back to the federation thing quickly: I should mention that I now also think that implementing a SoMe app with federation (and migration) is also an important first goal. And then we indeed need to use that to attract those people who are on the fence about BlueSky, like I mentioned before..
 
+%(05.09.26, 9:24) I've heard that BlueSky apparently have taken ages to implement polls, and some other things, was it group chats as well(?), even though these are desired by the community. So there we have a very big argument of why my technology can change things up: With my technology, things like that can be implemented almost in a single afternoon. And when they are rolled out, by the way, they are then not rolled out to everyone at once, but can be rolled out organically, and allow interested users to test and give feedback to it first.
+
+%Hm, there was another thing.. ..Oh yeah, I think the fact that users can see the exact amount, more or less, that they have cost the servers and the network in terms of resource comsumption will make them all the more likely to donate to us, at least an amount that makes of for the costs. So donations like that really also ought to be an early thing that we implement.. (9:31)
+
+%(10.09.26, 14:55) I think I have some good ideas for how to alter and restructure the pitch a bit..
+%..(Today have actually so far just gone to thinking about that. But I think it has yielded some useful result now..)
+
+%(13.09.26, 18:09) I've been very skeptical about the AT Protocol (atproto) since I thought that the whole data structure was part of one big Merkle tree. But that's completely wrong, I don't know how I got that idea. Instead it's only the user repositories that uses Merkle trees, namely as a way to be able to quickly recognize when there is updates, and to also update a copy of the repository without having to look through all the data, but only the modified branches of the tree. \emph{That} makes sense. The other thing just didn't make sense to me at all, an it turns out for good reason. So there we are, seems kinda dumb of me to get that idea. And this all of a sudden makes the atproto much more interesting, and especially now where private data is also in an alpha stage..
+
+%(14.09.26, 9:58) I've been spending way more time on thinking about the pitch etc. than I would have liked to. So I need to get on with it. But let me try to sum up some of the important points here..
+
+%..Obviously a major point is not relying on a central group of developers (both in terms of conflict of interest but also in terms of their limited vision and capabilities). And then there's obviously the big point of how easy it is to build a new feature with my system, and share it quickly with the user community (on the same platform). This is both due to the high-level framework, the fact that it is free to do, and the fact that others can try it out safely without having to trust you in advance, and the fact that it can be done on the same platform, as mentioned.. (10:03)
+
+%..And if we think of BlueSky (not that we are in competition with BlueSky technically, which we are not, since the two technologies can certainly co-exist, but the "competition" only comes from the fact that people might not get why our technology adds a lot in comparison with BlueSky), its users are begging the devs for new features, and in a timely manner. With our technology, they can get all those updates very quickly. And that matters. People want more tools and features, even on big platforms like FB! (10:06) ..(Os & Data is made research that shows this.)
+
+%..I guess my biggest worries is first of all people not liking the framework that we offer too much, which I really hope they do, but.. And of course, the system isn't bound to that framework forever. In fact, you can in principle program in any framework that you like, but then you are just limited to making a PR on github with a new library for your component, and therefore you can't use the sandbox to get around that whole (centralized) process.. ..And framework is implemented via dev libraries, so you can certainly add others as well..
+%..And then another worry is that not being able to download a mobile app.. well, I guess the worry is about how long it will take before we can migrate to mobile as well.. (10:11)
+
+%..And with BlueSky, you have to download a different app to get new features, other than the specific algorithmic features that BlueSky allows you to adjust, at least as far as I've heard. So there's a major difference there.. (10:20)
+
+%...(10:33) Hm, there's also the problem of it being very wide to begin with. But if the Home app starts leading to a SoMe app instead, then people get the idea..
+
+%...(Okay, the clock is ticking. There's just still something that bothers me in my head. I guess because I can't sum it up in just a few sentances.. ..and maybe there's more.. (10:47)) ..Well, I should be able to sum it up in a few sentances.. ..Oh, maybe a sentance like: "The overhead cost of hosting each fork is miniscule, meaning that ..."..? (10:49) ..(10:58) Well, or "the costs of hosting the apps only grows when the user.. ..on demand.." Hm..
+
+%...(12:31) Okay, now I've actually written a four-paragraph introduction which I feel sums up the whole concept quite well (possibly better than before)..
+
+%(16.09.26, 8:43) I think it's a really good point that once we get a good SoMe app where users can actually see that they can make updates to it quite easily, and that they are in control and part of building it, then surely that's a great point of attraction: being able to take part in shaping the app yourself, and seeing how it takes very little work to implement new handy tools, etc..
+
+%...(9:05) Ah, and this requires a good component tree/browser as well..
+%..Ah, what about a sort of "developer mode," where the.. Well, a bit complicated, but the idea was to have a mode, where all components give links to the component browser.. ..Well, alternatively, you could have a componentPath--component entitty index.. ..Oh, or have component entities be defined solely by their path, but then use a relation of example components. So a component entity cannot just be rendered itself, generally, but you can go to a tab to see example components that showcases it. Oh, that might actually be very good. For then then componentPath--component entitty index is trivial.. ..And you can make a "search bar" for the component browser where you just insert the componentPath, and is taken directly to that component in the tree.. (9:12)
+
+%..Oh, here's something interesting as well: What about a system, where you can somehow remap component paths, and paths(/routes) in general just via some JSON file (similar to placeholders.js.. (hm, maybe that's a clue, btw..)), such that when loading the component w.r.t that json file, all the routes will be remapped, well, if there's a hit in the placeholders file, that is. Okay, this is interesting.. (9:16) ..So maybe you could just add an extra optional input to the import() function, and/or an option to fetch() and post(), etc..? (9:17)
+%..That actually sounds like a great idea: a technology-enhancing (/-improving) idea..!.. (9:20)
+%..And not only would this help since it would save a lot of storage space, and make development even more (cheap and) free, but it also doubles as a potential very good way of implementing specific user preferences.. (9:23)
+
+%..Huge ideas this morning.. (9:24)
+
+%..Okay, so maybe I extend the placeholders.js files such that they are instead route--route maps, and where it can then use '*' wildcards, in particular to remap home directory ID placeholders.. (9:29) ..And then by using a 'placeholders' option in query(), etc., you get another plaeholders module. And maybe this option just takes an object rather than a file path. I think so.. ..Hm, maybe I should then introduce a "postfix" to the routes that changes the placeholder file. But another placeholder file can then also overwrite this, since the routes, with the postfixes, are remapped beforehand by the current placeholders module..
+%..Maybe such a postfix could look like ":plc=<route>", or something like that.. (9:38) ..We could also implement it as a casting segment, and then just look ahead before importing a JS module to see if it needs to be remapped first.. ..No, I think something like ":plc=<route>", i.e. as a "postfix," makes more sense.. (9:42)
+
+%..Okay, but then what about when importing from a foreign home directory, should we then automatically shift to that directory's placeholders.js module, or never do that, or do it depending on.. Hm.. ..Hm, maybe it makes.. well, but then a user needs to do a lot of work whenever importing from a foreign directory.. ..So maybe we give the placeholders file the ability to declare whether to override the shift to the foreign placeholders file or not.. (9:46) ..(And maybe I should also shorten it to "plc.js", by the way..) (9:47)
+
+%..Let's implement it both as an option to query(), and a route postfix as well, which then just sets said option.. (9:49) ..Well, no, maybe it \emph{should} actually be a casting path, namely since the key in the liveModules cache should also depend on it.. ..Hm, but so should.. ..all other components that are imported.. ..Yeah, maybe we just need to basically prefix the placeholders file path to the liveModule keys, I'm not sure there's a good way of getting around that.. ..Wait! ..If this remapping is about \emph{components} specifically, then maybe we could do it dynamically.. well, yeah, but that also comes with some problems.. So maybe not.. (9:56)
+
+%..Hm, maybe the current placeholders.json/.js files should actually be a separate thing, and in fact be a thing that.. well.. I'm thinking that these placeholders should also replace the directory segments in the new kind of placeholders/plc files..(?) (10:00) ..Yeah, so maybe a placeholders.js (or just "plc.js") file like the one I have now, and then another file called (maybe) 'map.js', and where the former file actually transforms the latter as the very first thing.. Ah, but wait, it doesn't need to be a file at all if it is just an object-valued option.. well, maybe we need it to be route-valued since we need the prefix for the liveModules keys.. (10:06)
+
+%..Okay, but going back to the idea of remapping components specifically dynamically, maybe that actually isn't such a bad idea. 'Cause it could just be a temporary thing, used for prototyping purposes..(?..) (10:08) ..Nah, I think I'm much more interested in the other idea. Yeah.. (10:10)
+
+%..(10:16) Okay, so maybe a ":map=<route>" postfix, and then the placeholders.js/plc.js file in the current home directory is also applied to that map.. ..I do like the "placeholders.js/.json" \to "plc.js/.json" renaming.. (10:18)
+
+%..Maybe it doesn't need to be a query() option *(and a postfix): maybe it can just be a map.js file at the home directory.. (10:29) ..Well, but there's still the problem of.. ..Yeah, nah, maybe it should be a query() option and/or a postfix..
+
+%... (14:38) I have a plan now..
+
+%...(15:34) Okay, as I said, I have a plan now. Here a first little thing: I'm currently thinking about renaming it (back) to 'dependencies.json/.js', the current 'placeholders.json/.js'.. ..I think that makes more sense..
+
+%Okay, but I \emph{will} implement the map as a route postfix (":map=<route>"), and as a query() option. And then I can just keep that postfix as part of the key in the liveModules cache. Then when importing module from a parent module, the interpreter first consults this import map, if any, using it to possibly change the route. And the.. Well, no first the placeholders.js/denpendencies.js file is used to transform the original route. And then the import map is used after that. And the placeholders.js/denpendencies.js file is also used beforehand to transform the properties in the import map (using the file from that map's home directory). Then if the resulting route after the map is another ":map=..." route, then the given import map is imported first and passed to the interpreter method that recursively imports the module. And if not it has that postfix (possibly because the import map transformed the original route), then the same import map is used for the child. When the first of the two import methods returns, i.e. the one that prepares the module by importing all the sub-modules, it should also return a boolean for whether any of the sub-modules was transformed by the import map. And if not, we simply use the liveModules (cache) key without the ":map=..." postfix. But if the boolean says that a sub-module import was transformed, we use the postfix for the liveModules cache. (And of course, if there is no hit, we execute the module and add it to the cache.)
+%The syntax of the import map (JSON) files can just be the same as the for regular JS's import maps: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap#import_map_json_representation. Except let us omit the 'integrity' and 'scope' properties, and make the 'imports' property the whole object, such that the JSON file just contains a key--value object for the initial and the final routes/route prefixes. (15:48)
+
+%..Now, the reason I really want to implement this is because it would be so great, if we could show an example, quite early in the tutorials, where the user actually gets to modify e.g. the SoMe app, or some other "flagship" app. However, this will work best if the user can also then give their own new app permission to do the same as the original app, which is why I also need to rethink the current 'untrusted' prop, and the CLINET_TRUST flag, and reimplement it as a perisions prop and flag instead. And I've also now made plans for how to do that.. (15:51) ..Well, come to think of it, I should then actually make something a buit similar to the current FlagTransmitter in order to, well, "transmit"/pass permission on to a child instance (who has a set permissions prop and therefore do not just inherits its perent's permissions)..
+%..And then part of the syntax of the permissions prop is that a key that starts with "/", "./", or "../" is interpreted as a permission to grant (private) read and/or write permissions to SMs under that path.. ..And these permissions are just checked client-side, by the way.. ..Well, unless we actually also want to transmit them to the server. Maybe we do..(?) (15:57)
+
+%..Some things to think about there. But extremely cool that I will be able to implement something as cool as these import maps, with seemingly (7, 9, 13) so little effort..:) 
 
 
 
