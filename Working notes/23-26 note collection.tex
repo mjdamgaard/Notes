@@ -10144,6 +10144,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 	%Change the component class in em1.js (I believe) to be a derived just from the componentPath.
 
+	%- Impl. a command to add a foreign directory in server_interface.js.
+
 
 
 \section[todo list]{(There's a todo list above this section in the comments)} 
@@ -15638,6 +15640,18 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Okay, so I need to change DirecotryUpdater.js, that's one thing. And obviously change how the dependencies/importmap module is used to transform the routes.. ..And I need to pass both the importmap object and the homeDirID from which it originates to executeModule().. ..And since we also need to be able to transform routes in fetch(), etc., we should always execute a module anew if it has a different importMapDirID.. (12:32) ..So that ID is always added to the liveModules cache keys.. (12:34) ..Hm, and whenever we import a module, probably in the query() function, we need to check the importMap as well and see if the module.. ..Well, we should first of all see if the route should be transformed. And we also need to check if it is from another home directory than the parent module, and if so, and if the importMap does not include a map for that directory, then we don't pass on the same importMap when executing that module, but we instead look up that new directories importmap.js file.. (12:37) ..And we make sure to store the importmap object on every module environment, or every LiveJSModule, such that it can be obtained e.g. from the fetch(), etc., functions.. (12:40)
 %..Okay, let me take a break... (12:41)
+
+%... (13:55) If we merge the dependencies and the importmap files, then we have to always first use the transform/map of the current home directory itself \emph{before} we use the map of another directory from the ancestor module that imports the current module.. ..So let's do that.. (13:58)
+
+%...Maybe I shouldn't break all file name conventions by naming it importmap, but just use 'map' instead.. ..I think so, yeah.. (14:10)
+
+%..Let me change the former dependenciesModule argument to an object that holds all the relevant importMap-related data.. ..And then for the modules, ah, I should also just change the same "dependenciesModule" property to that as well.. ..And then it is just a matter of reimpl. DirectoryUpdater and getAbsolutePath(), and then of passing the right importMapData object.. ..And to append the external import map homeDirID, if any, from the importMapData for the liveModules cache.. (14:18) ..Yeah, and that should be pretty much it, I think.. (14:22)
+%..(But is it getting late enough now that I want to rather postpone it to tomorrow, and do something less critical now?.. ..Well, maybe I'll just start and see how it goes..)
+
+%...Hm, I thought of calling the "maps" property "imports" instead, but now I'm also thinking of calling the file imports.json instead.. (14:43) ..Hm, what about "import_map.josn".. well, I don't want to force the users to use a snake case convention if it can be avoided.. ..Hm, maybe I'm leaning 'map.json', with properties of "dependencies" and "imports".. ..Hm, or maybe "directories" instead of "dependencies".. (14:46) ..Yeah, I think "map.json" with "directories" and "imports".. ..Or "maps" instead of the latter.. ..Nah, "imports".. ...Oh, or "paths"..? (15:00) ..No, "maps" makes more sense.. ..Hm, the file could also be called 'paths.json'..? ..With "directories" and "maps" as the properties..
+
+%..(15:10) Oh, maybe we don't want to apply the local map first, before the external one.. ...Hm, no so the keys of the maps should be the same as appear in the source code, before the local map is applied.. (15:21) ..And then the importMapData only needs to include the one map object, and the one homeDirID.. ..Oh, and when we transform the file, the dependencies just becomes the first entries of the map for the local directory. And then if the user adds more specific entries, then these will be used.. ..Ah, but the user should also be able to utilize the directories.json map the maps/imports property.. ..But then you just use directories.json to transform each key.. ..And each value, I guess.. ..Well, no, only each value, not the keys.. (15:27) ..Oh, maybe we don't need the dependencies property, if we just allow the entries to be both string pairs, or just a single string. And then the user just still uses 'this' as a placeholder for the current nodeID.. (15:29) ..Oh, and I should say: the single string is then a shorthand for an identical pair, but where the value is then transformed by using directories.json.. (15:32) ..Yeah, so the map/paths.json file will be an object with nodeIDs as the outer keys.. ..And where the values are arrays of individual mappings, which are defined by either a string pair array, or a single string.. (15:36)
+%..And since all non-directory files have file extensions, I don't need the trailing "/"s to recognize a prefix entry, so the trailing "/" can always be omitted. (15:40)
 
 
 
