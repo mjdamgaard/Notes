@@ -15763,6 +15763,37 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..Okay, I'm thinking a structure where "targets" and "exceptions" are separate properties, like I've talked about before.. ..And then a "maps" property with target module paths as keys (so paths within the set of "targets").. ..And then the values are just path--path-membered objects, which maps contained paths in those modules to other paths, and that's it.. (18:28) ..(for now, anyway). ..And you don't check the outer "targets" and "exceptions" property when transforming a route, but only when you then afterwards need to decide if the resulting route should also inherit the same path map.. (18:31) ..And the default value for "targets" is an array with just the the homePath (wildcard implicitely assumed), and the "exceptions" of course defaults to an empty array.. (18:32)
 %..Alright, I think this is what I'll be going with.. (18:33)
 
+%(22.09.26, 8:20) I think it's more neat if the "exceptions" property becomes merged with "targets," by making targets an object with boolean values instead.
+
+%About the soon-to-be "permissions" prop, I've realized that this could actually also hold permissions to make external requests as well, especially client-side, but also even server-side. And it could also give permissions to what external sites can be linked to, and what sites can be used as sources for images. So that all of a sudden opens up so many things, and effectively removes a lot of the restrictions that were before, now where the user then just has to accept these permissions. (And in the future, we will split the app into a developer/superuser version, where the home app asks for permissions from the users, and thus expects them to be able to decide on such, and then another branch where we don't make it so easy for people to just give permissions to new apps that they try, but where we shield them much more.)
+
+%With the permissions to be able to fetch from.. Oh, I should say first, in terms of requests to external servers (i.e. which are not integrated UP nodes), I will then make some HTTPRequest object, or something like that, where the user gets to decide some properties of the given HTTP request. And to begin with, we will just only them the users set the basic properties, such as POST vs. GET, and of course the post body, apart from of course also the URL.
+
+%Now, with such permissions, users will be able to make all kinds of things, including AT Protocol apps. And I really think we ought to join the ATmosphere and make a user-programmable version of BlueSky, call it maybe 'NewSky', or something to that extent. Then we can much more easily get BlueSky users and atproto enthusiasts on board. "Join them rather than trying to beat them," in other words. I think that this could actually be a sure way to success..(!) (8:32)
+
+%The permissions prop can them also simply have a value of "all," which just give all permissions. And I will use this in particular for the account-related permissions (to use the 'account dev lib.). Then it some point, we can also introduce an "account" permission to the object. But by simply using permission="all" for now, we can delay introducing all such ("small") permissions.
+%Each permission like "read" and "write," and "linkTo" and "requestTo" (or what to call them), which expects a list, these can furthermore also all get a value of "all".. (8:35)
+%..("imageFrom" as well, could maybe be the name..)
+
+%(9:12) Hm, I've been very concerned with B2C myself, because that's what I'm ultimately dreaming of: A web that is much better at connecting people and ideas in the right way, namely such that people can realy pool there knowledge together and be able to get a lot more information at their fingertips for answering questions, and be able to discuss things so much better (with structured arguments as well, and of course with the user-programmed user groups)..
+
+%Anyway, I just thought of e.g. food delivery apps, which are bad for almost everyone involved, apparently. Maybe things like that could also be a big selling point: "Cut out the middleman, finally!" Instead, simply start a crowdfunding campaign for the app that you desire, and once it is implemented, it yours and everyones: Everyone can make the updates that \emph{they} want to it (and potentially be crowd-funding these updates), and there's no man in the middle who gets to control the data silo, and get to reign over the app. (9:19)
+
+%..A big point is also: It's a dream of a future where servers and databases are just part of a collected infrastructure, and the ones who provide these servers don't decide what they should and should not do, but simply provides the resources as an infrastructure. ..Well, IaaS, you might say, but conventional IaaS just shifts the power from one company to another; here the users are in control.. (9:22)
+
+%..Okay, but how do you then monetize the dream of "no middleman," whithout ruining the idea?.. (9:22) ..Well, I guess you potentially take a cut of the crowd-funding in the upstart face, but you don't lock in users to your company. So if they want to use a different avenue for funding each other, they can. And then you of course also take money for the server resources as well.. (9:24)
+
+%..And it's important to keep in mind, that my current user-programmable system is not the only one. Down the line, the goal is also to implement my idea that I've talked about somewhere above (I think search on 'process tree'.. ..yeah..), which is to have a network of servers with sandboxed virtual (Linux) machines, and where the users define their servers via a "tree" of installation programs (and where each server process clones itself for each new installation program, such that if wanting to shift the server's duty, it can just awake an earlier process down the tree, and start from there). And then you implement a system that keeps track of resources ("gas") as well, and which also distributes the load on the servers, and determine which processes they should run, according to what the demand is. (9:31)
+
+%..Okay, I think this cut out the middleman, with food delivery apps as an example, could really be such a good pitch.. (9:34) ..And then it's B2B and a giant market.. (9:34)
+
+%...Uber is of course another example.. ..Hm, and a user-controlled version of Amazon/eBay.. ..That especially.. (9:48)
+
+%..I mean, we have to pursue that (pitch), right?.. (9:51) ..(How can we not?..)
+
+%..Replace those middlemen with just an (open-source) middleman who just helps you do the crowd funding part, and takes a cut of that. ..(And which also takes a profit from their user-programmable servers..) (9:53)
+%..So the for-profit part of our company can basically be said to be a KickStarter for building and extending user-programmed/able apps (but which then promises to let the users "own"/control the apps and there further development (and isn't tied to the company's servers either, of course)).. (9:57)
+
 
 
 
