@@ -10149,6 +10149,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 	%- Make fetch(), etc., call getAbsolutePath() automatically and remove a lot of abs() calls in the source code. Or rather, consider doing so..
 
+	%- Implement a setPermissions() function to reduce at least the "client permissions," and perhaps other permission flags as well.
+
 
 
 \section[todo list]{(There's a todo list above this section in the comments)} 
@@ -15793,6 +15795,53 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 %..Replace those middlemen with just an (open-source) middleman who just helps you do the crowd funding part, and takes a cut of that. ..(And which also takes a profit from their user-programmable servers..) (9:53)
 %..So the for-profit part of our company can basically be said to be a KickStarter for building and extending user-programmed/able apps (but which then promises to let the users "own"/control the apps and there further development (and isn't tied to the company's servers either, of course)).. (9:57)
+
+%(15:34) (I think my code for _query() and the first methods of ScriptInterpreter is a little bit spaghetti. But it's not that bad, and it is what it is, so I won't do anything more about it now.) (I just finished the impl. of path_map.js, by the way.)
+
+%(23.09.26, 8:59) Hm, the permissions object probably won't be very long, generally for requests. Or rather the "read" and "write" part, and in general what is relevant to the server. Here's the thing, you shouldn't generally give a component permissions that it doesn't need.. Well, but sometimes it's easier. But still, I'm thinking of just always copying the full permissions object for posts and private fetches, and pass it as a JSON object along with a Prefer header variable.. ..'Cause it's easier to require the users to reduce their permissions than to teach them to use a special option.. well, but the option is only needed in rare cases when you want SMFs to call each other with privileges.. (9:03) ..So maybe just an option about allowing cross-SMF calls?.. ..Hm, HTTP header size is not a problem.. ..So why not just copy all the read/write permissions for private fetches and posts? I think I will do that..
+
+%..Maybe I should normalize my path_map.js system for specifying path sets and thus also use it for checkRequestOrigin(). Although, I'm not sure.. (9:11) ..It won't cost much to make that change, so sure.. (9:12)
+
+%..I should divide "requestTo" (see above) up into a client-side and a server-side version.. (9:15) ..Hm, so either "clientRequestsTo" and "serverRequestsTo", or omit "client" from the first one?.. (9:16) ..Maybe I'll keep the full name for clarity.. (9:17)
+
+%..However, since HTTP header size is not really an issue, I might just jsonParse() the whole permissions object and send it along with all isPrivate requests (posts included).. (9:19) ..And then we can always change this implementation if/when we want..
+
+%..Maybe instead an "all" keyword, I will just use a convention of using a true (boolean) value.. (9:21) ..Nah, the "all" keyword is better; I think that's more robust.. (9:25) ..And more clear as well..
+
+%..Hm, do I really want to change the checkRequestOrigin() API, or should I rather just maybe extend the path_map one?.. (9:28) ..Meaning that an array will be treated the same way as on object with purely true values. I think I might.. (9:29)
+
+%..Wait, should I just already introduce client permissions like "useAccountLibrary" (or what to call it) and "setTextInputAttributes".. Hm, maybe I've answered the question here: Maybe better to postpone going into these details.. (9:51)
+
+%...(10:05) Hm, how do we check.. hm, should checkRequestOrigin depend on whether the CAN_POST flag is set, i.e. in terms of whether the "read" or "write" property gets checked?.. ..That seems like a way to do it, yeah.. (10:07) ..But isn't it weird to allow.. Hm.. ..No, I think that might work..
+
+%Wait, the requesting component flag should also change. I can't use it for the whitelists, but then also allow the equesting component flag to be set every time the permissions prop is set, as that would allow loading a trusted component inside an untrusted one. So what do I do here..? (10:54) ..Hm, one option is to remove the requesting component flag, and only use the requesting SMF flag for the whitelist..(?) ..Another option is to introduce a permission to change the requesting component..(?) (10:57) ..Hm, yeah, so maybe a "useAsRequestingComponent" property and a "changeRequestingComponent" one..? (10:59) ..I think that makes sense, yeah.. (11:00) ..Ah, and then I don't actually need to use them yet, since I will still just use "all".. ..Well, no, I need to use "useAsRequestingComponent".. ..Sure. But I will not grant any untrusted apps the ability to.. well, of course not.. ..Ah, no, not "of course": I will not allow users to okay this permission.. well, why not.. ..Maybe because of the somewhat obscure meaning.. ..Hm, but is it worth it to inculde these properties?.. (11:04) ..Maybe not..(?) (11:05) ..Well, it's nice to be able to whitelist apps.. ..Alright, I might include them.. ..But I won't allow apps to request all kinds of permissions if they are not already trusted. And the account permissions is an example where I won't allow them to request it, or rather, I won't let the users (using the initial Home app) to confirm and set these permissions (when requested from the app (via triggering a signal)). And I will probably also not allow them to set the requesting-component-related permissions.. (11:11)
+%..Well, I don't like that "useAsRequestingComponent" and "changeRequestingComponent" break the convention of just allowing only a subset of the current permissions to be passed down..
+
+%..Oh, that reminds me, I should also implement a function, similarly to clearPermissions(), but which reduces the client permissions, and which can then not least be used server-side as well.. (11:16) ..Yeah, call it reducePermissions().. (11:17) ..Or setPermissions().. (11:17) ..Let me just make it a todo for now.. (11:17)
+
+%..Okay, back to "useAsRequestingComponent" and "changeRequestingComponent".. (11:21) ..(11:25) Hm, you \emph{could} use a "requestingComponent" property that can then also be set to "all"..(?) ..And it could also be a list, so it should actually be "requestingComponents" (which then also fits with the "all" keyword).. (11:27) ..Yes, this makes great sense.. (11:27)
+
+%(13:45) Hm, is it to dangerous to hand client permissions on to SMFs for callSMF routes by default, or should we just be sure to use clearPermissions().. Well, we had to before anyway, right?.. ..No, I'm using CLEAR_FLAGs for ";call" routes, etc.. ..Oh, but not currently for callSMF routes, which might be a mistake: Why not put a CLEAR_FLAG in front of the list?. .. (13:49) *(No, it isn't a mistake; that's how CAN_POST is passed) ..Right, I should not pass the client permissions between SMF calls, except when I implement the.. wait no, I wasn't planning on using permissions for cross-SMF calls as things were. Okay, so what do I do?..
+
+%..Hm, well, there will be danger anyway if we always pass the permissions from the client for every route that is calls. ..I want fetch(route) to be safe, preferably, at least without any options set.. (13:54) Oh wait, it is safe. For the falgs don't get transmitted for fetch() requests. Hm, and is that enough?.. ..Yeah, it must be.. (13:55) ..Right, so I guess I do hand over the clinet permissions, which I guess means that I don't have to change the current callSMF route implementation..? (13:58) ..Yeah, it seems so..
+
+%(16:16) The Home app is weirdly missing, so debug that.. *(Done.)
+
+%(24.09.26, 9:14) I think the whole thing/use case of also becoming a way for small businesses and their customers to get around enshittification, namely by allowing them to go together and fund a user-programmable (and therefore free) alternative to e.g. food delivery apps or marketplace apps, is really great. But we might still need to attract the users first, and the way to do this might still just to be to aim for a SoMe-like app where users can share, rate, and review their apps and components, etc., and cooperate on building together, and where we give IOU tokens each week or month---generously so!---to the users who have contributed something cool and/or useful. (And contributions to the fundamental source code will also certainly count.)
+
+%..Well, there is also the potential to sell the idea directly to small businesses, and do market analysis that way. But it will be easier once we can prove that there are capable user developers that are ready to implement their desires (and of course even better if we have a system in place already where the companies can donate towards tickets).. (9:21)
+
+%..But I think that making an app where users can build apps and components and participate in competitions about (generous!) IOU tokens (i.e. a kind of coorporate bonds with no risk on our part, and where the deadline simply depends on how quick we get the required revenue) will be the surest way to getting started and getting the ball rolling.. (9:23)
+
+%..But we can still talk about the use case of connecting businesses more directly with the customers without any middleman, and I think you can make that point in a simple/concise way.. ..Let me try it..
+
+%..(9:28) The point: Apps connect people with other people, and connect businesses with customers, often making things much more conveniant for the customers. But the convenience has a price: The companies who owns the app gets to be a middleman that gets all the power, essentially, and gets to take a huge cut, namely due to the network effect especially. What we provide is.. (9:30) ..We change all this by giving the power to the users, and promising them that they have are able to fork and decide which apps they wnat to use (rephrase). So the users get to decide which version of each app they want to use. And all we do is to be a KickStarter, essentially for letting the interested parties fund the developers of these free and user-programmable apps. And we also provide user-programmable servers as a service to the apps, but the apps our not bound to our servers, and we won't interfere with what the users want to use the servers for (except when it comes to preventing illegal or malicious activities and programs).
+
+%Hm, so what makes it a bit hard is that you first need to understand the concept of user-programmable servers, and what that means. But otherwise it is a pretty clear and solid point, I think.. (9:39)
+
+%...(10:02) Hm, and this pitch is also for the first users that just want to build and extend apps like the SoMe app, namely since the IOU tokens become more worth when we can convince the users that if they keep it up and keep the interest, then eventually we can get a lot of money from the KickStarter-thing..
+
+%...(10:46) Obviously, the fact that users are in control over the algorithms, both in terms of the feeds and the rating values (and the order of the reviews and their moderation, etc.), the users can trust that they aren't getting cheated, and that the app(s) can evolve however they like it to, which means that it will surely become the most sought-after app in the end. ..(So trying to go together and fund an app where the users don't have this freedom will be in vein since that app will lose out to a user-programmable one.) (10:50)
 
 
 
