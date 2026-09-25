@@ -10138,18 +10138,23 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 	%- Tried saving the about page to my computer, using Firefox, and it didn't work. The error in the console seemed to be due to Bootstrap. (Hopefully this will be fixed once we let go of using Bootstrap..)
 	%Oh, and another todo: Maybe git rid of bootstrap, and instead just use the most basic of their rulesets, namely the ones without classes. And also get rid of all the CSS variables, I think (\emph{I'm} not using them..). ...Oh, and I should probably do this sooner rather than later..
 	%* I should add Bootstrap modules via a dev library instead.
+	%* Hm, I'm not sure I want to remove the global bootstrap style after all.. *No, I can find a way to make it a dev library, maybe where you call a function to.. ..Oh, or I could find a way to make it a not-quite-static dev lib where the dev lib are not defined by an external URL, but it is also only fetched on demand, and not "statically".. ..Yeah, so introducing "dynamic" "built-in" dev libs.. ..But then again, while dynamic dev libs like that is a good idea, it might be more handy to use functions to fetch whichever bootstrap library you want.. (10:29) ..Yeah, so maybe using a static 'css'.. nah, a 'bootstrap' dev lib, which then exports a function to fetch a desired version. Okay, I'll do that. And then we can always add dynamic/on-demand built-in dev libraries later on when needed..
+	%...Oh, I guess it would be even cooler to simply extend innerStyle to be able to use URLs for stylesheets, and then we simply just introduce a permissions property similar to "imageFrom", named "styleSheetFrom" or "cssFrom", and then only import the style sheet if needed.. Well, but then it might be easier to just have a general dev function to import a style sheet from an external URL. That way I'm also sure that the style sheet will be ready on the given render, namely since the user of the function has to await the returned promise.. (10:51) ..Yeah, that's what I will do. (It is also a more modular solution, since it doesn't require us to extend jsx_components.js.)
 
-	%- Add 'Object' and 'Number' etc. as global variables, such that e.g. Object.entries() can also be used without importing anything. And maybe I can even just let these objects be equal to the corresponding dev library namespace object.
+%- Add 'Object' and 'Number' etc. as global variables, such that e.g. Object.entries() can also be used without importing anything. And maybe I can even just let these objects be equal to the corresponding dev library namespace object. (Check)
 
-	%- Add publc repo links to metadata.js files.
+%- Add publc repo links to metadata.js files. (Check)
 
-	%Change the component class in em1.js (I believe) to be a derived just from the componentPath.
+%- Change the component class in em1.js (I believe) to be a derived just from the componentPath. (Check)
 
 	%- Impl. a command to add a foreign directory in server_interface.js.
 
-	%- Make fetch(), etc., call getAbsolutePath() automatically and remove a lot of abs() calls in the source code. Or rather, consider doing so..
+%- Make fetch(), etc., call getAbsolutePath() automatically and remove a lot of abs() calls in the source code. Or rather, consider doing so.. (Check)
 
 	%- Implement a setPermissions() function to reduce at least the "client permissions," and perhaps other permission flags as well.
+
+	%- Make a library for sending HTTP requests to external servers (not in the UP network) and receiving and parsing the replies. And implement the "clientRequestTo" permissions. (We also want to implement a server-side version of all this, but that can come later.)
+
 
 
 
@@ -15842,6 +15847,8 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %...(10:02) Hm, and this pitch is also for the first users that just want to build and extend apps like the SoMe app, namely since the IOU tokens become more worth when we can convince the users that if they keep it up and keep the interest, then eventually we can get a lot of money from the KickStarter-thing..
 
 %...(10:46) Obviously, the fact that users are in control over the algorithms, both in terms of the feeds and the rating values (and the order of the reviews and their moderation, etc.), the users can trust that they aren't getting cheated, and that the app(s) can evolve however they like it to, which means that it will surely become the most sought-after app in the end. ..(So trying to go together and fund an app where the users don't have this freedom will be in vein since that app will lose out to a user-programmable one.) (10:50)
+
+%... (13:18) Let me just underline how great it is, that I think I've solved the biggest problem that we are going to face, which is how do we get the early users to stay and keep being engaged? And the answer is probably simply: By making "IUO token" (special kind of corporate bond, i.e.) rewards each month or each week already at a very early stage (preferably even while still in alpha; as soon as possibly, preferably..).
 
 
 
