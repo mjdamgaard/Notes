@@ -10155,6 +10155,10 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 
 	%- Make a library for sending HTTP requests to external servers (not in the UP network) and receiving and parsing the replies. And implement the "clientRequestTo" permissions. (We also want to implement a server-side version of all this, but that can come later.)
 
+%- Fix a bug where the try-catch statement doesn't work inside an async function, at least not an async action (not awaited when this.do() is called). (Check) (By the way, Mozilla Firefox debugging tool has for some reason started failing me (and introducing wrapAsync() didn't help), but Chrome DevTools works, and I was able to find the cause of this bug.)
+
+	%-Fix a bug when an action is called (via this.do()) inside an onClick() callback function (in response to e.g. a button click) and that action throws an error, where the trace appended to the error shows the component whose action was called, but shows the onClick() arguments rather than the props as its "arguments" in the trace.
+
 
 
 
@@ -15865,6 +15869,51 @@ Let me also note that I want the scale to zoom out automatically if the user pla
 %..And then when a user-made "dev library" have been tested and reviewed, and when the admin has signed out (possibly handing over the admin privileges to a (trusted) user group), then we can declare that uploaded file to be a dev library that is okay for use, and then allow anyone to call it and use it as a "dev library".. (11:34) ..Oh, and since users can also upload "dev libraries" this way that implements a whole framework, like jQuery or React, I guess this also means that the users will get to use any framework that they like..:) (11:36) ..And if they use a compiled framework, then they should just compile before uploading, I guess..(:)) (11:37)
 
 %Oh, and the dev libraries can also.. ..Hm, maybe we should just set up special servers to use a sandbox around the whole "ajax server", which then allows the users to make calls to back-end, user-uploaded "dev libraries" as well. And then we just do the same thing here as in the front end, which is to allow user-uploaded "dev libraries" to be called once they have been thoroughly tested and reviewed (and when the admin has signed off). And that way, yeah, the user-uploaded "dev libraries" will also be able to be called server-side..(!..) (11:41)
+
+%...(12:27) Ah, and in terms of the "dev libaries" used to implement other frameworks, these also don't necessarily need to export any DevFunctions. They can also just export regular functions which other (user-uploaded) "dev libraries" then get to import.
+
+%(07.10.26, 8:41) Let me reserve a "framework" prop which will eventually be able to specify the framework that the component should use, if not the current one (my one, or any one that implements this prop). And maybe it could even be by just letting it take values of dev lib routes. But otherwise it can just be a string with some identifier specifying the framework.
+
+%I/we need to also at some point put uploading user-made dev libs into system, and make it so that the home app is able to decide which user-made dev libs are okay to import and which are not. (If wanting to use the text/javascript MIME type, maybe we can introduce a Prefer header parameter (/flag) that tells the server that using this MIME type is okay. But otherwise we might just use eval(), or maybe there's a way to give a <script> element a BLOB(/text) src attribute value.) And in the back end, we should implement a sandbox to allow superusers, who also have their browser in a sandbox, to try out new back-end dev libs, before they are greenlit (not by the home app of the clients, of course, but by the service provider) to be used regularly, outside of the sandbox.
+
+%Something else: I'm might start to focus the pitch more on the FPaaS thing, i.e. a serverless cloud where the end users finance it. (By the way, "user-financed" could also be a term to use, but I don't know..) (8:51) ..I need to write a reply to a Matrix thread, btw, and i might as well write a quick draft here: ..In a minute.. (8:53)
+%..(9:02) Well, I'm afriad that if I make this change, I will bury the important part of it that is the easiness with which users can create apps and modify other users' apps.. ..That's a big part of it, isn't it..
+
+%..(9:06) Oh, here's an idea: I the cloud version of the idea, i.e. where you use VMs *(perhaps, and maybe you use my "process tree" idea), couldn't you use difs to update.. Yeah, that would be possible.. ..Yeah, so maybe it would make sense to use GitHub as an offset to explain the idea, and then it might be easy to mention how the cloud should be able to serve each fork.. ..And as part of the problem/"pain" of the pitch, you include the fact that conventionally, one needs to choose a fork for a server, and the users aren't free to choose themselves.. (9:12)
+
+%..(9:16) Okay let me make a draft for my reply:
+
+%Overall problem/goal: Why are we all dependent on using Big Tech platforms like Facebook, LinkedIn, etc., especially in an age of AI? Couldn't we build open-source alternatives that does the same, and even more, and which gives the users complete control over the algorithms, the data governance, and the appearance and features of their apps?
+
+%Problem: Open-source programmers are able to use services like GitHub to share source code publically and fork the work of each other freely, and at a miniscule price. And the users of the software are free to install whichever fork they prefer on their machines (at least if they control the OS). However, if the program is an app that requires online servers, this freedom disappears. Now it costs a lot to get your new app or modification out to the users..
+%..Well, people might but to the federated solution here, where you have a single server but can use a lot of different apps.. (9:44) ..But yeah, this isn't enough when you want to implement new server-side algorithms, to aggregate the data in new ways.. ..(9:53) A good example is the AppView servers of the AT Protocol..
+
+%...(10:17) Maybe I'll just start writing a reply now..
+
+%(08.10.26, 9:23) I'm just reading about "progressive web apps," and it's exactly the thing I want. This is really nice to know..
+
+%(09.10.26, 9:04) I'm uncertain once again about what pitch I should pursue, and such. I think if you zoom out on the UP concept, of user-controlled servers, then the idea is not so hard to explain. Well, except that many people might find it out to picture the benefits. And it's a really solid concept. But then, when you talk about a "cloud," the idea is a bit far removed from my high-level version/implementation of the concept. So is it better to.. to zoom more in instead of zooming out, and pitch the idea really centered around a new SoMe app; that's another thing I'm considering.. ..Pitching it like a new BlueSky/Mastodon, but with a different concept around preventing a lock-in, and also taking it to a next level in terms of user control..
+%..Btw, a good example.. Wait, let me search about it first.. ...(9:39) My example is just that for some new algorithms, like an algorithm that suppresses negative comments, you might also need e.g. a button or a rating interface to rate/submit that a comment/post is negative/unconstructive. Of course, with BlueSky/atproto, you can technically shift to a different app. But my system allows you to do it more easily, creating a much smaller barrier for new features.. (9:41)
+
+%..But I think I will potentially be fighting a lot with the ingrained notion that the way out of lock-ins is to have open standards.. (9:43)
+
+%..Hm, so would it perhaps be a good idea to make it interoperable with the atproto as part of some of the next steps, and then let the off-AT-protocol possibilities be more secondary, maybe..?.. ..Well, PDSs store JSON data, so couldn't they just be implemented in the user-programmable layer?.. (9:51)
+
+%..Hm, if you made an UP atproto app, you could maybe.. ..have most of the back end be just the external atproto network..
+
+%(10:34) My big point about not being reliant on a central group of developers will mostly appeal to other developers (although I guess with vibe coding, it could appeal to more..)..
+
+%(10:48) Okay, what will it take to make users use my system, and what will make them stay, and when will they really reap the benefits? I've been thinking that we should attract users who wants to hack their own things first, and then make them stay around by offering my special "IOU token" kind of cooperate bonds.. ..And what I really hope will be the outcome, apart from a place where people can share tools.. and blogs.. is a user-friendly and -engagable, and non-factual-data-centered-only semantic web.. ..A semantic web of both facts \emph{and} (not least) opinions, and where all people can engage with it.. ..And then I really want structured discussions, where you can highlight contructive efforts, and not least efforts to lift the discussion up to a higher level by making summerizing reports at each node in the discussion tree/graph.. (10:54)
+
+%..And creating a constructive discussion-centered app could also be a potential pivot, if the UP programmable idea is hard to get going.. (10:55) ..(And the same goes for my "ratable tags"/semantic entity browser idea, potentially..)
+
+%(11:05) I've made a smart system. It's not perfect, I'm sure, but it's smart. A lot of the steps I've needed to take in order to make it work are not trivial, and cannot be overlooked, such as how the permessions are isolated between different components.. ..Well, which is smart in the prototyping phase, I guess, moreso than in the final apps.. ..Well, but then you have user profile pages that are websites.. ..(But people might say: you can just link to your own website..)
+
+%(11:18) It's hard to point to what exactly is bugging me.. ..But I feel stumped: like I really need to figure something out..
+
+%..(11:26) Hm, I just thought of an interesting point.. ...(11:39) It's about if you want to implement something new, maybe via a new "lexicon" or JSON-LD.. whatever.., then if the flagship app, such as BlueSky, don't also implement what you are doing, its users won't be able to use your new features. Only once the bsky app start supporting it. But with UP platforms, you can just implement support for it in both places, and users can quickly start to try out your new feature, both on your and on the main app, or on other apps.. (11:42) ..There's the problem that extensibility also means less interoperability, but not with UP nodes.. (11:43) ..Yeah, maybe that's actually a good way to explain the benefit..
+
+%..(11:51) One big benefit is that it removes the barrier when programming something new: You don't have to do it in a certain way, and learn about how to do it to maximize interoperability from the get go: things can be "fixed in post," i.e. things can be optimized for interoperability later on, not just by you, but more importantly by any other user. And another big benefit is that when you implement something new, like a new type of post, etc., you don't have to wait and hope that other nodes in the network will catch up, 'cause if they are UP nodes, you can just add your feature there as well and thus immediately implement the same support there as well. So it's decentralization that can still have consistent experiences across nodes, and it's also more forgiving to new programmers, who don't have to figure out how to optimize make their features for interoperability from the start, before they get their features out there. (11:57)
 
 
 
