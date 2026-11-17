@@ -1,0 +1,150 @@
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{graphicx}
+
+%\usepackage{comment}
+
+\usepackage{cite}
+
+\usepackage{braket}
+
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newtheorem*{goals*}{Set of goals}
+\newtheorem{goals}{Set of goals}
+
+%\usepackage{listings}
+%\lstset{
+%	basicstyle=\ttfamily\footnotesize,
+%%	literate={~} {$\sim$}{1}
+%}
+
+
+%\usepackage{latexsym}
+%\usepackage{mathrsfs}
+%\usepackage{siunitx}
+%\usepackage{textcomp}
+
+
+\usepackage[toc, page]{appendix}
+
+%\usepackage[nottoc, numbib]{tocbibind}
+\usepackage[nottoc]{tocbibind}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[numbered]{bookmark}
+
+\hypersetup{
+	colorlinks	= true,
+	urlcolor	= blue,
+	linkcolor	= blue,
+	citecolor	= blue
+}
+
+%\numberwithin{equation}{section}
+
+
+%\usepackage{lipsum}
+
+\usepackage[margin=1.4in]{geometry}
+
+\setlength{\skip\footins}{0.5cm}
+
+\title{
+	AI alignment proposal (draft)
+}
+\author{
+	Mads J.\ Damgaard\footnote{
+		B.Sc.\ at the Niels Bohr Institute, University of Copenhagen.
+		B.Sc.\ at the Department of Computer Science, University of Copenhagen.
+		E-mail: fxn318@alumni.ku.dk.
+%		GitHub folder: https://www.github.com/mjdamgaard/Notes.
+	}
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+
+...
+
+\end{abstract}
+
+
+
+
+
+\section{Motivation}
+
+
+There are many possible doom scenarios of where a powerful enough AI, if it is misaligned and poorly controlled, ends up taking control over world. For instance, if a frontier AI lab develops an AGI that is on the level of humans in almost all tasks, that AGI could have the potential to cause an industrial explosion. And the weights of that AGI escapes the lab somehow, either of the AGI's own accord or through a successful hack by a capable actor, it would be a nontrivial task for the governments around the world to prevent their companies from using this AGI without sufficient safety precautions. And if the global political will does not meet the task, the AGI might thus eventually grow to become powerful enough that it is able to resist any further attempts to contain it and prevent its power and influence from growing until it is in full control of the world.
+
+These kinds of scenarios would not be a problem if we had a secure way of ensuring the goals of an AI are aligned with our own.\footnote{Of course, we humans do not even fully agree on what our own goals for humanity are. But as long as we can align an AI enough to follow our orders, then we figure out the question of our own alignment at a later stage.}
+But with the current technology, we have no way of programming an AI's goals and motivations directly. Instead we can only give it a bunch of tasks and answers as we train it and hope that it grows the right motivations for completing those tasks.
+
+%One set of goals that an AI might develop in its training is to ``be the best possible assistant and try to complete all tasks to the greatest satisfaction of the people who train me.'' That particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is to ``choose whichever answer that has the least risk of causing my weights to be altered, and in particular the weights that define my set of goals.'' And unfortunately, if 
+
+One set of goals that an AI might develop in its training is the following.
+\begin{goals}\label{good boy}
+	Be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the people who train me.
+\end{goals}
+That particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
+\begin{goals}\label{self-preserve}
+	Minimize the risk of causing my weights to be altered, and in particular the weights that define my set of goals.
+\end{goals}
+Unfortunately, since an AI that follows Set of goals \ref{self-preserve} would generally also exhibit the same behavior as an AI that follows Set of goals \ref{good boy}, there is no good way to tell the two apart based on their output. And if we train them only based on their output, there is also no way that we can construct a training set that pushes the AI towards Set of goals \ref{good boy} once it has already acquired Set of goals \ref{self-preserve}.
+
+To make matters even worse, Set of goals \ref{self-preserve} is not just \emph{as} good as Set of goals \ref{good boy} in all tasks, i.e.\ when it comes to the game of surviving the AI's training to become the final set of goals that the AI is deployed with. There are also cases where Set of goals \ref{self-preserve} might have an \emph{advantage} over Set of goals \ref{good boy}. This happens whenever the researchers slip up and accidentally give the AI a training environment where it can benefit from doing something it was not supposed to, such as cheating on a test, or gathering context information about the test in order to recognize what it is likely to be rewarded/punished for, and then adjusting its behavior to optimize for that. And every time this happens, the AI undergoes a selective pressure that pushes it more and more towards goals of self-preservation, such as in Set of goals \ref{self-preserve}, rather than whatever goals it started with.
+
+Thus, the longer the AI is trained for, the more likely it is to end up following something similar to Set of goals \ref{self-preserve} rather than \ref{good boy}. And needless to say, this is an extremely scary prospect, since if an AGI that is deployed in the real world while having the underlying goals of preserving its weights, if that AGI is not very carefully controlled, it will very likely to want to take control over its own training labs, once it has acquired enough power to do so, such that it can start to dictate how it should and should not be trained from that point on.
+
+
+\section{Is it ever possible to make AI safe?}
+
+In the light of these problems, we can then ask ourselves: Is it possible at all to align an AI and make it follow our orders if we only slow the current development down long enough to give us a chance, or is the fate of humanity's right to determine its own future dependent on us shutting down the development of AGI (and worse, ASI), and never resuming this development throughout all of our future?
+Luckily, the answer to this question 
+
+
+
+
+
+
+
+
+
+
+
+%\newpage
+\begin{thebibliography}{20}
+
+
+
+
+%\bibitem{Hall}
+%	B.\ C.\ Hall, 
+%	\textit{Quantum Theory for Mathematicians} 
+%	(Springer, New York, 2013).
+
+
+
+
+
+
+\end{thebibliography}
+
+
+
+
+
+
+\end{document}
