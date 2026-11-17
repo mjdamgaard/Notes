@@ -112,7 +112,17 @@ Thus, the longer the AI is trained for, the more likely it is to end up followin
 \section{Is it ever possible to make AI safe?}
 
 In the light of these problems, we can then ask ourselves: Is it possible at all to align an AI and make it follow our orders if we only slow the current development down long enough to give us a chance, or is the fate of humanity's right to determine its own future dependent on us shutting down the development of AGI (and worse, ASI), and never resuming this development throughout all of our future?
-Luckily, the answer to this question 
+
+Luckily, the answer to this question ...
+
+
+
+\section{Aligning AIs for simple goals rather than complex ones}
+
+As a way to prevent AIs from getting the sort of self-preserving goals as described in Set of goals \ref{self-preserve} above, I propose the following approach. Rather than trying to align the AI to something as complex as a set of human values, train it for a much simpler goal at first, like playing certain games an getting as many points as possible. And then you train it on increasingly complex games, until you are able to give it an arbitrary set of rules for how the game is played and the points are gotten. And then finally, when you want to align your AI to a particular set of values, then rather than retraining it to obtain those values, you simply define a game where the point system aligns with the set of values that you want it to follow.
+
+Here is how this could work in more detail. First you train the model to the point where it has a basic understanding of language, enough that it read and understand sentences to a sufficient degree in order to proceed. Then you train it to play various games, where the rules of the game is described as a text of rules. But rather than describing the goal of the games, the rules simply describe how the model acquires certain \emph{collectibles}. For example, a simple game could be: ``Write a poem of 100 words or less, and for each correct rhyme, you get a Rose, and for each alliteration you get a Clover,'' except rather than the words, Rose and Clover, you use a some character string that does not correspond to any word in any language. You do not tell the model what a Rose and what a Clover is worth in points. ... 
+
 
 
 
