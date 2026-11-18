@@ -171,18 +171,43 @@ While this might make it sound easy, there are some potential pitfalls to be awa
 
 For instance, suppose you make them play a game as opponents and expects them to pursue some strategy for getting the most amount of points, call it Strategy A, but you overlook another viable strategy, B, where two or more AI instances decide to join forces and assign a supporting role to all but one instance, which is the instance that is set up for victory. Assuming that these roles are assigned at random each time, it is possible for instances that pursue Strategy B to get an advantage on average over instance that pursue Strategy A. And if playing this game enough times, this puts an evolutionary pressure for the AI to be able to recognize and pursue this Strategy B. However, this requires the AI instances to sacrifice themselves as soon as they have been assigned a supporting role, forgoing their own chance at winning the game, which violates Set of goals \ref{seek points} in its intended interpretation, and therefore puts an evolutionary pressure on the AI model to alter its set of goals.
 
-This example why you need to be very careful about the rules of the game whenever you train the AI instances in parallel. And there are also pitfalls related to training models sequentially, namely if the outcome of one training session has the ability to affect the scores given in a subsequent session. As an example, suppose that you have a number of different variants of the same model, each with a unique set of weights, and suppose you train each of these models on a separate kind of task. And in order to calibrate the threshold for the test, you first make a few sample runs in order to set a score threshold for when the models should be positively or negatively rewarded. If a subset of the different models are able to recognize that they are part of the sample runs, and are able to deliberate play dumb and reduce their abilities in these tests, they will ... Well, except that this strategy will only be reinforced if it is also active in the subsequent runs, and part of deciding the AI instances' output...
+%This example why you need to be very careful about the rules of the game whenever you train the AI instances in parallel. And there are also pitfalls related to training models sequentially, namely if the outcome of one training session has the ability to affect the scores given in a subsequent session. As an example, suppose that an AI finds a secret way to leave hints for how to solve the a given kind of problem for future versions of itself. If it is there are no hints left over from previous versions, it will not benefit from leaving a hint for a future version. ... Hm, maybe I'll just leave this out for now, it almost seems too niche..
+
+
+Another potential pitfall is when training the AI to use sub-agents. Here is it important to never allow a sub-agent to play a different set of rules than its parent. Otherwise you risk that an aligned AI creates misaligned versions of itself. A sub-agent must therefore always get the same objectives for the game as its parent...
+
+
+
+Lastly, it is important to give correct information about how the AI is evaluated in the games. For instance, if using an automatic scorer, this must be defined as part of the rules of the game, such that if the AI find a way to cheat said scorer to get a better evaluation, this must also count as getting more points in the game that they are playing. Thus, by making sure to carefully define how the points are given, you ...
+
+
+%Comment about being clear about the scorer, such that cheating, if possible is just technically part of the game, such that you never push the AI towards getting a different interpretation of the games and its goals.
+
+
+
+%Section about "collectibles".. ..Nah, make it an appendix, rather..
 
 
 
 
+
+\section{Usability benefits of point-seeking AIs}
+
+%Talk about it being easier to align, and talk about allowing prompts to also utilize weights (of course relative ones, such that you don't allow users to give more points than the AI's core objective statements, such as not encouraging violence, etc.), with a similar syntax (perhaps) as the one shown above.
+
+
+
+
+\section{A proposal to further reduce the risk of misalignment}
+
+The second proposal for reducing the risk of misalignment that I will ...
 
 
 
 
 
 %\newpage
-\begin{thebibliography}{20}
+\begin{thebibliography}{5}
 
 
 
