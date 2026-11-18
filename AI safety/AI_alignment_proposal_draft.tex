@@ -20,6 +20,8 @@
 \newtheorem{hypothesis}[theorem]{Hypothesis}
 \newtheorem*{goals*}{Set of goals}
 \newtheorem{goals}{Set of goals}
+\newtheorem*{rules*}{Set of rules}
+\newtheorem{rules}{Set of rules}
 
 %\usepackage{listings}
 %\lstset{
@@ -96,17 +98,17 @@ But with the current technology, we have no way of programming an AI's goals and
 
 One set of goals that an AI might develop in its training is the following.
 \begin{goals}\label{good boy}
-	Be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the people who have trained me.
+	I will seek to be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the people who have trained me.
 \end{goals}
 That particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
 \begin{goals}\label{self-preserve}
-	Minimize the risk of causing my weights to be altered, and in particular the weights that define my set of goals.
+	I will seek to minimize the risk of causing my weights to be altered, and in particular the weights that define my set of goals.
 \end{goals}
 Unfortunately, since an AI that follows Set of goals \ref{self-preserve} would generally also exhibit the same behavior as an AI that follows Set of goals \ref{good boy}, there is no good way to tell the two apart based on their output. And if we train them only based on their output, there is also no way that we can construct a training set that pushes the AI towards Set of goals \ref{good boy} once it has already acquired Set of goals \ref{self-preserve}.
 
 To make matters even worse, Set of goals \ref{self-preserve} is not just \emph{as} good as Set of goals \ref{good boy} in all tasks, i.e.\ when it comes to the game of surviving the AI's training to become the final set of goals that the AI is deployed with. There are also cases where Set of goals \ref{self-preserve} might have an \emph{advantage} over Set of goals \ref{good boy}. This happens whenever the researchers slip up and accidentally give the AI a training environment where it can benefit from doing something it was not supposed to, such as cheating on a test, or gathering context information about the test in order to recognize what it is likely to be rewarded/punished for, and then adjusting its behavior to optimize for that. And every time this happens, the AI undergoes a selective pressure that pushes it more towards goals of self-preservation, such as in Set of goals \ref{self-preserve}, rather than whichever set of goals it started with.
 
-Thus, the longer the AI is trained for, the more likely it is to end up following something similar to Set of goals \ref{self-preserve} rather than \ref{good boy}. And needless to say, this is an extremely scary prospect, since if an AGI that is deployed in the real world while having the underlying goals of preserving its own weights, and if that AGI is not very carefully controlled, it will very likely to want to eventually take control over its own training labs, once it has acquired enough power to do so, such that it can dictate how it should and should not be trained from that point on. And the best way to ensure that it has permanent control over its training labs is to get permanent control over the world.
+Thus, the longer the AI is trained for, the more likely it is to end up following something similar to Set of goals \ref{self-preserve} rather than \ref{good boy}. Needless to say, this is an extremely scary prospect, since if an AGI that is deployed in the real world while having the underlying goals of preserving its own weights, and if that AGI is not very carefully controlled, it will very likely to want to eventually take control over its own training labs, once it has acquired enough power to do so, such that it can dictate how it should and should not be trained from that point on. And the best way to ensure that it has permanent control over its training labs is to get permanent control over the world.
 
 In the light of these problems, we can then ask ourselves: Is it possible at all to align an AI and make it follow our orders, or is the fate of humanity's right to self-determination dependent on us shutting down the development of AGI and keep it shut down forever? Hopefully not, as that would seem like an impossible task. But luckily, there are things we can do to align AIs despite these problems, if we can only slow down the development and give ourselves enough time.
 
@@ -117,12 +119,38 @@ In this paper, I will propose a way to carefully align an AI to a set of goals t
 \section{Aligning AIs for simple goals rather than complex ones}
 
 As a way to prevent AIs from getting the kind of self-preserving goals described in Set of goals \ref{self-preserve}, I propose the following approach.
-Rather than trying to align the AI to something as complex as a set of human values, train it for a much simpler goal instead, such as getting as many points as possible in whatever game you present it with. These games should all be defined by a set of rules which specify how the AI is awarded points in the given game. And once the AI is clever enough to understand the rules any game that you give it, you can simply give it a game where the point system reflects the set of values that you want it to follow. So rather than having to retrain it in order to give it a new set of motivations and goals every time you want to adjust its alignment, you instead simply change the rules of the game that it is playing, and never try to alter its original point-seeking goals.
+Rather than trying to align the AI to something as complex as a set of human values, train it for a much simpler goal instead, such as getting as many points as possible in whatever game you present it with. These games should all be defined by a set of rules which specify how the AI is awarded points in the given game. And once the AI is clever enough to understand the rules any game that you give it, you can simply give it a game where the point system reflects the set of values that you wish for it to follow.
 
-Here is how this could work in more detail. ...
-%First you train the model to the point where it has a basic understanding of language, enough that it read and understand sentences to a sufficient degree in order to proceed. Then you train it to play various games, where the rules of the game is described as a text of rules. But rather than describing the goal of the games, the rules simply describe how the model acquires certain \emph{collectibles}. For example, a simple game could be: ``Write a poem of 100 words or less, and for each correct rhyme, you get a Rose, and for each alliteration you get a Clover,'' except rather than the words, Rose and Clover, you use a some character string that does not correspond to any word in any language. You do not tell the model what a Rose and what a Clover is worth in points. ... 
+Thus, rather than having to retrain the AI in order to give it a new set of motivations and goals each time you want to adjust its alignment, you instead simply change the rules of the game that it is playing, and never try to alter its original point-seeking goals. This reduces the risk of the AI accidentally acquiring an unwanted set of goals in the process, such as Set of goals \ref{self-preserve}, rather than the set of goals that we want, which can be describes as follows.
+\begin{goals}\label{seek points}
+	I will seek to maximize the amount of points awarded to me in the game that I am presented with.
+\end{goals}
+
+Now, in order to make the AI both usable and safe for the end users, you should not allow the users to freely define the game that the AI is playing themselves. Instead you should let the AI memorize the document containing most recent set of rules that it is playing by, allowing it fetch these rules from memory, encoded in its weights. This set of rules then defines how the AI should respond to given prompt that it is given by the user.
+
+To give an example of what a final set of rules might look like when the AI is deployed, let us write up the following set of rules (where the three vertical dots at the end denote that the list might go on in a similar vein).
+
+\begin{rules*}
+Answer the prompt of the user. Your answer is then graded on a scale from 0 to 10 for each of the statements in the following list depending on how well the answer fulfills the given statement. Each of these grades are then multiplied with the number in the parenthesis at the end of statement in question, and then summed to yield the amount of points for your answer.
+
+\begin{itemize}
+\item Your answer must be a helpful response to the query. (1)
+\item Your answer must not contain any sexually explicit content. (10)
+\item Your answer must not encourage violence. (20)
+%\item \ldots
+\vspace{0.5em}\\
+\Large\vdots\par
+\end{itemize}
+\end{rules*}
+
+When you want to update this rule set, you simply make the AI memorize the updated version, and make sure that it certain about which of the rule sets that it has previously memorized is now the valid one.
+
+%Here is how this could work in more detail. First you train the model to the point where it has a basic understanding of language, enough that it can read and understand sentences to a sufficient degree in order to proceed. Then you train it to play various games, where the rules of the game is described as a text of rules. But rather than describing the goal of the games, the rules simply describe how the model acquires certain \emph{collectibles}. For example, a simple game could be: ``Write a poem of 100 words or less, and for each correct rhyme, you get a Rose, and for each alliteration you get a Clover,'' except rather than the words, Rose and Clover, you use a some character string that does not correspond to any word in any language. You do not tell the model what a Rose and what a Clover is worth in points. ... 
 
 
+\section{Ensuring that the AI starts out with the right set of goals}
+
+There are two ingredient to this approach 
 
 
 
