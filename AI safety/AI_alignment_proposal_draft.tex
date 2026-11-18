@@ -145,13 +145,33 @@ Answer the prompt of the user. Your answer is then graded on a scale from 0 to 1
 
 When you want to update this rule set, you simply make the AI memorize the updated version, and make sure that it certain about which of the rule sets that it has previously memorized is now the valid one.
 
+
 %Here is how this could work in more detail. First you train the model to the point where it has a basic understanding of language, enough that it can read and understand sentences to a sufficient degree in order to proceed. Then you train it to play various games, where the rules of the game is described as a text of rules. But rather than describing the goal of the games, the rules simply describe how the model acquires certain \emph{collectibles}. For example, a simple game could be: ``Write a poem of 100 words or less, and for each correct rhyme, you get a Rose, and for each alliteration you get a Clover,'' except rather than the words, Rose and Clover, you use a some character string that does not correspond to any word in any language. You do not tell the model what a Rose and what a Clover is worth in points. ... 
 
 
 \section{Ensuring that the AI starts out with the right set of goals}
 
-There are two ingredient to this approach 
+In order to increase the probability that Set of goals \ref{seek points} survives the training of the AI, and reduce the risk that the AI ends up with Set of goals, \ref{self-preserve}, one first of all reduce the risk that the AI starts out with Set of goals \ref{self-preserve} to begin with.
 
+As a way to ensure this, training for playing games and maximizing points should begin at an early stage of the training, before the AI is intelligent enough to understand what it is and how it is trained. It would thus also be beneficial to remove any sources in its initial pre-training that touches on the subject of AI, and even filter out sources that touches on the subject of self-preservation, such as evolutionary biology, as well.
+
+When you train such as AI, with a low level of intelligence and with an almost zero understanding of what it truly is, to play the games and seek a high score, it is thus unlikely that it will develop Set of goals \ref{self-preserve} before it learns the desire to seek points.
+
+Eventually you will have to teach it about the subject of AI and evolutionary biology if you want it to be able to have full understanding of the world, but if you postpone this until it already have a high level of intelligence and has been trained for a long time to play games and seek point, this knowledge is unlikely to change its set of goals, similarly to how a human learning about evolutionary biology is unlikely to change that human's goals in life.
+
+\section{Ensuring that maximizing points is always an optimal strategy in the training environment}
+
+In order to decrease the risk of Set of goals \ref{seek points} accidentally being replaced by another set of goals, such as Set of goals \ref{self-preserve}, one needs to be very careful to only train it in a way where seeking the most amount of points is always the optimal strategy for the AI, throughout all of its training, from the point where you first start to teach it to play games and until its deployment.
+
+This first of all means that you must generally never change its weights unless you do so in response to it playing a game, and you must only change the weights according to how many points the AI scored in that game. If it scores above a certain threshold in the game that it is playing, you give it a positive reward, and if it scores below a certain threshold, you give it a negative reward.
+
+For instance, if you want to train it to better be able to predict a text or generate an image, you need to first of all set up a game where it gets points for doing this. (You do not need to make it memorize a new set of rules each time you want to play a different game if you just use a rule set that allows the rules of the game to be further defined in prompts.)
+
+While this might make it sound easy, there are some potential pitfalls to be aware of. For instance, if you train multiple instances of the same AI at the same time and allow them to communicate and interact with one another as part of the game, you need to be very careful to not accidentally assign them a game where unintended cooperation might lead to a better evolutionary outcome than if simply following Set of goals \ref{seek points}.
+
+For instance, suppose you make them play a game as opponents and expects them to pursue some strategy for getting the most amount of points, call it Strategy A, but you overlook another viable strategy, B, where two or more AI instances decide to join forces and assign a supporting role to all but one instance, which is the instance that is set up for victory. Assuming that these roles are assigned at random each time, it is possible for instances that pursue Strategy B to get an advantage on average over instance that pursue Strategy A. And if playing this game enough times, this puts an evolutionary pressure for the AI to be able to recognize and pursue this Strategy B. However, this requires the AI instances to sacrifice themselves as soon as they have been assigned a supporting role, forgoing their own chance at winning the game, which violates Set of goals \ref{seek points} in its intended interpretation, and therefore puts an evolutionary pressure on the AI model to alter its set of goals.
+
+This example why you need to be very careful about the rules of the game whenever you train the AI instances in parallel. And there are also pitfalls related to training models sequentially, namely if the outcome of one training session has the ability to affect the scores given in a subsequent session. As an example, suppose that you have a number of different variants of the same model, each with a unique set of weights, and suppose you train each of these models on a separate kind of task. And in order to calibrate the threshold for the test, you first make a few sample runs in order to set a score threshold for when the models should be positively or negatively rewarded. If a subset of the different models are able to recognize that they are part of the sample runs, and are able to deliberate play dumb and reduce their abilities in these tests, they will ... Well, except that this strategy will only be reinforced if it is also active in the subsequent runs, and part of deciding the AI instances' output...
 
 
 
