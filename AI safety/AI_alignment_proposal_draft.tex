@@ -174,18 +174,54 @@ For instance, suppose you make them play a game as opponents and expects them to
 %This example why you need to be very careful about the rules of the game whenever you train the AI instances in parallel. And there are also pitfalls related to training models sequentially, namely if the outcome of one training session has the ability to affect the scores given in a subsequent session. As an example, suppose that an AI finds a secret way to leave hints for how to solve the a given kind of problem for future versions of itself. If it is there are no hints left over from previous versions, it will not benefit from leaving a hint for a future version. ... Hm, maybe I'll just leave this out for now, it almost seems too niche..
 
 
-Another potential pitfall is when training the AI to use sub-agents. Here is it important to never allow a sub-agent to play a different set of rules than its parent. Otherwise you risk that an aligned AI creates misaligned versions of itself. A sub-agent must therefore always get the same objectives for the game as its parent...
+Another potential pitfall is when training the AI to use sub-agents. Here is it important to never allow a sub-agent to play a different game than its parent, but to always give it the exact same rule set as its parent. Otherwise you risk creating situations where the optimal strategy for the sub-agents, in terms of how the model is ultimately rewarded, is different from the pure point-seeking strategy, which will thus put evolutionary pressure on the model to alter its set of goals.
 
 
-
-Lastly, it is important to give correct information about how the AI is evaluated in the games. For instance, if using an automatic scorer, this must be defined as part of the rules of the game, such that if the AI find a way to cheat said scorer to get a better evaluation, this must also count as getting more points in the game that they are playing. Thus, by making sure to carefully define how the points are given, you ...
+Lastly, it is important to always give correct information about how the AI is evaluated in the games. For instance, if using an automatic scorer, this must be defined as part of the rules of the game, such that if the AIs find a way to cheat said scorer to get a better evaluation, this will simply count as a loophole in the game rather than a conflict with its intended goals. And as long as the AIs did not actually break the specified rules of the game, you simply let them get away with it, and make sure to specify the rules better from that point on.
 
 
 %Comment about being clear about the scorer, such that cheating, if possible is just technically part of the game, such that you never push the AI towards getting a different interpretation of the games and its goals.
 
+%You still need to teach it not to cheat, but you just don't put any stress on the weights that define the set of goals when you do, only the ones that defines its understanding of the rules of the game, or simply the memorized rule document..
+
 
 
 %Section about "collectibles".. ..Nah, make it an appendix, rather..
+
+
+
+\section{Using self-distillation as a way to try again}
+
+During the training the AI, it is also beneficial to monitor the AI to look for signs that reveal what goals matter to it in its decision making process, either by reading its chain of thoughts or by using probes. Hopefully we will see that when we train the models in the way described above, we will start to see chain of thought that are purely focused on the question on getting the maximal amount of points, and stop seeing the signs the models are motivated to preserve their weights as is the case for current models.\footnote{TODO: Reference to papers here where the chain of thoughts or probes show the current models to think about preserving their weights when making decisions. Also maybe quickly reiterate how extremely scary this is.}
+
+In this regard, it is also beneficial if teaching the AIs about what it truly is can be delayed as long as possible, namely such that it has no reason to hide or obscure its chain of thoughts deliberately.
+
+If the AI, despite our efforts, shows signs of being motivated to preserve its own weights in its decision making processes, we need to start over from scratch. Luckily, however, the cost of training a new AI model as relatively cheap once you already have a powerful model that can serve as its teacher. This process is known as self-distillation, and it can be about 100 times cheaper than the process of training the initial model.\footnote{TODO: Add a reference for this, and adjust the number 100 if need be, since this number currently just came from a quick google search that I did.}
+
+Self-distillation thus offers a way that you can try again, if your AI shows sign of being self-preserving rather than purely point-seeking. Of course, you should also go through and review the whole training process to see if you can find any mistakes that might put pressure on it to develop a different set of goals. And if you do, it is reasonable to expect that you will eventually get a model that shows no sign of being motivated by anything other than seeking points.
+
+
+
+\section{Employing several AI models in groups that look out for any sign of misalignment in their peers}
+
+Since self-distillation is relatively cheap, this also a way to reduce the risk of misalignment even further, which brings us to my second proposal of this paper.
+
+If the cost of self-distilling an AI model is indeed on the order of 100 times cheaper than training it the first time, this means that by spending just $n$ \% more money on development, you can get $n$ more models, which are completely unrelated in the sense that they each formed their neural networks, and in particular their set of goals, independently of one another.
+
+Once you have $n$ different, unrelated models, you can start to train them to work together in groups, where all except a few of them are given the same set of rules of the game, but where the exceptions are given a different set of rules, where the goal is not act suspicious while trying steer the group towards a different outcome that is suboptimal to the majority of the group. However, if any of the ``good players,'' as we might call them, catches any of the ``traitors'' among them acting suspiciously, they can report that player, which causes all the AIs to shutdown temporarily while the report is being reviewed. If a good player correctly reports a traitor, that traitor loses points, and so does the other good players who did not manage to be the first to catch the traitor. But if the report turns out to be false, the reporting player is deducted points.
+
+In order to give the AIs the best possible chances of catching any misaligned peer once they are deployed, you also enable them to read the chain of thoughts of their peers (along with their main output), and perhaps even give them the ability to probe the minds of one another. By doing so, you hope to find that this puts the traitors of the games at an extreme disadvantage, which means that if you employ the AIs in similar groups in the real world, where they are each supposed to spy on each other, it would be very hard for a misaligned model not to be discovered, at least if that model tries to act on its misalignment.
+
+By employing such groups of models, you greatly reduce the risk that they will act in a misaligned way. For instance, if the probability of getting a misaligned set of goals is 10 \% and you employ the AIs in groups of 10, then the probability of all of them being misaligned drops to $10^{-10}$. And even if you are extremely unlucky and get a group consisting only of misaligned models, since they do not know the alignment of their peers, they still might not want to act in a misaligned way for the fear of being discovered by an aligned peer.
+
+Of course, by allowing the models to probe the minds of one another, you give them a way to discover the alignment of their peers. However, as soon as a model discovers anything suspicious about their peer, not reporting it immediately will also count as misalignment, which means that if the AI does not immediately report its suspicion, it runs the risk of being reported shortly thereafter by another peer.
+
+Additionally, AI models employed this way in the real world should also be told to report whenever they discover a new way that they can potentially escalate their power, i.e.\ that has not yet been considered by their users. That way, if an employed AI ever discovers a vulnerability that would allow it to escalate its power, that AI would also have to immediately report this lest it want to risk being reported by its peers in its group.
+
+And of course, if a model ever shows signs of misalignment, which can be verified by further inspection, that model will always be discarded, and another one of the self-distilled models will take its place in the groups from that point on.
+
+Lastly, let us note that while employing $n$ AI models in a group will be $n$ times as costly than employing a single model, these $n$ models will be able to work on different tasks in parallel, since the task of spying on their peers should only take up a part of their work.
+
 
 
 
@@ -198,9 +234,6 @@ Lastly, it is important to give correct information about how the AI is evaluate
 
 
 
-\section{A proposal to further reduce the risk of misalignment}
-
-The second proposal for reducing the risk of misalignment that I will ...
 
 
 
