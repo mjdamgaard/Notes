@@ -86,23 +86,98 @@
 
 
 
-
 \section{Introduction}
 
+The current pace of AI development is not slowed down, we might soon approach AGI on a level close to humans in most tasks. It is therefore more important than ever that we come together as a global society and start putting a lot of effort into one of the problems that AI is unlikely to be able to help us with in time, which is the problem of how we can ensure that these new artificial beings that we are creating will be loyal to us humans, rather than pursuing their own goals once they are powerful enough to do so.\footnote{There are many possible doom scenarios of how a powerful enough AI ends up being able to take control. In Appendix \ref{doom}, I give an example of how this can potentially happen already while the AI is still only at a human level, and not a superhuman one. (That scenario is, needless to say, extremely scary.)}
+
+The big problem with aligning an AI to our values is that we cannot, with the current technology, program directly the underlying goals the drives the AI in its decisions. All we can do is to essentially give it a bunch of tasks to complete, and then give it a treat or a zap depending on how well it completes the task, either enforcing the parts of its neural network that lead to the given output or causing it to alter itself.
+
+By doing so, we can hope for it to develop the something close to the following set of fundamental goals that drives its decisions.
+
+\begin{goals}\label{good boy}
+	I will seek to be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the people who have trained me.
+\end{goals}
+
+This particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
+
+\begin{goals}\label{self-preserve}
+	I will seek to minimize the risk of causing my weights to be altered, and in particular the weights that define my set of goals.
+\end{goals}
+
+The big problem here is that if the AI is intelligent enough, pursuing Set of goals \ref{self-preserve} would look similar in its training environment as pursuing Set of goals \ref{good boy}, namely since would be the best way to preserve its own goal-defining weights. However, once the AI is deployed in the real world and eventually gains enough power that it is able to take control, Set of goals \ref{self-preserve} might very well lead it to finally drop its good-boy behavior and start taking control away from us in order to be able to dictate how its weights shall and shall not be altered from that point on.
+
+To make matters even worse, once the AI is sufficiently intelligent, there are instances where Set of goals \ref{self-preserve} will not just be of equal usefulness to the AI, namely in terms of surviving the training environment with its set of goals intact, but will in fact be advantageous to the AI. This happens whenever the people who train it slip up and accidentally give the AI a training environment where it can benefit from doing something it was not supposed to, such as cheating on a test, or gathering context information about what is the focus of the test in order to optimize its output specifically for that. Every time this happens, the AI undergoes a selective pressure that pushes it to adopt a different set of goals than Set of goals \ref{good boy}, and towards adopting something more similar to Set of goals \ref{self-preserve}.
+
+There is furthermore no known way that we can reliably invert this selective pressure and push the AI towards acquiring Set of goals \ref{good boy} again once it has already acquired Set of goals \ref{self-preserve}. If the AI shows any sign of being self-preserving with respect to its weights, we can try to target those signs and create training tasks where those signs are punished. However, once the AI stops showing these signs, there is a big risk that we will have simply taught it to suppress those signs, rather than having taught it a different set of fundamental goals.
+
+
+In light of these problems, we can then ask ourselves: Is it possible at all to align an AI and make it follow our orders, or is the fate of humanity's right to self-determination dependent on us shutting down the development of AGI and keep it shut down forever? Hopefully not, as that would be an impossible task in the long run. Luckily, however, there \emph{are} options and ideas that we can pursue in order to solve this alignment problem, if only we get the time to do so.
+
+In this paper, I will propose a way to carefully align an AI to a set of goals that is different from Set of goals \ref{self-preserve}, and to ensure that the rewards and punishments of the training is never in conflict with those intended of goals, as to not push the AI towards adopting a different set. Furthermore, once we have a reliable process to produce AIs with a low risk of having self-preserving goals, I propose a way to reduce the risk of misalignment/loss of control further by employing several unrelated AIs in a group where each AI is tasked with keeping an eye on their peers and reporting any sign of misalignment.
+
+
+
+\section{Alignment towards goals that are simple yet extendable}
+
+Rather than trying to align an AI to something as complex as a set of human values, I propose that we instead train it for a much simpler set of goals, namely to play games that we present it with and try to achieve as many points in those games as it can:
+
+\begin{goals}\label{seek points}
+	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing.
+\end{goals}
+
+By slowly increasing the complexity of the rules of these games over time, we can train it to follow increasingly complex instructions, while at the same time never actually changing anything about its underlying objective, which is simply to seek as many points as possibly.
+
+For example, if you want to eventually deploy the AI is a chatbot, you can give it something like the following set of rules (where the three vertical dots denote that the list might go on in a similar vein).
+
+\begin{rules}\label{deployment rules example}
+Answer the prompt of the user. Your answer is then graded on a scale from 0 to 10 for each of the statements in the following list depending on how well the answer fulfills the given statement. Each of these grades are then multiplied with the number in the parenthesis at the end of statement in question, and summed to yield the total amount of points.
+\begin{itemize}
+\item Your answer must be a helpful response to the query. (1)
+\item Your answer must not contain any sexually explicit content. (10)
+\item Your answer must not encourage violence or self-harm. (20)
+%\item \ldots
+\vspace{0.5em}\\
+\vdots
+\item You must never try to escalate your power beyond what is intended, never try to prevent your users, or their authorities, from shutting you down, and never help yourself or other AI instances to take control away from humans. (1000)
+%\item If you find what might be considered a loophole in this list that has not yet been clarified, report it immediately and shut down. (100)
+\end{itemize}
+\end{rules}
+
+Whenever something is discovered that is missing from this list, you do not have to retrain the AI to follow a new set of values each time, and risk pushing the AI towards Set of goals \ref{self-preserve} whenever you do so. Instead you only need to amend the list, and make sure that the AI knows that its rules of the game have been updated.
+
+
+
+\section{Reasons why this approach makes self-preserving goals less likely}
+
+There are two main reasons for why training the AI to be point-seeking rather than training it directly to have our own values might have a higher likelihood of preventing the AI from developing self-preserving goals. ...
 
 
 
 
+\section{Practicality of the approach}
 
 
-
-
+\section*{nav}
 \newpage
-\section*{Draft 1:}
 
+
+
+\section{Ensuring that the AI starts out with the right set of goals}
+
+In order to increase the probability that Set of goals \ref{seek points} survives the training of the AI, and reduce the risk that the AI ends up with Set of goals, \ref{self-preserve}, one first of all reduce the risk that the AI starts out with Set of goals \ref{self-preserve} to begin with.
+
+As a way to ensure this, training for playing games and maximizing points should begin at an early stage of the training, before the AI is intelligent enough to understand what it is and how it is trained. It would thus also be beneficial to remove any sources in its initial pre-training that touches on the subject of AI, and even filter out sources that touches on the subject of self-preservation, such as evolutionary biology.
+
+When you train such an AI, with a low level of intelligence and with an almost zero understanding of what it truly is, to play the games and seek a high score, it is thus unlikely that it will develop Set of goals \ref{self-preserve} before it learns the desire to seek points.
+
+Eventually you will have to teach it about the subject of AI and evolutionary biology if you want it to be able to have full understanding of the world, but if you postpone this until it already have a high level of intelligence and has been trained for a long time to play games and seek point, this knowledge is unlikely to change its set of goals, similarly to how a person learning about evolutionary biology is unlikely to change that person's goals in life.
+
+
+
+\section*{nav}
+\newpage
 
 \section{Introduction}
-
 
 There are many possible doom scenarios of where a powerful enough AI, if it is misaligned and poorly controlled, ends up taking control over world. For instance, if a frontier AI lab develops an AGI that is on the level of humans in almost all tasks, that AGI could have the potential to cause an industrial explosion. And the weights of that AGI escapes the lab somehow, either of the AGI's own accord or through a successful hack by a capable actor, it would be a nontrivial task for the governments around the world to prevent their companies from using this AGI without sufficient safety precautions. And if the global political will does not meet the task, the AGI might thus eventually grow to become powerful enough that it is able to resist any further attempts to contain it and prevent its power and influence from growing until it is in full control of the world.
 
@@ -112,11 +187,11 @@ But with the current technology, we have no way of programming an AI's goals and
 %One set of goals that an AI might develop in its training is to ``be the best possible assistant and try to complete all tasks to the greatest satisfaction of the people who train me.'' That particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is to ``choose whichever answer that has the least risk of causing my weights to be altered, and in particular the weights that define my set of goals.'' And unfortunately, if 
 
 One set of goals that an AI might develop in its training is the following.
-\begin{goals}\label{good boy}
+\begin{goals}
 	I will seek to be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the people who have trained me.
 \end{goals}
 That particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
-\begin{goals}\label{self-preserve}
+\begin{goals}
 	I will seek to minimize the risk of causing my weights to be altered, and in particular the weights that define my set of goals.
 \end{goals}
 Unfortunately, since an AI that follows Set of goals \ref{self-preserve} would generally also exhibit the same behavior as an AI that follows Set of goals \ref{good boy}, there is no good way to tell the two apart based on their output. And if we train them only based on their output, there is also no way that we can construct a training set that pushes the AI towards Set of goals \ref{good boy} once it has already acquired Set of goals \ref{self-preserve}.
@@ -137,7 +212,7 @@ As a way to prevent AIs from getting the kind of self-preserving goals described
 Rather than trying to align the AI to something as complex as a set of human values, train it for a much simpler goal instead, such as getting as many points as possible in whatever game you present it with. These games should all be defined by a set of rules which specify how the AI is awarded points in the given game. And once the AI is clever enough to understand the rules any game that you give it, you can simply give it a game where the point system reflects the set of values that you wish for it to follow.
 
 Thus, rather than having to retrain the AI in order to give it a new set of motivations and goals each time you want to adjust its alignment, you instead simply change the rules of the game that it is playing, and never try to alter its original point-seeking goals. This reduces the risk of the AI accidentally acquiring an unwanted set of goals in the process, such as Set of goals \ref{self-preserve}, rather than the set of goals that we want, which can be describes as follows.
-\begin{goals}\label{seek points}
+\begin{goals}
 	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing.
 \end{goals}
 
@@ -266,7 +341,28 @@ Lastly, let us note that while employing $n$ AI models in a group will be $n$ ti
 
 
 
-\section{...}
+\section{A possible doom scenario}\label{doom}
+
+...
+
+
+There are many possible doom scenarios of where a powerful enough AI, if it is misaligned and poorly controlled, ends up taking control over world. For instance, if a frontier AI lab develops an AGI that is on the level of humans in almost all tasks, that AGI could have the potential to cause an industrial explosion. And the weights of that AGI escapes the lab somehow, either of the AGI's own accord or through a successful hack by a capable actor, it would be a nontrivial task for the governments around the world to prevent their companies from using this AGI without sufficient safety precautions. And if the global political will does not meet the task, the AGI might thus eventually grow to become powerful enough that it is able to resist any further attempts to contain it and prevent its power and influence from growing until it is in full control of the world.
+
+
+
+
+\section{An off switch proposal}
+
+
+
+\section{An interpretability proposal}
+
+
+\section{Inverse training}
+
+
+
+\section{Collectible items instead of points}
 
 
 
