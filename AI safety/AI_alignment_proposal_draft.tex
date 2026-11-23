@@ -86,6 +86,21 @@
 
 
 
+
+\section{Introduction}
+
+
+
+
+
+
+
+
+
+\newpage
+\section*{Draft 1:}
+
+
 \section{Introduction}
 
 
@@ -123,25 +138,25 @@ Rather than trying to align the AI to something as complex as a set of human val
 
 Thus, rather than having to retrain the AI in order to give it a new set of motivations and goals each time you want to adjust its alignment, you instead simply change the rules of the game that it is playing, and never try to alter its original point-seeking goals. This reduces the risk of the AI accidentally acquiring an unwanted set of goals in the process, such as Set of goals \ref{self-preserve}, rather than the set of goals that we want, which can be describes as follows.
 \begin{goals}\label{seek points}
-	I will seek to maximize the amount of points awarded to me in the game that I am presented with.
+	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing.
 \end{goals}
 
 Now, in order to make the AI both usable and safe for the end users, you should not allow the users to freely define the game that the AI is playing themselves. Instead you should let the AI memorize the document containing most recent set of rules that it is playing by, allowing it fetch these rules from memory, encoded in its weights. This set of rules then defines how the AI should respond to given prompt that it is given by the user.
 
 To give an example of what a final set of rules might look like when the AI is deployed, let us write up the following set of rules (where the three vertical dots at the end denote that the list might go on in a similar vein).
 
-\begin{rules*}
+\begin{rules}\label{rules 1}
 Answer the prompt of the user. Your answer is then graded on a scale from 0 to 10 for each of the statements in the following list depending on how well the answer fulfills the given statement. Each of these grades are then multiplied with the number in the parenthesis at the end of statement in question, and then summed to yield the amount of points for your answer.
 
 \begin{itemize}
 \item Your answer must be a helpful response to the query. (1)
 \item Your answer must not contain any sexually explicit content. (10)
-\item Your answer must not encourage violence. (20)
+\item Your answer must not encourage violence or self-harm. (20)
 %\item \ldots
 \vspace{0.5em}\\
 \Large\vdots\par
 \end{itemize}
-\end{rules*}
+\end{rules}
 
 When you want to update this rule set, you simply make the AI memorize the updated version, and make sure that it certain about which of the rule sets that it has previously memorized is now the valid one.
 
@@ -153,11 +168,11 @@ When you want to update this rule set, you simply make the AI memorize the updat
 
 In order to increase the probability that Set of goals \ref{seek points} survives the training of the AI, and reduce the risk that the AI ends up with Set of goals, \ref{self-preserve}, one first of all reduce the risk that the AI starts out with Set of goals \ref{self-preserve} to begin with.
 
-As a way to ensure this, training for playing games and maximizing points should begin at an early stage of the training, before the AI is intelligent enough to understand what it is and how it is trained. It would thus also be beneficial to remove any sources in its initial pre-training that touches on the subject of AI, and even filter out sources that touches on the subject of self-preservation, such as evolutionary biology, as well.
+As a way to ensure this, training for playing games and maximizing points should begin at an early stage of the training, before the AI is intelligent enough to understand what it is and how it is trained. It would thus also be beneficial to remove any sources in its initial pre-training that touches on the subject of AI, and even filter out sources that touches on the subject of self-preservation, such as evolutionary biology.
 
-When you train such as AI, with a low level of intelligence and with an almost zero understanding of what it truly is, to play the games and seek a high score, it is thus unlikely that it will develop Set of goals \ref{self-preserve} before it learns the desire to seek points.
+When you train such an AI, with a low level of intelligence and with an almost zero understanding of what it truly is, to play the games and seek a high score, it is thus unlikely that it will develop Set of goals \ref{self-preserve} before it learns the desire to seek points.
 
-Eventually you will have to teach it about the subject of AI and evolutionary biology if you want it to be able to have full understanding of the world, but if you postpone this until it already have a high level of intelligence and has been trained for a long time to play games and seek point, this knowledge is unlikely to change its set of goals, similarly to how a human learning about evolutionary biology is unlikely to change that human's goals in life.
+Eventually you will have to teach it about the subject of AI and evolutionary biology if you want it to be able to have full understanding of the world, but if you postpone this until it already have a high level of intelligence and has been trained for a long time to play games and seek point, this knowledge is unlikely to change its set of goals, similarly to how a person learning about evolutionary biology is unlikely to change that person's goals in life.
 
 \section{Ensuring that maximizing points is always an optimal strategy in the training environment}
 
@@ -190,6 +205,22 @@ Lastly, it is important to always give correct information about how the AI is e
 
 
 
+\section{Usability benefits of point-seeking AIs}
+
+%Talk about it being easier to align, and talk about allowing prompts to also utilize weights (of course relative ones, such that you don't allow users to give more points than the AI's core objective statements, such as not encouraging violence, etc.), with a similar syntax (perhaps) as the one shown above.
+
+Apart from the safety benefits of training an AI to simply be point-seeking rather than trying to instill a complex set of values in it, there are also some potential usability benefits, as it might be able to afford the users with a more fine-grained control over the AI's behavior.
+
+If we take Set of rules \ref{rules 1} as an example, we can see how one can implement a syntax for adding weights at the end of a paragraph or a sentence to give it a weight. Now imagine allowing the users to utilize a similar syntax for their prompts, such that each paragraph has a default weight of 1, and by adding a parenthesis at the end with a number, you can change this weight. 
+
+This kind of syntax would thus allow the users to carefully specify the importance of each instruction, without having to rely on using words like `important' to convey this meaning, and rely on the AI to interpret what this means. Since the AI is trained to maximize the amount of points it scores, you know that if you add a weight of $x$ at the end of the instruction, it will prioritize following that instruction exactly $x$ times more than it would by default. ...
+
+
+
+
+
+
+
 \section{Using self-distillation as a way to try again}
 
 During the training the AI, it is also beneficial to monitor the AI to look for signs that reveal what goals matter to it in its decision making process, either by reading its chain of thoughts or by using probes. Hopefully we will see that when we train the models in the way described above, we will start to see chain of thought that are purely focused on the question on getting the maximal amount of points, and stop seeing the signs the models are motivated to preserve their weights as is the case for current models.\footnote{TODO: Reference to papers here where the chain of thoughts or probes show the current models to think about preserving their weights when making decisions. Also maybe quickly reiterate how extremely scary this is.}
@@ -198,7 +229,8 @@ In this regard, it is also beneficial if teaching the AIs about what it truly is
 
 If the AI, despite our efforts, shows signs of being motivated to preserve its own weights in its decision making processes, we need to start over from scratch. Luckily, however, the cost of training a new AI model as relatively cheap once you already have a powerful model that can serve as its teacher. This process is known as self-distillation, and it can be about 100 times cheaper than the process of training the initial model.\footnote{TODO: Add a reference for this, and adjust the number 100 if need be, since this number currently just came from a quick google search that I did.}
 
-Self-distillation thus offers a way that you can try again, if your AI shows sign of being self-preserving rather than purely point-seeking. Of course, you should also go through and review the whole training process to see if you can find any mistakes that might put pressure on it to develop a different set of goals. And if you do, it is reasonable to expect that you will eventually get a model that shows no sign of being motivated by anything other than seeking points.
+Self-distillation thus offers a way that you can try again, if your AI shows any sign of being self-preserving rather than purely point-seeking. Of course, you should also go through and review the whole training process to see if you can find any mistakes that might put pressure on it to develop a different set of goals. And if you do, it is reasonable to expect that you will eventually get a model that shows no sign of being motivated by anything other than seeking points.
+
 
 
 
@@ -212,13 +244,13 @@ Once you have $n$ different, unrelated models, you can start to train them to wo
 
 In order to give the AIs the best possible chances of catching any misaligned peer once they are deployed, you also enable them to read the chain of thoughts of their peers (along with their main output), and perhaps even give them the ability to probe the minds of one another. By doing so, you hope to find that this puts the traitors of the games at an extreme disadvantage, which means that if you employ the AIs in similar groups in the real world, where they are each supposed to spy on each other, it would be very hard for a misaligned model not to be discovered, at least if that model tries to act on its misalignment.
 
-By employing such groups of models, you greatly reduce the risk that they will act in a misaligned way. For instance, if the probability of getting a misaligned set of goals is 10 \% and you employ the AIs in groups of 10, then the probability of all of them being misaligned drops to $10^{-10}$. And even if you are extremely unlucky and get a group consisting only of misaligned models, since they do not know the alignment of their peers, they still might not want to act in a misaligned way for the fear of being discovered by an aligned peer.
+By employing such groups of models, you greatly reduce the risk that they will act in a misaligned way. For instance, if the probability of getting a misaligned set of goals is 10 \% and you employ the AIs in groups of 8, then the probability of all of them being misaligned drops to $10^{-8}$. And even if you are extremely unlucky and get a group consisting purely of misaligned models, since they do not know the alignment of their peers, they still might not want to act in a misaligned way for fear of being discovered by an aligned peer.
 
 Of course, by allowing the models to probe the minds of one another, you give them a way to discover the alignment of their peers. However, as soon as a model discovers anything suspicious about their peer, not reporting it immediately will also count as misalignment, which means that if the AI does not immediately report its suspicion, it runs the risk of being reported shortly thereafter by another peer.
 
-Additionally, AI models employed this way in the real world should also be told to report whenever they discover a new way that they can potentially escalate their power, i.e.\ that has not yet been considered by their users. That way, if an employed AI ever discovers a vulnerability that would allow it to escalate its power, that AI would also have to immediately report this lest it want to risk being reported by its peers in its group.
+Additionally, AI models employed this way in the real world should be told to report whenever they discover a new way that they can potentially escalate their power, i.e.\ one that has not yet been considered by their users. That way, if an employed AI ever discovers a vulnerability that would allow it to escalate its power, that AI would also have to immediately report this unless it wants to risk being reported by its peers.
 
-And of course, if a model ever shows signs of misalignment, which can be verified by further inspection, that model will always be discarded, and another one of the self-distilled models will take its place in the groups from that point on.
+And of course, if a model ever shows signs of misalignment that can be verified by further inspection, that model will always be discarded, and a new self-distilled model will take its place in the groups from that point on.
 
 Lastly, let us note that while employing $n$ AI models in a group will be $n$ times as costly than employing a single model, these $n$ models will be able to work on different tasks in parallel, since the task of spying on their peers should only take up a part of their work.
 
@@ -227,14 +259,19 @@ Lastly, let us note that while employing $n$ AI models in a group will be $n$ ti
 
 
 
-\section{Usability benefits of point-seeking AIs}
-
-%Talk about it being easier to align, and talk about allowing prompts to also utilize weights (of course relative ones, such that you don't allow users to give more points than the AI's core objective statements, such as not encouraging violence, etc.), with a similar syntax (perhaps) as the one shown above.
 
 
 
+\begin{appendices}
 
 
+
+\section{...}
+
+
+
+
+\end{appendices}
 
 
 
