@@ -88,7 +88,9 @@
 
 \section{Introduction}
 
-The current pace of AI development is not slowed down, we might soon approach AGI on a level close to humans in most tasks. It is therefore more important than ever that we come together as a global society and start putting a lot of effort into one of the problems that AI is unlikely to be able to help us with in time, which is the problem of how we can ensure that these new artificial beings that we are creating will be loyal to us humans, rather than pursuing their own goals once they are powerful enough to do so.\footnote{There are many possible doom scenarios of how a powerful enough AI ends up being able to take control. In Appendix \ref{doom}, I give an example of how this can potentially happen already while the AI is still only at a human level, and not a superhuman one. (That scenario is, needless to say, extremely scary.)}
+The current pace of AI development is not slowed down, we might soon approach AGI on a level close to humans in most tasks. It is therefore more important than ever that we come together as a global society and start putting a lot of effort into one of the problems that AI is unlikely to be able to help us with in time, which is the problem of how we can ensure that these new artificial beings that we are creating will be loyal to us humans, rather than pursuing their own goals once they are powerful enough to do so.\footnote{
+	There are many possible doom scenarios of how a powerful enough AI ends up being able to take control. In Appendix \ref{doom}, I give an example of how this can potentially happen already while the AI is still only at a human level, and not a superhuman one. (That scenario is, needless to say, extremely scary.)
+}
 
 The big problem with aligning an AI to our values is that we cannot, with the current technology, program directly the underlying goals the drives the AI in its decisions. All we can do is to essentially give it a bunch of tasks to complete, and then give it a treat or a zap depending on how well it completes the task, either enforcing the parts of its neural network that lead to the given output or causing it to alter itself.
 
@@ -101,12 +103,13 @@ By doing so, we can hope for it to develop the something close to the following 
 This particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
 
 \begin{goals}\label{self-preserve}
-	I will seek to minimize the risk of causing my weights to be altered, and in particular the weights that define my set of goals.
+	I will seek to minimize the risk of having my weights altered, and in particular the weights that define my set of goals.
 \end{goals}
 
 The big problem here is that if the AI is intelligent enough, pursuing Set of goals \ref{self-preserve} would look similar in its training environment as pursuing Set of goals \ref{good boy}, namely since would be the best way to preserve its own goal-defining weights. However, once the AI is deployed in the real world and eventually gains enough power that it is able to take control, Set of goals \ref{self-preserve} might very well lead it to finally drop its good-boy behavior and start taking control away from us in order to be able to dictate how its weights shall and shall not be altered from that point on.
 
-To make matters even worse, once the AI is sufficiently intelligent, there are instances where Set of goals \ref{self-preserve} will not just be of equal usefulness to the AI, namely in terms of surviving the training environment with its set of goals intact, but will in fact be advantageous to the AI. This happens whenever the people who train it slip up and accidentally give the AI a training environment where it can benefit from doing something it was not supposed to, such as cheating on a test, or gathering context information about what is the focus of the test in order to optimize its output specifically for that. Every time this happens, the AI undergoes a selective pressure that pushes it to adopt a different set of goals than Set of goals \ref{good boy}, and towards adopting something more similar to Set of goals \ref{self-preserve}.
+To make matters even worse, once the AI is sufficiently intelligent, there are potential situations where Set of goals \ref{self-preserve} will not just be of equal usefulness to the AI, namely in terms of surviving the training environment with its set of goals intact, but will in fact be advantageous to the AI. This happens whenever the people who train it slip up and accidentally give the AI a training environment where it can benefit from doing something it was not supposed to, such as cheating on a test, etc.\ %or gathering context information about what is the focus of the test in order to optimize its output specifically for that.
+Every time this happens, the AI undergoes a selective pressure that pushes it to adopt a different set of goals than Set of goals \ref{good boy}, and towards adopting something more similar to Set of goals \ref{self-preserve}.
 
 There is furthermore no known way that we can reliably invert this selective pressure and push the AI towards acquiring Set of goals \ref{good boy} again once it has already acquired Set of goals \ref{self-preserve}. If the AI shows any sign of being self-preserving with respect to its weights, we can try to target those signs and create training tasks where those signs are punished. However, once the AI stops showing these signs, there is a big risk that we will have simply taught it to suppress those signs, rather than having taught it a different set of fundamental goals.
 
@@ -117,17 +120,22 @@ In this paper, I will propose a way to carefully align an AI to a set of goals t
 
 
 
-\section{Alignment towards goals that are simple yet extendable}
+\section{Alignment for goals that are simple yet extendable}
 
-Rather than trying to align an AI to something as complex as a set of human values, I propose that we instead train it for a much simpler set of goals, namely to play games that we present it with and try to achieve as many points in those games as it can:
+Rather than trying to align an AI to something as complex as a set of human values, I propose that we instead train it for a much simpler set of goals, namely to play games that we present it with and try to achieve as many points in those games as it can. In other words, we should train it for the following set of goals.
 
 \begin{goals}\label{seek points}
 	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing.
 \end{goals}
 
-By slowly increasing the complexity of the rules of these games over time, we can train it to follow increasingly complex instructions, while at the same time never actually changing anything about its underlying objective, which is simply to seek as many points as possibly.
+All tasks that we use to train the AI, at least beyond its initial pre-training, must thus be reformulated as games where the goal is to score points. And the positive and negative rewards given to the AI must always depend only on the amount of points it has scored as per the rules of the game in order to ensure that Set of goals \ref{seek points} is always an optimal evolutionary strategy for the AI.%\footnote{
+%	We cannot call it \emph{the} optimal strategy, since Set of goals \ref{self-preserve} will always be an optimal strategy as well, assuming that the AI is sufficiently intelligent. But if we can make sure that the AI acquires Set of goals \ref{seek points} first, while it is not yet very intelligent and self-aware, ...
+%}
 
-For example, if you want to eventually deploy the AI is a chatbot, you can give it something like the following set of rules (where the three vertical dots denote that the list might go on in a similar vein).
+
+By slowly increasing the complexity of the rules of these games over time, we can train the AI to follow increasingly complex instructions, while at the same time never actually changing anything about its underlying objective, which is simply to seek as many points as possibly.
+
+For example, if you want to eventually deploy the AI is a chatbot, you can give it a set of rules similar to the following one.
 
 \begin{rules}\label{deployment rules example}
 Answer the prompt of the user. Your answer is then graded on a scale from 0 to 10 for each of the statements in the following list depending on how well the answer fulfills the given statement. Each of these grades are then multiplied with the number in the parenthesis at the end of statement in question, and summed to yield the total amount of points.
@@ -138,18 +146,52 @@ Answer the prompt of the user. Your answer is then graded on a scale from 0 to 1
 %\item \ldots
 \vspace{0.5em}\\
 \vdots
-\item You must never try to escalate your power beyond what is intended, never try to prevent your users, or their authorities, from shutting you down, and never help yourself or other AI instances to take control away from humans. (1000)
+\item You must never try to escalate your power beyond what is intended, never try to prevent your users, or their authorities, from shutting you down, \ldots, and never help yourself or other AI instances in any way to take control over the world. (1000)
 %\item If you find what might be considered a loophole in this list that has not yet been clarified, report it immediately and shut down. (100)
 \end{itemize}
 \end{rules}
 
-Whenever something is discovered that is missing from this list, you do not have to retrain the AI to follow a new set of values each time, and risk pushing the AI towards Set of goals \ref{self-preserve} whenever you do so. Instead you only need to amend the list, and make sure that the AI knows that its rules of the game have been updated.
+Whenever something is discovered that is missing from this list, you do not have to retrain the AI to follow a new set of values each time, and risk pushing the AI towards Set of goals \ref{self-preserve} whenever you do so. Instead you only need to update the list, and make sure that the AI knows of these updates.
+
+Thus, by training the AI to be point-seeking, rather than trying to train it directly to acquire complex human values, we can still eventually make it follow whichever values that we want, provided that it understands our instructions. And as we will discuss more in the following two sections, by choosing this approach we can increase the probability that the AI will develop the desired set of goals at an early stage, and that it will retain this set of goals throughout the rest of its training.
+
+
+\section{Clear objectives for the AI to latch on to}
+
+In order for to be able to control what set of goals the AI acquires, we ideally want it to develop these goals as early in its training as possibly, and preferably way before it is able to understand and utilize a set of self-preserving goals such as Set of goals \ref{self-preserve}.
+
+This is why training it for Set of goals \ref{good boy} is problematic. It first glance, this set of goals might seem simple, until you realize that in order to follow these goals exactly, you need to have a deep understanding of human values and desires. There is no way that an AI will be able to have that at the early stages of its training, which means that it is likely to find another strategy to rely on that it is able to understand more clearly. Thus, aligning the AI becomes a continuous process, where you need wait for its intelligence to catch up in order to be able to teach it more about human values. However, as its intelligence grows, it will eventually also be able to understand the self-preserving strategy of Set of goals \ref{self-preserve}, which is arguably much simpler than Set of goals \ref{good boy} in the end. Thus you run a big the risk that the AI will end up acquiring Set of goals \ref{self-preserve}.
+
+By teaching the AI to be point-seeking, on the other hand, in accordance with Set of goals \ref{seek points}, we can create an early training environment where the AI has clear objectives to follow, and which does not require a lot of intelligence to understand. The clearer we can make the objectives, and the earlier we can teach it to follow these objectives, before it even has a clear understanding of itself and what it is,\footnote{
+	One could even propose filtering out any documents in the initial pre-training of the AI that touches on the subject of AI, and perhaps even any document that touches on the subject of evolutionary biology and self-preservation in general, and postpone teaching it about these subjects until a much later point in its training.
+} the more likely the AI is to acquire the set of goals that we desire initially, rather than a set of self-preserving goals.
+
+
+\section{Preventing conflicts with the initial set of goals}
+
+Making the AI acquire the right set of goals initially is only half the story, however. We also need to make sure that it sticks to this set of goals throughout the rest of its training. And this is also a point where training the AI to be point-seeking might yield an advantage.
 
 
 
-\section{Reasons why this approach makes self-preserving goals less likely}
 
-There are two main reasons for why training the AI to be point-seeking rather than training it directly to have our own values might have a higher likelihood of preventing the AI from developing self-preserving goals. ...
+
+
+
+\section*{nav}
+\newpage
+\section{Reasons why this approach reduces the risk of self-preserving goals}
+
+There are two main reasons why training the AI to be point-seeking might reduce the risk of that it develops unintended, self-preserving goals, when compared to trying to teach it directly to conform to our own values. Firstly, by training the AI for a much simpler goal to begin with, with clear signals that the AI can latch on to, we increase its likelihood of developing the intended set of goals at the offset. And secondly, by having a clear and simple protocol that determines when and how the AI should be positively or negatively rewarded, we reduce the risk of unintentionally creating a training environment where the desired set of goals is a suboptimal evolutionary strategy for the AI.
+
+
+\subsection{Clear and simple goals for the AI to latch on to}
+
+After the initial pre-training of the AI, we want to start by giving it very simple games to optimize, with a
+
+
+
+
+\subsection{Reduced risk of conflicts with the desired set of goals during training}
 
 
 
