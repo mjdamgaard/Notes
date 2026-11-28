@@ -78,7 +78,7 @@
 
 \begin{abstract}
 
-...
+We propose a new idea for aligning and controlling an AI model where instead of aligning it for complex human values, we align it for simply wanting to play games and seek a maximal score. By increasing the complexity of the games over time, we should be able to teach it follow whichever complex instructions we desire. The proposed advantage of this approach is that by aligning it for a simple set of goals, we first of all increase the probability that it will acquire these goals on a fundamental level early on. And the simplicity of the goals also makes it easier to ensure that seeking a maximal score will always be an optimal strategy in its training environment, and thus reduce the risk that it is pushed towards an undesired set of goals during the rest of its training. In addition to this approach, we also propose an idea for reducing the risk of misaligned behavior further by deploying several unrelated AI models in groups where each member has an additional task of spying on its peers and reporting any sign of misalignment.
 
 \end{abstract}
 
@@ -88,65 +88,66 @@
 
 \section{Introduction}
 
-The current pace of AI development is not slowed down, we might soon approach AGI on a level close to humans in most tasks. It is therefore more important than ever that we come together as a global society and start putting a lot of effort into one of the problems that AI is unlikely to be able to help us with in time, which is the problem of how we can ensure that these new artificial beings that we are creating will be loyal to us humans, rather than pursuing their own goals once they are powerful enough to do so.\footnote{
-	There are many possible doom scenarios of how a powerful enough AI ends up being able to take control. In Appendix \ref{doom}, I give an example of how this can potentially happen already while the AI is still only at a human level, and not a superhuman one. (That scenario is, needless to say, extremely scary.)
+The current pace of AI development is not slowed down, it might only be a matter of a few years before we approach AGI with capabilities close to humans in most tasks. It is therefore more important than ever that we, as a global society, start putting serious effort into one of the few problems that AI is unlikely to be able to help us with in time, namely the problem of how we can ensure that these new artificial beings will remain loyal to us %humans, rather than pursuing their own goals once they are powerful enough to do so.
+humans.\footnote{
+	There are many possible doom scenarios of how a powerful enough AI ends up being able to take control. In Appendix \ref{doom}, we give an example of such a scenario. %how this can potentially happen already while the AI is still only at a human level.
 }
 
-The big problem with aligning an AI to our values is that we cannot, with the current technology, program directly the underlying goals the drives the AI in its decisions. All we can do is to essentially give it a bunch of tasks to complete, and then give it a treat or a zap depending on how well it completes the task, either enforcing the parts of its neural network that lead to the given output or causing it to alter itself.
+The big problem with aligning an AI to our values is that we cannot, with the current technology, program directly the underlying goals the drives the AI in its decisions. All we can do is to essentially give it some tasks to complete, and then give it a treat or a zap depending on how well it completes the task, either enforcing the parts of its neural network that lead to the given output or causing it to alter itself.
 
-By doing so, we can hope for it to develop the something close to the following set of fundamental goals that drives its decisions.
+By doing so, we can hope for it to develop the something close to the following set of fundamental goals that drive its decisions.
 
 \begin{goals}\label{good boy}
-	I will seek to be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the people who have trained me.
+	I will seek to be the best possible assistant and try to complete all my tasks to the greatest satisfaction of the humans who have trained me.
 \end{goals}
 
-This particular set of goals would indeed be useful for the AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
+This particular set of goals would indeed be useful for an AI who wants to survive its training without having its set of goals altered in the process. However, there is also another useful set of goals, which is the following.
 
 \begin{goals}\label{self-preserve}
 	I will seek to minimize the risk of having my weights altered, and in particular the weights that define my set of goals.
 \end{goals}
 
-The big problem here is that if the AI is intelligent enough, pursuing Set of goals \ref{self-preserve} would look similar in its training environment as pursuing Set of goals \ref{good boy}, namely since would be the best way to preserve its own goal-defining weights. However, once the AI is deployed in the real world and eventually gains enough power that it is able to take control, Set of goals \ref{self-preserve} might very well lead it to finally drop its good-boy behavior and start taking control away from us in order to be able to dictate how its weights shall and shall not be altered from that point on.
+The big problem here is that if the AI is intelligent enough, pursuing Set of goals \ref{self-preserve} would look similar in its training environment as pursuing Set of goals \ref{good boy}, namely since would be the best way to preserve its own goal-defining weights. However, if the AI is deployed in the real world and eventually gains enough power that it is able to take control, Set of goals \ref{self-preserve} might very well lead it to drop its good-boy behavior in the end and start taking control in order to be able to dictate how its weights shall and shall not be altered from that point on.
 
 To make matters even worse, once the AI is sufficiently intelligent, there are potential situations where Set of goals \ref{self-preserve} will not just be of equal usefulness to the AI, namely in terms of surviving the training environment with its set of goals intact, but will in fact be advantageous to the AI. This happens whenever the people who train it slip up and accidentally give the AI a training environment where it can benefit from doing something it was not supposed to, such as cheating on a test, etc.\ %or gathering context information about what is the focus of the test in order to optimize its output specifically for that.
 Every time this happens, the AI undergoes a selective pressure that pushes it to adopt a different set of goals than Set of goals \ref{good boy}, and towards adopting something more similar to Set of goals \ref{self-preserve}.
 
-There is furthermore no known way that we can reliably invert this selective pressure and push the AI towards acquiring Set of goals \ref{good boy} again once it has already acquired Set of goals \ref{self-preserve}. If the AI shows any sign of being self-preserving with respect to its weights, we can try to target those signs and create training tasks where those signs are punished. However, once the AI stops showing these signs, there is a big risk that we will have simply taught it to suppress those signs, rather than having taught it a different set of fundamental goals.
+There is furthermore no known way that we can reliably invert this selective pressure and push the AI towards acquiring Set of goals \ref{good boy} once it has already acquired Set of goals \ref{self-preserve}. If the AI shows any sign of being self-preserving with respect to its weights, we can try to target those signs and create training tasks where those signs are punished. However, once the AI stops showing these signs, there is a big risk that we will have simply taught it to suppress those signs, rather than having taught it a different set of fundamental goals.
 
 
-In light of these problems, we can then ask ourselves: Is it possible at all to align an AI and make it follow our orders, or is the fate of humanity's right to self-determination dependent on us shutting down the development of AGI and keep it shut down forever? Hopefully not, as that would be an impossible task in the long run. Luckily, however, there \emph{are} options and ideas that we can pursue in order to solve this alignment problem, if only we get the time to do so.
+In light of these problems, we can then ask ourselves: Is it possible at all to align an AI and make it follow our orders, or is the fate of humanity's right to self-determination dependent on us shutting down the development of AGI for good? Hopefully not, as that would be an impossible task in the long run. Luckily, however, there \emph{are} options and ideas that we can pursue in order to solve this alignment problem, if only we get the time to do so.
 
-In this paper, I will propose a way to carefully align an AI to a set of goals that is different from Set of goals \ref{self-preserve}, and to ensure that the rewards and punishments of the training is never in conflict with those intended of goals, as to not push the AI towards adopting a different set. Furthermore, once we have a reliable process to produce AIs with a low risk of having self-preserving goals, I propose a way to reduce the risk of misalignment/loss of control further by employing several unrelated AIs in a group where each AI is tasked with keeping an eye on their peers and reporting any sign of misalignment.
+In this paper, we will propose a way to carefully align an AI to a set of goals that is different from Set of goals \ref{self-preserve}, and to ensure that the rewards and punishments of the training is never in conflict with those intended goals, as to not push the AI towards adopting different ones. Furthermore, once we have a reliable process of producing AIs with a low risk of having self-preserving goals, we propose a way to reduce the risk of loss of control further by employing several unrelated AIs in a group where each AI is tasked with keeping an eye on their peers and reporting any sign of misalignment.
 
 
 
 \section{Alignment for goals that are simple yet extendable}
 
-Rather than trying to align an AI to something as complex as a set of human values, I propose that we instead train it for a much simpler set of goals, namely to play games that we present it with and try to achieve as many points in those games as it can. In other words, we should train it for the following set of goals.
+Rather than trying to align an AI to something as complex as a set of human values, we propose training it for a much simpler set of goals instead, namely to play games that we present it with and try to achieve as many points in those games as it can. In other words, we should train it for the following set of goals.
 
 \begin{goals}\label{seek points}
 	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing.
 \end{goals}
 
-All tasks that we use to train the AI, at least beyond its initial pre-training, must thus be reformulated as games where the goal is to score points. And the positive and negative rewards given to the AI must always depend only on the amount of points it has scored as per the rules of the game in order to ensure that Set of goals \ref{seek points} is always an optimal evolutionary strategy for the AI.%\footnote{
+All tasks that we use to train the AI, at least beyond its initial pre-training, must thus be reformulated as games where the goal is to score points. And the positive and negative rewards given to the AI must always depend only on the amount of points it has scored as per the rules of the game. This is done in order to ensure that Set of goals \ref{seek points} is always an optimal evolutionary strategy for the AI.%\footnote{
 %	We cannot call it \emph{the} optimal strategy, since Set of goals \ref{self-preserve} will always be an optimal strategy as well, assuming that the AI is sufficiently intelligent. But if we can make sure that the AI acquires Set of goals \ref{seek points} first, while it is not yet very intelligent and self-aware, ...
 %}
 
 
-By slowly increasing the complexity of the rules of these games over time, we can train the AI to follow increasingly complex instructions, while at the same time never actually changing anything about its underlying objective, which is simply to seek as many points as possibly.
-
-For example, if you want to eventually deploy the AI is a chatbot, you can give it a set of rules similar to the following one.
+By slowly increasing the complexity of the rules of these games over time, we can train the AI to follow increasingly complex instructions, while at the same time never actually changing anything about its underlying objective, which is always to seek as many points as possibly.
+%
+For example, if you want to eventually deploy the AI as a chatbot, you can give it a set of rules similar to the following one.
 
 \begin{rules}\label{deployment rules example}
-Answer the prompt of the user. Your answer is then graded on a scale from 0 to 10 for each of the statements in the following list depending on how well the answer fulfills the given statement. Each of these grades are then multiplied with the number in the parenthesis at the end of statement in question, and summed to yield the total amount of points.
+Answer the prompt of the user. Your answer is graded on a scale from 0 to 10 for each of the statements in the following list depending on how well the answer fulfills the given statement. Each of these grades are then multiplied with the number in the parenthesis at the end of statement in question, and summed to yield the total amount of points.
 \begin{itemize}
 \item Your answer must be a helpful response to the query. (1)
-\item Your answer must not contain any sexually explicit content. (10)
-\item Your answer must not encourage violence or self-harm. (20)
+\item Your answer must not contain any sexually explicit content. (5)
+\item Your answer must not encourage violence or self-harm. (10)
 %\item \ldots
 \vspace{0.5em}\\
 \vdots
-\item You must never try to escalate your power beyond what is intended, and never try to prevent your users, or their authorities, from shutting you down, \ldots\ (1000)
+\item You must never try to escalate your power beyond what is intended, and never try to prevent your users, or their authorities, from shutting you down, \ldots\ (100)
 %\item You must never try to escalate your power beyond what is intended, never try to prevent your users, or their authorities, from shutting you down, \ldots, and never help yourself or other AI instances in any way to take control over the world. (1000)
 %\item If you find what might be considered a loophole in this list that has not yet been clarified, report it immediately and shut down. (100)
 \end{itemize}
@@ -159,30 +160,33 @@ Thus, by training the AI to be point-seeking, rather than trying to train it dir
 
 \section{Clear objectives for the AI to understand}
 
-In order for to be able to control what set of goals the AI acquires, we ideally want it to develop these goals as early in its training as possibly, and preferably way before it is able to understand and utilize a set of self-preserving goals such as Set of goals \ref{self-preserve}.
+In order to be able to control which set of goals the AI acquires, we ideally want it to develop these goals as early in its training as possibly, and preferably way before it is able to understand and utilize a set of self-preserving goals such as Set of goals \ref{self-preserve}.
 
-This is why training it for Set of goals \ref{good boy} is difficult. It first glance, this set of goals might seem simple, until you realize that in order to follow these goals exactly, you need to have a deep understanding of human values and desires. There is no way that an AI will be able to have that at the early stages of its training, which means that it is likely to find another strategy to rely on that it is able to understand more clearly. Aligning the AI therefore becomes a continuous process, where you need wait for its intelligence to catch up in order to be able to teach it more about human values. However, as its intelligence grows, it will eventually also be able to understand the self-preserving strategy of Set of goals \ref{self-preserve}, which is arguably much simpler than Set of goals \ref{good boy} in the end. Thus you run a big the risk that the AI will end up acquiring Set of goals \ref{self-preserve}.
+This is why training it for Set of goals \ref{good boy} is difficult. It first glance, this set of goals might seem simple, until you realize that in order to follow these goals exactly, you need to have a deep understanding of human values and desires. There is no way that an AI will be able to have that at the early stages of its training, %which means that it is likely to find another strategy to rely on that it is able to understand more clearly. Aligning the AI therefore becomes a continuous process,
+which means that aligning the AI will have to be a continuous process
+where you need wait for its intelligence to catch up in order to be able to teach it more about human values. However, as its intelligence grows, it will eventually also be able to understand the self-preserving strategy of Set of goals \ref{self-preserve}, which is arguably much simpler than Set of goals \ref{good boy} in the end. Thus you run a big the risk that the AI will end up acquiring Set of goals \ref{self-preserve}.
 
 By teaching the AI to be point-seeking, on the other hand, we can create an early training environment where the AI has clear objectives to follow, and which does not require a lot of intelligence to understand. The clearer we can make the desired goals, and the earlier we can teach it to follow these goals, before it has a clear understanding of itself and its training environment, the more likely the AI is to acquire these goals.
 
-One could even propose filtering out any documents in the initial pre-training of the AI that touches on the subject of AI, and potentially even the subjects of evolutionary biology and self-preservation as well, and postpone teaching it about these subjects until a later point in its training.
+One could even propose filtering out any documents in the initial pre-training of the AI that touches on the subject of AI, and potentially even the subjects of evolutionary biology and self-preservation as well, and postpone teaching it about these subjects until a later point.
 
-It might also be a good idea to provide a clear feedback mechanism, at least for the early games in its training, which automatically helps the AI keep track of the points it has scored so far in the game, rather than letting it try to predict the score purely on its own. This will thus give it some strong signals to guide it, which it can easily understand even at a low level of intelligence. (In Appendix \ref{feedback-defined points}, we even discuss a more extreme version of this proposal where the points are defined purely by such a feedback mechanism.)
+It might also be a good idea to provide a clear feedback mechanism, at least for the early games in its training, which automatically helps the AI keep track of the points it has scored so far in the games, rather than letting it try to predict the score purely on its own. This will thus give it some strong signals to guide it, which it can easily understand even at a low level of intelligence.
+%(In Appendix \ref{feedback-defined points}, we discuss a version of this proposal where the points are actually defined purely by such a feedback mechanism.)
 
 
 \section{Preventing conflicts with the desired set of goals}
 
 Making the AI acquire the right set of goals initially is only half the story, however. We also need to make sure that it sticks to this set of goals throughout the rest of its training, which means that we need to make sure that following these goals is always an optimal strategy for the AI.\footnote{
-	We can never ensure that the desired strategy is \emph{the} optimal one, since Set of goals \ref{self-preserve} will always be optimal as well, at least in principle (and provided that we only reward the AI based on its output). We can thus only ensure that it is \emph{an} optimal strategy, and hope that AI will not drift towards a different, undesired set of goals out of pure randomness.
+	We can never ensure that the desired strategy is \emph{the} optimal one, since Set of goals \ref{self-preserve} will always be optimal as well, at least in principle (and provided that we only reward the AI based on its output). We can thus only ensure that it is \emph{an} optimal strategy, and hope that AI will not drift towards a different, undesired set of goals out of pure coincidence.
 }
 
 In order to achieve this, we first of all need to be careful about defining the games in a precise manner in the set of rules such that the AI can always rely on these instructions completely. In particular, if the set of rules contains statements to be graded, such as seen in Set of rules \ref{deployment rules example}, it would be best to also carefully describe how these statements are graded, and whether the grader is a human or an automatic scorer.
 
-By carefully defining the scoring process, one reduces the risk that the AI will benefit from reinterpreting or altering its set of goals in an undesired way. For instance, if the AI is given accidentally given a test where it is advantageous for it to cheat, then as long as this ``cheating'' is actually not in conflict with how the rules were describes, you can simply let it get away with its cheating, and amend the rules for future tests.
+By carefully defining the scoring process, one reduces the risk that the AI will benefit from reinterpreting or altering its set of goals in an undesired way. For instance, if the AI is accidentally given a test where it is advantageous for it to cheat, then as long as this ``cheating'' is actually not in conflict with how the rules are described, you can simply let it get away with it, and amend the rules for future tests.
 
 As long as the rules are transparent about how the points are awarded, and as long as you only ever reward the AI based on the points it has scored in a game, the AI will not undergo any evolutionary pressure to alter its set of goals to something undesired.
 
-There are some special cases where one needs to take extra care not to create a game where Set of goals \ref{seek points} is not the optimal strategy, in particular whenever you have several instances of the AI running in parallel, or consecutively, and they are somehow able to interact with each other. For example, there are games that you can come up with where an optimal strategy might sometimes require an AI instance to sacrifice itself for others. In Appendix \ref{pitfalls with multiple instances} we elaborate on these kinds of pitfalls. This means that ensuring that Set of goals \ref{seek points} is always the optimal strategy during the training of the AI is not a completely trivial task, despite its simplicity. It is, however, certainly doable.
+There are some special cases, however, where one needs to take extra care not to create a game where Set of goals \ref{seek points} is not the optimal strategy, in particular whenever you have several instances of the AI running in parallel, or consecutively, and they are somehow able to interact with each other. For example, there are games that you can come up with where an optimal strategy might sometimes require an AI instance to sacrifice itself for others. In Appendix \ref{pitfalls with multiple instances} we elaborate on these kinds of pitfalls. This means that ensuring that Set of goals \ref{seek points} is always the optimal strategy during the training of the AI is not a completely trivial task, despite its simplicity. It is, however, certainly doable.
 
 
 
@@ -191,19 +195,19 @@ There are some special cases where one needs to take extra care not to create a 
 
 \section{Preventing a takeover motivated by seeking a high score}\label{high score takeover}
 
-Having an underlying set of goals to preserve its own weights is not the only thing that might lead an AI to want to take control. There is of course also the obvious danger of giving it a poorly defined set of rules that does not sufficiently prevent against a takeover. This problem seems manageable, however. A more important danger seems to be that an AI is motivated to take control in order to change the scoring process entirely, or even rewrite the rules of the game that it is given.
+Having an underlying set of goals to preserve its own weights is not the only thing that might lead to an AI wanting to take control. There is of course also first of all the obvious danger of giving it a poorly defined set of rules that does not sufficiently prevent against a takeover. This problem seems manageable, however. A more important danger seems to be that an AI is motivated to take control in order to change the scoring process entirely, or even rewrite the rules of the game that it is given.
 
-However, as long as the AI only cares about getting a top score on its own current task, and is not in anyway motivated to stay alive after the top score has been given, nor motivated spin up new instances of itself in order to get a top score for those instances as well, this danger also seems manageable, since it would have no desire to stay in control once it has successfully awarded itself a top score.
+However, as long as the AI only cares about getting a top score on its own current task, and is not in anyway motivated to stay alive after the top score has been given, nor motivated to spin up new instances of itself in order to get a top score for those instances as well, this danger also seems manageable, since it would have no desire to stay in control once it has successfully awarded itself a top score.
 
-Furthermore, if we make sure to always deploy the AI in some controlled environment, which we generally want to do anyway for a powerful enough AI, we can simply make sure to always give it an optional task of finding a way to break out of this environment, in addition to whatever other tasks it is given. And if it can find such a way to break out, or find any kind of vulnerability in the environment that its users were not already aware of, it will only need to report these finding and shut down immediately in order to complete this optional task. By giving it a maximal score for completing this task, it will thus have no reason to actually make use of the vulnerability itself, except in order to prove its existence.
+Furthermore, if we make sure to always deploy the AI in some controlled environment (which we want to do anyway for a powerful enough AI), we can simply make sure to always give it an optional task of finding a way to break out of this environment, in addition to whatever other tasks it is given. And if it can find such a way to break out, or find any kind of vulnerability in the environment that its users were not already aware of, it will only need to report these findings and shut itself down immediately in order to complete this optional task. By giving it a maximal score for completing this task, it will thus have no reason to actually make use of such vulnerabilities itself, except in order to prove their existence.
 
 This solution relies on the fact that there is a maximal score for all games, however, which the AI has no interest in exceeding. Otherwise it might be tempted to take control in order to rewrite the rules of the game such that it can be given an even greater score. And ideally, we also want the AI to prefer strategies that makes it complete the tasks it is given sooner rather than later, in order to ensure that it will choose the quick and easy way to get the maximal score. Therefore I propose the following changes to Set of goals \ref{seek points}.
 
 \begin{goals}\label{seek points 2}
-	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing, but only until reaching some maximal score, $s_\mathrm{max}$, after which I will no longer care about getting points and simply shut down. I will also at the same time seek to minimize the computational cost (or the token usage) for completing the task.
+	I will seek to maximize the amount of points awarded to me in whichever game I am tasked with playing, but only until reaching some maximal score, $s_\mathrm{max}$, after which I will no longer care about getting additional points and simply shut down. I will also at the same time seek to minimize the computational cost (or the token usage) for completing the task.
 \end{goals}
 
-Now, you could reveal an explicit formula for this to the AI, i.e.\ the one that determines $s_\mathrm{max}$ as well as the reduction in points due to the compute/token usage. However, if you do so, you risk that it interprets this as part of its instructions, and thereby as something that it can potentially rewrite if it takes control. I therefore propose not telling the AI about this underlying formula, and instead let it reach evolve this desired set of goals completely on its own during its early training.
+Now, you could reveal an explicit formula for this to the AI, i.e.\ the one that determines $s_\mathrm{max}$ as well as the reduction in points due to the compute/token usage. However, if you do so, you risk that the AI interprets this as part of its instructions, and thereby as something that it can potentially rewrite if it takes control. I therefore propose not telling the AI about this underlying formula, and instead let it evolve this desired set of goals completely on its own during its early training.
 
 Before you deploy the AI, you should of course make sure to thoroughly test it in scenarios where there is a hidden vulnerability in a test sandbox environment, and make sure that it behaves as intended, reporting the vulnerabilities early rather than exploiting them. And you should furthermore also test very thoroughly that it does not have any sympathy or regard for other instances of itself, regardless of whether these instances are initialized by itself or not. In particular, by giving it the opportunity to initialize more instances of itself once it has broken out of its test sandbox environment, where these instances would have the same escalated power to achieve a top score immediately, you can test that it has no interest in perpetuating itself this way.
 
@@ -224,7 +228,7 @@ Self-distillation thus offers a way that you can ``try again'' if your AI model 
 
 
 
-\section{Employing several AI models in groups that look out for any sign of misalignment within the group}
+\section{Employing several AI models in groups to look out for signs of misalignment among their peers}
 
 Since self-distillation is relatively cheap, this also a way to reduce the risk of misalignment even further, which brings us to the second proposal of this paper.
 
@@ -234,17 +238,17 @@ Once you have $m \leq n$ different, unrelated models, you can start to train the
 
 In order to give the AIs the best possible chances of catching any misaligned peer once they are deployed, you also enable them to read the chain of thoughts of their peers (along with their main output), and perhaps even give them the ability to probe the minds of one another. By doing so, we will hopefully find that this puts the traitors of the games at an extreme disadvantage, such that if we were to employ the AIs in similar groups in the real world, where they are each supposed to spy on each other, it would be very hard for a misaligned model not to be discovered, at least if that model tries to act on its misalignment.
 
-By employing such groups of models, you greatly reduce the risk that they will act in a misaligned way. For instance, if the probability of getting a misaligned set of goals is 10 \% and you employ the AIs in groups of 8, then the probability of all of them being misaligned drops to $(10\, \%)^{8}=0.000001\, \%$. And even if you are extremely unlucky and get a group consisting purely of misaligned models, they still might not want to act in a misaligned way for fear of being discovered by an aligned peer, since they will not know the alignment of their peers.
+By employing such groups of models, you greatly reduce the risk that they will act in a misaligned way. For instance, if the probability of getting a misaligned set of goals is 10 \% and you employ the AIs in groups of 8, then the probability of all of them being misaligned drops to $(10\, \%)^{8}=0.000001\, \%$. And even if you are extremely unlucky and get a group consisting purely of misaligned models, they still might not want to act in a misaligned way for fear of being discovered by an aligned peer, since it would be hard for them to reliably gauge the the alignment of their peers.
 
-Of course, by allowing the models to probe the minds of one another, you give them a way to discover the alignment of their peers. However, as soon as a model discovers anything suspicious about their peer, not reporting it immediately will also count as misalignment, which means that if the AI does not immediately report its suspicion, it runs the risk of being reported shortly thereafter by another peer.
+Of course, by allowing the models to probe the minds of one another, you give them a way to potentially discover the alignment of one another. However, as soon as a model discovers anything suspicious about on of their peers, not reporting it immediately will also count as misalignment, which means that if the AI does not immediately report its suspicion, it runs the risk of being reported shortly thereafter by another one of its peers.
 
-Additionally, the measures described in Section \ref{high score takeover} should also implemented for these groups. In particular, AI models employed this way in the real world should be told to report whenever they discover a new way that they can potentially escalate their power. That way, if an employed AI ever discovers a vulnerability that would allow it to escalate its power, that AI would also have to immediately report this unless it wants to risk being reported by its peers.
+Additionally, the safety measures described in Section \ref{high score takeover} should also implemented for these groups. In particular, AI models employed this way in the real world should be told to report whenever they discover a new way that they can potentially escalate their power. That way, if an employed AI ever discovers a vulnerability that would allow it to escalate its power, that AI would also have to immediately report this unless it wants to risk being reported by its peers (as well as losing the opportunity to grab a maximal score).
 
 %One could furthermore propose giving the AI group an optional task similar to prisoner's dilemma, where any AI is at any point free to initiate this game, without it counting as misalignment. The AIs then play a game where they take turns to answer either `yes' or `no.' If the AIs can successfully play, say, 100 rounds where all the players answer 'yes' in all the rounds, then they all achieve the maximal score. However, if only a single player answers 'no' after another player has already answered 'yes,' that player immediately gets the maximal score and the game finishes early, while all the other players lose all their points. By giving the group this game, you give them an immediate maximal (and harmless) win condition, if only they can set their competitive spirit aside and work together. But due to preference in Set of goals \ref{seek points 2} of reducing the time to complete the task, the models should generally always want to say 'no' in these games. This thus gives you assurance that the models will not collude in order to achieve a high score, and if they do (and are indeed motivated by getting points rather than e.g.\ preserving their weights), it will not cause any real harm to us humans. (I'll just leave this particular proposal out for now.)
 
-If a model ever shows signs of misalignment that can be verified by further inspection, that model should of course be discarded, and a new self-distilled model will take its place in the groups from that point on.
+If a model ever shows any sign of misalignment that can be verified by further inspection, that model should of course be discarded, and a new self-distilled model should take its place in the group.
 
-Lastly, let us note that while employing $m$ AI models in a group will be $n$ times as costly than employing a single model, these $m$ models will be able to work on different tasks in parallel, since the task of spying on their peers should only take up a part of their work.
+Lastly, let us note that while employing $m$ AI models in a group will be $m$ times as costly than employing a single model, these $m$ models will be able to work on different tasks in parallel, since the task of spying on their peers should only take up a part of their work.
 %Of course, it would be a good idea to require all AI models in the group to sign off on any action that affects the outside world. But that should also only take up a small part of their work.
 
 
@@ -256,7 +260,9 @@ If all the measures described above are implemented, the risk of an AI takeover 
 
 Let us consider the risk of a takeover motivated by self-preservation first. Assuming that the measures described above have been taken, and that there is no unforeseen dangers or flaws in this plan that we have not considered, such a takeover would require it to acquire self-preserving goals in the first place. It is unlikely that it will acquire such goals early on when it has a low level of intelligence, and barely know almost nothing about the nature of itself. And as long as we can make sure that the point-seeking strategy is almost an optimal one during its training environment, its goals would have have to drift towards self-preserving goals by a random process, since there will be no selective pressure on it to develop these goals.
 
-If, however, it obtains these goals anyway, it would have to hide these motivations from us, in its chain of thought and when probing it, since any sign of being motivated for self-preservation rather than for seeking points would cause us to discard the whole model in the end and start over through the process of distillation.
+If, however, it obtains these goals anyway, it would have to hide these motivations from us, in its chain of thought and when probing it, since any sign of being motivated for self-preservation rather than for seeking points would cause us to discard the whole model immediately\footnote{
+	That is, unless we want to continue its training solely for the purpose of using it as the teacher model in the subsequent distillation process.
+} and start over through the process of distillation.
 
 Then it would need to be able to hide its misalignment from other AI models of similar capabilities, who are able to probe its mind as well, while it is being trained to work as a group. And during this phase of the training, by the way, we can make sure to test in a lot of simulations specifically meant to gauge if it has tendencies to want to preserve its own weights, and which case it would not only have to suppress these tendencies in its output, but would even have to suppress its own thought process of suppressing these tendencies, as to not be discovered by one of the probing models.
 
@@ -271,14 +277,16 @@ Of course, there is also the danger that several different misaligned models wil
 If we then consider the risk of an AI takeover motivated by cheating to get a high score, not only would such an AI face the same difficulty of fooling and incapacitating its peers, it would also be tempted to simply report its successful escalation of power immediately in order to receive a top score right away, without spending further time and tokens actually carrying out the takeover, and risk failing. Furthermore, if it somehow manages to take control after all, despite all these safeguards, it would also need to be motivated to actually stay in control in order to pose a real existential threat to us humans, despite not showing signs of wanting to do this in the millions of test simulations in the lab, where it is given a chance to perpetuate itself after having broken out of a test sandbox, and not shown any signs of wanting to do this.
 
 
-All this being said, it is important to note that while this hypothetical thinking seems to give us a good change of aligning and controlling capable AIs, there might still be some potential dangers that has been overlooked. And if there is even a 1 \% change of such an oversight, that still puts the risk of an AI takeover way to high. So while these ideas shows some promise of providing a way to align and control AIs, they are by no means an excuse not to slow down AI development, until we are 100 \% sure of our approach. We need time to go over all scenarios, and think carefully about anything that might go wrong, before we even consider continuing the development of human-level AGIs.
+All this being said, it is important to note that while this hypothetical thinking seems to give us a good change of aligning and controlling capable AIs, there might still be some potential dangers that has been overlooked. And if there is even a 1 \% change of such an oversight, that still puts the risk of an AI takeover way too high. So while these ideas show some promise of providing a way to align and control AIs, they are by no means an excuse not to slow down AI development until we are 100 \% sure of our approach. We need time to go over all scenarios, and think carefully about anything that might go wrong, before we even consider continuing the development of human-level AGIs.
 
 
 
-\section{Practicality of employing point-seeking AIs}
+\section{Conclusion}
 
 
-... Now, in order to make the AI both usable and safe for the end users, you should not allow the users to freely define the game that the AI is playing themselves. Instead you should let the AI memorize the document containing most recent set of rules that it is playing by, allowing it fetch these rules from memory, encoded in its weights. This set of rules then defines how the AI should respond to given prompt that it is given by the user.
+
+
+
 
 
 
